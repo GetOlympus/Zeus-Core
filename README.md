@@ -1,4 +1,4 @@
-# Olympus [![Build Status](https://travis-ci.org/GetOlympus/Olympus.svg?branch=master)](https://travis-ci.org/GetOlympus/Olympus)  
+# Hera [![Build Status](https://travis-ci.org/GetOlympus/Olympus.svg?branch=master)](https://travis-ci.org/GetOlympus/Olympus)  
 
 _**Olympus Hera** framework core system used to make all **Olympus** libraries work efficiently.  
 Build with ♥ for **WordPress developers**._  
