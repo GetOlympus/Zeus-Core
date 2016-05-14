@@ -1,0 +1,18 @@
+{% set twigtpl = template and template == 'terms' ? 'terms' : 'pages' %}
+
+{% extends "Layouts/Extends/" ~ twigtpl ~ ".html.twig" %}
+
+{% block id %}{{ id }}_text_{{ type }}{% endblock %}
+{% block label %}<label for="{{ id }}">{{ title|raw }}</label>{% endblock %}
+
+{% block field %}
+    <div class="olz-field-content text {{ type }}">
+        <input type="{{ type }}" name="{{ id }}" id="{{ id }}" value="{{ val|raw }}" {{ attributes|raw }} />
+
+        {% if type == 'range' %}
+            <output id="{{ id }}_output">{{ val }}</output>
+        {% endif %}
+
+        {% if description %}<p class="olz-description">{{ description|raw }}</p>{% endif %}
+    </div>
+{% endblock %}

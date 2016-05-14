@@ -1,0 +1,59 @@
+{
+  "name": "getolympus/olympus-hera",
+  "type": "framework",
+  "description": "The Olympus framework core system used to make all libraries work efficiently. Build with ♥ for WordPress developers.",
+  "keywords": ["olympus", "hera", "wordpress", "framework", "php"],
+  "homepage": "https://github.com/GetOlympus/Hera",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Achraf Chouk",
+      "homepage": "https://github.com/crewstyle"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "GetOlympus\\Hera\\": "src/Hera/"
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "0.x-dev"
+    }
+  },
+  "minimum-stability": "stable",
+  "require": {
+    "behat/transliterator": "^1.1@dev",
+    "getolympus/olympus-background-field": "~0.0.3",
+    "getolympus/olympus-checkbox-field": "~0.0.3",
+    "getolympus/olympus-code-field": "~0.0.3",
+    "getolympus/olympus-color-field": "~0.0.3",
+    "getolympus/olympus-date-field": "~0.0.3",
+    "getolympus/olympus-file-field": "~0.0.3",
+    "getolympus/olympus-font-field": "~0.0.3",
+    "getolympus/olympus-hidden-field": "~0.0.3",
+    "getolympus/olympus-html-field": "~0.0.2",
+    "getolympus/olympus-link-field": "~0.0.3",
+    "getolympus/olympus-map-field": "~0.0.3",
+    "getolympus/olympus-multiselect-field": "~0.0.3",
+    "getolympus/olympus-radio-field": "~0.0.3",
+    "getolympus/olympus-rte-field": "~0.0.3",
+    "getolympus/olympus-section-field": "~0.0.2",
+    "getolympus/olympus-select-field": "~0.0.3",
+    "getolympus/olympus-social-field": "~0.0.3",
+    "getolympus/olympus-text-field": "~0.0.3",
+    "getolympus/olympus-textarea-field": "~0.0.3",
+    "getolympus/olympus-toggle-field": "~0.0.3",
+    "getolympus/olympus-upload-field": "~0.0.3",
+    "getolympus/olympus-wordpress-field": "~0.0.3",
+    "league/container": "^2.2",
+    "ruflin/Elastica": ">=3.0",
+    "symfony/http-foundation": "^3.0",
+    "symfony/translation": "^3.0",
+    "symfony/yaml": "^3.0",
+    "twig/twig": "~1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~5.3"
+  }
+}

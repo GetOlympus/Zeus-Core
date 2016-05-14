@@ -1,0 +1,7 @@
+{% if name == 'olz-flushpermalink' %}
+    <p>{{ t_description|raw }}</p>
+    <input type="hidden" name="{{ name }}" value="{{ value }}" />
+{% else %}
+    <code>{{ t_home|raw }}</code>
+    <input type="text" name="{{ name }}" value="{{ value }}" class="regular-text code" />
+{% endif %}

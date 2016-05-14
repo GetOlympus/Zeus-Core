@@ -1,0 +1,14 @@
+##############################################
+# @package olympus-hera
+# @author Achraf Chouk <achrafchouk@gmail.com>
+# @since 0.0.1
+##############################################
+
+# Composer
+vendor/
+composer.lock
+
+# Useless auto-generated files
+.DS_Store
+.idea/
+Thumbs.db

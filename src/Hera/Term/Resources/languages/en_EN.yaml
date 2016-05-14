@@ -1,0 +1,19 @@
+# Main contents
+term:
+  title: Terms
+  errors:
+    missing_singular_or_plural: Singular and/or plural term are missing in your labels definition.
+    posttype_not_defined: Term's post type is not defined.
+  labels:
+    search_items: Search items
+    edit_item: Edit item
+    update_item: Update item
+    add_new_item: Add new item
+    new_item_name: New item
+    parent_item: Parent item
+    parent_item_colon: Parent item colon
+    popular_items: Popular items
+    separate_items_with_commas: Separate items with commas
+    choose_from_most_used: Chooose from the most item used
+    add_or_remove_items: Add or remove items
+    not_found: No item found
