@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Notification\Controller;
 
+use GetOlympus\Hera\Notification\Controller\NotificationInterface;
+
 /**
  * Displays admin messages and notifications when its needed.
  *
@@ -12,17 +14,11 @@ namespace GetOlympus\Hera\Notification\Controller;
  *
  */
 
-class Notification
+class Notification implements NotificationInterface
 {
     /**
-     * Constructor.
-     */
-    public function __construct(){}
-
-    /**
-     * Constructor.
+     * Error display.
      *
-     * @param string $type
      * @param string $content
      */
     public static function error($content = '')
