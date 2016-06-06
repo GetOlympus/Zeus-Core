@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Option\Controller;
 
+use GetOlympus\Hera\Option\Controller\OptionInterface;
+
 /**
  * Works with WP options.
  *
@@ -12,13 +14,8 @@ namespace GetOlympus\Hera\Option\Controller;
  *
  */
 
-class Option
+class Option implements OptionInterface
 {
-    /**
-     * Constructor.
-     */
-    public function __construct(){}
-
     /**
      * Force add a value into options
      *
@@ -48,7 +45,7 @@ class Option
      * @param string $option
      * @param string $default
      * @param string $item
-     * @return mixed|string|void
+     * @return mixed $value
      */
     public static function get($option, $default = '', $item = '')
     {
@@ -61,9 +58,9 @@ class Option
         /**
          * Works on option's value.
          *
-         * @var string $option
-         * @param array $value
-         * @return array $value
+         * @var string      $option
+         * @param array     $value
+         * @return array    $value
          */
         $value = apply_filters('olh_option_get_'.$option, $value);
 
@@ -72,102 +69,119 @@ class Option
     }
 
     /**
-     * Force update a value into term options without transient
-     *
-     * @param string $termId
-     * @param string $option
-     * @param boolean $multiple
-     * @return string|array|boolean|null $multiple
-     */
-    public static function getTermMeta($termId, $option, $multiple = false)
-    {
-        return get_term_meta($termId, $option, $multiple);
-    }
-
-    /**
      * Retrieve field value
      *
-     * @param array $details
-     * @param object $default
-     * @param string $id
-     * @param boolean $multiple
+     * @param array     $details
+     * @param object    $default
+     * @param string    $id
+     * @param boolean   $multiple
+     * @return mixed    $value
      */
     public static function getFieldValue($details, $default, $id = '', $multiple = false)
     {
-        // Build details
+        // Check id
+        if (empty($id)) {
+            return null;
+        }
+
+        // Post field?
         $post = isset($details['post']) ? $details['post'] : 0;
-        $prefix = isset($details['prefix']) ? $details['prefix'] : '';
-        $termid = isset($details['term_id']) ? $details['term_id'] : 0;
-        $structure = isset($details['structure']) ? $details['structure'] : '';
-        $widgetValue = isset($details['widget_value']) ? $details['widget_value'] : '';
 
-        // Post types
+        // Post metaboxes
         if (!empty($post)) {
-            $value = get_post_meta($post->ID, $post->post_type.'-'.$id, !$multiple);
+            $value = self::getPostMeta($post->ID, $post->post_type.'-'.$id);
             $value = empty($value) ? $default : $value;
-        }
-        // Special settings
-        else if (preg_match('/^olz-configs-/', $id)) {
-            // Update option from olz_configs_frontend_login into frontend_login
-            $option = $prefix.$id;
-            $id = str_replace('olz-configs-', '', $id);
 
-            // Check id[suboption]
-            if (preg_match('/\[.*\]/', $id)) {
-                // Get option
-                $option = substr($id, 0, strpos($id,'['));
-
-                // Get suboption
-                $suboption = substr($id, strpos($id,'['));
-                $suboption = str_replace(['[', ']'], '', $suboption);
-
-                // Get value
-                $vals = self::get('olz-config', [], $option);
-                $value = !$vals ? $default : (isset($vals[$suboption]) ? $vals[$suboption] : $default);
-            }
-            else {
-                // Get value
-                $value = self::get('olz-config', [], $id);
-                $value = !$value ? $default : $value;
-            }
-        }
-        // WP 4.4
-        else if (function_exists('get_term_meta') && !empty($prefix) && !empty($termid)) {
-            $value = get_term_meta($termid, $prefix.'-'.$id, true);
-            $value = !$value ? $default : $value;
-        }
-        // Default
-        else {
-            $option = !empty($prefix) ? str_replace(['%TERM%', '%SLUG%'], [$prefix, $id], $structure) : $id;
-            $value = !empty($widgetValue) ? $widgetValue : self::get($option, $default);
+            return !is_array($value) ? stripslashes($value) : $value;
         }
 
-        // Strip slasches?
-        return $multiple || is_array($value) ? $value : stripslashes($value);
+        // Term field?
+        $term_id = isset($details['term_id']) ? $details['term_id'] : 0;
+
+        // Term metaboxes
+        if (!empty($term_id)) {
+            $term = get_term($term_id);
+            $slug = $term->slug;
+
+            $value = self::getTermMeta($term_id, $slug.'-'.$id, $default);
+            $value = empty($value) ? $default : $value;
+
+            return !is_array($value) ? stripslashes($value) : $value;
+        }
+
+        // Widget field?
+        $widget_value = isset($details['widget_value']) ? $details['widget_value'] : '';
+
+        // Widget metaboxes
+        if (!empty($widget_value)) {
+            $value = $widget_value;
+            return !is_array($value) ? stripslashes($value) : $value;
+        }
+
+        // Default action
+        $value = self::get($option, $default);
+        return !is_array($value) ? stripslashes($value) : $value;
+    }
+
+    /**
+     * Force update a value into post options without transient
+     *
+     * @param string    $post_id
+     * @param string    $option
+     * @return mixed    $value
+     */
+    public static function getPostMeta($post_id, $option)
+    {
+        return get_post_meta($post_id, $option, true);
+    }
+
+    /**
+     * Force update a value into term options without transient
+     *
+     * @param string    $term_id
+     * @param string    $option
+     * @param mixed     $default
+     * @return mixed    $value
+     */
+    public static function getTermMeta($term_id, $option, $default = '')
+    {
+        if (function_exists('get_term_meta')) {
+            // WP 4.4
+            $value = get_term_meta($term_id, $option, true);
+        } else {
+            // Default
+            $value = self::get($option, $default);
+        }
+
+        return $value;
     }
 
     /**
      * Set a value into options
      *
-     * @param string $option
-     * @param string $value
+     * @param string    $option
+     * @param string    $value
+     * @param string    $type
+     * @param integer   $type
      */
-    public static function set($option, $value)
+    public static function set($option, $value, $type = '', $id = 0)
     {
         /**
          * Works on option's value.
          *
          * @var string $option
-         * @param array $value
+         * @param mixed $value
          * @return array $value
          */
         $value = apply_filters('olh_option_set_'.$option, $value);
 
         // Set value into DB without autoload
-        if (false === get_option($option)) {
+        if (!empty($id)) {
+            $func = 'term' === $type ? 'updateTermMeta' : 'updatePostMeta';
+            self::$func($id, $option, $value);
+        } else if (false === get_option($option)) {
             self::add($option, $value);
-        }
-        else {
+        } else {
             self::update($option, $value);
         }
     }
@@ -184,14 +198,26 @@ class Option
     }
 
     /**
-     * Force update a value into term options without transient
+     * Force update a value into post options without transient
      *
-     * @param string $termId
+     * @param string $post_id
      * @param string $option
      * @param string $value
      */
-    public static function updateTermMeta($termId, $option, $value)
+    public static function updatePostMeta($post_id, $option, $value)
     {
-        update_term_meta($termId, $option, $value);
+        update_post_meta($post_id, $option, $value);
+    }
+
+    /**
+     * Force update a value into term options without transient
+     *
+     * @param string $term_id
+     * @param string $option
+     * @param string $value
+     */
+    public static function updateTermMeta($term_id, $option, $value)
+    {
+        update_term_meta($term_id, $option, $value);
     }
 }
