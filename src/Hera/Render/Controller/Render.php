@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\Render\Controller;
 
+use GetOlympus\Hera\Render\Controller\RenderInterface;
 use Behat\Transliterator\Transliterator;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -17,7 +18,7 @@ use Twig_SimpleFunction;
  *
  */
 
-class Render
+class Render implements RenderInterface
 {
     /**
      * @var Singleton
@@ -85,7 +86,8 @@ class Render
         foreach ($components as $alias => $donotget) {
             $path = $vendor.'getolympus'.S.'olympus-'.$alias.'-field'.S.'src'.S.'Resources'.S.'views';
 
-            $loader->addPath($path, $alias.'Field');
+            //$loader->addPath($path, $alias.'Field');
+            $loader->addPath($path, $alias);
         }
 
         /**
@@ -96,7 +98,7 @@ class Render
         do_action('olh_render_views', $loader);
 
         // Build Twig renderer
-        $this->twig = new Twig_Environment($loader/*, ['cache' => OLH_CACHE]*/);
+        $this->twig = new Twig_Environment($loader, ['cache' => OLH_CACHE]);
 
 
         /**
@@ -186,6 +188,36 @@ class Render
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Camelize string.
+     *
+     * @param string $text
+     * @param string $separator
+     * @return string $camelized
+     */
+    public static function camelCase($text, $separator = '-')
+    {
+        $slugified = self::urlize($text, $separator);
+        $camel = strtolower($slugified);
+
+        return ucwords($camel, $separator);
+    }
+
+    /**
+     * Functionize string.
+     *
+     * @param string $text
+     * @param string $separator
+     * @return string $functionized
+     */
+    public static function toFunction($text, $separator = '-')
+    {
+        $camelized = self::camelCase($text, $separator);
+        $func = str_replace($separator, '', $camelized);
+
+        return lcfirst($func);
     }
 
     /**
