@@ -5,7 +5,7 @@ namespace GetOlympus\Hera\Term\Model;
 use GetOlympus\Hera\Term\Controller\TermHook;
 
 /**
- * Abstract class to define Term model.
+ * Term model.
  *
  * @package Olympus Hera
  * @subpackage Term\Model
@@ -14,7 +14,7 @@ use GetOlympus\Hera\Term\Controller\TermHook;
  *
  */
 
-class Term
+class TermModel
 {
     /**
      * @var array

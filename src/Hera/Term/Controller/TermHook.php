@@ -6,6 +6,7 @@ use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Option\Controller\Option;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Request\Controller\Request;
+use GetOlympus\Hera\Term\Controller\TermHookInterface;
 use GetOlympus\Hera\WalkerSingle\Controller\WalkerSingle;
 
 /**
@@ -18,7 +19,7 @@ use GetOlympus\Hera\WalkerSingle\Controller\WalkerSingle;
  *
  */
 
-class TermHook
+class TermHook implements TermHookInterface
 {
     /**
      * Constructor.

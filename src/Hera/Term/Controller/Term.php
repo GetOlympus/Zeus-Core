@@ -5,8 +5,10 @@ namespace GetOlympus\Hera\Term\Controller;
 use GetOlympus\Hera\Notification\Controller\Notification;
 use GetOlympus\Hera\Option\Controller\Option;
 use GetOlympus\Hera\Render\Controller\Render;
-use GetOlympus\Hera\Term\Model\Term as TermModel;
 use GetOlympus\Hera\Term\Controller\TermHook;
+use GetOlympus\Hera\Term\Controller\TermInterface;
+use GetOlympus\Hera\Term\Exception\TermException;
+use GetOlympus\Hera\Term\Model\TermModel;
 use GetOlympus\Hera\Translate\Controller\Translate;
 
 /**
@@ -19,7 +21,7 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Term
+class Term implements TermInterface
 {
     /**
      * @var array
@@ -32,29 +34,20 @@ class Term
     protected $term;
 
     /**
-     * Constructor.
-     */
-    public function __construct(){}
-
-    /**
      * Initialization.
      *
      * @param string $slug
      * @param array $args
      * @param array $labels
      */
-    public function initialize($slug, $posttype, $args, $labels)
+    public function init($slug, $posttype, $args, $labels)
     {
         if (empty($labels) || !isset($labels['plural'], $labels['singular']) || empty($labels['plural']) || empty($labels['singular'])) {
-            Notification::error(Translate::t('term.errors.missing_singular_or_plural'));
-
-            return;
+            throw new PosttypeException(Translate::t('term.errors.missing_singular_or_plural'));
         }
 
         if (empty($posttype)) {
-            Notification::error(Translate::t('term.errors.posttype_not_defined'));
-
-            return;
+            throw new PosttypeException(Translate::t('term.errors.posttype_not_defined'));
         }
 
         $this->term = new TermModel();
@@ -87,7 +80,7 @@ class Term
      * @param string $slug
      * @return array $args
      */
-    protected function defaultArgs($slug)
+    public function defaultArgs($slug)
     {
         return [
             'hierarchical' => true,
@@ -110,7 +103,7 @@ class Term
      * @param boolean $hierarchical
      * @return array $labels
      */
-    protected function defaultLabels($plural, $singular, $hierarchical = true)
+    public function defaultLabels($plural, $singular, $hierarchical = true)
     {
         $labels = [
             'name' => $plural,
@@ -151,7 +144,7 @@ class Term
     /**
      * Register post types.
      */
-    protected function register()
+    public function register()
     {
         add_action('init', function (){
             // Store details
