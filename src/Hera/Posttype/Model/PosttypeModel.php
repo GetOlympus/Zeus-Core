@@ -5,7 +5,7 @@ namespace GetOlympus\Hera\Posttype\Model;
 use GetOlympus\Hera\Posttype\Controller\PosttypeHook;
 
 /**
- * Abstract class to define Posttype model.
+ * Post type model.
  *
  * @package Olympus Hera
  * @subpackage Posttype\Model
@@ -14,12 +14,17 @@ use GetOlympus\Hera\Posttype\Controller\PosttypeHook;
  *
  */
 
-class Posttype
+class PosttypeModel
 {
     /**
      * @var array
      */
     protected $args;
+
+    /**
+     * @var array
+     */
+    protected $fields;
 
     /**
      * @var PosttypeHook
@@ -51,6 +56,30 @@ class Posttype
     public function setArgs(array $args)
     {
         $this->args = $args;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of fields.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Sets the value of fields.
+     *
+     * @param array $fields the fields
+     *
+     * @return self
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
 
         return $this;
     }

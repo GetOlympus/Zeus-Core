@@ -4,8 +4,10 @@ namespace GetOlympus\Hera\Posttype\Controller;
 
 use GetOlympus\Hera\Notification\Controller\Notification;
 use GetOlympus\Hera\Option\Controller\Option;
-use GetOlympus\Hera\Posttype\Model\Posttype as PosttypeModel;
 use GetOlympus\Hera\Posttype\Controller\PosttypeHook;
+use GetOlympus\Hera\Posttype\Controller\PosttypeInterface;
+use GetOlympus\Hera\Posttype\Exception\PosttypeException;
+use GetOlympus\Hera\Posttype\Model\PosttypeModel;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Translate\Controller\Translate;
 
@@ -19,52 +21,113 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Posttype
+abstract class Posttype implements PosttypeInterface
 {
+    /**
+     * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_post_type#Arguments
+     */
+    protected $args;
+
+    /**
+     * @var array
+     */
+    protected $fields;
+
+    /**
+     * @var array
+     */
+    protected $forbidden_slugs = ['action', 'author', 'order', 'theme'];
+
+    /**
+     * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_post_type#labels
+     */
+    protected $labels;
+
     /**
      * @var PosttypeModel
      */
     protected $posttype;
 
     /**
-     * Constructor.
+     * @var array
      */
-    public function __construct(){}
+    protected $reserved_slugs = ['post', 'page', 'attachment', 'revision', 'nav_menu_item'];
 
     /**
-     * Initialization.
-     *
-     * @param string $slug
-     * @param array $args
-     * @param array $labels
+     * @var string
      */
-    public function initialize($slug, $args, $labels)
-    {
-        if (empty($labels) || !isset($labels['plural'], $labels['singular']) || empty($labels['plural']) || empty($labels['singular'])) {
-            Notification::error(Translate::t('posttype.errors.term_is_not_defined'));
+    protected $slug;
 
-            return;
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        // Update slug
+        $this->slug = Render::urlize($this->slug);
+
+        // Check forbidden slugs
+        if (in_array($this->slug, $this->forbidden_slugs)) {
+            throw new PosttypeException(Translate::t('posttype.errors.slug_is_forbidden'));
         }
 
+        // Initialize
+        $this->init();
+    }
+
+    /**
+     * Build PosttypeModel and initialize hook.
+     */
+    public function init()
+    {
+        // Initialize PosttypeModel
         $this->posttype = new PosttypeModel();
+        $this->posttype->setFields($this->fields);
+        $this->posttype->setSlug($this->slug);
 
-        $slug = Render::urlize($slug);
-        $args = array_merge($this->defaultArgs($slug), $args);
-        $args['labels'] = array_merge($this->defaultLabels($labels['plural'], $labels['singular']), $labels);
+        // Update args on post types except posts and pages
+        if (!in_array($this->slug, $this->reserved_slugs)) {
+            // Check if post type already exists
+            if (post_type_exists($this->slug)) {
+                throw new PosttypeException(Translate::t('posttype.errors.slug_already_exists'));
+            }
 
-        // Update vars
-        $this->posttype->setSlug($slug);
-        $this->posttype->setArgs($args);
+            // Initialize plural and singular vars
+            $this->labels['name'] = isset($this->labels['name']) ? $this->labels['name'] : '';
+            $this->labels['singular_name'] = isset($this->labels['singular_name']) ? $this->labels['singular_name'] : '';
+
+            // Check label for all except page and post
+            if (empty($this->labels['name']) || empty($this->labels['singular_name'])) {
+                throw new PosttypeException(Translate::t('posttype.errors.term_is_not_defined'));
+            }
+
+            $this->args = array_merge($this->defaultArgs(), $this->args);
+            $this->args['labels'] = array_merge(
+                $this->defaultLabels($this->labels['name'], $this->labels['singular_name']),
+                $this->labels
+            );
+
+            // Update PosttypeModel args
+            $this->posttype->setArgs($this->args);
+        }
+
+        // Register post type
+        $this->register();
     }
 
     /**
      * Build args.
      *
-     * @param string $slug
      * @return array $args
      */
-    protected function defaultArgs($slug)
+    public function defaultArgs()
     {
+        // Get slug
+        $slug = $this->posttype->getSlug();
+
+        // Return args
         return [
             'can_export' => true,
             'capability_type' => 'post',
@@ -99,7 +162,7 @@ class Posttype
      * @param string $singular
      * @return array $labels
      */
-    protected function defaultLabels($plural, $singular)
+    public function defaultLabels($plural, $singular)
     {
         return [
             'name' => $plural,
@@ -124,45 +187,57 @@ class Posttype
     }
 
     /**
+     * Build statuses.
+     *
+     * @param string $name
+     * @return array $statuses
+     */
+    public function defaultStatuses($name)
+    {
+        return [
+            'label' => $name,
+            'public' => false,
+            'internal' => false,
+            'exclude_from_search' => false,
+            'show_in_admin_all_list' => true,
+            'show_in_admin_status_list' => false,
+            'label_count' => Translate::n($name.' <span class="count">(%s)</span>', $name.' <span class="count">(%s)</span>'),
+        ];
+    }
+
+    /**
      * Register post types.
      */
-    protected function register()
+    public function register()
     {
-        add_action('init', function (){
+        $self = $this;
+
+        // Init WordPress action
+        add_action('init', function () use ($self){
             // Store details
-            $slug = $this->posttype->getSlug();
-            $args = $this->posttype->getArgs();
+            $slug = $self->posttype->getSlug();
+            $args = $self->posttype->getArgs();
+            $fields = $self->posttype->getFields();
 
-            // Special case: define a post/page as title
-            // to edit default post/page component
-            if (in_array($slug, ['post', 'page'])) {
-                return [];
+            // Register post type if not post or page
+            if (!in_array($slug, $self->reserved_slugs)) {
+                // Action to register
+                register_post_type($slug, $args);
+
+                // Option
+                $opt = str_replace('%SLUG%', $slug, '%SLUG%-olympus-structure');
+
+                // Get value
+                $structure = Option::get($opt, '/%'.$slug.'%-%post_id%');
+
+                // Change structure
+                add_rewrite_tag('%'.$slug.'%', '([^/]+)', $slug.'=');
+                add_permastruct($slug, $structure, false);
             }
-
-            // Check if post type already exists
-            if (post_type_exists($slug)) {
-                return [];
-            }
-
-            // Action to register
-            register_post_type($slug, $args);
-
-            // Update post type
-            $posttype = array_merge($posttype, $args);
-
-            // Option
-            $opt = str_replace('%SLUG%', $slug, '%SLUG%-olz-structure');
-
-            // Get value
-            $structure = Option::get($opt, '/%'.$slug.'%-%post_id%');
-
-            // Change structure
-            add_rewrite_tag('%'.$slug.'%', '([^/]+)', $slug.'=');
-            add_permastruct($slug, $structure, false);
 
             // Works on hook
-            $hook = new PosttypeHook($slug);
-            $this->posttype->setHook($hook);
+            $hook = new PosttypeHook($slug, $args['labels']['name'], $fields);
+            $self->posttype->setHook($hook);
         }, 10, 1);
     }
 }

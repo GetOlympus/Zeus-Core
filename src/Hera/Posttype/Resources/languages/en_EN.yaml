@@ -14,7 +14,9 @@ posttype:
       view: View
       view_item: View item
   errors:
-    term_is_not_defined: Singular and/or plural term is missing in your labels definition.
+    slug_is_forbidden: The current slug is forbidden. Please, use an other one.
+    slug_already_exists: This current slug already exists.
+    term_is_not_defined: Name and/or Singular_name are missing in your labels definition.
 
 # Main contents
 posttypehook:

@@ -5,6 +5,7 @@ namespace GetOlympus\Hera\Posttype\Controller;
 use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Metabox\Controller\Metabox;
 use GetOlympus\Hera\Option\Controller\Option;
+use GetOlympus\Hera\Posttype\Controller\PosttypeHookInterface;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Request\Controller\Request;
 use GetOlympus\Hera\Translate\Controller\Translate;
@@ -13,39 +14,63 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  * Works with Posttype Engine.
  *
  * @package Olympus Hera
- * @subpackage PosttypeHook\Controller
+ * @subpackage Posttype\Controller
  * @author Achraf Chouk <achrafchouk@gmail.com>
  * @since 0.0.1
  *
  */
 
-class PosttypeHook
+class PosttypeHook implements PosttypeHookInterface
 {
+    /**
+     * @var array
+     */
+    protected $fields;
+
+    /**
+     * @var string
+     */
+    protected $name;
+
+    /**
+     * @var string
+     */
+    protected $slug;
+
     /**
      * Constructor.
      *
-     * @param string $slug
+     * @param string    $slug
+     * @param string    $name
+     * @param array     $fields
      */
-    public function __construct($slug)
+    public function __construct($slug, $name, $fields = [])
     {
-        // Manage columns
-        if (OLH_ISADMIN && !empty($slug)) {
-            add_filter('manage_edit-'.$slug.'_columns', [&$this->hook, 'manageEditColumns'], 10);
-            add_action('manage_'.$slug.'_posts_custom_column', [&$this->hook, 'managePostsCustomColumn'], 11, 2);
+        // Check slug
+        if (empty($slug)) {
+            return;
         }
 
+        $this->slug = $slug;
+        $this->name = $name;
+        $this->fields = $fields;
+
         // Permalink structures
-        add_action('post_type_link', [&$this->hook, 'postTypeLink'], 10, 3);
+        add_action('post_type_link', [$this, 'postTypeLink'], 10, 3);
 
         if (OLH_ISADMIN) {
+            // Manage columns
+            add_filter('manage_edit-'.$slug.'_columns', [$this, 'manageEditColumns'], 10);
+            add_action('manage_'.$slug.'_posts_custom_column', [$this, 'managePostsCustomColumn'], 11, 2);
+
             // Display post type's custom fields
-            add_action('admin_init', [&$this->hook, 'postTypeFieldDisplay']);
+            add_action('admin_init', [$this, 'postTypeFieldDisplay']);
 
             // Save post type's custom fields
-            add_action('save_post', [&$this->hook, 'postTypeSave']);
+            add_action('save_post', [$this, 'postTypeSave']);
 
             // Display settings in permalinks page
-            add_action('admin_init', [&$this->hook, 'postTypeSettings']);
+            add_action('admin_init', [$this, 'postTypeSettings']);
         }
     }
 
@@ -227,7 +252,11 @@ class PosttypeHook
     {
         // Defintions
         $slug = Request::get('post_type');
-        $usedIds = [];
+
+        // Check fields
+        if (empty($this->fields)) {
+            return;
+        }
 
         // Define current post type's contents
         if (empty($slug)) {
@@ -238,72 +267,61 @@ class PosttypeHook
             if (empty($slug)) {
                 global $pagenow;
 
-                if ('post-new.php' === $pagenow) {
-                    $slug = 'post';
-                }
-                else if ('media-new.php' === $pagenow) {
-                    $slug = 'attachment';
-                }
-                else {
+                if (!in_array($pagenow, ['post-new.php', 'media-new.php', 'user-new.php', 'comment.php'])) {
                     return;
+                }
+
+                // Work on slug
+                if ('media-new.php' === $pagenow) {
+                    $slug = 'attachment';
+                } else if ('user-new.php' === $pagenow) {
+                    $slug = 'user';
+                } else if ('comment.php' === $pagenow) {
+                    $slug = 'comment';
+                } else {
+                    $slug = 'post';
                 }
             }
         }
 
-        /**
-         * Build post type contents.
-         *
-         * @var string $slug
-         * @param array $contents
-         * @return array $contents
-         */
-        $contents = apply_filters('olh_posttypehook_'.$slug.'_contents', []);
-
-        // Check contents
-        if (empty($contents)) {
+        // Check slug
+        if ($slug !== $this->slug) {
             return;
         }
 
-        // Get contents
-        foreach ($contents as $ctn) {
+        // Get fields
+        foreach ($this->fields as $field) {
+            if (!$field) {
+                continue;
+            }
+
+            // Build contents
+            $ctn = (array) $field->getField()->getContents();
+            $hasId = (boolean) $field->getField()->getHasId();
+
             // Check fields
             if (empty($ctn)) {
                 continue;
             }
 
-            // Get type and id
-            $type = isset($ctn['type']) ? $ctn['type'] : '';
-            $id = isset($ctn['id']) ? $ctn['id'] : '';
-
-            // Check if we are authorized to use this field in CPTs
-            if (empty($type)) {
+            // Does the field have an ID
+            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
                 continue;
             }
+
+            // Id, with a random ID when it's needed
+            $id = isset($ctn['id']) ? $ctn['id'] : rand(777, 7777777);
 
             // Title
             $title = isset($ctn['title']) ? $ctn['title'] : Translate::t('posttypehook.metabox');
-
-            // Get field instance
-            $field = Field::build($type, $id, $usedIds);
-
-            // Check error
-            if (is_array($field) && $field['error']) {
-                continue;
-            }
-
-            // Update ids
-            if (!empty($id)) {
-                $usedIds[] = $id;
-            }
 
             // Update vars
             $identifier = $slug.'-meta-box-'.$id;
 
             // Add meta box
-            new Metabox($identifier, $slug, $title, [
-                'type' => $type,
-                'field' => $field,
-                'contents' => $ctn
+            $metabox = new Metabox();
+            $metabox->init($identifier, $slug, $title, [
+                'field' => $field
             ]);
         }
     }
@@ -326,24 +344,28 @@ class PosttypeHook
         // Get contents
         $slug = $post->post_type;
 
-        /**
-         * Build post type contents.
-         *
-         * @var string $slug
-         * @param array $contents
-         * @return array $contents
-         */
-        $contents = apply_filters('olh_posttypehook_'.$slug.'_contents', []);
-
-        // Check contents
-        if (empty($contents)) {
-            return false;
+        // Check fields and slug
+        if (empty($this->fields) || $slug !== $this->slug) {
+            return;
         }
 
         // Update all metas
-        foreach ($contents as $ctn) {
-            $value = Request::get($ctn['id']);
-            update_post_meta($post->ID, $post->post_type.'-'.$ctn['id'], $value);
+        foreach ($this->fields as $field) {
+            if (!$field) {
+                continue;
+            }
+
+            // Build contents
+            $ctn = (array) $field->getField()->getContents();
+            $hasId = (boolean) $field->getField()->getHasId();
+
+            // Check ID
+            if (!isset($ctn['id']) || empty($ctn['id'])) {
+                continue;
+            }
+
+            $value = Request::post($ctn['id']);
+            update_post_meta($post->ID, $slug.'-'.$ctn['id'], $value);
         }
 
         return true;
@@ -354,68 +376,50 @@ class PosttypeHook
      */
     public function postTypeSettings()
     {
-        /**
-         * Build post type contents.
-         *
-         * @var string $slug
-         * @param array $contents
-         * @return array $contents
-         */
-        $contents = apply_filters('olh_posttypehook_'.$slug.'_contents', []);
-
-        // Check contents
-        if (empty($contents)) {
-            return false;
-        }
-
         // Add section
         add_settings_section(
-            'olh-permalinks',
+            'olympus-permalinks',
             Translate::t('posttypehook.custom_permalinks'),
             [&$this,'postTypeSettingTitle'],
             'permalink'
         );
 
         // Flush all rewrite rules
-        if (isset($_POST['olh-flushpermalink'])) {
+        if (isset($_POST['flushpermalink'])) {
             flush_rewrite_rules();
         }
 
-        // Iterate on each cpt
-        foreach ($this->posttypes as $pt) {
-            // Special case: do not change post/page component
-            if (in_array($pt['slug'], ['post', 'page'])) {
-                continue;
-            }
-
-            // Option
-            $opt = str_replace('%SLUG%', $pt['slug'], '/%'.$pt['slug'].'%-%post_id%');
-
-            // Check POST
-            if (isset($_POST[$opt])) {
-                $value = $_POST[$opt];
-                Option::set($opt, $value);
-            }
-            else {
-                $value = Option::get($opt, '/%'.$pt['slug'].'%-%post_id%');
-            }
-
-            // Define metabox title
-            $title = $pt['labels']['name'].' <code>%'.$pt['slug'].'%</code>';
-
-            // Add fields
-            add_settings_field(
-                $opt,
-                $title,
-                [&$this,'postTypeSettingFunc'],
-                'permalink',
-                'olz-permalinks',
-                [
-                    'name' => $opt,
-                    'value' => $value,
-                ]
-            );
+        // Special case: do not change post/page component
+        if (in_array($this->slug, ['post', 'page'])) {
+            continue;
         }
+
+        // Option
+        $opt = str_replace('%SLUG%', $this->slug, '/%'.$this->slug.'%-%post_id%');
+
+        // Check POST
+        if (isset($_POST[$opt])) {
+            $value = $_POST[$opt];
+            Option::set($opt, $value);
+        } else {
+            $value = Option::get($opt, '/%'.$this->slug.'%-%post_id%');
+        }
+
+        // Define metabox title
+        $title = $this->name.' <code>%'.$this->slug.'%</code>';
+
+        // Add fields
+        add_settings_field(
+            $opt,
+            $title,
+            [$this, 'postTypeSettingFunc'],
+            'permalink',
+            'olympus-permalinks',
+            [
+                'name' => $opt,
+                'value' => $value,
+            ]
+        );
 
         return true;
     }
@@ -435,7 +439,7 @@ class PosttypeHook
         $vars['t_home'] = OLH_HOME;
 
         // Render template
-        Render::view('Layouts/permalinks.html.twig', $vars, 'posttype');
+        Render::view('permalinks.html.twig', $vars, 'posttype');
     }
 
     /**
@@ -445,7 +449,7 @@ class PosttypeHook
     {
         // Display settings
         $this->postTypeSettingFunc([
-            'name' => 'olh-flushpermalink',
+            'name' => 'flushpermalink',
             'value' => '1',
         ]);
     }
