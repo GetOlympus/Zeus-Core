@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\Request\Controller;
 
+use GetOlympus\Hera\Request\Controller\RequestInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
@@ -14,13 +15,8 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  *
  */
 
-class Request
+class Request implements RequestInterface
 {
-    /**
-     * Constructor.
-     */
-    public function __construct(){}
-
     /**
      * Return request value.
      *
@@ -29,5 +25,15 @@ class Request
     public static function get($param, $default = '')
     {
         return SymfonyRequest::createFromGlobals()->query->get($param, $default);
+    }
+
+    /**
+     * Return request value.
+     *
+     * @param string $param
+     */
+    public static function post($param, $default = '')
+    {
+        return SymfonyRequest::createFromGlobals()->request->get($param, $default);
     }
 }
