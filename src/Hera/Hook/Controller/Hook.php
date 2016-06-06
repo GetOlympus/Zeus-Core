@@ -2,7 +2,8 @@
 
 namespace GetOlympus\Hera\Hook\Controller;
 
-use GetOlympus\Hera\Hook\Model\Hook as HookModel;
+use GetOlympus\Hera\Hook\Controller\HookInterface;
+use GetOlympus\Hera\Hook\Model\HookModel;
 
 /**
  * Gets its own hooks.
@@ -14,7 +15,7 @@ use GetOlympus\Hera\Hook\Model\Hook as HookModel;
  *
  */
 
-class Hook
+class Hook implements HookInterface
 {
     /**
      * @var HookModel

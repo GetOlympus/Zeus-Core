@@ -3,7 +3,7 @@
 namespace GetOlympus\Hera\Hook\Model;
 
 /**
- * Abstract class to define Hook model.
+ * Hook model.
  *
  * @package Olympus Hera
  * @subpackage Hook\Model
@@ -12,7 +12,7 @@ namespace GetOlympus\Hera\Hook\Model;
  *
  */
 
-class Hook
+class HookModel
 {
     /**
      * @var function
