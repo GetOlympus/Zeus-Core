@@ -2,7 +2,9 @@
 
 namespace GetOlympus\Hera\Menu\Controller;
 
-use GetOlympus\Hera\Menu\Model\Menu as MenuModel;
+use GetOlympus\Hera\Menu\Controller\MenuInterface;
+use GetOlympus\Hera\Menu\Exception\MenuException;
+use GetOlympus\Hera\Menu\Model\MenuModel;
 use GetOlympus\Hera\Notification\Controller\Notification;
 use GetOlympus\Hera\Request\Controller\Request;
 use GetOlympus\Hera\Template\Controller\Template;
@@ -18,7 +20,7 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Menu
+abstract class Menu implements MenuInterface
 {
     /**
      * @var MenuModel
@@ -99,16 +101,12 @@ class Menu
     {
         // Admin panel
         if (empty($slug)) {
-            Notification::error(Translate::t('menu.errors.slug_is_not_defined'));
-
-            return;
+            throw new MenuException(Translate::t('menu.errors.slug_is_not_defined'));
         }
 
         // Check page
         if ($this->menu->hasPage($slug)) {
-            Notification::error(Translate::t('menu.errors.slug_is_already_used'));
-
-            return;
+            throw new MenuException(Translate::t('menu.errors.slug_is_already_used'));
         }
 
         // Set default option's values

@@ -3,7 +3,7 @@
 namespace GetOlympus\Hera\Menu\Model;
 
 /**
- * Abstract class to define Menu model.
+ * Menu model.
  *
  * @package Olympus Hera
  * @subpackage Menu\Model
@@ -12,7 +12,7 @@ namespace GetOlympus\Hera\Menu\Model;
  *
  */
 
-class Menu
+class MenuModel
 {
     /**
      * @var string
