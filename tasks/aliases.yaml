@@ -1,0 +1,22 @@
+# JShint validation
+test:
+  description: 'Test JS files.'
+  tasks:
+    - 'jshint:src'
+
+default:
+  description: 'Build minified & production-ready files.'
+  tasks:
+    # Clean target fodlers
+    - 'clean:app'
+    # Process less files
+    - 'less:core'
+    - 'less:login'
+    # Minify css and js
+    - 'cssmin:src'
+    #- 'uglify:src'
+    # Move files to target
+    - 'copy:app'
+    # Minify images and clean source folders
+    - 'imagemin:app'
+    - 'clean:src'
