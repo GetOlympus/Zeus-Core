@@ -3,7 +3,7 @@
 namespace GetOlympus\Hera\Widget\Model;
 
 /**
- * Abstract class to define Widget model.
+ * Widget model.
  *
  * @package Olympus Hera
  * @subpackage Widget\Model
@@ -12,7 +12,7 @@ namespace GetOlympus\Hera\Widget\Model;
  *
  */
 
-class Widget
+class WidgetModel
 {
     /**
      * @var string

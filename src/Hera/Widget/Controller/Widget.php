@@ -5,6 +5,7 @@ namespace GetOlympus\Hera\Widget\Controller;
 use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Translate\Controller\Translate;
+use GetOlympus\Hera\Widget\Controller\WidgetInterface;
 
 /**
  * Gets its own widget.
@@ -20,12 +21,22 @@ if (!class_exists('WP_Widget') && defined('ABSPATH')) {
     require_once ABSPATH.'wp-includes/widgets.php';
 }
 
-abstract class Widget extends \WP_Widget
+abstract class Widget extends \WP_Widget implements WidgetInterface
 {
     /**
      * @var string
      */
-    private $classname;
+    protected $classname;
+
+    /**
+     * @var array
+     */
+    protected $fields;
+
+    /**
+     * @var string
+     */
+    protected $template;
 
     /**
      * @var WidgetModel
@@ -43,7 +54,7 @@ abstract class Widget extends \WP_Widget
      * @param string $title
      * @param string $classname
      */
-    public function initialize($title, $classname)
+    public function init($title, $classname)
     {
         // Set classname
         $this->classname = Render::urlize($classname);
@@ -142,22 +153,13 @@ abstract class Widget extends \WP_Widget
      */
     public function form($instance)
     {
-        /**
-         * Build widget form contents.
-         *
-         * @var string $slug
-         * @param array $contents
-         * @return array $contents
-         */
-        $contents = apply_filters('olh_widget_'.$this->classname.'_contents', []);
-
-        // Check contents
-        if (empty($contents)) {
+        // Check fields
+        if (empty($this->fields)) {
             return;
         }
 
-        // Get contents
-        foreach ($contents as $ctn) {
+        // Get fields
+        foreach ($this->fields as $ctn) {
             // Check fields
             if (empty($ctn)) {
                 continue;
@@ -252,6 +254,7 @@ abstract class Widget extends \WP_Widget
     {
         echo $args['after_widget'];
     }
+
     /**
      * Outputs the HTML for this widget.
      *
@@ -296,10 +299,21 @@ abstract class Widget extends \WP_Widget
          * @param string $title
          * @param array $instance
          */
-        do_content('olh_widget_'.$this->classname.'_show', $title, $instance);
+        //do_content('olh_widget_'.$this->classname.'_show', $title, $instance);
+        $this->display($instance);
 
         // Renew the cache.
         $cache[$args['widget_id']] = ob_get_flush();
         wp_cache_set($this->classname, $cache, 'widget');
+    }
+
+    /**
+     * Display widget contents
+     *
+     * @param array $instance Contains all field data.
+     */
+    public function display($instance = [])
+    {
+        //
     }
 }
