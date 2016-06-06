@@ -2,7 +2,9 @@
 
 namespace GetOlympus\Hera\Field\Controller;
 
-use GetOlympus\Hera\Field\Model\Field as FieldModel;
+use GetOlympus\Hera\Field\Controller\FieldInterface;
+use GetOlympus\Hera\Field\Exception\FieldException;
+use GetOlympus\Hera\Field\Model\FieldModel;
 use GetOlympus\Hera\Option\Controller\Option;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Translate\Controller\Translate;
@@ -18,7 +20,7 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-abstract class Field
+abstract class Field implements FieldInterface
 {
     /**
      * @var FieldModel
@@ -66,75 +68,37 @@ abstract class Field
     /**
      * Build Field component.
      *
-     * @param string $type
-     * @param string $id
-     * @param array $alreadyused
-     * @param boolean $special
-     *
-     * @return $class|false
+     * @param string    $id
+     * @param array     $contents
+     * @param array     $details
      */
-    public static function build($type, $id, $alreadyused = [], $special = false)
+    public static function build($id, $contents = [], $details = [])
     {
-        // Prepare error
-        $error = [
-            'error' => true,
-            'template' => '@notification/notification.html.twig',
-            'vars' => ['content' => ''],
-        ];
-
-        // Check type integrity
-        if (empty($type)) {
-            $error['vars']['content'] = Translate::t('field.errors.type_is_not_defined');
-
-            return $error;
+        // Get instance
+        try {
+            $field = self::getInstance();
+        } catch (Exception $e) {
+            throw new FieldException(Translate::t('field.errors.class_is_not_defined'));
         }
 
         // Set class
-        $class = 'GetOlympus\\Field\\'.ucfirst($type);
+        $class = get_class($field);
 
-        // Check if the class file exists
-        if (!class_exists($class)) {
-            $error['vars']['content'] = sprintf(Translate::t('field.errors.class_is_not_defined'), $class);
-
-            return $error;
+        // Check ID
+        if ($field->getHasId() && empty($id)) {
+            // Error
+            throw new FieldException(sprintf(Translate::t('field.errors.field_id_is_not_defined'), $class));
+        } else if ($field->getHasId()) {
+            // Set ID
+            $contents['id'] = $id;
         }
 
-        // Check if the asked field is unknown
-        if (!$class::getIsauthorized() && !$special) {
-            $error['vars']['content'] = sprintf(Translate::t('field.errors.field_is_unknown'), $id);
+        // Set contents and details
+        $field->field->setContents($contents);
+        $field->field->setDetails($details);
 
-            return $error;
-        }
-
-        // Check if field needs an id
-        if ($class::getHasid() && !$id) {
-            $error['vars']['content'] = sprintf(Translate::t('field.errors.field_id_is_not_defined'), $type);
-
-            return $error;
-        }
-
-        // Check if field needs an id
-        if ($class::getHasid() && in_array($id, $alreadyused)) {
-            $error['vars']['content'] = sprintf(Translate::t('field.errors.field_id_already_used'), $id);
-
-            return $error;
-        }
-
-        // Instanciate class
-        $field = new $class();
-
-        // Return $field
+        // Get field
         return $field;
-    }
-
-    /**
-     * Get class name.
-     *
-     * @return string $classname
-     */
-    public function getClassName()
-    {
-        return static::class;
     }
 
     /**
@@ -142,7 +106,7 @@ abstract class Field
      *
      * @return FieldModel
      */
-    protected function getField()
+    public function getField()
     {
         return $this->field;
     }
@@ -152,7 +116,7 @@ abstract class Field
      *
      * @return boolean $hasId
      */
-    public static function getHasid()
+    public static function getHasId()
     {
         return self::getInstance()->hasId;
     }
@@ -176,20 +140,10 @@ abstract class Field
      *
      * @return boolean $isAuthorized
      */
-    public static function getIsauthorized()
+    public static function getIsAuthorized()
     {
         return self::getInstance()->isAuthorized;
     }
-
-    /**
-     * Gets the value of field.
-     *
-     * @return FieldModel
-     */
-    /*protected function getField()
-    {
-        return $this->field;
-    }*/
 
     /**
      * Retrieve field value
@@ -217,18 +171,26 @@ abstract class Field
     /**
      * Render HTML component.
      *
-     * @param array $content
      * @param array $details
      * @param boolean $renderView
      * @param string $context
      */
-    public function render($content, $details = [], $renderView = true, $context = 'field')
+    public function render($details = [], $renderView = true, $context = 'field')
     {
-        $this->getVars($content, $details);
+        $contents = $this->field->getContents();
+        $details = array_merge($this->field->getDetails(), $details);
+
+        // Get vars
+        $this->getVars($contents, $details);
         $tpl = [
-            'template' => '@'.$context.'/'.$this->field->getTemplate(),
+            'hasId' => $this->field->getHasId(),
+            'template' => $this->field->getTemplate(),
             'vars' => $this->field->getVars()
         ];
+
+        // Get context
+        $class = new \ReflectionClass(get_class($this));
+        $context = strtolower($class->getShortName());
 
         // Render view or return values
         if ($renderView) {

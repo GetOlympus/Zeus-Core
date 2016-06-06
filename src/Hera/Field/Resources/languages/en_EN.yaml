@@ -2,7 +2,7 @@
 field:
   errors:
     type_is_not_defined: The field has no defined type.
-    class_is_not_defined: "The field <code>%s</code> does not exist!"
+    class_is_not_defined: "The field's class does not exist!"
     field_is_unknown: "The defined type <code>%s</code> is unknown."
     field_id_is_not_defined: "The field <code>%s</code> needs an id."
     field_id_already_used: "The field id <code>%s</code> is already in use."

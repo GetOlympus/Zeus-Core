@@ -3,7 +3,7 @@
 namespace GetOlympus\Hera\Field\Model;
 
 /**
- * Abstract class to define Field model.
+ * Field model.
  *
  * @package Olympus Hera
  * @subpackage Field\Model
@@ -12,8 +12,18 @@ namespace GetOlympus\Hera\Field\Model;
  *
  */
 
-class Field
+class FieldModel
 {
+    /**
+     * @var array
+     */
+    protected $contents;
+
+    /**
+     * @var array
+     */
+    protected $details;
+
     /**
      * @var string
      */
@@ -43,6 +53,54 @@ class Field
      * @var array
      */
     protected $vars;
+
+    /**
+     * Gets the value of contents.
+     *
+     * @return array
+     */
+    public function getContents()
+    {
+        return $this->contents;
+    }
+
+    /**
+     * Sets the value of contents.
+     *
+     * @param array $contents the contents
+     *
+     * @return self
+     */
+    public function setContents($contents)
+    {
+        $this->contents = $contents;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of details.
+     *
+     * @return array
+     */
+    public function getDetails()
+    {
+        return $this->details;
+    }
+
+    /**
+     * Sets the value of details.
+     *
+     * @param array $details the details
+     *
+     * @return self
+     */
+    public function setDetails($details)
+    {
+        $this->details = $details;
+
+        return $this;
+    }
 
     /**
      * Gets the value of faIcon.
