@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\WalkerSingle\Controller;
 
+use GetOlympus\Hera\WalkerSingle\Controller\WalkerSingleInterface;
+
 /**
  * Gets its own Walker.
  *
@@ -16,7 +18,7 @@ if (!class_exists('Walker')) {
     require_once(ABSPATH.'wp-includes/class-wp-walker.php');
 }
 
-class WalkerSingle extends \Walker
+class WalkerSingle extends \Walker implements WalkerSingleInterface
 {
     /**
      * @var string
