@@ -1,0 +1,33 @@
+/*!
+ * core.less
+ *
+ * Copyright 2016 Achraf Chouk
+ * Achraf Chouk (https://github.com/crewstyle)
+ */
+
+html,
+#wp-content-editor-tools {
+    background-color: #fdfdfd;
+}
+ul#adminmenu a.wp-has-current-submenu:after,
+ul#adminmenu>li.current>a.current:after {
+    border-right-color: #fdfdfd;
+}
+
+hr {
+    border-bottom: 1px solid @white;
+}
+
+.form-table {
+    tr:nth-child(odd) {
+        background-color: fade(@black, 2.5%);
+    }
+
+    th {
+        padding: 20px 0 20px 10px;
+
+        label small {
+            display: block;
+        }
+    }
+}

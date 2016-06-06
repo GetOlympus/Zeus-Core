@@ -1,0 +1,24 @@
+/*!
+ * messages.less
+ *
+ * Copyright 2016 Achraf Chouk
+ * Achraf Chouk (https://github.com/crewstyle)
+ */
+
+
+/*--- [MESSAGES] ---*/
+#update-nag,
+.update-nag {
+    border: 1px solid @orange;
+    display: block;
+    margin: 32px 18px 32px 0px;
+
+    a {
+        color: @orange;
+
+        &:focus,
+        &:hover {
+            color: darken(@orange, 30%);
+        }
+    }
+}
