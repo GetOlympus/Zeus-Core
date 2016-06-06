@@ -65,9 +65,9 @@ defined('OLH_HOME')         or define('OLH_HOME', get_option('home'));
 // The language blog
 defined('OLH_LOCAL')        or define('OLH_LOCAL', get_bloginfo('language'));
 // The URI
-defined('OLH_URI')          or define('OLH_URI', OLH_HOME.'/src/Hera/Core/Resources/assets/');
+defined('OLH_URI')          or define('OLH_URI', OLH_HOME.'/app/assets/');
 // The Twig cache folder
-defined('OLH_CACHE')        or define('OLH_CACHE', OLH_PATH.S.'Core'.S.'Resources'.S.'cache');
+defined('OLH_CACHE')        or define('OLH_CACHE', dirname(dirname(OLH_PATH)).S.'app'.S.'cache'.S);
 
 /**
  * Main constants.
@@ -103,65 +103,52 @@ define('OLH_WP_CAP_MAX', 'manage_tea_theme_options');
  *
  */
 
-if (!class_exists('Hera')) {
-    class Hera extends Application
+class Hera extends Application
+{
+    /**
+     * Constructor.
+     *
+     * @since 0.0.1
+     */
+    public function __construct()
     {
         /**
-         * Constructor.
+         * Update identifier.
+         *
+         * @param string $identifier
+         * @return string $identifier
          *
          * @since 0.0.1
          */
-        public function __construct()
-        {
-            /**
-             * Update identifier.
-             *
-             * @param string $identifier
-             * @return string $identifier
-             *
-             * @since 0.0.1
-             */
-            $identifier = apply_filters('olh_hera_identifier', 'olympus');
-            $this->identifier = $identifier;
+        $this->identifier = apply_filters('olh_hera_identifier', 'olympus');
 
-            // Components to load
-            $this->components = $this->getComponents();
+        // Components to load
+        $this->components = array_merge($this->components, [
+            // Hera field components
+            'BackgroundField'   => 'GetOlympus\Field\Background',
+            'CheckboxField'     => 'GetOlympus\Field\Checkbox',
+            'CodeField'         => 'GetOlympus\Field\Code',
+            'ColorField'        => 'GetOlympus\Field\Color',
+            'DateField'         => 'GetOlympus\Field\Date',
+            'FileField'         => 'GetOlympus\Field\File',
+            'FontField'         => 'GetOlympus\Field\Font',
+            'HiddenField'       => 'GetOlympus\Field\Hidden',
+            'HtmlField'         => 'GetOlympus\Field\Html',
+            'LinkField'         => 'GetOlympus\Field\Link',
+            'MapField'          => 'GetOlympus\Field\Map',
+            'MultiselectField'  => 'GetOlympus\Field\Multiselect',
+            'RadioField'        => 'GetOlympus\Field\Radio',
+            'RteField'          => 'GetOlympus\Field\Rte',
+            'SectionField'      => 'GetOlympus\Field\Section',
+            'SelectField'       => 'GetOlympus\Field\Select',
+            'TextField'         => 'GetOlympus\Field\Text',
+            'TextareaField'     => 'GetOlympus\Field\Textarea',
+            'ToggleField'       => 'GetOlympus\Field\Toggle',
+            'UploadField'       => 'GetOlympus\Field\Upload',
+            'WordpressField'    => 'GetOlympus\Field\Wordpress',
+        ]);
 
-            // Use parent
-            parent::__construct();
-        }
-
-        /**
-         * List all useful components to load.
-         *
-         * @return array $components
-         */
-        public function getComponents()
-        {
-            return [
-                // Hera field components
-                'Background'    => 'GetOlympus\Field\Background',
-                'Checkbox'      => 'GetOlympus\Field\Checkbox',
-                'Code'          => 'GetOlympus\Field\Code',
-                'Color'         => 'GetOlympus\Field\Color',
-                'Date'          => 'GetOlympus\Field\Date',
-                'File'          => 'GetOlympus\Field\File',
-                'Font'          => 'GetOlympus\Field\Font',
-                'Hidden'        => 'GetOlympus\Field\Hidden',
-                'Html'          => 'GetOlympus\Field\Html',
-                'Link'          => 'GetOlympus\Field\Link',
-                'Map'           => 'GetOlympus\Field\Map',
-                'Multiselect'   => 'GetOlympus\Field\Multiselect',
-                'Radio'         => 'GetOlympus\Field\Radio',
-                'Rte'           => 'GetOlympus\Field\Rte',
-                'Section'       => 'GetOlympus\Field\Section',
-                'Select'        => 'GetOlympus\Field\Select',
-                'Text'          => 'GetOlympus\Field\Text',
-                'Textarea'      => 'GetOlympus\Field\Textarea',
-                'Toggle'        => 'GetOlympus\Field\Toggle',
-                'Upload'        => 'GetOlympus\Field\Upload',
-                'Wordpress'     => 'GetOlympus\Field\Wordpress',
-            ];
-        }
+        // Use parent constructor
+        parent::__construct();
     }
 }
