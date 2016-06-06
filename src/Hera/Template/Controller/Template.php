@@ -2,10 +2,11 @@
 
 namespace GetOlympus\Hera\Template\Controller;
 
-use GetOlympus\Hera\Template\Model\Template as TemplateModel;
 use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Notification\Controller\Notification;
 use GetOlympus\Hera\Render\Controller\Render;
+use GetOlympus\Hera\Template\Controller\TemplateInterface;
+use GetOlympus\Hera\Template\Model\TemplateModel;
 use GetOlympus\Hera\Translate\Controller\Translate;
 
 /**
@@ -18,7 +19,7 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Template
+class Template implements TemplateInterface
 {
     /**
      * @var TemplateModel
@@ -41,7 +42,7 @@ class Template
      * @param string $currentsection
      * @param array $pageDetails
      */
-    public function initialize($identifier, $currentpage, $currentsection, $pageDetails)
+    public function init($identifier, $currentpage, $currentsection, $pageDetails)
     {
         $this->template = new TemplateModel();
 
@@ -58,7 +59,7 @@ class Template
     /**
      * Build header layout.
      */
-    protected function load()
+    public function load()
     {
         $details = $this->template->getDetails();
 
@@ -120,7 +121,7 @@ class Template
      *
      * @param array $contents
      */
-    protected function templateFields($contents)
+    public function templateFields($contents)
     {
         $identifier = $this->template->getIdentifier();
         $currentpage = $this->template->getCurrentPage();
@@ -194,7 +195,7 @@ class Template
     /**
      * Build header layout.
      */
-    protected function templateVars()
+    public function templateVars()
     {
         $identifier = $this->template->getIdentifier();
         $currentpage = $this->template->getCurrentPage();

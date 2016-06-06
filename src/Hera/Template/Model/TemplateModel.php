@@ -3,7 +3,7 @@
 namespace GetOlympus\Hera\Template\Model;
 
 /**
- * Abstract class to define Template model.
+ * Template model.
  *
  * @package Olympus Hera
  * @subpackage Template\Model
@@ -12,7 +12,7 @@ namespace GetOlympus\Hera\Template\Model;
  *
  */
 
-class Template
+class TemplateModel
 {
     /**
      * @var string
