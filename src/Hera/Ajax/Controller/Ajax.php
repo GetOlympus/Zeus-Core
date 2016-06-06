@@ -2,7 +2,8 @@
 
 namespace GetOlympus\Hera\Ajax\Controller;
 
-use GetOlympus\Hera\Ajax\Model\Ajax as AjaxModel;
+use GetOlympus\Hera\Ajax\Controller\AjaxInterface;
+use GetOlympus\Hera\Ajax\Model\AjaxModel;
 use GetOlympus\Hera\Hook\Controller\Hook;
 
 /**
@@ -15,7 +16,7 @@ use GetOlympus\Hera\Hook\Controller\Hook;
  *
  */
 
-class Ajax
+class Ajax implements AjaxInterface
 {
     /**
      * @var AjaxModel
@@ -34,11 +35,8 @@ class Ajax
 
     /**
      * Constructor.
-     *
-     * @param string $identifier
-     * @param string $callback
      */
-    public function __construct($identifier, $callback)
+    public function __construct()
     {
         $this->ajax = new AjaxModel();
     }
@@ -49,7 +47,7 @@ class Ajax
      * @param string $identifier
      * @param string $callback
      */
-    public function Initialize($identifier, $callback)
+    public function init($identifier, $callback)
     {
         $this->ajax->setIdentifier($identifier);
         $this->ajax->setCallback($callback);
