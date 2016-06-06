@@ -2,7 +2,9 @@
 
 namespace GetOlympus\Hera\Metabox\Controller;
 
-use GetOlympus\Hera\Metabox\Model\Metabox as MetaboxModel;
+use GetOlympus\Hera\Metabox\Controller\MetaboxInterface;
+use GetOlympus\Hera\Metabox\Exception\MetaboxException;
+use GetOlympus\Hera\Metabox\Model\MetaboxModel;
 use GetOlympus\Hera\Notification\Controller\Notification;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Translate\Controller\Translate;
@@ -17,7 +19,7 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Metabox
+class Metabox implements MetaboxInterface
 {
     /**
      * @var MetaboxModel
@@ -40,7 +42,7 @@ class Metabox
      * @param string $title
      * @param array $args
      */
-    public function initialize($identifier, $slug, $title, $args)
+    public function init($identifier, $slug, $title, $args)
     {
         $this->metabox->setId($identifier);
         $this->metabox->setSlug($slug);
@@ -53,12 +55,12 @@ class Metabox
     /**
      * Add metabox.
      */
-    protected function addMetabox()
+    public function addMetabox()
     {
         add_meta_box(
             $this->metabox->getId(),
             $this->metabox->getTitle(),
-            [&$this, 'callback'],
+            [$this, 'callback'],
             $this->metabox->getSlug(),
             $this->metabox->getContext(),
             $this->metabox->getPriority(),
@@ -80,19 +82,16 @@ class Metabox
             return isset($post->ID) ? $post->ID : null;
         }
 
-        // Get contents
-        $content = isset($args['args']['contents']) ? $args['args']['contents'] : [];
-        $field = isset($args['args']['field']) ? $args['args']['field'] : '';
+        // Get field
+        $field = isset($args['args']['field']) ? $args['args']['field'] : null;
 
         // Check if a type is defined
-        if (empty($content) || empty($field) || !isset($args['args']['type'])) {
-            Notification::error(Translate::t('metabox.errors.no_type_is_defined'));
-
-            return null;
+        if (!$field || empty($field)) {
+            throw new MetaboxException(Translate::t('metabox.errors.no_type_is_defined'));
         }
 
         // Display field content
-        $tpl = $field->render($content, ['post' => $post]);
+        $field->render(['post' => $post]);
 
         // Return post if it is asked
         return isset($post->ID) ? $post->ID : null;

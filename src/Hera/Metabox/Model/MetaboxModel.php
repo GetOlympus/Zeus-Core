@@ -3,7 +3,7 @@
 namespace GetOlympus\Hera\Metabox\Model;
 
 /**
- * Abstract class to define Metabox model.
+ * Metabox model.
  *
  * @package Olympus Hera
  * @subpackage Metabox\Model
@@ -12,7 +12,7 @@ namespace GetOlympus\Hera\Metabox\Model;
  *
  */
 
-class Metabox
+class MetaboxModel
 {
     /**
      * @var array
@@ -90,7 +90,7 @@ class Metabox
      *
      * @return self
      */
-    public function setCallback(function $callback)
+    public function setCallback($callback)
     {
         $this->callback = $callback;
 
