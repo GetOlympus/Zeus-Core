@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\Translate\Controller;
 
+use GetOlympus\Hera\Translate\Controller\TranslateInterface;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 
@@ -15,7 +16,7 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
  *
  */
 
-class Translate
+class Translate implements TranslateInterface
 {
     /**
      * @var Singleton
@@ -64,6 +65,42 @@ class Translate
             $this->translator->addResource('yaml', $path, $lang, 'core');
         }
 
+        // Check components
+        $components = [
+            // Hera field components
+            'background',
+            'checkbox',
+            'code',
+            'color',
+            'date',
+            'file',
+            'font',
+            'hidden',
+            'html',
+            'link',
+            'map',
+            'multiselect',
+            'radio',
+            'rte',
+            'section',
+            'select',
+            'text',
+            'textarea',
+            'toggle',
+            'upload',
+            'wordpress',
+        ];
+
+        // Vendors path
+        $vendor = defined('VENDORPATH') ? VENDORPATH : OLH_PATH.S.'..'.S.'..'.S.'vendor'.S;
+        $custompath = $vendor.'getolympus'.S.'olympus-%s-field'.S.'src'.S.'Resources'.S.'languages'.S.$lang.'.yaml';
+
+        // Add Hera core languages in `core` dictionary
+        foreach ($components as $alias) {
+            $p = sprintf($custompath, $alias);
+            $this->translator->addResource('yaml', $p, $lang, $alias.'field');
+        }
+
         /**
          * Add your custom languages with alias.
          *
@@ -82,6 +119,18 @@ class Translate
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Noop typo.
+     *
+     * @param string $singular
+     * @param string $plural
+     * @return string
+     */
+    public static function n($singular, $plural)
+    {
+        return _n_noop($singular, $plural);
     }
 
     /**
