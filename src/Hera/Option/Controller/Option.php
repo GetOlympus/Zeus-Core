@@ -119,7 +119,9 @@ class Option implements OptionInterface
         }
 
         // Default action
-        $value = self::get($option, $default);
+        $option = isset($details['option']) ? $details['option'] : '';
+        $value = !empty($option) ? self::get($option, $default) : $default;
+
         return !is_array($value) ? stripslashes($value) : $value;
     }
 
