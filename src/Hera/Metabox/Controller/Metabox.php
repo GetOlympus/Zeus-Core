@@ -91,7 +91,7 @@ class Metabox implements MetaboxInterface
         }
 
         // Display field content
-        $field->render(['post' => $post]);
+        $field->render([], ['post' => $post]);
 
         // Return post if it is asked
         return isset($post->ID) ? $post->ID : null;
