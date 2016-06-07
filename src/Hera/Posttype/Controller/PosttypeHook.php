@@ -5,6 +5,7 @@ namespace GetOlympus\Hera\Posttype\Controller;
 use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Metabox\Controller\Metabox;
 use GetOlympus\Hera\Option\Controller\Option;
+use GetOlympus\Hera\Posttype\Controller\Posttype;
 use GetOlympus\Hera\Posttype\Controller\PosttypeHookInterface;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Request\Controller\Request;
@@ -33,6 +34,11 @@ class PosttypeHook implements PosttypeHookInterface
     protected $name;
 
     /**
+     * @var array
+     */
+    protected $reserved_slugs;
+
+    /**
      * @var string
      */
     protected $slug;
@@ -43,8 +49,9 @@ class PosttypeHook implements PosttypeHookInterface
      * @param string    $slug
      * @param string    $name
      * @param array     $fields
+     * @param array     $reserved_slugs
      */
-    public function __construct($slug, $name, $fields = [])
+    public function __construct($slug, $name, $fields = [], $reserved_slugs = [])
     {
         // Check slug
         if (empty($slug)) {
@@ -54,23 +61,24 @@ class PosttypeHook implements PosttypeHookInterface
         $this->slug = $slug;
         $this->name = $name;
         $this->fields = $fields;
+        $this->reserved_slugs = $reserved_slugs;
 
         // Permalink structures
-        add_action('post_type_link', [$this, 'postTypeLink'], 10, 3);
+        add_action('post_type_link', [&$this, 'postTypeLink'], 10, 3);
 
         if (OLH_ISADMIN) {
             // Manage columns
-            add_filter('manage_edit-'.$slug.'_columns', [$this, 'manageEditColumns'], 10);
-            add_action('manage_'.$slug.'_posts_custom_column', [$this, 'managePostsCustomColumn'], 11, 2);
+            add_filter('manage_edit-'.$slug.'_columns', [&$this, 'manageEditColumns'], 10);
+            add_action('manage_'.$slug.'_posts_custom_column', [&$this, 'managePostsCustomColumn'], 11, 2);
 
             // Display post type's custom fields
-            add_action('admin_init', [$this, 'postTypeFieldDisplay']);
+            add_action('admin_init', [&$this, 'postTypeFieldDisplay']);
 
             // Save post type's custom fields
-            add_action('save_post', [$this, 'postTypeSave']);
+            add_action('save_post', [&$this, 'postTypeSave']);
 
             // Display settings in permalinks page
-            add_action('admin_init', [$this, 'postTypeSettings']);
+            add_action('admin_init', [&$this, 'postTypeSettings']);
         }
     }
 
@@ -250,42 +258,16 @@ class PosttypeHook implements PosttypeHookInterface
      */
     public function postTypeFieldDisplay()
     {
-        // Defintions
-        $slug = Request::get('post_type');
-
         // Check fields
         if (empty($this->fields)) {
             return;
         }
 
-        // Define current post type's contents
-        if (empty($slug)) {
-            $post = Request::get('post', 0);
-            $slug = !empty($post) ? get_post_type($post) : '';
-
-            // Define pagenow var
-            if (empty($slug)) {
-                global $pagenow;
-
-                if (!in_array($pagenow, ['post-new.php', 'media-new.php', 'user-new.php', 'comment.php'])) {
-                    return;
-                }
-
-                // Work on slug
-                if ('media-new.php' === $pagenow) {
-                    $slug = 'attachment';
-                } else if ('user-new.php' === $pagenow) {
-                    $slug = 'user';
-                } else if ('comment.php' === $pagenow) {
-                    $slug = 'comment';
-                } else {
-                    $slug = 'post';
-                }
-            }
-        }
+        // Defintions
+        $slug = Request::getCurrentSlug();
 
         // Check slug
-        if ($slug !== $this->slug) {
+        if (empty($slug) || $slug !== $this->slug) {
             return;
         }
 
@@ -360,12 +342,12 @@ class PosttypeHook implements PosttypeHookInterface
             $hasId = (boolean) $field->getField()->getHasId();
 
             // Check ID
-            if (!isset($ctn['id']) || empty($ctn['id'])) {
+            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
                 continue;
             }
 
             $value = Request::post($ctn['id']);
-            update_post_meta($post->ID, $slug.'-'.$ctn['id'], $value);
+            Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
         }
 
         return true;
@@ -390,8 +372,8 @@ class PosttypeHook implements PosttypeHookInterface
         }
 
         // Special case: do not change post/page component
-        if (in_array($this->slug, ['post', 'page'])) {
-            continue;
+        if (in_array($this->slug, $this->reserved_slugs)) {
+            return false;
         }
 
         // Option

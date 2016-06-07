@@ -128,11 +128,7 @@ abstract class Field implements FieldInterface
      */
     public static function getInstance()
     {
-        if (is_null(static::$instance)) {
-            static::$instance = new static();
-        }
-
-        return static::$instance;
+        return new static();
     }
 
     /**
@@ -171,13 +167,14 @@ abstract class Field implements FieldInterface
     /**
      * Render HTML component.
      *
-     * @param array $details
-     * @param boolean $renderView
-     * @param string $context
+     * @param array     $contents
+     * @param array     $details
+     * @param boolean   $renderView
+     * @param string    $context
      */
-    public function render($details = [], $renderView = true, $context = 'field')
+    public function render($contents = [], $details = [], $renderView = true, $context = 'field')
     {
-        $contents = $this->field->getContents();
+        $contents = array_merge($this->field->getContents(), $contents);
         $details = array_merge($this->field->getDetails(), $details);
 
         // Get vars
