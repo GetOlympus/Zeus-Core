@@ -53,7 +53,7 @@ class PosttypeModel
      *
      * @return self
      */
-    public function setArgs(array $args)
+    public function setArgs($args)
     {
         $this->args = $args;
 
@@ -77,7 +77,7 @@ class PosttypeModel
      *
      * @return self
      */
-    public function setFields(array $fields)
+    public function setFields($fields = [])
     {
         $this->fields = $fields;
 

@@ -15,21 +15,16 @@ namespace GetOlympus\Hera\Term\Controller;
 interface TermInterface
 {
     /**
-     * Initialization.
-     *
-     * @param string $slug
-     * @param array $args
-     * @param array $labels
+     * Build TermModel and initialize hook.
      */
-    public function init($slug, $posttype, $args, $labels);
+    public function init();
 
     /**
      * Build args.
      *
-     * @param string $slug
      * @return array $args
      */
-    public function defaultArgs($slug);
+    public function defaultArgs();
 
     /**
      * Build labels.

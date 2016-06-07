@@ -74,6 +74,7 @@ abstract class Posttype implements PosttypeInterface
         }
 
         // Initialize
+        $this->setVars();
         $this->init();
     }
 
@@ -87,7 +88,7 @@ abstract class Posttype implements PosttypeInterface
         $this->posttype->setFields($this->fields);
         $this->posttype->setSlug($this->slug);
 
-        // Update args on post types except posts and pages
+        // Update args on post types except reserved ones
         if (!in_array($this->slug, $this->reserved_slugs)) {
             // Check if post type already exists
             if (post_type_exists($this->slug)) {
@@ -98,7 +99,7 @@ abstract class Posttype implements PosttypeInterface
             $this->labels['name'] = isset($this->labels['name']) ? $this->labels['name'] : '';
             $this->labels['singular_name'] = isset($this->labels['singular_name']) ? $this->labels['singular_name'] : '';
 
-            // Check label for all except page and post
+            // Check label for all except reserved ones
             if (empty($this->labels['name']) || empty($this->labels['singular_name'])) {
                 throw new PosttypeException(Translate::t('posttype.errors.term_is_not_defined'));
             }
@@ -210,34 +211,37 @@ abstract class Posttype implements PosttypeInterface
      */
     public function register()
     {
-        $self = $this;
+        // Store details
+        $slug = $this->posttype->getSlug();
+        $args = $this->posttype->getArgs();
+        $fields = $this->posttype->getFields();
 
-        // Init WordPress action
-        add_action('init', function () use ($self){
-            // Store details
-            $slug = $self->posttype->getSlug();
-            $args = $self->posttype->getArgs();
-            $fields = $self->posttype->getFields();
+        // Register post type if not post or page
+        if (!in_array($slug, $this->reserved_slugs)) {
+            // Action to register
+            register_post_type($slug, $args);
 
-            // Register post type if not post or page
-            if (!in_array($slug, $self->reserved_slugs)) {
-                // Action to register
-                register_post_type($slug, $args);
+            // Option
+            $opt = str_replace('%SLUG%', $slug, '%SLUG%-olympus-structure');
 
-                // Option
-                $opt = str_replace('%SLUG%', $slug, '%SLUG%-olympus-structure');
+            // Get value
+            $structure = Option::get($opt, '/%'.$slug.'%-%post_id%');
 
-                // Get value
-                $structure = Option::get($opt, '/%'.$slug.'%-%post_id%');
+            // Change structure
+            add_rewrite_tag('%'.$slug.'%', '([^/]+)', $slug.'=');
+            add_permastruct($slug, $structure, false);
+        }
 
-                // Change structure
-                add_rewrite_tag('%'.$slug.'%', '([^/]+)', $slug.'=');
-                add_permastruct($slug, $structure, false);
-            }
+        // Check name
+        $name = isset($args['labels']['name']) ? $args['labels']['name'] : '';
 
-            // Works on hook
-            $hook = new PosttypeHook($slug, $args['labels']['name'], $fields);
-            $self->posttype->setHook($hook);
-        }, 10, 1);
+        // Works on hook
+        $hook = new PosttypeHook($slug, $name, $fields, $this->reserved_slugs);
+        $this->posttype->setHook($hook);
     }
+
+    /**
+     * Prepare variables.
+     */
+    abstract public function setVars();
 }

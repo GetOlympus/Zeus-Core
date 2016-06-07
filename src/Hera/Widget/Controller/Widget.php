@@ -34,9 +34,30 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
     protected $fields;
 
     /**
+     * The "height" key is never used. For more informations:
+     * @see https://core.trac.wordpress.org/browser/tags/4.5.2/src/wp-includes/widgets.php#L490
+     *
+     * @var array
+     */
+    protected $options = [
+        'height'    => 200,
+        'width'     => 250,
+    ];
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
+
+    /**
      * @var string
      */
     protected $template;
+
+    /**
+     * @var string
+     */
+    protected $title;
 
     /**
      * @var WidgetModel
@@ -46,44 +67,40 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
     /**
      * Constructor.
      */
-    public function __construct(){}
-
-    /**
-     * Initialization.
-     *
-     * @param string $title
-     * @param string $classname
-     */
-    public function init($title, $classname)
+    public function __construct()
     {
+        // Update vars
+        $this->setVars();
+
         // Set classname
-        $this->classname = Render::urlize($classname);
+        $this->classname = Render::urlize($this->classname);
 
         // Update default settings
-        $settings = [
+        $this->settings = array_merge([
             'classname' => $this->classname,
             'description' => Translate::t('widget.settings.description'),
-        ];
-
-        /**
-         * Filter the widget settings.
-         *
-         * @var string $classname
-         * @param array $settings
-         * @return array $settings
-         */
-        $settings = apply_filters('olh_widget_'.$this->classname.'_settings', $settings);
+        ], $this->settings);
 
         // Create the widget
         parent::__construct(
             $this->classname,
-            $title,
-            $settings
+            $this->title,
+            $this->settings,
+            $this->options
         );
 
         // Add alternative options
         $this->alt_option_name = $this->classname;
 
+        // Initialize
+        $this->init();
+    }
+
+    /**
+     * Initialization.
+     */
+    public function init()
+    {
         // Add theme actions
         add_action('save_post', [&$this, 'flush_widget_cache']);
         add_action('deleted_post', [&$this, 'flush_widget_cache']);
@@ -106,7 +123,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
          * @return string $classname
          */
         wp_cache_set(
-            apply_filters('olh_widget_cached_classname', $this->classname),
+            $this->classname,
             [$args['widget_id'] => $content],
             'widget'
         );
@@ -121,7 +138,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      **/
     public function flush_widget_cache()
     {
-        wp_cache_delete(apply_filters('olh_widget_cached_classname', $this->classname), 'widget');
+        wp_cache_delete($this->classname, 'widget');
     }
 
     /**
@@ -132,7 +149,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      */
     public function get_cached_widget($args)
     {
-        $cache = wp_cache_get(apply_filters('olh_widget_cached_classname', $this->classname), 'widget');
+        $cache = wp_cache_get($this->classname, 'widget');
 
         if (!is_array($cache)) {
             $cache = [];
@@ -159,38 +176,34 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
         }
 
         // Get fields
-        foreach ($this->fields as $ctn) {
+        foreach ($this->fields as $field) {
+            if (!$field) {
+                continue;
+            }
+
+            // Build contents
+            $ctn = (array) $field->getField()->getContents();
+            $hasId = (boolean) $field->getField()->getHasId();
+
             // Check fields
             if (empty($ctn)) {
                 continue;
             }
 
-            // Get type and id
-            $type = isset($ctn['type']) ? $ctn['type'] : '';
-            $id = isset($ctn['id']) ? $ctn['id'] : '';
-
-            // Check if we are authorized to use this field in CPTs
-            if (empty($type)) {
+            // Does the field have an ID
+            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
                 continue;
             }
 
-            // Get field instance
-            $field = Field::build($type, $id, $usedIds);
+            // Id, with a random ID when it's needed
+            $id = isset($ctn['id']) ? $ctn['id'] : '';
+            $value = !empty($id) && isset($instance[$id]) ? $instance[$id] : '';
 
-            // Update ids
-            if (!empty($id)) {
-                $usedIds[] = $id;
-            }
-
-            // Get details
-            $details = wp_parse_args($instance[$id], [
+            // Display field
+            $field->render($ctn, [
                 'prefix' => 'widget',
-                'template' => 'widget',
-                'widget_value' => $instance[$id]
+                'widget_value' => $value
             ]);
-
-            // Get template
-            $tpl = $field->render($ctn, $details);
         }
     }
 
@@ -312,8 +325,10 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      *
      * @param array $instance Contains all field data.
      */
-    public function display($instance = [])
-    {
-        //
-    }
+    abstract public function display($instance = []);
+
+    /**
+     * Prepare variables.
+     */
+    abstract public function setVars();
 }

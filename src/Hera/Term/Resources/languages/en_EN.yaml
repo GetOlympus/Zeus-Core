@@ -2,6 +2,8 @@
 term:
   title: Terms
   errors:
+    slug_is_forbidden: The current slug is forbidden. Please, use an other one.
+    slug_already_exists: This current slug already exists.
     missing_singular_or_plural: Singular and/or plural term are missing in your labels definition.
     posttype_not_defined: Term's post type is not defined.
   labels:

@@ -12,7 +12,7 @@ use GetOlympus\Hera\Term\Model\TermModel;
 use GetOlympus\Hera\Translate\Controller\Translate;
 
 /**
- * Gets its own post type.
+ * Gets its own term.
  *
  * @package Olympus Hera
  * @subpackage Term\Controller
@@ -21,12 +21,44 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Term implements TermInterface
+abstract class Term implements TermInterface
 {
     /**
      * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
      */
-    protected static $existingTerms = ['attachment', 'attachment_id', 'author', 'author_name', 'calendar', 'cat', 'category', 'category__and', 'category__in', 'category__not_in', 'category_name', 'comments_per_page', 'comments_popup', 'customize_messenger_channel', 'customized', 'cpage', 'day', 'debug', 'error', 'exact', 'feed', 'hour', 'link_category', 'm', 'minute', 'monthnum', 'more', 'name', 'nav_menu', 'nonce', 'nopaging', 'offset', 'order', 'orderby', 'p', 'page', 'page_id', 'paged', 'pagename', 'pb', 'perm', 'post', 'post__in', 'post__not_in', 'post_format', 'post_mime_type', 'post_status', 'post_tag', 'post_type', 'posts', 'posts_per_archive_page', 'posts_per_page', 'preview', 'robots', 's', 'search', 'second', 'sentence', 'showposts', 'static', 'subpost', 'subpost_id', 'tag', 'tag__and', 'tag__in', 'tag__not_in', 'tag_id', 'tag_slug__and', 'tag_slug__in', 'taxonomy', 'tb', 'term', 'theme', 'type', 'w', 'withcomments', 'withoutcomments', 'year'];
+    protected $args;
+
+    /**
+     * @var array
+     */
+    protected $fields;
+
+    /**
+     * @var array
+     */
+    protected $forbidden_slugs = ['attachment', 'attachment_id', 'author', 'author_name', 'calendar', 'cat', 'category__and', 'category__in', 'category__not_in', 'category_name', 'comments_per_page', 'comments_popup', 'customize_messenger_channel', 'customized', 'cpage', 'day', 'debug', 'error', 'exact', 'feed', 'hour', 'link_category', 'm', 'minute', 'monthnum', 'more', 'name', 'nav_menu', 'nonce', 'nopaging', 'offset', 'order', 'orderby', 'p', 'page', 'page_id', 'paged', 'pagename', 'pb', 'perm', 'post', 'post__in', 'post__not_in', 'post_format', 'post_mime_type', 'post_status', 'post_type', 'posts', 'posts_per_archive_page', 'posts_per_page', 'preview', 'robots', 's', 'search', 'second', 'sentence', 'showposts', 'static', 'subpost', 'subpost_id', 'tag', 'tag__and', 'tag__in', 'tag__not_in', 'tag_id', 'tag_slug__and', 'tag_slug__in', 'taxonomy', 'tb', 'term', 'theme', 'type', 'w', 'withcomments', 'withoutcomments', 'year'];
+
+    /**
+     * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
+     */
+    protected $labels;
+
+    /**
+     * @var array
+     */
+    protected $reserved_slugs = ['category', 'post_tag'];
+
+    /**
+     * @var string
+     */
+    protected $posttype;
+
+    /**
+     * @var string
+     */
+    protected $slug;
 
     /**
      * @var TermModel
@@ -34,54 +66,78 @@ class Term implements TermInterface
     protected $term;
 
     /**
-     * Initialization.
-     *
-     * @param string $slug
-     * @param array $args
-     * @param array $labels
+     * Constructor.
      */
-    public function init($slug, $posttype, $args, $labels)
+    public function __construct()
     {
-        if (empty($labels) || !isset($labels['plural'], $labels['singular']) || empty($labels['plural']) || empty($labels['singular'])) {
-            throw new PosttypeException(Translate::t('term.errors.missing_singular_or_plural'));
+        // Update slug
+        $this->slug = Render::urlize($this->slug);
+
+        // Check forbidden slugs
+        if (in_array($this->slug, $this->forbidden_slugs)) {
+            throw new TermException(Translate::t('term.errors.slug_is_forbidden'));
         }
 
-        if (empty($posttype)) {
-            throw new PosttypeException(Translate::t('term.errors.posttype_not_defined'));
-        }
+        // Check post type association
+        $this->posttype = empty($this->posttype) ? 'post' : $this->posttype;
 
+        // Initialize
+        $this->setVars();
+        $this->init();
+    }
+
+    /**
+     * Build TermModel and initialize hook.
+     */
+    public function init()
+    {
+        // Initialize TermModel
         $this->term = new TermModel();
+        $this->term->setFields($this->fields);
+        $this->term->setPosttype($this->posttype);
+        $this->term->setSlug($this->slug);
 
-        $slug = Render::urlize($slug);
-        $args = array_merge($this->defaultArgs($slug), $args);
-        $args['labels'] = array_merge($this->defaultLabels($labels['plural'], $labels['singular'], $args['hierarchical']), $labels);
+        // Update args on terms except reserved ones
+        if (!in_array($this->slug, $this->reserved_slugs)) {
+            // Check if term already exists
+            if (term_exists($this->slug)) {
+                throw new TermException(Translate::t('term.errors.slug_already_exists'));
+            }
 
-        // Update vars
-        $this->term->setSlug($slug);
-        $this->term->setPosttype($posttype);
-        $this->term->setArgs($args);
+            // Initialize plural and singular vars
+            $this->labels['name'] = isset($this->labels['name']) ? $this->labels['name'] : '';
+            $this->labels['singular_name'] = isset($this->labels['singular_name']) ? $this->labels['singular_name'] : '';
 
-        // Hooks
-        if (OLH_ISADMIN) {
-            add_filter('olh_template_footer_urls', function ($urls, $identifier) {
-                return array_merge($urls, [
-                    'terms' => [
-                        'url' => admin_url('admin.php?page='.$identifier.'&do=olz-action&from=footer&make=terms'),
-                        'label' => Translate::t('term.title'),
-                    ]
-                ]);
-            }, 10, 2);
+            // Check label for all except reserved ones
+            if (empty($this->labels['name']) || empty($this->labels['singular_name'])) {
+                throw new TermException(Translate::t('term.errors.missing_singular_or_plural'));
+            }
+
+            $this->args = array_merge($this->defaultArgs(), $this->args);
+            $this->args['labels'] = array_merge(
+                $this->defaultLabels($this->labels['name'], $this->labels['singular_name']),
+                $this->labels
+            );
+
+            // Update TermModel args
+            $this->term->setArgs($this->args);
         }
+
+        // Register term
+        $this->register();
     }
 
     /**
      * Build args.
      *
-     * @param string $slug
      * @return array $args
      */
-    public function defaultArgs($slug)
+    public function defaultArgs()
     {
+        // Get slug
+        $slug = $this->term->getSlug();
+
+        // Return args
         return [
             'hierarchical' => true,
             'query_var' => true,
@@ -123,8 +179,7 @@ class Term implements TermInterface
                 'parent_item' => Translate::t('term.labels.parent_item'),
                 'parent_item_colon' => Translate::t('term.labels.parent_item_colon'),
             ]);
-        }
-        else {
+        } else {
             $labels = array_merge($labels, [
                 'parent_item' => null,
                 'parent_item_colon' => null,
@@ -146,31 +201,26 @@ class Term implements TermInterface
      */
     public function register()
     {
-        add_action('init', function (){
-            // Store details
-            $slug = $this->term->getSlug();
-            $posttype = $this->term->getPosttype();
-            $args = $this->term->getArgs();
+        // Store details
+        $slug = $this->term->getSlug();
+        $args = $this->term->getArgs();
+        $fields = $this->term->getFields();
+        $posttype = $this->term->getPosttype();
 
-            $issingle = 'single' === $args['choice'] ? true : false;
-            $addcustomfields = false;
+        $is_single = 'single' === $args['choice'] ? true : false;
 
-            // Check datum
-            if (empty($slug) || empty($posttype) || empty($args)) {
-                return [];
-            }
-
-            // Check forbodden keywords and already existing terms
-            if (in_array($slug, self::$existingTerms) || taxonomy_exists($slug)) {
-                return [];
-            }
-
-            // Action to register
+        // Register post type if not post or page
+        if (!in_array($slug, $this->reserved_slugs)) {
             register_taxonomy($slug, $posttype, $args);
+        }
 
-            // Works on hook
-            $hook = new TermHook($slug, $addcustomfields, $issingle);
-            $this->term->setHook($hook);
-        }, 10, 1);
+        // Works on hook
+        $hook = new TermHook($slug, $posttype, $fields, $is_single);
+        $this->term->setHook($hook);
     }
+
+    /**
+     * Prepare variables.
+     */
+    abstract public function setVars();
 }

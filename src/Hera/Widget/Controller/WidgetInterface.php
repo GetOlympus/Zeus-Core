@@ -16,11 +16,8 @@ interface WidgetInterface
 {
     /**
      * Initialization.
-     *
-     * @param string $title
-     * @param string $classname
      */
-    public function init($title, $classname);
+    public function init();
 
     /**
      * Cache the widget.
@@ -87,11 +84,4 @@ interface WidgetInterface
      * @return void
      **/
     public function widget($args, $instance);
-
-    /**
-     * Display widget contents
-     *
-     * @param array $instance Contains all field data.
-     */
-    public function display($instance = []);
 }

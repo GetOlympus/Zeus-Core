@@ -22,6 +22,11 @@ class TermModel
     protected $args;
 
     /**
+     * @var array
+     */
+    protected $fields;
+
+    /**
      * @var TermHook
      */
     protected $hook;
@@ -56,6 +61,30 @@ class TermModel
     public function setArgs(array $args)
     {
         $this->args = $args;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of fields.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Sets the value of fields.
+     *
+     * @param array $fields the fields
+     *
+     * @return self
+     */
+    public function setFields(array $fields = [])
+    {
+        $this->fields = $fields;
 
         return $this;
     }
