@@ -3,6 +3,7 @@
 namespace GetOlympus\Hera\Configuration\Controller;
 
 use GetOlympus\Hera\Configuration\Controller\Configuration;
+use GetOlympus\Hera\Translate\Controller\Translate;
 
 /**
  * Hera Sidebars controller
@@ -29,6 +30,29 @@ class Sidebars extends Configuration
         // Get configurations
         $configs = include $this->filepath;
 
+        // Add sidebars
+        $this->addSidebars($configs);
+    }
+
+    /**
+     * Register sidebars to WP.
+     *
+     * @param array $configs
+     */
+    public function addSidebars($configs)
+    {
+        // Define defaults
+        $default = [
+            'name'          => Translate::t('configuration.sidebar.name'),
+            'id'            => '',
+            'description'   => '',
+            'class'         => '',
+            'before_widget' => '',
+            'after_widget'  => '',
+            'before_title'  => '',
+            'after_title'   => '',
+        ];
+
         // Check
         if (empty($configs)) {
             return;
@@ -37,27 +61,15 @@ class Sidebars extends Configuration
         // Iterate on configs
         foreach ($configs as $key => $props) {
             $props = !is_array($props) ? [$props] : $props;
-            $this->addSidebar($key, $props);
+
+            // Set id
+            $props['id'] = isset($props['id']) && !empty($props['id']) ? $props['id'] : $key;
+
+            // Set props
+            $props = array_merge($default, $props);
+
+            // Register sidebar
+            register_sidebar($props);
         }
-    }
-
-    /**
-     * Register sidebar to WP.
-     *
-     * @param string $key
-     * @param array  $props
-     */
-    public function addSidebar($key, $props)
-    {
-        // Check props
-        if (empty($props)) {
-            $props['id'] = $key;
-        }
-
-        // Set id
-        $props['id'] = isset($props['id']) && !empty($props['id']) ? $props['id'] : $key;
-
-        // Register sidebar
-        register_sidebar($props);
     }
 }
