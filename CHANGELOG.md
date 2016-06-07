@@ -1,3 +1,6 @@
+## 0.0.2 (June 07, 2016)
+Widgets, Post types, terms are now easy to use.
+
 ## 0.0.1 (April 23, 2016)
 Restart everything! New package, with new code. Use this as a new repository.
 
