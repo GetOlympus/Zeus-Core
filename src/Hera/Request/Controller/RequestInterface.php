@@ -22,6 +22,13 @@ interface RequestInterface
     public static function get($param, $default = '');
 
     /**
+     * Get used slug in current admin panel page.
+     *
+     * @return string $slug
+     */
+    public static function getCurrentSlug();
+
+    /**
      * Return request value.
      *
      * @param string $param

@@ -28,6 +28,56 @@ class Request implements RequestInterface
     }
 
     /**
+     * Get used slug in current admin panel page.
+     *
+     * @return string $slug
+     */
+    public static function getCurrentSlug()
+    {
+        // Defintions
+        $slug = self::get('post_type', '');
+
+        // Define current post type's contents
+        if (empty($slug)) {
+            // Get slug by post type
+            $post = self::get('post', 0);
+
+            if (!empty($post)) {
+                return get_post_type($post);
+            }
+
+            global $pagenow;
+
+            // Post slug
+            if (in_array($pagenow, ['edit.php', 'post-new.php', 'post.php', 'edit-tags.php'])) {
+                return 'post';
+            }
+
+            // Comment slug
+            if (in_array($pagenow, ['edit-comments.php', 'comment.php'])) {
+                return 'comment';
+            }
+
+            // Media slug
+            if (in_array($pagenow, ['upload.php', 'media-new.php'])) {
+                return 'attachment';
+            }
+
+            // User slug
+            if (in_array($pagenow, ['users.php', 'user-new.php', 'user-edit.php', 'profile.php'])) {
+                return 'user';
+            }
+
+            // Appearance slug
+            if ('nav-menus.php' == $pagenow) {
+                return 'nav_menu_item';
+            }
+        }
+
+        return $slug;
+    }
+
+    /**
      * Return request value.
      *
      * @param string $param
