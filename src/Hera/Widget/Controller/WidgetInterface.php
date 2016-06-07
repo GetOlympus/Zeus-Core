@@ -63,10 +63,11 @@ interface WidgetInterface
     /**
      * HTML at the start of a widget.
      *
-     * @param  array $args
-     * @return string $title
+     * @param array     $args
+     * @param array     $instance
+     * @param string    $title
      */
-    public function widget_start($args, $instance);
+    public function widget_start($args, $instance, $title);
 
     /**
      * HTML at the end of a widget.

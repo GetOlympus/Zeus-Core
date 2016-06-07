@@ -73,7 +73,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
         $this->setVars();
 
         // Set classname
-        $this->classname = Render::urlize($this->classname);
+        $this->classname = strtolower(Render::urlize($this->classname));
 
         // Update default settings
         $this->settings = array_merge([
@@ -186,22 +186,25 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
             $hasId = (boolean) $field->getField()->getHasId();
 
             // Check fields
-            if (empty($ctn)) {
+            if (empty($ctn) || !$hasId) {
                 continue;
             }
 
             // Does the field have an ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+            if (!isset($ctn['id']) || empty($ctn['id'])) {
                 continue;
             }
 
-            // Id, with a random ID when it's needed
+            // Value
             $id = isset($ctn['id']) ? $ctn['id'] : '';
             $value = !empty($id) && isset($instance[$id]) ? $instance[$id] : '';
 
+            // Id and name
+            $ctn['id'] = $this->get_field_id($id);
+            $ctn['name'] = $this->get_field_name($id);
+
             // Display field
             $field->render($ctn, [
-                'prefix' => 'widget',
                 'widget_value' => $value
             ]);
         }
@@ -220,7 +223,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
         $instance = $old_instance;
 
         // Get vars
-        foreach ($instance as $k => $i) {
+        foreach ($new_instance as $k => $i) {
             $instance[$k] = isset($new_instance[$k]) ? strip_tags($new_instance[$k]) : false;
         }
 
@@ -242,15 +245,13 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
     /**
      * HTML at the start of a widget.
      *
-     * @param  array $args
-     * @return string $title
+     * @param array     $args
+     * @param array     $instance
+     * @param string    $title
      */
-    public function widget_start($args, $instance)
+    public function widget_start($args, $instance, $title)
     {
         echo $args['before_widget'];
-
-        $title = empty($instance['title']) ? '' : $instance['title'];
-        $title = apply_filters('widget_title', $title, $instance, $this->classname);
 
         if ($title) {
             echo $args['before_title'].$title.$args['after_title'];
@@ -303,17 +304,13 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
         extract($args, EXTR_SKIP);
 
         // Title
-        $title = apply_filters('widget_title', $instance['title']);
+        $title = empty($instance['title']) ? '' : $instance['title'];
+        $title = apply_filters('widget_title', $title, $instance, $this->classname);
 
-        /**
-         * Display content widget.
-         *
-         * @var string $slug
-         * @param string $title
-         * @param array $instance
-         */
-        //do_content('olh_widget_'.$this->classname.'_show', $title, $instance);
+        // Display content widget
+        $this->widget_start($args, $instance, $title);
         $this->display($instance);
+        $this->widget_end($args);
 
         // Renew the cache.
         $cache[$args['widget_id']] = ob_get_flush();
