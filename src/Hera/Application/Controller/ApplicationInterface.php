@@ -22,11 +22,11 @@ interface ApplicationInterface
     /**
      * Register a service.
      *
-     * @param string $alias
      * @param string $service
+     * @param string $alias
      * @param mixed $args
      */
-    public function add($alias, $service = '', $args = []);
+    public function add($service, $alias = '', $args = []);
 
     /**
      * Get the asked service.
@@ -51,9 +51,9 @@ interface ApplicationInterface
     public function getConfigurations();
 
     /**
-     * Get all default services.
+     * Get default components.
      *
-     * @return array $services
+     * @return array $components
      */
     public function getServices();
 
@@ -66,17 +66,31 @@ interface ApplicationInterface
     public function has($service);
 
     /**
-     * Initialize custom components.
-     *
-     * @param string    $classname
-     * @param array     $components
+     * Initialize configs files containing theme definitions.
      */
-    public function initComponents($classname, $components = []);
+    public function initConfigs();
 
     /**
-     * Initialize configs files containing theme definitions.
+     * Register components
      *
-     * @param array $args
+     * @param array     $objects
+     * @param string    $filename
+     * @param string    $action
+     * @param string    $function
      */
-    public function initConfigs($args);
+    public function registerComponents($objects, $filename, $action = 'init', $function = 'registerObjects');
+
+    /**
+     * Register post types / terms / and more.
+     *
+     * @param array $classmap
+     */
+    public function registerObjects($classmap);
+
+    /**
+     * Register widgets.
+     *
+     * @param array $classmap
+     */
+    public function registerWidgets($classmap);
 }

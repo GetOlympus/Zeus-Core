@@ -22,6 +22,16 @@ use Symfony\Component\ClassLoader\MapClassLoader;
 abstract class Application implements ApplicationInterface
 {
     /**
+     * @var string
+     */
+    protected $classname;
+
+    /**
+     * @var array
+     */
+    protected $configurations = [];
+
+    /**
      * @var array
      */
     protected $components = [];
@@ -34,7 +44,7 @@ abstract class Application implements ApplicationInterface
     /**
      * @var array
      */
-    protected $exceptions = [];
+    protected $externals = [];
 
     /**
      * @var string
@@ -44,12 +54,12 @@ abstract class Application implements ApplicationInterface
     /**
      * @var array
      */
-    protected $interfaces = [];
+    protected $paths = [];
 
     /**
-     * @var MapClassLoader
+     * @var string
      */
-    protected $loader = null;
+    protected $widgets = '';
 
     /**
      * Constructor.
@@ -59,7 +69,12 @@ abstract class Application implements ApplicationInterface
         // Initiate Container Dependency Injection
         $this->container = new Container;
 
+        // Initialize classname
+        $class = new \ReflectionClass(get_class($this));
+        $this->classname = strtolower($class->getShortName());
+
         // Initialize all components
+        $this->setVars();
         $this->init();
     }
 
@@ -70,30 +85,45 @@ abstract class Application implements ApplicationInterface
     {
         // Get services
         $services = $this->getServices();
+        $externals = $this->externals;
 
         // Register all
         foreach ($services as $alias => $service) {
-            $this->add($alias, $service);
+            $this->add($service, $alias);
         }
+
+        // Register configurations
+        $this->initConfigs();
+
+        // Register post types / terms / and more
+        $this->registerComponents($this->paths, 'paths');
+
+        // Register widgets
+        $this->registerComponents($this->widgets, 'widgets', 'widgets_init', 'registerWidgets');
     }
 
     /**
      * Register a service.
      *
-     * @param string $alias
      * @param string $service
+     * @param string $alias
      * @param mixed $args
      */
-    public function add($alias, $service = '', $args = [])
+    public function add($service, $alias = '', $args = [])
     {
-        $service = empty($service) ? $alias : $service;
-
         // Register the service as a prototype
         if (!empty($args)) {
-            $this->container->add($alias, $service)->withArgument($args);
-        }
-        else {
-            $this->container->add($alias, $service);
+            if (empty($alias)) {
+                $this->container->add($service)->withArgument($args);
+            } else {
+                $this->container->add($alias, $service)->withArgument($args);
+            }
+        } else {
+            if (empty($alias)) {
+                $this->container->add($service);
+            } else {
+                $this->container->add($alias, $service);
+            }
         }
     }
 
@@ -115,7 +145,7 @@ abstract class Application implements ApplicationInterface
      */
     public function getComponents()
     {
-        return [
+        $components = [
             'Ajax'                      => 'GetOlympus\Hera\Ajax\Controller\Ajax',
             'Configuration'             => 'GetOlympus\Hera\Configuration\Controller\Configuration',
             'Error'                     => 'GetOlympus\Hera\Error\Controller\Error',
@@ -136,6 +166,13 @@ abstract class Application implements ApplicationInterface
             'WalkerSingle'              => 'GetOlympus\Hera\WalkerSingle\Controller\WalkerSingle',
             'Widget'                    => 'GetOlympus\Hera\Widget\Controller\Widget',
         ];
+
+        // Iterate on externals to add "Field" suffix
+        foreach ($this->externals as $shortname => $classname) {
+            $components[$shortname.'Field'] = $classname;
+        }
+
+        return $components;
     }
 
     /**
@@ -162,7 +199,6 @@ abstract class Application implements ApplicationInterface
      */
     public function getServices()
     {
-        // Get all services
         return array_merge($this->components, $this->getComponents(), $this->getConfigurations());
     }
 
@@ -178,50 +214,12 @@ abstract class Application implements ApplicationInterface
     }
 
     /**
-     * Initialize custom components.
-     *
-     * @param string    $classname
-     * @param array     $components
-     */
-    public function initComponents($classname, $components = [])
-    {
-        // Check components
-        if (empty($components)) {
-            return;
-        }
-
-        $name = empty($classname) ? Render::urlize(get_class($this)) : $classname;
-
-        // Check cache file
-        if (!file_exists($maps = OLH_CACHE.$name.'-components.php')) {
-            // Store all in cache file
-            ClassMapGenerator::dump($components, OLH_CACHE.$name.'-components.php');
-        }
-
-        $classmap = include_once $maps;
-
-        // Instanciate new ClassLoader to load components
-        $this->loader = new MapClassLoader($classmap);
-
-        // Register components
-        $this->loader->register();
-
-        // Initialize components
-        foreach ($classmap as $alias => $path) {
-            $this->add($alias);
-            $service = $this->get($alias);
-        }
-    }
-
-    /**
      * Initialize configs files containing theme definitions.
-     *
-     * @param array $args
      */
-    public function initConfigs($args)
+    public function initConfigs()
     {
-        // Check for application
-        if (empty($args)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
@@ -229,7 +227,7 @@ abstract class Application implements ApplicationInterface
         $available = $this->getConfigurations();
 
         // Iterate
-        foreach ($args as $component => $file) {
+        foreach ($this->configurations as $component => $file) {
             // Check if configuration asked exists
             if (!array_key_exists($component, $available)) {
                 continue;
@@ -247,4 +245,82 @@ abstract class Application implements ApplicationInterface
             $service->init();
         }
     }
+
+    /**
+     * Register components
+     *
+     * @param array     $objects
+     * @param string    $filename
+     * @param string    $action
+     * @param string    $function
+     */
+    public function registerComponents($objects, $filename, $action = 'init', $function = 'registerObjects')
+    {
+        // Check objects
+        if (empty($objects)) {
+            return;
+        }
+
+        // Work on file path
+        $filepath = OLH_CACHE.$this->classname.'-'.$filename.'-components.php';
+
+        // Check cache file
+        if (!file_exists($filepath)) {
+            // Store all in cache file
+            ClassMapGenerator::dump($objects, $filepath);
+        }
+
+        $classmap = include_once $filepath;
+
+        // Instanciate new ClassLoader to load components
+        $loader = new MapClassLoader($classmap);
+
+        // Register components
+        $loader->register();
+
+        // Get current hook
+        $current = current_filter();
+
+        // Register post type
+        if ($action === $current) {
+            // Already inside an `init` action
+            $this->$function($classmap);
+        } else {
+            // Outside an `init` action
+            add_action($action, function () use ($classmap, $function){
+                $this->$function($classmap);
+            });
+        }
+    }
+
+    /**
+     * Register post types / terms / and more.
+     *
+     * @param array $classmap
+     */
+    public function registerObjects($classmap)
+    {
+        foreach ($classmap as $service => $file) {
+            $this->add($service);
+            $component = $this->get($service);
+        }
+    }
+
+    /**
+     * Register widgets.
+     *
+     * @param array $classmap
+     */
+    public function registerWidgets($classmap)
+    {
+        foreach ($classmap as $service => $file) {
+            $this->add($service);
+            register_widget($service);
+        }
+    }
+
+    /**
+     * Prepare variables.
+     */
+    abstract protected function setVars();
 }

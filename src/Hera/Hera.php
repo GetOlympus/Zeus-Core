@@ -103,7 +103,7 @@ define('OLH_WP_CAP_MAX', 'manage_tea_theme_options');
  *
  */
 
-class Hera extends Application
+abstract class Hera extends Application
 {
     /**
      * Constructor.
@@ -112,6 +112,32 @@ class Hera extends Application
      */
     public function __construct()
     {
+        // Components to load
+        $this->externals = [
+            // Hera field components
+            'Background'                => 'GetOlympus\Field\Background',
+            'Checkbox'                  => 'GetOlympus\Field\Checkbox',
+            'Code'                      => 'GetOlympus\Field\Code',
+            'Color'                     => 'GetOlympus\Field\Color',
+            'Date'                      => 'GetOlympus\Field\Date',
+            'File'                      => 'GetOlympus\Field\File',
+            'Font'                      => 'GetOlympus\Field\Font',
+            'Hidden'                    => 'GetOlympus\Field\Hidden',
+            'Html'                      => 'GetOlympus\Field\Html',
+            'Link'                      => 'GetOlympus\Field\Link',
+            'Map'                       => 'GetOlympus\Field\Map',
+            'Multiselect'               => 'GetOlympus\Field\Multiselect',
+            'Radio'                     => 'GetOlympus\Field\Radio',
+            'Rte'                       => 'GetOlympus\Field\Rte',
+            'Section'                   => 'GetOlympus\Field\Section',
+            'Select'                    => 'GetOlympus\Field\Select',
+            'Text'                      => 'GetOlympus\Field\Text',
+            'Textarea'                  => 'GetOlympus\Field\Textarea',
+            'Toggle'                    => 'GetOlympus\Field\Toggle',
+            'Upload'                    => 'GetOlympus\Field\Upload',
+            'Wordpress'                 => 'GetOlympus\Field\Wordpress',
+        ];
+
         /**
          * Update identifier.
          *
@@ -122,33 +148,49 @@ class Hera extends Application
          */
         $this->identifier = apply_filters('olh_hera_identifier', 'olympus');
 
-        // Components to load
-        $this->components = array_merge($this->components, [
-            // Hera field components
-            'BackgroundField'   => 'GetOlympus\Field\Background',
-            'CheckboxField'     => 'GetOlympus\Field\Checkbox',
-            'CodeField'         => 'GetOlympus\Field\Code',
-            'ColorField'        => 'GetOlympus\Field\Color',
-            'DateField'         => 'GetOlympus\Field\Date',
-            'FileField'         => 'GetOlympus\Field\File',
-            'FontField'         => 'GetOlympus\Field\Font',
-            'HiddenField'       => 'GetOlympus\Field\Hidden',
-            'HtmlField'         => 'GetOlympus\Field\Html',
-            'LinkField'         => 'GetOlympus\Field\Link',
-            'MapField'          => 'GetOlympus\Field\Map',
-            'MultiselectField'  => 'GetOlympus\Field\Multiselect',
-            'RadioField'        => 'GetOlympus\Field\Radio',
-            'RteField'          => 'GetOlympus\Field\Rte',
-            'SectionField'      => 'GetOlympus\Field\Section',
-            'SelectField'       => 'GetOlympus\Field\Select',
-            'TextField'         => 'GetOlympus\Field\Text',
-            'TextareaField'     => 'GetOlympus\Field\Textarea',
-            'ToggleField'       => 'GetOlympus\Field\Toggle',
-            'UploadField'       => 'GetOlympus\Field\Upload',
-            'WordpressField'    => 'GetOlympus\Field\Wordpress',
-        ]);
-
         // Use parent constructor
         parent::__construct();
+
+        // Work on externals
+        $this->setExternals();
+    }
+
+    /**
+     * Work on externals
+     */
+    protected function setExternals()
+    {
+        // Check externals
+        if (empty($this->externals)) {
+            return;
+        }
+
+        $externals = [];
+
+        // Iterate
+        foreach ($this->externals as $alias => $component) {
+            $class = new \ReflectionClass($component);
+            $path = dirname(dirname($class->getFileName())).S.'Resources'.S;
+
+            $externals[strtolower($alias)] = $path;
+        }
+
+        // Register all vendor views
+        add_filter('olh_render_views', function ($paths) use ($externals){
+            foreach ($externals as $alias => $path) {
+                $paths[$alias] = $path.'views';
+            }
+
+            return $paths;
+        });
+
+        // Register all vendor translations
+        add_filter('olh_translate_resource', function ($yamls) use ($externals){
+            foreach ($externals as $alias => $path) {
+                $yamls[$path.'languages'] = $alias.'field';
+            }
+
+            return $yamls;
+        });
     }
 }
