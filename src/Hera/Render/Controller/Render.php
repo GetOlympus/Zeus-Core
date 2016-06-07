@@ -45,6 +45,14 @@ class Render implements RenderInterface
             'template'      => OLH_PATH.S.'Template'.S.'Resources'.S.'views',
         ];
 
+        /**
+         * Add your custom views folder with alias.
+         *
+         * @param   array $paths
+         * @return  array $paths
+         */
+        $paths = apply_filters('olh_render_views', $paths);
+
         // Define Twig loaders
         $loader = new Twig_Loader_Filesystem();
 
@@ -52,50 +60,6 @@ class Render implements RenderInterface
         foreach ($paths as $alias => $path) {
             $loader->addPath($path, $alias);
         }
-
-        // Check components
-        $components = [
-            // Hera field components
-            'background'    => 'GetOlympus\Field\Background',
-            'checkbox'      => 'GetOlympus\Field\Checkbox',
-            'code'          => 'GetOlympus\Field\Code',
-            'color'         => 'GetOlympus\Field\Color',
-            'date'          => 'GetOlympus\Field\Date',
-            'file'          => 'GetOlympus\Field\File',
-            'font'          => 'GetOlympus\Field\Font',
-            'hidden'        => 'GetOlympus\Field\Hidden',
-            'html'          => 'GetOlympus\Field\Html',
-            'link'          => 'GetOlympus\Field\Link',
-            'map'           => 'GetOlympus\Field\Map',
-            'multiselect'   => 'GetOlympus\Field\Multiselect',
-            'radio'         => 'GetOlympus\Field\Radio',
-            'rte'           => 'GetOlympus\Field\Rte',
-            'section'       => 'GetOlympus\Field\Section',
-            'select'        => 'GetOlympus\Field\Select',
-            'text'          => 'GetOlympus\Field\Text',
-            'textarea'      => 'GetOlympus\Field\Textarea',
-            'toggle'        => 'GetOlympus\Field\Toggle',
-            'upload'        => 'GetOlympus\Field\Upload',
-            'wordpress'     => 'GetOlympus\Field\Wordpress',
-        ];
-
-        // Vendors path
-        $vendor = defined('VENDORPATH') ? VENDORPATH : OLH_PATH.S.'..'.S.'..'.S.'vendor'.S;
-
-        // Register all render views
-        foreach ($components as $alias => $donotget) {
-            $path = $vendor.'getolympus'.S.'olympus-'.$alias.'-field'.S.'src'.S.'Resources'.S.'views';
-
-            //$loader->addPath($path, $alias.'Field');
-            $loader->addPath($path, $alias);
-        }
-
-        /**
-         * Add your custom views folder with alias.
-         *
-         * @param Twig_Loader_Filesystem $loader
-         */
-        do_action('olh_render_views', $loader);
 
         // Build Twig renderer
         $this->twig = new Twig_Environment($loader, ['cache' => OLH_CACHE]);
@@ -201,8 +165,9 @@ class Render implements RenderInterface
     {
         $slugified = self::urlize($text, $separator);
         $camel = strtolower($slugified);
+        $camel = ucwords($camel, $separator);
 
-        return ucwords($camel, $separator);
+        return str_replace($separator, '', $camel);
     }
 
     /**
@@ -215,9 +180,8 @@ class Render implements RenderInterface
     public static function toFunction($text, $separator = '-')
     {
         $camelized = self::camelCase($text, $separator);
-        $func = str_replace($separator, '', $camelized);
 
-        return lcfirst($func);
+        return lcfirst($camelized);
     }
 
     /**
