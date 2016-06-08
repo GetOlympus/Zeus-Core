@@ -7,27 +7,13 @@
 
 html,
 #wp-content-editor-tools {
-    background-color: #fdfdfd;
-}
-ul#adminmenu a.wp-has-current-submenu:after,
-ul#adminmenu>li.current>a.current:after {
-    border-right-color: #fdfdfd;
+    background-color: @white;
 }
 
-hr {
-    border-bottom: 1px solid @white;
+html.wp-toolbar {
+    padding-top: 0;
 }
 
-.form-table {
-    tr:nth-child(odd) {
-        background-color: fade(@black, 2.5%);
-    }
-
-    th {
-        padding: 20px 0 20px 10px;
-
-        label small {
-            display: block;
-        }
-    }
+.wrap {
+    margin: 10px 2px 0 2px;
 }

@@ -1,0 +1,55 @@
+/*!
+ * Copyright 2016 Achraf Chouk
+ * Achraf Chouk (https://github.com/crewstyle)
+ *
+ * 15.tables.less
+ */
+
+@menubackgroundcolor: #181a21;
+
+.form-table {
+    tr:nth-child(odd) {
+        background-color: fade(@black, 2.5%);
+    }
+
+    th {
+        padding: 20px 0 20px 10px;
+
+        label small {
+            display: block;
+        }
+    }
+}
+
+table.fixed {
+    border: none;
+    box-shadow: none;
+}
+
+.striped > tbody > :nth-child(odd),
+ul.striped > :nth-child(odd),
+.alternate {
+    background-color: fade(@menubackgroundcolor, 1.5%);
+}
+
+.widefat td,
+.widefat td p,
+.widefat td ol,
+.widefat td ul {
+    font-size: 11px;
+}
+
+.row-actions {
+    padding-top: 4px;
+    text-transform: uppercase;
+
+    span {
+        display: inline-block;
+        font-size: 0;
+        margin: 0 10px 0 0;
+
+        a {
+            font-size: 10px;
+        }
+    }
+}

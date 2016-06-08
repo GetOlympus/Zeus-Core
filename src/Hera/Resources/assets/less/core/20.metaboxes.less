@@ -1,0 +1,56 @@
+/*!
+ * Copyright 2016 Achraf Chouk
+ * Achraf Chouk (https://github.com/crewstyle)
+ *
+ * 20.metaboxes.less
+ */
+
+@headertextcolor: #282c38;
+@headerbordercolor: #cbced3;
+@menubackgroundcolor: #181a21;
+
+/*!
+ * Postbox and stuffbox
+ */
+#poststuff, #poststuff .stuffbox,
+.postbox, .stuffbox {
+    border: none;
+    margin-bottom: 40px;
+
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+
+    h2.hndle,
+    > h3 {
+        border-color: @headerbordercolor;
+        color: @headertextcolor;
+        font-size: 16px;
+        font-weight: 400;
+        padding: 8px 12px 8px 0;
+    }
+}
+
+/*!
+ * Dashboard
+ */
+.welcome-panel {
+    background-color: fade(@menubackgroundcolor, 1.5%);
+    border: none;
+}
+#dashboard-widgets-wrap {
+    .postbox, .stuffbox {
+        background-color: fade(@menubackgroundcolor, 1.5%);
+
+        -webkit-box-shadow: 0 1px 1px fade(@black, 0.4%);
+        -moz-box-shadow: 0 1px 1px fade(@black, 0.4%);
+        box-shadow: 0 1px 1px fade(@black, 0.4%);
+    }
+}
+
+/*!
+ * Quick press widget fix
+ */
+#dashboard_quick_press .inside {
+    padding: 0 0 2px;
+}

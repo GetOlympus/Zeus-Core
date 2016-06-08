@@ -20,7 +20,7 @@ var grunt = require('grunt'),
     graylight: '#f1f1f1',
     gray: '#aaaaaa',
     graymedium: '#999999',
-    graydark: '#3b3d3c',
+    graydark: '#282c37',
     graydarker: '#303231',
     grayblack: '#111111',
     //fonts

@@ -1,0 +1,57 @@
+/*!
+ * Copyright 2016 Achraf Chouk
+ * Achraf Chouk (https://github.com/crewstyle)
+ *
+ * 25.post.less
+ */
+
+@headerbordercolor: #cbced3;
+
+#poststuff #titlewrap {
+    margin-top: -2px;
+}
+
+#titlediv #title {
+    border-color: @headerbordercolor;
+    border-width: 0 0 1px;
+    box-shadow: none;
+    font-size: 30px;
+    padding: 0 10px;
+}
+
+#edit-slug-box {
+    strong {
+        font-weight: 200;
+    }
+}
+
+#post-body.columns-2 #postbox-container-1 {
+    margin-top: 10px;
+}
+
+#post-body.columns-2 #postbox-container-1,
+#poststuff #post-body.columns-2 #side-sortables {
+    width: 260px;
+}
+
+.wp-editor-expand #wp-content-editor-container {
+    border: none;
+}
+
+.wp-editor-expand div.mce-toolbar-grp {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+#wp-content-wrap {
+    overflow: hidden;
+}
+.wp-editor-tools:before {
+    background-color: @white;
+    bottom: 100%;
+    content: "";
+    left: 0;
+    height: 32px;
+    position: absolute;
+    right: 0;
+}
