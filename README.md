@@ -28,6 +28,15 @@ Build with ♥ for **WordPress developers**._
 
 ---
 
+## WP Admin panel redesigned
+
+Highly inspired by the incredible [Mackenzie Daily design](https://dribbble.com/shots/2431092-Daily-Design-046-Wordpress-Admin-Redesign) work.  
+<img src="https://raw.githubusercontent.com/GetOlympus/Hera/master/app/assets/img/admin-wp/wp-hera-1.jpg" width="350"/>
+<img src="https://raw.githubusercontent.com/GetOlympus/Hera/master/app/assets/img/admin-wp/wp-hera-2.jpg" width="350"/>
+<img src="https://raw.githubusercontent.com/GetOlympus/Hera/master/app/assets/img/admin-wp/wp-hera-3.jpg" width="350"/>
+
+---
+
 ## Installation
 
 You can easily install the **Olympus Hera**:
