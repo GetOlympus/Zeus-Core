@@ -1,15 +1,18 @@
 /*!
- * form.less
- *
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
+ *
+ * 02.form.less
  */
+
+@newblue: #2c92da;
 
 body.login div#login form {
     background: transparent;
     border: 0;
     border-radius: 0;
     margin: 0 auto;
+    max-width: 100%;
     overflow: hidden;
     padding: 0;
     width: 400px;
@@ -33,7 +36,8 @@ body.login div#login form {
         }
 
         &[for="user_login"],
-        &[for="user_pass"] {
+        &[for="user_pass"],
+        &[for="user_email"] {
             text-indent: -99999px;
 
             &:before {
@@ -53,6 +57,9 @@ body.login div#login form {
         }
         &[for="user_pass"]:before {
             content: "\f13e";
+        }
+        &[for="user_email"]:before {
+            content: "\f0e0";
         }
 
         &[for="rememberme"] {
@@ -85,7 +92,9 @@ body.login div#login form {
         padding: 30px 0 0;
 
         input#wp-submit {
-            border-radius: 0;
+            background-color: @newblue;
+            border-radius: 100px;
+            border-width: 0;
             float: none;
             font-size: 14px;
             height: auto;
