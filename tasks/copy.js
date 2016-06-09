@@ -24,7 +24,8 @@ module.exports = {
         expand: true,
         flatten: false,
         src: [
-          '**/*'
+          '**/*',
+          '!hera-demo/*',
         ],
         dest: '<%= olympus.paths.tar %>/img/'
       }
