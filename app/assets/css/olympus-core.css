@@ -49,7 +49,7 @@
  * Achraf Chouk (https://github.com/crewstyle)
  *
  * 10.messages.less
- */#update-nag,.update-nag{border:1px solid #ffba00;display:block;margin:32px 18px 32px 0}#update-nag a,.update-nag a{color:#ffba00}#update-nag a:focus,#update-nag a:hover,.update-nag a:focus,.update-nag a:hover{color:#664a00}/*!
+ */.notice,div.error,div.updated{background-color:rgba(40,44,56,.05);border-radius:100px}/*!
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
  *

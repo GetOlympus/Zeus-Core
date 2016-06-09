@@ -5,18 +5,11 @@
  * 10.messages.less
  */
 
-#update-nag,
-.update-nag {
-    border: 1px solid @orange;
-    display: block;
-    margin: 32px 18px 32px 0px;
+@headertextcolor: #282c38;
 
-    a {
-        color: @orange;
-
-        &:focus,
-        &:hover {
-            color: darken(@orange, 30%);
-        }
-    }
+.notice,
+div.updated,
+div.error {
+    background-color: fade(@headertextcolor, 5%);
+    border-radius: 100px;
 }
