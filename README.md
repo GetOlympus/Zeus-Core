@@ -39,7 +39,8 @@ Highly inspired by the incredible [Mackenzie Daily design](https://dribbble.com/
 
 ## Installation
 
-You can easily install the **Olympus Hera**:
+The **Olympus Hera** can be used by the [**Athena theme**](https://github.com/GetOlympus/Athena), which is yet in development.
+But, you can easily install the **Olympus Hera** in your theme and try to copy `functions.php` file and `resources` folder:
 
 ```bash
 composer require getolympus/olympus-hera
