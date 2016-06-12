@@ -8,6 +8,7 @@
 @menubackgroundcolor: #181a21;
 @headertextcolor: #282c38;
 @menutextcolor: #67717d;
+@newred: #e74c3c;
 
 /*!
  * WP admin menu display
@@ -70,6 +71,13 @@
 }
 
 /*!
+ * WP menu notifications
+ */
+#adminmenu .awaiting-mod, #adminmenu .update-plugins {
+    background-color: @newred;
+}
+
+/*!
  * WP menu separator display
  */
 #adminmenu li.wp-menu-separator {
@@ -96,7 +104,7 @@
 #adminmenu .wp-has-current-submenu .wp-submenu.sub-open, #adminmenu .wp-submenu, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu, .no-js li.wp-has-current-submenu:hover .wp-submenu {
     background-color: @menubackgroundcolor;
 }
-#adminmenu .wp-has-current-submenu.opensub .wp-submenu {
+#adminmenu .wp-has-current-submenu.opensub .wp-submenu, #adminmenu a.wp-has-current-submenu:focus + .wp-submenu {
     background-color: @headertextcolor;
 }
 
