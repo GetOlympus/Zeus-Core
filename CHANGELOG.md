@@ -1,3 +1,6 @@
+## 0.0.3 (June 13, 2016)
+Update admin display, allow metaboxes for post types.
+
 ## 0.0.2 (June 07, 2016)
 Widgets, Post types, terms are now easy to use.
 
