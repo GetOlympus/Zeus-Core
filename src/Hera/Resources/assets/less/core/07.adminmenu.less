@@ -9,6 +9,7 @@
 @headertextcolor: #282c38;
 @menutextcolor: #67717d;
 @newred: #e74c3c;
+@newblue: #1297e0;
 
 /*!
  * WP admin menu display
@@ -75,6 +76,9 @@
  */
 #adminmenu .awaiting-mod, #adminmenu .update-plugins {
     background-color: @newred;
+}
+#adminmenu li.current a .awaiting-mod, #adminmenu li a.wp-has-current-submenu .update-plugins {
+    background-color: @newblue;
 }
 
 /*!

@@ -6,7 +6,22 @@
  */
 
 @menubackgroundcolor: #181a21;
+@newred: #e74c3c;
+@newblue: #1297e0;
 
+/*!
+ * Global
+ */
+.widefat td,
+.widefat td p,
+.widefat td ol,
+.widefat td ul {
+    font-size: 11px;
+}
+
+/*!
+ * Default table
+ */
 .form-table {
     tr:nth-child(odd) {
         background-color: fade(@black, 2.5%);
@@ -32,13 +47,9 @@ ul.striped > :nth-child(odd),
     background-color: fade(@menubackgroundcolor, 1.5%);
 }
 
-.widefat td,
-.widefat td p,
-.widefat td ol,
-.widefat td ul {
-    font-size: 11px;
-}
-
+/*!
+ * Action toolbox
+ */
 .row-actions {
     padding-top: 4px;
     text-transform: uppercase;
@@ -52,4 +63,38 @@ ul.striped > :nth-child(odd),
             font-size: 10px;
         }
     }
+}
+
+/*!
+ * Unapprouved
+ */
+#the-comment-list .unapproved th.check-column {
+    border-left: 4px solid @newred;
+}
+#the-comment-list .unapproved th, #the-comment-list .unapproved td {
+    background-color: fade(@newred, 5%);
+}
+
+/*!
+ * Active
+ */
+.plugins .active th.check-column, .plugin-update-tr.active td {
+    border-left: 4px solid @newblue;
+}
+.plugins .active td, .plugins .active th {
+    background-color: fade(@newblue, 5%);
+}
+
+/*!
+ * Post comment awaiting
+ */
+.column-response .post-com-count-pending, .column-comments .post-com-count-pending {
+    background-color: @newred;
+}
+
+/*!
+ * Extension to update
+ */
+.plugin-update-tr .update-message:before, .plugin-card .update-now:before, .plugin-card .install-now:before {
+    color: @newred;
 }

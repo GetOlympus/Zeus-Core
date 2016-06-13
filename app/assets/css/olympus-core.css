@@ -42,7 +42,7 @@
  * WP admin menu display
  */#adminmenu{margin:32px 0}#adminmenu:before{color:#67717d;content:"\f120";display:block;font-family:dashicons;font-size:80px;height:80px;line-height:1;margin:0 0 22px;text-align:center;width:195px;-webkit-transition:all .1s linear;transition:all .1s linear;-webkit-font-smoothing:antialiased}#adminmenu a.menu-top{padding-left:10px;padding-right:10px}.folded #adminmenu:before{display:none}.folded #adminmenu a.menu-top{padding-left:0;padding-right:0}#adminmenu,#adminmenu .wp-has-current-submenu .wp-submenu,#adminmenuback,#adminmenuwrap,#wpadminbar{background-color:#282c37}#adminmenu .wp-has-current-submenu .wp-submenu .wp-submenu-head,#adminmenu .wp-menu-arrow,#adminmenu .wp-menu-arrow div,#adminmenu li.current a.menu-top,#adminmenu li.menu-top:hover,#adminmenu li.opensub>a.menu-top,#adminmenu li.wp-has-current-submenu a.wp-has-current-submenu,#adminmenu li>a.menu-top:focus,.folded #adminmenu li.current.menu-top,.folded #adminmenu li.wp-has-current-submenu{background-color:transparent}#adminmenu .wp-has-current-submenu ul>li>a,#adminmenu .wp-not-current-submenu li>a,#adminmenu .wp-submenu li.current,#adminmenu .wp-submenu li.current a,#adminmenu .wp-submenu li.current a:hover,#dashboard_right_now .versions .b,#ed_reply_toolbar #ed_reply_strong,#pass-strength-result.short,#pass-strength-result.strong,#post-status-display,#post-visibility-display,.feature-filter .feature-name,.folded #adminmenu .wp-has-current-submenu li>a,.folded #adminmenu li.menu-top .wp-submenu>li>a,.item-controls .item-order a,.media-item .percent,.plugins .name{font-weight:200}/*!
  * WP menu notifications
- */#adminmenu .awaiting-mod,#adminmenu .update-plugins{background-color:#E74C3C}#adminmenu .wp-has-current-submenu .wp-submenu.sub-open,#adminmenu .wp-submenu,#adminmenu a.wp-has-current-submenu:focus+.wp-submenu,#adminmenu div.separator,.no-js li.wp-has-current-submenu:hover .wp-submenu{background-color:#181a21}/*!
+ */#adminmenu .awaiting-mod,#adminmenu .update-plugins{background-color:#e74c3c}#adminmenu li a.wp-has-current-submenu .update-plugins,#adminmenu li.current a .awaiting-mod{background-color:#1297e0}#adminmenu .wp-has-current-submenu .wp-submenu.sub-open,#adminmenu .wp-submenu,#adminmenu a.wp-has-current-submenu:focus+.wp-submenu,#adminmenu div.separator,.no-js li.wp-has-current-submenu:hover .wp-submenu{background-color:#181a21}/*!
  * WP menu separator display
  */#adminmenu li.wp-menu-separator{margin:4px 0;padding:0 10px}#adminmenu div.separator{height:1px}/*!
  * WP sub menu display
@@ -61,7 +61,21 @@
  * Achraf Chouk (https://github.com/crewstyle)
  *
  * 15.tables.less
- */.form-table tr:nth-child(odd){background-color:rgba(0,0,0,.025)}.alternate,.striped>tbody>:nth-child(odd),.welcome-panel,ul.striped>:nth-child(odd){background-color:rgba(24,26,33,.015)}.form-table th{padding:20px 0 20px 10px}.form-table th label small{display:block}table.fixed{border:none;box-shadow:none}.widefat td,.widefat td ol,.widefat td p,.widefat td ul{font-size:11px}.row-actions{padding-top:4px;text-transform:uppercase}.row-actions span{display:inline-block;font-size:0;margin:0 10px 0 0}.row-actions span a{font-size:10px}/*!
+ *//*!
+ * Global
+ */.widefat td,.widefat td ol,.widefat td p,.widefat td ul{font-size:11px}/*!
+ * Default table
+ */.form-table tr:nth-child(odd){background-color:rgba(0,0,0,.025)}.form-table th{padding:20px 0 20px 10px}.form-table th label small{display:block}table.fixed{border:none;box-shadow:none}.alternate,.striped>tbody>:nth-child(odd),ul.striped>:nth-child(odd){background-color:rgba(24,26,33,.015)}/*!
+ * Action toolbox
+ */.row-actions{padding-top:4px;text-transform:uppercase}.row-actions span{display:inline-block;font-size:0;margin:0 10px 0 0}.row-actions span a{font-size:10px}/*!
+ * Unapprouved
+ */#the-comment-list .unapproved th.check-column{border-left:4px solid #e74c3c}#the-comment-list .unapproved td,#the-comment-list .unapproved th{background-color:rgba(231,76,60,.05)}/*!
+ * Active
+ */.plugin-update-tr.active td,.plugins .active th.check-column{border-left:4px solid #1297e0}.plugins .active td,.plugins .active th{background-color:rgba(18,151,224,.05)}/*!
+ * Post comment awaiting
+ */.column-comments .post-com-count-pending,.column-response .post-com-count-pending{background-color:#e74c3c}/*!
+ * Extension to update
+ */.plugin-card .install-now:before,.plugin-card .update-now:before,.plugin-update-tr .update-message:before{color:#e74c3c}/*!
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
  *
@@ -75,7 +89,7 @@
  * Postbox and stuffbox
  */#poststuff,#poststuff .stuffbox,.postbox,.stuffbox{border:none;margin-bottom:40px;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none}#poststuff .stuffbox h2.hndle,#poststuff .stuffbox>h3,#poststuff h2.hndle,#poststuff>h3,.postbox h2.hndle,.postbox>h3,.stuffbox h2.hndle,.stuffbox>h3{border-color:#cbced3;color:#282c38;font-size:16px;font-weight:400;padding:8px 12px 8px 0}/*!
  * Dashboard
- */.welcome-panel{border:none}#dashboard-widgets-wrap .postbox,#dashboard-widgets-wrap .stuffbox{background-color:rgba(24,26,33,.015);-webkit-box-shadow:0 1px 1px rgba(0,0,0,.004);-moz-box-shadow:0 1px 1px rgba(0,0,0,.004);box-shadow:0 1px 1px rgba(0,0,0,.004)}#dashboard-widgets-wrap .postbox h2.hndle,#dashboard-widgets-wrap .postbox>h3,#dashboard-widgets-wrap .stuffbox h2.hndle,#dashboard-widgets-wrap .stuffbox>h3{padding:8px 12px}/*!
+ */.welcome-panel{background-color:rgba(24,26,33,.015);border:none}#dashboard-widgets-wrap .postbox,#dashboard-widgets-wrap .stuffbox{background-color:rgba(24,26,33,.015);-webkit-box-shadow:0 1px 1px rgba(0,0,0,.004);-moz-box-shadow:0 1px 1px rgba(0,0,0,.004);box-shadow:0 1px 1px rgba(0,0,0,.004)}#dashboard-widgets-wrap .postbox h2.hndle,#dashboard-widgets-wrap .postbox>h3,#dashboard-widgets-wrap .stuffbox h2.hndle,#dashboard-widgets-wrap .stuffbox>h3{padding:8px 12px}/*!
  * Quick press widget fix
  */#dashboard_quick_press .inside{padding:0 0 2px}/*!
  * Copyright 2016 Achraf Chouk
