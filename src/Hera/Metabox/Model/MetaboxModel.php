@@ -30,6 +30,11 @@ class MetaboxModel
     protected $context = 'normal';
 
     /**
+     * @var array
+     */
+    protected $fields = [];
+
+    /**
      * @var string
      */
     protected $id;
@@ -117,6 +122,30 @@ class MetaboxModel
     public function setContext($context)
     {
         $this->context = $context;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of fields.
+     *
+     * @return array
+     */
+    public function getFields()
+    {
+        return $this->fields;
+    }
+
+    /**
+     * Sets the value of fields.
+     *
+     * @param array $fields the fields
+     *
+     * @return self
+     */
+    public function setFields(array $fields)
+    {
+        $this->fields = $fields;
 
         return $this;
     }

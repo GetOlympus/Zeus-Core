@@ -22,14 +22,14 @@ class PosttypeModel
     protected $args;
 
     /**
-     * @var array
-     */
-    protected $fields;
-
-    /**
      * @var PosttypeHook
      */
     protected $hook;
+
+    /**
+     * @var array
+     */
+    protected $metaboxes;
 
     /**
      * @var string
@@ -61,30 +61,6 @@ class PosttypeModel
     }
 
     /**
-     * Gets the value of fields.
-     *
-     * @return array
-     */
-    public function getFields()
-    {
-        return $this->fields;
-    }
-
-    /**
-     * Sets the value of fields.
-     *
-     * @param array $fields the fields
-     *
-     * @return self
-     */
-    public function setFields($fields = [])
-    {
-        $this->fields = $fields;
-
-        return $this;
-    }
-
-    /**
      * Gets the value of hook.
      *
      * @return PosttypeHook
@@ -104,6 +80,30 @@ class PosttypeModel
     public function setHook(PosttypeHook $hook)
     {
         $this->hook = $hook;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of metaboxes.
+     *
+     * @return array
+     */
+    public function getMetaboxes()
+    {
+        return $this->metaboxes;
+    }
+
+    /**
+     * Sets the value of metaboxes.
+     *
+     * @param array $metaboxes the metaboxes
+     *
+     * @return self
+     */
+    public function setMetaboxes($metaboxes = [])
+    {
+        $this->metaboxes = $metaboxes;
 
         return $this;
     }

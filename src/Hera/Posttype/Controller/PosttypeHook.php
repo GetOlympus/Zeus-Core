@@ -26,7 +26,7 @@ class PosttypeHook implements PosttypeHookInterface
     /**
      * @var array
      */
-    protected $fields;
+    protected $metaboxes;
 
     /**
      * @var string
@@ -48,10 +48,10 @@ class PosttypeHook implements PosttypeHookInterface
      *
      * @param string    $slug
      * @param string    $name
-     * @param array     $fields
+     * @param array     $metaboxes
      * @param array     $reserved_slugs
      */
-    public function __construct($slug, $name, $fields = [], $reserved_slugs = [])
+    public function __construct($slug, $name, $metaboxes = [], $reserved_slugs = [])
     {
         // Check slug
         if (empty($slug)) {
@@ -60,7 +60,7 @@ class PosttypeHook implements PosttypeHookInterface
 
         $this->slug = $slug;
         $this->name = $name;
-        $this->fields = $fields;
+        $this->metaboxes = $metaboxes;
         $this->reserved_slugs = $reserved_slugs;
 
         // Permalink structures
@@ -71,10 +71,10 @@ class PosttypeHook implements PosttypeHookInterface
             add_filter('manage_edit-'.$slug.'_columns', [&$this, 'manageEditColumns'], 10);
             add_action('manage_'.$slug.'_posts_custom_column', [&$this, 'managePostsCustomColumn'], 11, 2);
 
-            // Display post type's custom fields
-            add_action('admin_init', [&$this, 'postTypeFieldDisplay']);
+            // Display post type's custom metaboxes
+            add_action('admin_init', [&$this, 'postTypeMetaboxesDisplay']);
 
-            // Save post type's custom fields
+            // Save post type's custom metaboxes
             add_action('save_post', [&$this, 'postTypeSave']);
 
             // Display settings in permalinks page
@@ -254,12 +254,12 @@ class PosttypeHook implements PosttypeHookInterface
     }
 
     /**
-     * Hook building custom fields for CPTS.
+     * Hook building custom metaboxes for Post types.
      */
-    public function postTypeFieldDisplay()
+    public function postTypeMetaboxesDisplay()
     {
-        // Check fields
-        if (empty($this->fields)) {
+        // Check metaboxes
+        if (empty($this->metaboxes)) {
             return;
         }
 
@@ -271,45 +271,36 @@ class PosttypeHook implements PosttypeHookInterface
             return;
         }
 
-        // Get fields
-        foreach ($this->fields as $field) {
-            if (!$field) {
+        // Get metaboxes
+        foreach ($this->metaboxes as $metabox) {
+            if (!$metabox) {
                 continue;
             }
 
-            // Build contents
-            $ctn = (array) $field->getField()->getContents();
-            $hasId = (boolean) $field->getField()->getHasId();
+            // Get contents
+            $id = (integer) $metabox->getMetabox()->getId();
+            $title = (string) $metabox->getMetabox()->getTitle();
+            $fields = (boolean) $metabox->getMetabox()->getFields();
 
             // Check fields
-            if (empty($ctn)) {
+            if (empty($fields)) {
                 continue;
             }
-
-            // Does the field have an ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
-                continue;
-            }
-
-            // Id, with a random ID when it's needed
-            $id = isset($ctn['id']) ? $ctn['id'] : rand(777, 7777777);
 
             // Title
-            $title = isset($ctn['title']) ? $ctn['title'] : Translate::t('posttypehook.metabox');
+            $title = empty($title) ? Translate::t('posttypehook.metabox') : $title;
+            $id = empty($id) ? Render::urlize($title) : $id;
 
             // Update vars
             $identifier = $slug.'-meta-box-'.$id;
 
             // Add meta box
-            $metabox = new Metabox();
-            $metabox->init($identifier, $slug, $title, [
-                'field' => $field
-            ]);
+            $metabox->init($identifier, $slug);
         }
     }
 
     /**
-     * Hook building custom fields for Post types.
+     * Hook saving custom fields for Post types.
      */
     public function postTypeSave()
     {
@@ -326,28 +317,45 @@ class PosttypeHook implements PosttypeHookInterface
         // Get contents
         $slug = $post->post_type;
 
-        // Check fields and slug
-        if (empty($this->fields) || $slug !== $this->slug) {
+        // Check metaboxes and slug
+        if (empty($this->metaboxes) || $slug !== $this->slug) {
             return;
         }
 
         // Update all metas
-        foreach ($this->fields as $field) {
-            if (!$field) {
+        foreach ($this->metaboxes as $metabox) {
+            if (!$metabox) {
                 continue;
             }
 
-            // Build contents
-            $ctn = (array) $field->getField()->getContents();
-            $hasId = (boolean) $field->getField()->getHasId();
+            // Get contents
+            $id = (integer) $metabox->getMetabox()->getId();
+            $title = (string) $metabox->getMetabox()->getTitle();
+            $fields = (boolean) $metabox->getMetabox()->getFields();
 
-            // Check ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+            // Check fields
+            if (empty($fields)) {
                 continue;
             }
 
-            $value = Request::post($ctn['id']);
-            Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
+            // Get all values
+            foreach ($fields as $field) {
+                if (!$field) {
+                    continue;
+                }
+
+                // Build contents
+                $ctn = (array) $field->getField()->getContents();
+                $hasId = (boolean) $field->getField()->getHasId();
+
+                // Check ID
+                if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+                    continue;
+                }
+
+                $value = Request::post($ctn['id']);
+                Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
+            }
         }
 
         return true;

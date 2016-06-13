@@ -15,14 +15,34 @@ namespace GetOlympus\Hera\Metabox\Controller;
 interface MetaboxInterface
 {
     /**
+     * Build Metabox component.
+     *
+     * @param string    $title
+     * @param array     $fields
+     */
+    public static function build($title, $fields = []);
+
+    /**
+     * Gets the value of instance.
+     *
+     * @return Metabox
+     */
+    public static function getInstance();
+
+    /**
+     * Gets the value of metabox.
+     *
+     * @return MetaboxModel
+     */
+    public function getMetabox();
+
+    /**
      * Initialization.
      *
      * @param string $identifier
      * @param string $slug
-     * @param string $title
-     * @param array $args
      */
-    public function init($identifier, $slug, $title, $args);
+    public function init($identifier, $slug);
 
     /**
      * Add metabox.

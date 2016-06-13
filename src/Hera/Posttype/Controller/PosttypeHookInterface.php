@@ -42,12 +42,12 @@ interface PosttypeHookInterface
     public function postTypeLink($permalink, $post_id, $leavename);
 
     /**
-     * Hook building custom fields for CPTS.
+     * Hook building custom metaboxes for Post types.
      */
-    public function postTypeFieldDisplay();
+    public function postTypeMetaboxesDisplay();
 
     /**
-     * Hook building custom fields for Post types.
+     * Hook saving custom fields for Post types.
      */
     public function postTypeSave();
 

@@ -35,19 +35,62 @@ class Metabox implements MetaboxInterface
     }
 
     /**
+     * Build Metabox component.
+     *
+     * @param string    $title
+     * @param array     $fields
+     */
+    public static function build($title, $fields = [])
+    {
+        // Get instance
+        $metabox = self::getInstance();
+
+        // Check fields
+        if (empty($fields)) {
+            throw new FieldException(Translate::t('metabox.errors.no_fields'));
+        }
+
+        // Define ID
+        $id = Render::urlize($title);
+
+        // Set details
+        $metabox->metabox->setTitle($title);
+        $metabox->metabox->setFields($fields);
+
+        // Get field
+        return $metabox;
+    }
+
+    /**
+     * Gets the value of instance.
+     *
+     * @return Metabox
+     */
+    public static function getInstance()
+    {
+        return new static();
+    }
+
+    /**
+     * Gets the value of metabox.
+     *
+     * @return MetaboxModel
+     */
+    public function getMetabox()
+    {
+        return $this->metabox;
+    }
+
+    /**
      * Initialization.
      *
      * @param string $identifier
      * @param string $slug
-     * @param string $title
-     * @param array $args
      */
-    public function init($identifier, $slug, $title, $args)
+    public function init($identifier, $slug)
     {
         $this->metabox->setId($identifier);
         $this->metabox->setSlug($slug);
-        $this->metabox->setTitle($title);
-        $this->metabox->setArgs($args);
 
         $this->addMetabox();
     }
@@ -64,7 +107,7 @@ class Metabox implements MetaboxInterface
             $this->metabox->getSlug(),
             $this->metabox->getContext(),
             $this->metabox->getPriority(),
-            $this->metabox->getArgs()
+            $this->metabox->getFields()
         );
     }
 
@@ -83,15 +126,24 @@ class Metabox implements MetaboxInterface
         }
 
         // Get field
-        $field = isset($args['args']['field']) ? $args['args']['field'] : null;
+        $fields = isset($args['args']) ? $args['args'] : null;
 
-        // Check if a type is defined
-        if (!$field || empty($field)) {
+        // Check if fields are defined
+        if (!$fields || empty($fields)) {
             throw new MetaboxException(Translate::t('metabox.errors.no_type_is_defined'));
         }
 
-        // Display field content
-        $field->render([], ['post' => $post]);
+        // Display fields
+        foreach ($fields as $field) {
+            if (!$field) {
+                continue;
+            }
+
+            $field->render([], [
+                'post' => $post,
+                'template' => 'metabox'
+            ]);
+        }
 
         // Return post if it is asked
         return isset($post->ID) ? $post->ID : null;

@@ -32,11 +32,6 @@ abstract class Posttype implements PosttypeInterface
     /**
      * @var array
      */
-    protected $fields;
-
-    /**
-     * @var array
-     */
     protected $forbidden_slugs = ['action', 'author', 'order', 'theme'];
 
     /**
@@ -44,6 +39,11 @@ abstract class Posttype implements PosttypeInterface
      * @see https://codex.wordpress.org/Function_Reference/register_post_type#labels
      */
     protected $labels;
+
+    /**
+     * @var array
+     */
+    protected $metaboxes;
 
     /**
      * @var PosttypeModel
@@ -85,7 +85,7 @@ abstract class Posttype implements PosttypeInterface
     {
         // Initialize PosttypeModel
         $this->posttype = new PosttypeModel();
-        $this->posttype->setFields($this->fields);
+        $this->posttype->setMetaboxes($this->metaboxes);
         $this->posttype->setSlug($this->slug);
 
         // Update args on post types except reserved ones
@@ -214,7 +214,7 @@ abstract class Posttype implements PosttypeInterface
         // Store details
         $slug = $this->posttype->getSlug();
         $args = $this->posttype->getArgs();
-        $fields = $this->posttype->getFields();
+        $metaboxes = $this->posttype->getMetaboxes();
 
         // Register post type if not post or page
         if (!in_array($slug, $this->reserved_slugs)) {
@@ -236,7 +236,7 @@ abstract class Posttype implements PosttypeInterface
         $name = isset($args['labels']['name']) ? $args['labels']['name'] : '';
 
         // Works on hook
-        $hook = new PosttypeHook($slug, $name, $fields, $this->reserved_slugs);
+        $hook = new PosttypeHook($slug, $name, $metaboxes, $this->reserved_slugs);
         $this->posttype->setHook($hook);
     }
 
