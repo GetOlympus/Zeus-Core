@@ -65,7 +65,7 @@ class TermHook implements TermHookInterface
 
         // Add custom fields
         if (!empty($this->fields)) {
-            add_action($slug.'_add_form_fields', [$this, 'editFormFields'], 10, 1);
+            add_action($slug.'_add_form_fields', [$this, 'addFormFields'], 10, 1);
         }
 
         // Save custom fields
@@ -95,11 +95,12 @@ class TermHook implements TermHookInterface
      * Hook building custom fields.
      *
      * @param string|object $term
+     * @param string        $mode
      */
-    public function editFormFields($term)
+    public function addFields($term, $mode = 'edit')
     {
-        // Definitions
-        $usedIds = [];
+        // Check mode
+        $mode = in_array($mode, ['add', 'edit']) ? $mode : 'edit';
 
         // Get current
         $isobject = is_object($term);
@@ -135,7 +136,7 @@ class TermHook implements TermHookInterface
             $id = isset($ctn['id']) ? $ctn['id'] : rand(777, 7777777);
 
             // Set terms template
-            $ctn['template'] = 'terms';
+            $ctn['template'] = 'term-'.$mode;
 
             // Display field
             $field->render($ctn, [
@@ -144,6 +145,26 @@ class TermHook implements TermHookInterface
                 'structure' => '%TERM%-%SLUG%'
             ]);
         }
+    }
+
+    /**
+     * Hook building custom fields on term homepage.
+     *
+     * @param string|object $term
+     */
+    public function addFormFields($term)
+    {
+        $this->addFields($term, 'add');
+    }
+
+    /**
+     * Hook building custom fields.
+     *
+     * @param string|object $term
+     */
+    public function editFormFields($term)
+    {
+        $this->addFields($term, 'edit');
     }
 
     /**

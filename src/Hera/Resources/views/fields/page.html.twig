@@ -1,0 +1,12 @@
+{% block header %}{% endblock %}
+
+<div id="{% block id %}{% endblock %}-content" class="olz-field {% block class %}{% endblock %}">
+    <h3 class="olz-title">
+        {% block label %}{% endblock %}
+        {% block overall %}{% endblock %}
+    </h3>
+
+    {% block field %}{% endblock %}
+</div>
+
+{% block footer %}{% endblock %}

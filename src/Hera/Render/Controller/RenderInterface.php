@@ -53,5 +53,5 @@ interface RenderInterface
      * @param array $vars
      * @param string $context
      */
-    public static function view($template, $vars, $context = 'template');
+    public static function view($template, $vars, $context = 'core');
 }

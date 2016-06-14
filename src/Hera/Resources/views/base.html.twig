@@ -1,0 +1,129 @@
+{% set formSection = currentSection ? '&section=' ~ currentSection : '' %}
+{% set formAction = 'admin.php?page=' ~ currentPage ~ formSection ~ '&do=olz-action&from=settings' %}
+{% set submitSection = false %}
+
+{% set fjson = fields|json_encode() %}
+{% set hstyle = '@sectionField\\/section.html.twig' in fjson ? ' olz-section-field' : '' %}
+{% set hstyle = '@searchField\\/search.html.twig' in fjson ? hstyle ~ ' olz-search-field' : hstyle %}
+
+<!-- Olympus -->
+<div class="wrap olz-wrap{{ hstyle }}">
+    <!-- Menu block -->
+    <nav class="olz-main-nav" role="navigation">
+        <a href="admin.php?page={{ identifier }}" class="olz-logo">{{ t_title|raw }}</a>
+
+        {% if identifier != currentPage %}
+            <span class="olz-breadcrumb">
+                <i class="fa fa-long-arrow-right fa-lg"></i> {{ title|raw }}
+            </span>
+
+            {% if subtitle %}
+                <span class="olz-breadcrumb">
+                    <i class="fa fa-long-arrow-right fa-lg"></i> {{ subtitle|raw }}
+                </span>
+            {% endif %}
+        {% endif %}
+    </nav>
+
+    {% if sections %}
+        <!-- Sections -->
+        <h2 class="nav-tab-wrapper">
+            {% for k,s in sections %}
+                {% set tabactive = currentSection == k ? ' nav-tab-active' : '' %}
+                {% set submitSection = currentSection == k and (s.submit is not defined or s.submit == true) ? true : submitSection %}
+                <a href="admin.php?page={{ currentPage }}&section={{ k }}" class="nav-tab{{ tabactive }}">{{ s.title|raw }}</a>
+            {% endfor %}
+        </h2>
+    {% endif %}
+
+    {% if notice %}
+        <!-- Updated block -->
+        {% for n in notice %}
+            <div class="olz-notify notice {{ n[0] }}">
+                <p>{{ n[1]|raw }}</p>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if description %}
+        <!-- Description block -->
+        <p class="olz-description">{{ description|raw }}</p>
+    {% endif %}
+
+    <!-- Main block -->
+    {% if submit or submitSection %}
+        <form method="post" action="{{ formAction|raw }}" enctype="multipart/form-data" class="olz-form">
+            <input type="hidden" name="updated" id="updated" value="true" />
+    {% endif %}
+
+        <div id="poststuff" class="olz-contents">
+            <div id="post-body" class="metabox-holder">
+
+                <!-- Content block -->
+                <div id="post-body-content">
+                    <!-- Content fields -->
+                    {% for field in fields %}
+                        {% set tpl = field.template %}
+                        {% include tpl with field.vars %}
+                    {% endfor %}
+
+                    {% if submit or submitSection %}
+                        <!-- Content save -->
+                        <div id="save_content">
+                            <div class="inside">
+                                <p class="submit">
+                                    <input type="submit" name="submit" class="button button-primary" value="{{ t_update|raw }}" />
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="olz-clear"></div>
+            </div>
+        </div>
+
+    {% if submit or submitSection %}
+        </form>
+    {% endif %}
+
+    <!-- Footer block -->
+    <footer class="olz-footer">
+        <p class="olz-f-copyright">{{ t_copyright|raw }}</p>
+
+        <hr/>
+
+        {% if urls %}
+            <p class="olz-f-links">
+                {{ t_update|raw }}
+                {% for k, u in urls %}
+                    {% if u.target %}&nbsp;&nbsp;&bull;&nbsp;&nbsp;{% elseif loop.index0 > 0 %},{% endif %}
+
+                    {% if u.url %}
+                        <a href="{{ u.url }}" class="{{ k }}" target="{{ u.target ?: '_self' }}"><b>{{ u.label|raw }}</b></a>
+                    {% else %}
+                        {{ u.label|raw }}
+                    {% endif %}
+                {% endfor %}
+            </p>
+        {% endif %}
+
+        <p class="olz-f-quote"><small>{{ t_quote|raw }}</small></p>
+
+        <hr/>
+
+        {% if partners %}
+            <ul class="olz-f-partners">
+                {% for p in partners %}
+                    <li>
+                        <a href="{{ p.url }}" title="{{ p.label|raw }}" class="olz-tooltip" target="_blank">
+                            <img src="{{ p.image }}" alt="{{ p.label|raw }}" />
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </footer>
+
+    <div class="olz-modal-backdrop"></div>
+</div>

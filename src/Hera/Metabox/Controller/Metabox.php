@@ -133,17 +133,19 @@ class Metabox implements MetaboxInterface
             throw new MetaboxException(Translate::t('metabox.errors.no_type_is_defined'));
         }
 
+        $vars = [];
+
         // Display fields
         foreach ($fields as $field) {
             if (!$field) {
                 continue;
             }
 
-            $field->render([], [
-                'post' => $post,
-                'template' => 'metabox'
-            ]);
+            $vars['fields'][] = $field->render(['template' => 'metabox'], ['post' => $post], false);
         }
+
+        // Render view
+        Render::view('metabox.html.twig', $vars, 'metabox');
 
         // Return post if it is asked
         return isset($post->ID) ? $post->ID : null;

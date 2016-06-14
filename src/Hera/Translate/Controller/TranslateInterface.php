@@ -31,10 +31,10 @@ interface TranslateInterface
     /**
      * Translate typo.
      *
-     * @param string $content
-     * @param array $args
-     * @param string $alias
-     * @return Translate
+     * @param   string  $content
+     * @param   array   $args
+     * @param   string  $alias
+     * @return  Translate
      */
     public static function t($content, $args = [], $alias = 'core');
 }

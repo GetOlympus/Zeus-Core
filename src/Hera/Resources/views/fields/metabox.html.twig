@@ -1,0 +1,12 @@
+<tr id="{% block id %}{% endblock %}-content" class="olh-field {% block class %}{% endblock %}">
+    <th style="width:40%">
+        {% block header %}{% endblock %}
+        {% block label %}{% endblock %}
+        {% block overall %}{% endblock %}
+        <p class="olh-description">{% block description %}{% endblock %}</p>
+    </th>
+    <td>
+        {% block field %}{% endblock %}
+        {% block footer %}{% endblock %}
+    </td>
+</tr>

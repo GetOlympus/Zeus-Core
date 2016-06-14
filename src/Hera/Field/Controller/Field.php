@@ -174,20 +174,25 @@ abstract class Field implements FieldInterface
      */
     public function render($contents = [], $details = [], $renderView = true, $context = 'field')
     {
+        // Merge datum
         $contents = array_merge($this->field->getContents(), $contents);
         $details = array_merge($this->field->getDetails(), $details);
-
-        // Get vars
-        $this->getVars($contents, $details);
-        $tpl = [
-            'hasId' => $this->field->getHasId(),
-            'template' => $this->field->getTemplate(),
-            'vars' => $this->field->getVars()
-        ];
 
         // Get context
         $class = new \ReflectionClass(get_class($this));
         $context = strtolower($class->getShortName());
+
+        // Get template to extends
+        $contents['template_path'] = $this->setExtendedTemplate($contents['template']);
+
+        // Get vars and tpl data
+        $this->getVars($contents, $details);
+        $tpl = [
+            'hasId' => $this->field->getHasId(),
+            'template' => $this->field->getTemplate(),
+            'vars' => $this->field->getVars(),
+            'context' => $context
+        ];
 
         // Render view or return values
         if ($renderView) {
@@ -196,5 +201,23 @@ abstract class Field implements FieldInterface
         else {
             return $tpl;
         }
+    }
+
+    /**
+     * Define the right template to extend.
+     *
+     * @param   string  $template
+     * @return  string  $extend_template
+     */
+    public function setExtendedTemplate($template = 'page')
+    {
+        // Define available templates to extends
+        $available = ['page','term-add','term-edit','widget','metabox'];
+
+        // Work on template
+        $twigtpl = in_array($template, $available) ? $template : 'page';
+
+        // Return template to extend
+        return '@core/fields/'.$twigtpl.'.html.twig';
     }
 }

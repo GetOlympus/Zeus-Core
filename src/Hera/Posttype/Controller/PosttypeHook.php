@@ -280,7 +280,7 @@ class PosttypeHook implements PosttypeHookInterface
             // Get contents
             $id = (integer) $metabox->getMetabox()->getId();
             $title = (string) $metabox->getMetabox()->getTitle();
-            $fields = (boolean) $metabox->getMetabox()->getFields();
+            $fields = (array) $metabox->getMetabox()->getFields();
 
             // Check fields
             if (empty($fields)) {
@@ -331,7 +331,7 @@ class PosttypeHook implements PosttypeHookInterface
             // Get contents
             $id = (integer) $metabox->getMetabox()->getId();
             $title = (string) $metabox->getMetabox()->getTitle();
-            $fields = (boolean) $metabox->getMetabox()->getFields();
+            $fields = (array) $metabox->getMetabox()->getFields();
 
             // Check fields
             if (empty($fields)) {

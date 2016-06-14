@@ -71,4 +71,12 @@ interface FieldInterface
      * @param string $context
      */
     public function render($details = [], $renderView = true, $context = 'field');
+
+    /**
+     * Define the right template to extend.
+     *
+     * @param   string  $template
+     * @return  string  $extend_template
+     */
+    public function setExtendedTemplate($template = 'page');
 }

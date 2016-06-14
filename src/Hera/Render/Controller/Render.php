@@ -39,10 +39,11 @@ class Render implements RenderInterface
     {
         // Build all views folders to add
         $paths = [
+            'core'          => OLH_PATH.S.'Resources'.S.'views',
             'field'         => OLH_PATH.S.'Field'.S.'Resources'.S.'views',
+            'metabox'       => OLH_PATH.S.'Metabox'.S.'Resources'.S.'views',
             'notification'  => OLH_PATH.S.'Notification'.S.'Resources'.S.'views',
             'posttype'      => OLH_PATH.S.'Posttype'.S.'Resources'.S.'views',
-            'template'      => OLH_PATH.S.'Template'.S.'Resources'.S.'views',
         ];
 
         /**
@@ -62,7 +63,7 @@ class Render implements RenderInterface
         }
 
         // Build Twig renderer
-        $this->twig = new Twig_Environment($loader, ['cache' => OLH_CACHE]);
+        $this->twig = new Twig_Environment($loader/*, ['cache' => OLH_CACHE]*/);
 
 
         /**
@@ -203,7 +204,7 @@ class Render implements RenderInterface
      * @param array $vars
      * @param string $context
      */
-    public static function view($template, $vars, $context = 'template')
+    public static function view($template, $vars, $context = 'core')
     {
         // Display template
         echo self::getInstance()->twig->render('@'.$context.'/'.$template, $vars);

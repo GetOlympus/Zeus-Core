@@ -91,9 +91,9 @@ class Translate implements TranslateInterface
     /**
      * Noop typo.
      *
-     * @param string $singular
-     * @param string $plural
-     * @return string
+     * @param   string $singular
+     * @param   string $plural
+     * @return  string
      */
     public static function n($singular, $plural)
     {
@@ -103,10 +103,10 @@ class Translate implements TranslateInterface
     /**
      * Translate typo.
      *
-     * @param string $content
-     * @param array $args
-     * @param string $alias
-     * @return Translate
+     * @param   string  $content
+     * @param   array   $args
+     * @param   string  $alias
+     * @return  Translate
      */
     public static function t($content, $args = [], $alias = 'core')
     {

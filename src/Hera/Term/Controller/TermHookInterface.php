@@ -18,6 +18,21 @@ interface TermHookInterface
      * Hook building custom fields.
      *
      * @param string|object $term
+     * @param string        $mode
+     */
+    public function addFields($term, $mode = 'edit');
+
+    /**
+     * Hook building custom fields on term homepage.
+     *
+     * @param string|object $term
+     */
+    public function addFormFields($term);
+
+    /**
+     * Hook building custom fields.
+     *
+     * @param string|object $term
      */
     public function editFormFields($term);
 

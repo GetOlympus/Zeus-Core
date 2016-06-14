@@ -1,6 +1,4 @@
-{% set twigtpl = template and template == 'terms' ? 'terms' : 'pages' %}
-
-{% extends "Layouts/Extends/" ~ twigtpl ~ ".html.twig" %}
+{% extends template_path %}
 
 {% block id %}{{ id }}_text_{{ type }}{% endblock %}
 {% block label %}<label for="{{ id }}">{{ title|raw }}</label>{% endblock %}
@@ -12,7 +10,9 @@
         {% if type == 'range' %}
             <output id="{{ id }}_output">{{ val }}</output>
         {% endif %}
-
-        {% if description %}<p class="olz-description">{{ description|raw }}</p>{% endif %}
     </div>
+{% endblock %}
+
+{% block description %}
+    {{ description|raw }}
 {% endblock %}
