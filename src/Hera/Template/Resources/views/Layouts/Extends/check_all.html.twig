@@ -1,6 +1,0 @@
-{% if count > 2 %}
-    <label for="checkall-{{ id }}" class="olz-checkall">
-        {{ label|raw }}
-        <input type="checkbox" id="checkall-{{ id }}"{{ count == val|length ? ' checked="checked"' : '' }} />
-    </label>
-{% endif %}
