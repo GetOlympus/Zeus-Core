@@ -3,6 +3,7 @@
 namespace GetOlympus\Hera\Posttype\Model;
 
 use GetOlympus\Hera\Posttype\Controller\PosttypeHook;
+use GetOlympus\Hera\Posttype\Model\PosttypeModelInterface;
 
 /**
  * Post type model.
@@ -14,7 +15,7 @@ use GetOlympus\Hera\Posttype\Controller\PosttypeHook;
  *
  */
 
-class PosttypeModel
+class PosttypeModel implements PosttypeModelInterface
 {
     /**
      * @var array

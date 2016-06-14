@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Metabox\Model;
 
+use GetOlympus\Hera\Metabox\Model\MetaboxModelInterface;
+
 /**
  * Metabox model.
  *
@@ -12,7 +14,7 @@ namespace GetOlympus\Hera\Metabox\Model;
  *
  */
 
-class MetaboxModel
+class MetaboxModel implements MetaboxModelInterface
 {
     /**
      * @var array

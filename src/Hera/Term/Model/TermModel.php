@@ -3,6 +3,7 @@
 namespace GetOlympus\Hera\Term\Model;
 
 use GetOlympus\Hera\Term\Controller\TermHook;
+use GetOlympus\Hera\Term\Model\TermModelInterface;
 
 /**
  * Term model.
@@ -14,7 +15,7 @@ use GetOlympus\Hera\Term\Controller\TermHook;
  *
  */
 
-class TermModel
+class TermModel implements TermModelInterface
 {
     /**
      * @var array

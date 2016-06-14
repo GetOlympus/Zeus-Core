@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Ajax\Model;
 
+use GetOlympus\Hera\Ajax\Model\AjaxModelInterface;
+
 /**
  * Ajax model.
  *
@@ -12,7 +14,7 @@ namespace GetOlympus\Hera\Ajax\Model;
  *
  */
 
-class AjaxModel
+class AjaxModel implements AjaxModelInterface
 {
     /**
      * @var function

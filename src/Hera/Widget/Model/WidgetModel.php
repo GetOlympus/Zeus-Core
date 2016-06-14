@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Widget\Model;
 
+use GetOlympus\Hera\Widget\Model\WidgetModelInterface;
+
 /**
  * Widget model.
  *
@@ -12,7 +14,7 @@ namespace GetOlympus\Hera\Widget\Model;
  *
  */
 
-class WidgetModel
+class WidgetModel implements WidgetModelInterface
 {
     /**
      * @var string

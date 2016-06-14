@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Template\Model;
 
+use GetOlympus\Hera\Template\Model\TemplateModelInterface;
+
 /**
  * Template model.
  *
@@ -12,7 +14,7 @@ namespace GetOlympus\Hera\Template\Model;
  *
  */
 
-class TemplateModel
+class TemplateModel implements TemplateModelInterface
 {
     /**
      * @var string

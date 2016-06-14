@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Menu\Model;
 
+use GetOlympus\Hera\Menu\Model\MenuModelInterface;
+
 /**
  * Menu model.
  *
@@ -12,7 +14,7 @@ namespace GetOlympus\Hera\Menu\Model;
  *
  */
 
-class MenuModel
+class MenuModel implements MenuModelInterface
 {
     /**
      * @var string

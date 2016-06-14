@@ -2,6 +2,8 @@
 
 namespace GetOlympus\Hera\Field\Model;
 
+use GetOlympus\Hera\Field\Model\FieldModelInterface;
+
 /**
  * Field model.
  *
@@ -12,7 +14,7 @@ namespace GetOlympus\Hera\Field\Model;
  *
  */
 
-class FieldModel
+class FieldModel implements FieldModelInterface
 {
     /**
      * @var array
