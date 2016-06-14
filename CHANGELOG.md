@@ -1,3 +1,6 @@
+## 0.0.4 (June 14, 2016)
+Use of ModelInterface, change completely the Resources folder with a new organization. Fix bug on metaboxes and fields.
+
 ## 0.0.3 (June 13, 2016)
 Update admin display, allow metaboxes for post types.
 
