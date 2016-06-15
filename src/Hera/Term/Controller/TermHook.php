@@ -135,13 +135,11 @@ class TermHook implements TermHookInterface
             // Id, with a random ID when it's needed
             $id = isset($ctn['id']) ? $ctn['id'] : rand(777, 7777777);
 
-            // Set terms template
-            $ctn['template'] = 'term-'.$mode;
-
             // Display field
             $field->render($ctn, [
                 'prefix' => $slug,
                 'term_id' => $termid,
+                'template' => 'term-'.$mode,
                 'structure' => '%TERM%-%SLUG%'
             ]);
         }

@@ -183,7 +183,8 @@ abstract class Field implements FieldInterface
         $context = strtolower($class->getShortName());
 
         // Get template to extends
-        $contents['template_path'] = $this->setExtendedTemplate($contents['template']);
+        $template = isset($details['template']) ? $details['template'] : '';
+        $contents['template_path'] = $this->setExtendedTemplate($template);
 
         // Get vars and tpl data
         $this->getVars($contents, $details);
@@ -196,7 +197,7 @@ abstract class Field implements FieldInterface
 
         // Render view or return values
         if ($renderView) {
-            Render::view($tpl['template'], $tpl['vars'], $context);
+            Render::view($tpl['template'], $tpl['vars'], $tpl['context']);
         }
         else {
             return $tpl;

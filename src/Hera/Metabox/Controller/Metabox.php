@@ -141,7 +141,10 @@ class Metabox implements MetaboxInterface
                 continue;
             }
 
-            $vars['fields'][] = $field->render(['template' => 'metabox'], ['post' => $post], false);
+            $vars['fields'][] = $field->render([], [
+                'template' => 'metabox',
+                'post' => $post,
+            ], false);
         }
 
         // Render view
