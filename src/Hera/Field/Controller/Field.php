@@ -195,6 +195,10 @@ abstract class Field implements FieldInterface
             'context' => $context
         ];
 
+        // Set error
+        $error = sprintf(Translate::t('field.errors.no_template_found'), $tpl['context'], $tpl['template']);
+        $tpl['vars']['error'] = isset($tpl['vars']['error']) ? $tpl['vars']['error'] : $error;
+
         // Render view or return values
         if ($renderView) {
             Render::view($tpl['template'], $tpl['vars'], $tpl['context']);

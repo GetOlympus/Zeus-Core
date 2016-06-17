@@ -6,3 +6,4 @@ field:
     field_is_unknown: "The defined type <code>%s</code> is unknown."
     field_id_is_not_defined: "The field <code>%s</code> needs an id."
     field_id_already_used: "The field id <code>%s</code> is already in use."
+    no_template_found: "The template <code>@%s/%s</code> has not been found."
