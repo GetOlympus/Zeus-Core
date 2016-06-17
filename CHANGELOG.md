@@ -1,5 +1,9 @@
+## 0.0.6 (June 18, 2016)
+Add new widget twig template, add less vars in grunt task.
+
 ## 0.0.5 (June 17, 2016)
-Add some errors on Twig file rendering, update CSS for admin panel, make external components available and extendable for translation and rendering, work on Option term_id
+Add some errors on Twig file rendering, update CSS for admin panel.
+Make external components available and extendable for translation and rendering, work on Option term_id.
 
 ## 0.0.4 (June 14, 2016)
 Use of ModelInterface, change completely the Resources folder with a new organization. Fix bug on metaboxes and fields.

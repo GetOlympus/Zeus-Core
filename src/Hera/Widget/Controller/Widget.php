@@ -175,6 +175,8 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
             return;
         }
 
+        $vars = [];
+
         // Get fields
         foreach ($this->fields as $field) {
             if (!$field) {
@@ -203,11 +205,15 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
             $ctn['id'] = $this->get_field_id($id);
             $ctn['name'] = $this->get_field_name($id);
 
-            // Display field
-            $field->render($ctn, [
+            // Get render field
+            $vars['fields'][] = $field->render($ctn, [
+                'template' => 'widget',
                 'widget_value' => $value
-            ]);
+            ], false);
         }
+
+        // Render view
+        Render::view('widget.html.twig', $vars, 'widget');
     }
 
     /**

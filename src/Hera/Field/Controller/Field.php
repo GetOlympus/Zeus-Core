@@ -217,7 +217,7 @@ abstract class Field implements FieldInterface
     public function setExtendedTemplate($template = 'page')
     {
         // Define available templates to extends
-        $available = ['page','term-add','term-edit','widget','metabox'];
+        $available = ['metabox','page','term-add','term-edit','widget'];
 
         // Work on template
         $twigtpl = in_array($template, $available) ? $template : 'page';

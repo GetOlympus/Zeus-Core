@@ -44,6 +44,7 @@ class Render implements RenderInterface
             'metabox'       => OLH_PATH.S.'Metabox'.S.'Resources'.S.'views',
             'notification'  => OLH_PATH.S.'Notification'.S.'Resources'.S.'views',
             'posttype'      => OLH_PATH.S.'Posttype'.S.'Resources'.S.'views',
+            'widget'        => OLH_PATH.S.'Widget'.S.'Resources'.S.'views',
         ];
 
         /**
