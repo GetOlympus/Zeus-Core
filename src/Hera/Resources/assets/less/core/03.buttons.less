@@ -5,16 +5,16 @@
  * 03.buttons.less
  */
 
-@newblue: #2c92da;
-
 .wp-core-ui {
     .button,
     .button-primary,
     .button-secondary {
         border-radius: 100px;
         border-width: 0;
+        font-size: 11px;
         padding: 0 24px;
         text-shadow: none;
+        vertical-align: middle;
 
         -webkit-box-shadow: none;
         -moz-box-shadow: none;
@@ -22,7 +22,7 @@
     }
 
     .button-primary {
-        background-color: @newblue;
+        background-color: @loginbutton;
         height: auto;
         padding: 6px 24px;
     }
@@ -43,4 +43,8 @@
     height: auto;
     padding: 6px 24px;
     text-shadow: none;
+}
+
+.spinner {
+    margin-top: 11px;
 }

@@ -5,11 +5,6 @@
  * 15.tables.less
  */
 
-@menubackgroundcolor: #181a21;
-@newred: #e74c3c;
-@newblue: #1297e0;
-@newgreen: #99d537;
-
 /*!
  * Global
  */
@@ -45,7 +40,7 @@ table.fixed {
 .striped > tbody > :nth-child(odd),
 ul.striped > :nth-child(odd),
 .alternate {
-    background-color: fade(@menubackgroundcolor, 1.5%);
+    background-color: fade(@graydarker, 1.5%);
 }
 
 /*!
@@ -70,51 +65,51 @@ ul.striped > :nth-child(odd),
  * Unapprouved
  */
 #the-comment-list .unapproved th.check-column {
-    border-left: 4px solid @newred;
+    border-left: 4px solid @red;
 }
 #the-comment-list .unapproved th, #the-comment-list .unapproved td {
-    background-color: fade(@newred, 5%);
+    background-color: fade(@red, 5%);
 }
 
 /*!
  * Active
  */
 .plugins .active th.check-column, .plugin-update-tr.active td {
-    border-left: 4px solid @newblue;
+    border-left: 4px solid @blue;
 }
 .plugins .active td, .plugins .active th {
-    background-color: fade(@newblue, 5%);
+    background-color: fade(@blue, 5%);
 }
 .plugins .active.update th.check-column, .plugins .active.update+.plugin-update-tr .plugin-update {
-    border-left: 4px solid @newred;
+    border-left: 4px solid @red;
 }
 .plugins .active.update td, .plugins .active.update th, tr.active.update+tr.plugin-update-tr .plugin-update, tr.active+tr.plugin-update-tr:not(.updated) .plugin-update .update-message {
-    background-color: fade(@newred, 5%);
+    background-color: fade(@red, 5%);
 }
 .plugin-card .install-now:before, .plugin-card .update-now:before, .plugin-update-tr .update-message:before {
-    color: @newred;
+    color: @red;
 }
 .plugin-update-tr .update-message {
     line-height: 20px;
 
     &.updated-message {
-        background-color: fade(@newblue, 15%);
+        background-color: fade(@blue, 15%);
     }
 }
 .plugin-card .install-now:before, .plugin-card .update-now:before, .plugin-update-tr.updated .update-message.updated-message:before {
-    color: @newgreen;
+    color: @green;
 }
 
 /*!
  * Post comment awaiting
  */
 .column-response .post-com-count-pending, .column-comments .post-com-count-pending {
-    background-color: @newred;
+    background-color: @red;
 }
 
 /*!
  * Extension to update
  */
 .plugin-update-tr .update-message:before, .plugin-card .update-now:before, .plugin-card .install-now:before {
-    color: @newred;
+    color: @red;
 }

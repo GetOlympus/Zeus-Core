@@ -5,38 +5,40 @@
  * @since 0.0.2
  */
 
-var grunt = require('grunt'),
-  _ = grunt.util._,
-  _configs = {
-    //normal
-    white: '#ffffff',
-    black: '#000000',
-    blue: '#2ea2cc',
-    danger: '#dd3d36',
-    orange: '#ffba00',
-    red: '#ff0000',
-    //gray
-    graylighter: '#fbfbfb',
-    graylight: '#f1f1f1',
-    gray: '#aaaaaa',
-    graymedium: '#999999',
-    graydark: '#282c37',
-    graydarker: '#303231',
-    grayblack: '#111111',
-    //fonts
-    fontmain: '"Open Sans",sans-serif',
-    fontsecond: 'Verdana,arial,sans-serif',
-    fonticon: 'FontAwesome'
-  };
+var _configs = {
+  // normal
+  white: '#ffffff',
+  black: '#000000',
+  blue: '#1297e0',
+  red: '#e74c3c',
+  green: '#99d537',
+
+  // gray
+  graylighter: '#fdfdfd',
+  graylight: '#f1f1f1',
+  graymedium: '#999999',
+  graydark: '#282c37',
+  graydarker: '#181a21',
+
+  // fonts
+  fontmain: '"Open Sans",sans-serif',
+  fonticon: 'FontAwesome',
+
+  // login
+  loginerror: '#dd3d36',
+  loginmessage: '#2ea2cc',
+  loginbutton: '#2c92da',
+
+  // skeleton
+  skelsilver: '#cbced3',
+  skelmetal: '#67717d',
+  skelblack: '#282c38'
+};
 
 module.exports = {
   core: {
     options: {
-      modifyVars: _.extend({}, {
-        primary: '#75cd45',
-        second: '#e5f7e5',
-        main: '#55bb3a'
-      }, _configs),
+      modifyVars: _configs,
       optimization: 2
     },
     files: {
@@ -49,10 +51,7 @@ module.exports = {
 
   login: {
     options: {
-      modifyVars: _.extend({}, {
-        primary: '#75cd45',
-        main: '#55bb3a'
-      }, _configs),
+      modifyVars: _configs,
       optimization: 2
     },
     files: {

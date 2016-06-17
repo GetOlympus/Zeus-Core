@@ -5,12 +5,6 @@
  * 07.adminmenu.less
  */
 
-@menubackgroundcolor: #181a21;
-@headertextcolor: #282c38;
-@menutextcolor: #67717d;
-@newred: #e74c3c;
-@newblue: #1297e0;
-
 /*!
  * WP admin menu display
  */
@@ -18,7 +12,7 @@
     margin: 32px 0;
 
     &:before {
-        color: @menutextcolor;
+        color: @skelmetal;
         content: "\f120";
         display: block;
         font-family: dashicons;
@@ -35,7 +29,7 @@
     }
 
     a {
-        color: @menutextcolor;
+        color: @skelmetal;
     }
 }
 
@@ -64,7 +58,7 @@
 }
 
 #adminmenu div.wp-menu-image:before {
-    color: @menutextcolor;
+    color: @skelmetal;
 }
 
 #dashboard_right_now .versions .b, #post-status-display, #post-visibility-display, #adminmenu .wp-submenu li.current, #adminmenu .wp-submenu li.current a, #adminmenu .wp-submenu li.current a:hover, .media-item .percent, .plugins .name, #pass-strength-result.strong, #pass-strength-result.short, #ed_reply_toolbar #ed_reply_strong, .item-controls .item-order a, .feature-filter .feature-name, #adminmenu .wp-has-current-submenu ul > li > a, .folded #adminmenu li.menu-top .wp-submenu > li > a, #adminmenu .wp-not-current-submenu li > a, .folded #adminmenu .wp-has-current-submenu li > a {
@@ -75,10 +69,10 @@
  * WP menu notifications
  */
 #adminmenu .awaiting-mod, #adminmenu .update-plugins {
-    background-color: @newred;
+    background-color: @red;
 }
 #adminmenu li.current a .awaiting-mod, #adminmenu li a.wp-has-current-submenu .update-plugins {
-    background-color: @newblue;
+    background-color: @blue;
 }
 
 /*!
@@ -89,7 +83,7 @@
     padding: 0 10px;
 }
 #adminmenu div.separator {
-    background-color: @menubackgroundcolor;
+    background-color: @graydarker;
     height: 1px;
 }
 
@@ -97,7 +91,7 @@
  * WP sub menu display
  */
 #adminmenu .wp-submenu a {
-    color: @menutextcolor;
+    color: @skelmetal;
 }
 
 #adminmenu .wp-has-current-submenu ul > li > a {
@@ -106,15 +100,15 @@
 }
 
 #adminmenu .wp-has-current-submenu .wp-submenu.sub-open, #adminmenu .wp-submenu, #adminmenu a.wp-has-current-submenu:focus+.wp-submenu, .no-js li.wp-has-current-submenu:hover .wp-submenu {
-    background-color: @menubackgroundcolor;
+    background-color: @graydarker;
 }
 #adminmenu .wp-has-current-submenu.opensub .wp-submenu, #adminmenu a.wp-has-current-submenu:focus + .wp-submenu {
-    background-color: @headertextcolor;
+    background-color: @skelblack;
 }
 
 ul#adminmenu a.wp-has-current-submenu:after {
     border-right-color: @white;
 }
 ul#adminmenu>li.current>a.current:after, #adminmenu li.wp-has-submenu.wp-not-current-submenu.opensub:hover:after {
-    border-right-color: @menubackgroundcolor;
+    border-right-color: @graydarker;
 }

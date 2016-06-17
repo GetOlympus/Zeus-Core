@@ -6,8 +6,6 @@
  */
 
 @height: 32px;
-@menubackgroundcolor: #181a21;
-@menutextcolor: #67717d;
 
 /*!
  * WP admin bar display
@@ -29,14 +27,14 @@
     }
     .quicklinks .menupop ul li a,
     .quicklinks .menupop.hover ul li a {
-        color: @menutextcolor;
+        color: @skelmetal;
     }
 
     .ab-top-menu > li.hover > .ab-item,
     .menupop .ab-sub-wrapper, .shortlink-input,
     &:not(.mobile) .ab-top-menu > li:hover > .ab-item,
     .ab-top-menu > li.hover > .ab-item {
-        background-color: @menubackgroundcolor;
+        background-color: @graydarker;
     }
 
     #wp-admin-bar-my-account.with-avatar #wp-admin-bar-user-actions > li {
@@ -54,6 +52,6 @@
     .ab-icon:before,
     .ab-item:before,
     #adminbarsearch:before {
-        color: @menutextcolor;
+        color: @skelmetal;
     }
 }

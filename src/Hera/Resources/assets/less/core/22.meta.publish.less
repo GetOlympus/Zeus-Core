@@ -1,0 +1,51 @@
+/*!
+ * Copyright 2016 Achraf Chouk
+ * Achraf Chouk (https://github.com/crewstyle)
+ *
+ * 22.meta.publish.less
+ */
+
+/*!
+ * Main block
+ */
+#minor-publishing-actions {
+    text-align: center;
+}
+#minor-publishing-actions .preview {
+    float: none;
+}
+
+#misc-publishing-actions {
+    font-weight: 200;
+}
+#misc-publishing-actions label[for=post_status]:before, #post-body #visibility:before, #post-body .misc-pub-revisions:before, .curtime #timestamp:before, span.wp-media-buttons-icon:before {
+    display: none;
+}
+#post-status-display, #post-visibility-display {
+    font-weight: 700;
+}
+
+/*!
+ * Second block
+ */
+#major-publishing-actions {
+    background-color: @white;
+    padding: 10px 0;
+    position: relative;
+}
+
+#delete-action {
+    bottom: -15px;
+    float: none;
+    font-size: 10px;
+    position: absolute;
+    right: 0;
+}
+#publishing-action {
+    float: none;
+    text-align: left;
+
+    .spinner {
+        float: right;
+    }
+}
