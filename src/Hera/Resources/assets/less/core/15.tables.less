@@ -8,6 +8,7 @@
 @menubackgroundcolor: #181a21;
 @newred: #e74c3c;
 @newblue: #1297e0;
+@newgreen: #99d537;
 
 /*!
  * Global
@@ -83,6 +84,25 @@ ul.striped > :nth-child(odd),
 }
 .plugins .active td, .plugins .active th {
     background-color: fade(@newblue, 5%);
+}
+.plugins .active.update th.check-column, .plugins .active.update+.plugin-update-tr .plugin-update {
+    border-left: 4px solid @newred;
+}
+.plugins .active.update td, .plugins .active.update th, tr.active.update+tr.plugin-update-tr .plugin-update, tr.active+tr.plugin-update-tr:not(.updated) .plugin-update .update-message {
+    background-color: fade(@newred, 5%);
+}
+.plugin-card .install-now:before, .plugin-card .update-now:before, .plugin-update-tr .update-message:before {
+    color: @newred;
+}
+.plugin-update-tr .update-message {
+    line-height: 20px;
+
+    &.updated-message {
+        background-color: fade(@newblue, 15%);
+    }
+}
+.plugin-card .install-now:before, .plugin-card .update-now:before, .plugin-update-tr.updated .update-message.updated-message:before {
+    color: @newgreen;
 }
 
 /*!

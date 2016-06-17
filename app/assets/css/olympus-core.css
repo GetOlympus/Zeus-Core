@@ -71,7 +71,7 @@
  * Unapprouved
  */#the-comment-list .unapproved th.check-column{border-left:4px solid #e74c3c}#the-comment-list .unapproved td,#the-comment-list .unapproved th{background-color:rgba(231,76,60,.05)}/*!
  * Active
- */.plugin-update-tr.active td,.plugins .active th.check-column{border-left:4px solid #1297e0}.plugins .active td,.plugins .active th{background-color:rgba(18,151,224,.05)}/*!
+ */.plugin-update-tr.active td,.plugins .active th.check-column{border-left:4px solid #1297e0}.plugins .active td,.plugins .active th{background-color:rgba(18,151,224,.05)}.plugins .active.update th.check-column,.plugins .active.update+.plugin-update-tr .plugin-update{border-left:4px solid #e74c3c}.plugins .active.update td,.plugins .active.update th,tr.active+tr.plugin-update-tr:not(.updated) .plugin-update .update-message,tr.active.update+tr.plugin-update-tr .plugin-update{background-color:rgba(231,76,60,.05)}.plugin-update-tr .update-message{line-height:20px}.plugin-update-tr .update-message.updated-message{background-color:rgba(18,151,224,.15)}.plugin-card .install-now:before,.plugin-card .update-now:before,.plugin-update-tr.updated .update-message.updated-message:before{color:#99d537}/*!
  * Post comment awaiting
  */.column-comments .post-com-count-pending,.column-response .post-com-count-pending{background-color:#e74c3c}/*!
  * Extension to update
