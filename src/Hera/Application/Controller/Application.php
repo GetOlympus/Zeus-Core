@@ -74,6 +74,7 @@ abstract class Application implements ApplicationInterface
         $this->classname = strtolower($class->getShortName());
 
         // Initialize all components
+        $this->setExternals();
         $this->setVars();
         $this->init();
     }
@@ -318,6 +319,11 @@ abstract class Application implements ApplicationInterface
             register_widget($service);
         }
     }
+
+    /**
+     * Prepare externals.
+     */
+    abstract protected function setExternals();
 
     /**
      * Prepare variables.

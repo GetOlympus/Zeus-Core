@@ -113,7 +113,7 @@ abstract class Hera extends Application
     public function __construct()
     {
         // Components to load
-        $this->externals = [
+        $this->externals = array_merge($this->externals, [
             // Hera field components
             'Background'                => 'GetOlympus\Field\Background',
             'Checkbox'                  => 'GetOlympus\Field\Checkbox',
@@ -136,27 +136,14 @@ abstract class Hera extends Application
             'Toggle'                    => 'GetOlympus\Field\Toggle',
             'Upload'                    => 'GetOlympus\Field\Upload',
             'Wordpress'                 => 'GetOlympus\Field\Wordpress',
-        ];
-
-        /**
-         * Update identifier.
-         *
-         * @param string $identifier
-         * @return string $identifier
-         *
-         * @since 0.0.1
-         */
-        $this->identifier = apply_filters('olh_hera_identifier', 'olympus');
+        ]);
 
         // Use parent constructor
         parent::__construct();
-
-        // Work on externals
-        $this->setExternals();
     }
 
     /**
-     * Work on externals
+     * Prepare externals.
      */
     protected function setExternals()
     {
@@ -185,7 +172,7 @@ abstract class Hera extends Application
         });
 
         // Register all vendor translations
-        add_filter('olh_translate_resource', function ($yamls) use ($externals){
+        add_filter('olh_translate_resources', function ($yamls) use ($externals){
             foreach ($externals as $alias => $path) {
                 $yamls[$path.'languages'] = $alias.'field';
             }

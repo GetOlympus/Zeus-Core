@@ -63,7 +63,7 @@ class Translate implements TranslateInterface
          * @param   array $yamls
          * @return  array $yamls
          */
-        $yamls = apply_filters('olh_translate_resource', $yamls);
+        $yamls = apply_filters('olh_translate_resources', $yamls);
 
         // Define Translator
         $this->translator = new Translator($lang);
