@@ -102,15 +102,13 @@ class TermHook implements TermHookInterface
         // Check mode
         $mode = in_array($mode, ['add', 'edit']) ? $mode : 'edit';
 
-        // Get current
-        $isobject = is_object($term);
-        $slug = $isobject ? $term->taxonomy : $term;
-        $termid = $isobject ? $term->term_id : 0;
-
         // Check fields
         if (empty($this->fields)) {
             return;
         }
+
+        // Get current
+        $term = is_object($term) ? $term : get_term($term);
 
         // Get fields
         foreach ($this->fields as $field) {
@@ -132,15 +130,11 @@ class TermHook implements TermHookInterface
                 continue;
             }
 
-            // Id, with a random ID when it's needed
-            $id = isset($ctn['id']) ? $ctn['id'] : rand(777, 7777777);
-
             // Display field
             $field->render($ctn, [
-                'prefix' => $slug,
-                'term_id' => $termid,
-                'template' => 'term-'.$mode,
-                'structure' => '%TERM%-%SLUG%'
+                'structure' => '%TERM%-%SLUG%',
+                'template'  => 'term-'.$mode,
+                'term'      => $term,
             ]);
         }
     }

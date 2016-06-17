@@ -96,14 +96,11 @@ class Option implements OptionInterface
         }
 
         // Term field?
-        $term_id = isset($details['term_id']) ? $details['term_id'] : 0;
+        $term = isset($details['term']) ? $details['term'] : 0;
 
         // Term metaboxes
-        if (!empty($term_id)) {
-            $term = get_term($term_id);
-            $slug = $term->slug;
-
-            $value = self::getTermMeta($term_id, $slug.'-'.$id, $default);
+        if (!empty($term)) {
+            $value = self::getTermMeta($term->term_id, $term->taxonomy.'-'.$id, $default);
             $value = empty($value) ? $default : $value;
 
             return !is_array($value) ? stripslashes($value) : $value;
@@ -114,8 +111,7 @@ class Option implements OptionInterface
 
         // Widget metaboxes
         if (!empty($widget_value)) {
-            $value = $widget_value;
-            return !is_array($value) ? stripslashes($value) : $value;
+            return !is_array($widget_value) ? stripslashes($widget_value) : $widget_value;
         }
 
         // Default action
