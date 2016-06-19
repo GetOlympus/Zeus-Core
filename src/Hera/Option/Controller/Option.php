@@ -69,92 +69,6 @@ class Option implements OptionInterface
     }
 
     /**
-     * Retrieve field value
-     *
-     * @param array     $details
-     * @param object    $default
-     * @param string    $id
-     * @param boolean   $multiple
-     * @return mixed    $value
-     */
-    public static function getFieldValue($details, $default, $id = '', $multiple = false)
-    {
-        // Check id
-        if (empty($id)) {
-            return null;
-        }
-
-        // Post field?
-        $post = isset($details['post']) ? $details['post'] : 0;
-
-        // Post metaboxes
-        if (!empty($post)) {
-            $value = self::getPostMeta($post->ID, $post->post_type.'-'.$id);
-            $value = empty($value) ? $default : $value;
-
-            return !is_array($value) ? stripslashes($value) : $value;
-        }
-
-        // Term field?
-        $term = isset($details['term']) ? $details['term'] : 0;
-
-        // Term metaboxes
-        if (!empty($term)) {
-            $value = self::getTermMeta($term->term_id, $term->taxonomy.'-'.$id, $default);
-            $value = empty($value) ? $default : $value;
-
-            return !is_array($value) ? stripslashes($value) : $value;
-        }
-
-        // Widget field?
-        $widget_value = isset($details['widget_value']) ? $details['widget_value'] : '';
-
-        // Widget metaboxes
-        if (!empty($widget_value)) {
-            return !is_array($widget_value) ? stripslashes($widget_value) : $widget_value;
-        }
-
-        // Default action
-        $option = isset($details['option']) ? $details['option'] : '';
-        $value = !empty($option) ? self::get($option, $default) : $default;
-
-        return !is_array($value) ? stripslashes($value) : $value;
-    }
-
-    /**
-     * Force update a value into post options without transient
-     *
-     * @param string    $post_id
-     * @param string    $option
-     * @return mixed    $value
-     */
-    public static function getPostMeta($post_id, $option)
-    {
-        return get_post_meta($post_id, $option, true);
-    }
-
-    /**
-     * Force update a value into term options without transient
-     *
-     * @param string    $term_id
-     * @param string    $option
-     * @param mixed     $default
-     * @return mixed    $value
-     */
-    public static function getTermMeta($term_id, $option, $default = '')
-    {
-        if (function_exists('get_term_meta')) {
-            // WP 4.4
-            $value = get_term_meta($term_id, $option, true);
-        } else {
-            // Default
-            $value = self::get($option, $default);
-        }
-
-        return $value;
-    }
-
-    /**
      * Set a value into options
      *
      * @param string    $option
@@ -185,7 +99,7 @@ class Option implements OptionInterface
     }
 
     /**
-     * Force update a value into options without transient
+     * Force update a value into options
      *
      * @param string $option
      * @param string $value
@@ -196,7 +110,117 @@ class Option implements OptionInterface
     }
 
     /**
-     * Force update a value into post options without transient
+     * Retrieve field value
+     *
+     * @param array     $details
+     * @param object    $default
+     * @param string    $id
+     * @param boolean   $multiple
+     * @return mixed    $value
+     */
+    public static function getFieldValue($details, $default, $id = '', $multiple = false)
+    {
+        // Check id
+        if (empty($id)) {
+            return null;
+        }
+
+        // ~
+
+        // Post field?
+        $post = isset($details['post']) ? $details['post'] : 0;
+
+        // Post metaboxes
+        if (!empty($post)) {
+            $value = self::getPostMeta($post->ID, $post->post_type.'-'.$id);
+            $value = empty($value) ? $default : $value;
+
+            return !is_array($value) ? stripslashes($value) : $value;
+        }
+
+        // ~
+
+        // Term field?
+        $term = isset($details['term']) ? $details['term'] : 0;
+
+        // Term metaboxes
+        if (!empty($term)) {
+            $value = self::getTermMeta($term->term_id, $term->taxonomy.'-'.$id, $default);
+            $value = empty($value) ? $default : $value;
+
+            return !is_array($value) ? stripslashes($value) : $value;
+        }
+
+        // ~
+
+        // User field?
+        $user = isset($details['user']) ? $details['user'] : 0;
+
+        // Term metaboxes
+        if (!empty($user)) {
+            $value = self::getAuthorMeta($user->ID, $id);
+            $value = empty($value) ? $default : $value;
+
+            return !is_array($value) ? stripslashes($value) : $value;
+        }
+
+        // ~
+
+        // Widget field?
+        $widget_value = isset($details['widget_value']) ? $details['widget_value'] : '';
+
+        // Widget metaboxes
+        if (!empty($widget_value)) {
+            return !is_array($widget_value) ? stripslashes($widget_value) : $widget_value;
+        }
+
+        // ~
+
+        // Default action
+        $option = isset($details['option']) ? $details['option'] : '';
+        $value = !empty($option) ? self::get($option, $default) : $default;
+
+        return !is_array($value) ? stripslashes($value) : $value;
+    }
+
+    /**
+     * Get a value from user options
+     *
+     * @param string    $user_id
+     * @param string    $option
+     * @return mixed    $value
+     */
+    public static function getAuthorMeta($user_id, $option)
+    {
+        return get_the_author_meta($option, $user_id);
+    }
+
+    /**
+     * Force update a value into user options
+     *
+     * @param string $user_id
+     * @param string $option
+     * @param string $value
+     */
+    public static function updateAuthorMeta($user_id, $option, $value)
+    {
+        update_usermeta($user_id, $option, $value);
+    }
+
+    /**
+     * Get a value from post options
+     *
+     * @param string    $post_id
+     * @param string    $option
+     * @return mixed    $value
+     */
+    public static function getPostMeta($post_id, $option)
+    {
+        return get_post_meta($post_id, $option, true);
+    }
+
+    /**
+     * Force update a value into post options
      *
      * @param string $post_id
      * @param string $option
@@ -208,7 +232,28 @@ class Option implements OptionInterface
     }
 
     /**
-     * Force update a value into term options without transient
+     * Get a value from term options
+     *
+     * @param string    $term_id
+     * @param string    $option
+     * @param mixed     $default
+     * @return mixed    $value
+     */
+    public static function getTermMeta($term_id, $option, $default = '')
+    {
+        if (function_exists('get_term_meta')) {
+            // WP 4.4
+            $value = get_term_meta($term_id, $option, true);
+        } else {
+            // Default
+            $value = self::get($option, $default);
+        }
+
+        return $value;
+    }
+
+    /**
+     * Force update a value into term options
      *
      * @param string $term_id
      * @param string $option

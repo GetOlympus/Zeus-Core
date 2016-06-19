@@ -5,7 +5,7 @@ namespace GetOlympus\Hera\Term\Exception;
 use Exception;
 
 /**
- * Post type exception.
+ * Term exception.
  *
  * @package Olympus Hera
  * @subpackage Term\Exception

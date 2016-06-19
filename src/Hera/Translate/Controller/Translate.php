@@ -54,6 +54,7 @@ class Translate implements TranslateInterface
             OLH_PATH.S.'Posttype'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Template'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Term'.S.'Resources'.S.'languages' => 'core',
+            OLH_PATH.S.'User'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Widget'.S.'Resources'.S.'languages' => 'core',
         ];
 
