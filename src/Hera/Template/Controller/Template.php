@@ -219,7 +219,7 @@ class Template implements TemplateInterface
         // Build urls
         $urls = [
             'capabilities' => [
-                'url' => current_user_can(OLH_WP_CAP_MAX) 
+                'url' => current_user_can(OLH_WP_CAP) 
                     ? admin_url('admin.php?page='.$identifier.'&do=olz-action&from=footer&make=capabilities') : '',
                 'label' => Translate::t('template.capabilities'),
             ],

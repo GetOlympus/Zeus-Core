@@ -24,32 +24,11 @@ interface FieldInterface
     public static function build($id, $contents = [], $details = []);
 
     /**
-     * Gets the value of field.
-     *
-     * @return FieldModel
-     */
-    public function getField();
-
-    /**
-     * Define if field has an ID or not.
-     *
-     * @return boolean $hasId
-     */
-    public static function getHasId();
-
-    /**
      * Gets the value of instance.
      *
      * @return Field
      */
     public static function getInstance();
-
-    /**
-     * Define if field is authorized or not.
-     *
-     * @return boolean $isAuthorized
-     */
-    public static function getIsAuthorized();
 
     /**
      * Retrieve field value

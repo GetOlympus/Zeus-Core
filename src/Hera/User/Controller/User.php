@@ -19,16 +19,6 @@ use GetOlympus\Hera\User\Model\UserModel;
 abstract class User implements UserInterface
 {
     /**
-     * @var array
-     */
-    protected $fields = [];
-
-    /**
-     * @var string
-     */
-    protected $title = '';
-
-    /**
      * @var UserModel
      */
     protected $user;
@@ -38,25 +28,25 @@ abstract class User implements UserInterface
      */
     public function __construct()
     {
+        // Initialize UserModel
+        $this->user = new UserModel();
+
         // Initialize
         $this->setVars();
         $this->init();
     }
 
     /**
-     * Build TermModel and initialize hook.
+     * Build UserModel and initialize hook.
      */
     public function init()
     {
+        $fields = $this->user->getFields();
+
         // Check fields
-        if (empty($this->fields)) {
+        if (empty($fields)) {
             return;
         }
-
-        // Initialize UserModel
-        $this->user = new UserModel();
-        $this->user->setFields($this->fields);
-        $this->user->setTitle($this->title);
 
         // Register user
         $this->register();

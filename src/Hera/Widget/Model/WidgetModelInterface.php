@@ -14,6 +14,7 @@ namespace GetOlympus\Hera\Widget\Model;
 
 interface WidgetModelInterface
 {
+
     /**
      * Gets the value of classname.
      *
@@ -63,18 +64,66 @@ interface WidgetModelInterface
     public function setIdentifier($identifier);
 
     /**
-     * Gets the value of options.
+     * Gets the The "height" key is never used. For more informations:.
      *
      * @return array
      */
     public function getOptions();
 
     /**
-     * Sets the value of options.
+     * Sets the The "height" key is never used. For more informations:.
      *
      * @param array $options the options
      *
      * @return self
      */
     public function setOptions(array $options);
+
+    /**
+     * Gets the value of settings.
+     *
+     * @return array
+     */
+    public function getSettings();
+
+    /**
+     * Sets the value of settings.
+     *
+     * @param array $settings the settings
+     *
+     * @return self
+     */
+    public function setSettings(array $settings);
+
+    /**
+     * Gets the value of template.
+     *
+     * @return string
+     */
+    public function getTemplate();
+
+    /**
+     * Sets the value of template.
+     *
+     * @param string $template the template
+     *
+     * @return self
+     */
+    public function setTemplate($template);
+
+    /**
+     * Gets the value of title.
+     *
+     * @return string
+     */
+    public function getTitle();
+
+    /**
+     * Sets the value of title.
+     *
+     * @param string $title the title
+     *
+     * @return self
+     */
+    public function setTitle($title);
 }

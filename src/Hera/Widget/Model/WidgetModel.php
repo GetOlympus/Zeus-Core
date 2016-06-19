@@ -32,9 +32,30 @@ class WidgetModel implements WidgetModelInterface
     protected $identifier;
 
     /**
+     * The "height" key is never used. For more informations:
+     * @see https://core.trac.wordpress.org/browser/tags/4.5.2/src/wp-includes/widgets.php#L490
+     *
      * @var array
      */
-    protected $options;
+    protected $options = [
+        'height'    => 200,
+        'width'     => 250,
+    ];
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
+
+    /**
+     * @var string
+     */
+    protected $template;
+
+    /**
+     * @var string
+     */
+    protected $title;
 
     /**
      * Gets the value of classname.
@@ -109,7 +130,7 @@ class WidgetModel implements WidgetModelInterface
     }
 
     /**
-     * Gets the value of options.
+     * Gets the The "height" key is never used. For more informations:.
      *
      * @return array
      */
@@ -119,7 +140,7 @@ class WidgetModel implements WidgetModelInterface
     }
 
     /**
-     * Sets the value of options.
+     * Sets the The "height" key is never used. For more informations:.
      *
      * @param array $options the options
      *
@@ -128,6 +149,78 @@ class WidgetModel implements WidgetModelInterface
     public function setOptions(array $options)
     {
         $this->options = $options;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of settings.
+     *
+     * @return array
+     */
+    public function getSettings()
+    {
+        return $this->settings;
+    }
+
+    /**
+     * Sets the value of settings.
+     *
+     * @param array $settings the settings
+     *
+     * @return self
+     */
+    public function setSettings(array $settings)
+    {
+        $this->settings = $settings;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of template.
+     *
+     * @return string
+     */
+    public function getTemplate()
+    {
+        return $this->template;
+    }
+
+    /**
+     * Sets the value of template.
+     *
+     * @param string $template the template
+     *
+     * @return self
+     */
+    public function setTemplate($template)
+    {
+        $this->template = $template;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of title.
+     *
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * Sets the value of title.
+     *
+     * @param string $title the title
+     *
+     * @return self
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
 
         return $this;
     }

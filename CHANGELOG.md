@@ -1,5 +1,5 @@
 ## 0.0.7 (June 19, 2016)
-Add User custom fields integration.
+Add User custom fields integration, remove <Section> useless field, make all protected vars in models strictly, update Hera main class.
 
 ## 0.0.6 (June 18, 2016)
 Add new widget twig template, add less vars in grunt task.

@@ -25,40 +25,13 @@ abstract class Term implements TermInterface
 {
     /**
      * @var array
-     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
-     */
-    protected $args;
-
-    /**
-     * @var array
-     */
-    protected $fields;
-
-    /**
-     * @var array
      */
     protected $forbidden_slugs = ['attachment', 'attachment_id', 'author', 'author_name', 'calendar', 'cat', 'category__and', 'category__in', 'category__not_in', 'category_name', 'comments_per_page', 'comments_popup', 'customize_messenger_channel', 'customized', 'cpage', 'day', 'debug', 'error', 'exact', 'feed', 'hour', 'link_category', 'm', 'minute', 'monthnum', 'more', 'name', 'nav_menu', 'nonce', 'nopaging', 'offset', 'order', 'orderby', 'p', 'page', 'page_id', 'paged', 'pagename', 'pb', 'perm', 'post', 'post__in', 'post__not_in', 'post_format', 'post_mime_type', 'post_status', 'post_type', 'posts', 'posts_per_archive_page', 'posts_per_page', 'preview', 'robots', 's', 'search', 'second', 'sentence', 'showposts', 'static', 'subpost', 'subpost_id', 'tag', 'tag__and', 'tag__in', 'tag__not_in', 'tag_id', 'tag_slug__and', 'tag_slug__in', 'taxonomy', 'tb', 'term', 'theme', 'type', 'w', 'withcomments', 'withoutcomments', 'year'];
 
     /**
      * @var array
-     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
-     */
-    protected $labels;
-
-    /**
-     * @var array
      */
     protected $reserved_slugs = ['category', 'post_tag'];
-
-    /**
-     * @var string
-     */
-    protected $posttype;
-
-    /**
-     * @var string
-     */
-    protected $slug;
 
     /**
      * @var TermModel
@@ -70,16 +43,8 @@ abstract class Term implements TermInterface
      */
     public function __construct()
     {
-        // Update slug
-        $this->slug = Render::urlize($this->slug);
-
-        // Check forbidden slugs
-        if (in_array($this->slug, $this->forbidden_slugs)) {
-            throw new TermException(Translate::t('term.errors.slug_is_forbidden'));
-        }
-
-        // Check post type association
-        $this->posttype = empty($this->posttype) ? 'post' : $this->posttype;
+        // Initialize TermModel
+        $this->term = new TermModel();
 
         // Initialize
         $this->setVars();
@@ -91,36 +56,51 @@ abstract class Term implements TermInterface
      */
     public function init()
     {
-        // Initialize TermModel
-        $this->term = new TermModel();
-        $this->term->setFields($this->fields);
-        $this->term->setPosttype($this->posttype);
-        $this->term->setSlug($this->slug);
+        // Update slug
+        $slug = Render::urlize($this->term->getSlug());
+        $this->term->setSlug($slug);
+
+        // Check forbidden slugs
+        if (in_array($slug, $this->forbidden_slugs)) {
+            throw new TermException(Translate::t('term.errors.slug_is_forbidden'));
+        }
+
+        // Check post type association
+        $posttype = $this->term->getPosttype();
+
+        // Association with post by default
+        if ($posttype) {
+            $this->term->setPosttype('post');
+        }
 
         // Update args on terms except reserved ones
-        if (!in_array($this->slug, $this->reserved_slugs)) {
+        if (!in_array($slug, $this->reserved_slugs)) {
             // Check if term already exists
-            if (term_exists($this->slug)) {
+            if (term_exists($slug)) {
                 throw new TermException(Translate::t('term.errors.slug_already_exists'));
             }
 
+            $args = $this->term->getArgs();
+            $labels = $this->term->getLabels();
+
             // Initialize plural and singular vars
-            $this->labels['name'] = isset($this->labels['name']) ? $this->labels['name'] : '';
-            $this->labels['singular_name'] = isset($this->labels['singular_name']) ? $this->labels['singular_name'] : '';
+            $labels['name'] = isset($labels['name']) ? $labels['name'] : '';
+            $labels['singular_name'] = isset($labels['singular_name']) ? $labels['singular_name'] : '';
 
             // Check label for all except reserved ones
-            if (empty($this->labels['name']) || empty($this->labels['singular_name'])) {
+            if (empty($labels['name']) || empty($labels['singular_name'])) {
                 throw new TermException(Translate::t('term.errors.missing_singular_or_plural'));
             }
 
-            $this->args = array_merge($this->defaultArgs(), $this->args);
-            $this->args['labels'] = array_merge(
-                $this->defaultLabels($this->labels['name'], $this->labels['singular_name']),
-                $this->labels
+            $args = array_merge($this->defaultArgs(), $args);
+            $args['labels'] = array_merge(
+                $this->defaultLabels($labels['name'], $labels['singular_name']),
+                $labels
             );
 
             // Update TermModel args
-            $this->term->setArgs($this->args);
+            $this->term->setArgs($args);
+            $this->term->setLabels($labels);
         }
 
         // Register term
@@ -202,10 +182,10 @@ abstract class Term implements TermInterface
     public function register()
     {
         // Store details
-        $slug = $this->term->getSlug();
         $args = $this->term->getArgs();
         $fields = $this->term->getFields();
         $posttype = $this->term->getPosttype();
+        $slug = $this->term->getSlug();
 
         $is_single = 'single' === $args['choice'] ? true : false;
 

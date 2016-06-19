@@ -19,6 +19,7 @@ class PosttypeModel implements PosttypeModelInterface
 {
     /**
      * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_post_type#Arguments
      */
     protected $args;
 
@@ -26,6 +27,12 @@ class PosttypeModel implements PosttypeModelInterface
      * @var PosttypeHook
      */
     protected $hook;
+
+    /**
+     * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_post_type#labels
+     */
+    protected $labels;
 
     /**
      * @var array
@@ -81,6 +88,30 @@ class PosttypeModel implements PosttypeModelInterface
     public function setHook(PosttypeHook $hook)
     {
         $this->hook = $hook;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of labels.
+     *
+     * @return array
+     */
+    public function getLabels()
+    {
+        return $this->labels;
+    }
+
+    /**
+     * Sets the value of labels.
+     *
+     * @param array $labels the labels
+     *
+     * @return self
+     */
+    public function setLabels(array $labels)
+    {
+        $this->labels = $labels;
 
         return $this;
     }

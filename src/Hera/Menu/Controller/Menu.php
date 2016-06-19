@@ -57,7 +57,7 @@ abstract class Menu implements MenuInterface
             'sections' => [],
 
             // Options
-            'capabilities' => OLH_WP_CAP_MAX,
+            'capabilities' => OLH_WP_CAP,
             'adminbar' => false,
         ];
 
@@ -114,7 +114,7 @@ abstract class Menu implements MenuInterface
             'title' => Translate::t('menu.child.defaults.title'),
             'name' => Translate::t('menu.child.defaults.name'),
             'sections' => [],
-            'capabilities' => OLH_WP_CAP_MAX,
+            'capabilities' => OLH_WP_CAP,
             'adminbar' => true,
         ];
 

@@ -25,25 +25,8 @@ abstract class Posttype implements PosttypeInterface
 {
     /**
      * @var array
-     * @see https://codex.wordpress.org/Function_Reference/register_post_type#Arguments
-     */
-    protected $args;
-
-    /**
-     * @var array
      */
     protected $forbidden_slugs = ['action', 'author', 'order', 'theme'];
-
-    /**
-     * @var array
-     * @see https://codex.wordpress.org/Function_Reference/register_post_type#labels
-     */
-    protected $labels;
-
-    /**
-     * @var array
-     */
-    protected $metaboxes;
 
     /**
      * @var PosttypeModel
@@ -56,22 +39,12 @@ abstract class Posttype implements PosttypeInterface
     protected $reserved_slugs = ['post', 'page', 'attachment', 'revision', 'nav_menu_item'];
 
     /**
-     * @var string
-     */
-    protected $slug;
-
-    /**
      * Constructor.
      */
     public function __construct()
     {
-        // Update slug
-        $this->slug = Render::urlize($this->slug);
-
-        // Check forbidden slugs
-        if (in_array($this->slug, $this->forbidden_slugs)) {
-            throw new PosttypeException(Translate::t('posttype.errors.slug_is_forbidden'));
-        }
+        // Initialize PosttypeModel
+        $this->posttype = new PosttypeModel();
 
         // Initialize
         $this->setVars();
@@ -83,35 +56,43 @@ abstract class Posttype implements PosttypeInterface
      */
     public function init()
     {
-        // Initialize PosttypeModel
-        $this->posttype = new PosttypeModel();
-        $this->posttype->setMetaboxes($this->metaboxes);
-        $this->posttype->setSlug($this->slug);
+        // Update slug
+        $slug = Render::urlize($this->posttype->getSlug());
+        $this->posttype->setSlug($slug);
+
+        // Check forbidden slugs
+        if (in_array($slug, $this->forbidden_slugs)) {
+            throw new PosttypeException(Translate::t('posttype.errors.slug_is_forbidden'));
+        }
 
         // Update args on post types except reserved ones
-        if (!in_array($this->slug, $this->reserved_slugs)) {
+        if (!in_array($slug, $this->reserved_slugs)) {
             // Check if post type already exists
-            if (post_type_exists($this->slug)) {
+            if (post_type_exists($slug)) {
                 throw new PosttypeException(Translate::t('posttype.errors.slug_already_exists'));
             }
 
+            $args = $this->posttype->getArgs();
+            $labels = $this->posttype->getLabels();
+
             // Initialize plural and singular vars
-            $this->labels['name'] = isset($this->labels['name']) ? $this->labels['name'] : '';
-            $this->labels['singular_name'] = isset($this->labels['singular_name']) ? $this->labels['singular_name'] : '';
+            $labels['name'] = isset($labels['name']) ? $labels['name'] : '';
+            $labels['singular_name'] = isset($labels['singular_name']) ? $labels['singular_name'] : '';
 
             // Check label for all except reserved ones
-            if (empty($this->labels['name']) || empty($this->labels['singular_name'])) {
+            if (empty($labels['name']) || empty($labels['singular_name'])) {
                 throw new PosttypeException(Translate::t('posttype.errors.term_is_not_defined'));
             }
 
-            $this->args = array_merge($this->defaultArgs(), $this->args);
-            $this->args['labels'] = array_merge(
-                $this->defaultLabels($this->labels['name'], $this->labels['singular_name']),
-                $this->labels
+            $args = array_merge($this->defaultArgs(), $args);
+            $args['labels'] = array_merge(
+                $this->defaultLabels($labels['name'], $labels['singular_name']),
+                $labels
             );
 
             // Update PosttypeModel args
-            $this->posttype->setArgs($this->args);
+            $this->posttype->setArgs($args);
+            $this->posttype->setLabels($labels);
         }
 
         // Register post type
@@ -212,9 +193,9 @@ abstract class Posttype implements PosttypeInterface
     public function register()
     {
         // Store details
-        $slug = $this->posttype->getSlug();
         $args = $this->posttype->getArgs();
         $metaboxes = $this->posttype->getMetaboxes();
+        $slug = $this->posttype->getSlug();
 
         // Register post type if not post or page
         if (!in_array($slug, $this->reserved_slugs)) {

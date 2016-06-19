@@ -79,38 +79,6 @@ interface FieldModelInterface
     public function setHasId($hasId);
 
     /**
-     * Gets the value of includes.
-     *
-     * @return array
-     */
-    public function getIncludes();
-
-    /**
-     * Sets the value of includes.
-     *
-     * @param array $includes the includes
-     *
-     * @return self
-     */
-    public function setIncludes(array $includes);
-
-    /**
-     * Gets the value of isAuthorized.
-     *
-     * @return boolean
-     */
-    public function getIsAuthorized();
-
-    /**
-     * Sets the value of isAuthorized.
-     *
-     * @param boolean $isAuthorized the is authorized
-     *
-     * @return self
-     */
-    public function setIsAuthorized($isAuthorized);
-
-    /**
      * Gets the value of template.
      *
      * @return string

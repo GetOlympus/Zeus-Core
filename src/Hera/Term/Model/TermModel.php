@@ -19,6 +19,7 @@ class TermModel implements TermModelInterface
 {
     /**
      * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
      */
     protected $args;
 
@@ -31,6 +32,12 @@ class TermModel implements TermModelInterface
      * @var TermHook
      */
     protected $hook;
+
+    /**
+     * @var array
+     * @see https://codex.wordpress.org/Function_Reference/register_taxonomy#Arguments
+     */
+    protected $labels;
 
     /**
      * @var string
@@ -110,6 +117,30 @@ class TermModel implements TermModelInterface
     public function setHook(TermHook $hook)
     {
         $this->hook = $hook;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of labels.
+     *
+     * @return array
+     */
+    public function getLabels()
+    {
+        return $this->labels;
+    }
+
+    /**
+     * Sets the value of labels.
+     *
+     * @param array $labels the labels
+     *
+     * @return self
+     */
+    public function setLabels(array $labels)
+    {
+        $this->labels = $labels;
 
         return $this;
     }

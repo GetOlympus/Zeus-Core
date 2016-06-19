@@ -8,7 +8,7 @@ use GetOlympus\Hera\Application\Controller\Application;
  * OLYMPUS HERA
  *
  * Library Name: Olympus Hera
- * Version: 0.0.1
+ * Version: 0.0.7
  * Snippet URI: https://github.com/GetOlympus/Hera
  * Read The Doc: http://olympus.readme.io/
  * Description: Core bundles of the Olympus framework, used by Olympus Zeus
@@ -46,49 +46,40 @@ if (!defined('ABSPATH')) {
     die('You are not authorized to directly access to this page');
 }
 
-
 // The path
 define('OLH_PATH', dirname(__FILE__));
-// Directory
-defined('S') or define('S', DIRECTORY_SEPARATOR);
 
 /**
  * Customizable constants.
  */
 
-// The value defining if we are in admin panel or not
+// Directory separator
+defined('S')                or define('S', DIRECTORY_SEPARATOR);
+// Defining if we are in admin panel or not
 defined('OLH_ISADMIN')      or define('OLH_ISADMIN', is_admin());
-// The nonce ajax value
+// Nonce ajax value
 defined('OLH_NONCE')        or define('OLH_NONCE', 'olympus-hera-ajax-nonce');
-// The blog home url
+// Blog home url
 defined('OLH_HOME')         or define('OLH_HOME', get_option('home'));
-// The language blog
+// Language blog
 defined('OLH_LOCAL')        or define('OLH_LOCAL', get_bloginfo('language'));
-// The URI
+// URI
 defined('OLH_URI')          or define('OLH_URI', OLH_HOME.'/app/assets/');
-// The Twig cache folder
+// Twig cache folder
 defined('OLH_CACHE')        or define('OLH_CACHE', dirname(dirname(OLH_PATH)).S.'app'.S.'cache'.S);
 
 /**
  * Main constants.
  */
 
-// The context used to define if the PHP files can be executed
-define('OLH_CONTEXT', 'olympus-hera');
-// The current version
-define('OLH_VERSION', '0.0.1');
-// The current version
-define('OLH_VERSION_NUM', str_replace('.', '', OLH_VERSION));
-// The current baseline
+// Current version
+define('OLH_VERSION', '0.0.7');
+// Current baseline
 define('OLH_QUOTE', 'I\'m a damsel, I\'m in distress, I can handle this. Have a nice day. ~ Hercules');
-// The value defining if theme uses post thumbnails or not
-define('OLH_CAN_THUMB', current_theme_supports('post-thumbnails'));
-// The value defining if theme uses post thumbnails or not
-define('OLH_CAN_UPLOAD', current_user_can('upload_files'));
-// The capabilities
+// Context used to define if the PHP files can be executed
+define('OLH_CONTEXT', 'olympus-hera');
+// Capabilities
 define('OLH_WP_CAP', 'edit_posts');
-// The custom capabilities
-define('OLH_WP_CAP_MAX', 'manage_tea_theme_options');
 
 
 /**
@@ -107,8 +98,6 @@ abstract class Hera extends Application
 {
     /**
      * Constructor.
-     *
-     * @since 0.0.1
      */
     public function __construct()
     {
@@ -129,7 +118,6 @@ abstract class Hera extends Application
             'Multiselect'               => 'GetOlympus\Field\Multiselect',
             'Radio'                     => 'GetOlympus\Field\Radio',
             'Rte'                       => 'GetOlympus\Field\Rte',
-            'Section'                   => 'GetOlympus\Field\Section',
             'Select'                    => 'GetOlympus\Field\Select',
             'Text'                      => 'GetOlympus\Field\Text',
             'Textarea'                  => 'GetOlympus\Field\Textarea',

@@ -345,8 +345,8 @@ class PosttypeHook implements PosttypeHookInterface
                 }
 
                 // Build contents
-                $ctn = (array) $field->getField()->getContents();
-                $hasId = (boolean) $field->getField()->getHasId();
+                $ctn = (array) $field->field->getContents();
+                $hasId = (boolean) $field->field->getHasId();
 
                 // Check ID
                 if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {

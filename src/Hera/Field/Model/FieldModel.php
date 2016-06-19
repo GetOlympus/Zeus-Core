@@ -29,7 +29,7 @@ class FieldModel implements FieldModelInterface
     /**
      * @var string
      */
-    protected $faIcon;
+    protected $faIcon = 'fa-circle-o';
 
     /**
      * @var boolean
@@ -37,19 +37,9 @@ class FieldModel implements FieldModelInterface
     protected $hasId = true;
 
     /**
-     * @var array
-     */
-    protected $includes = [];
-
-    /**
-     * @var boolean
-     */
-    protected $isAuthorized = true;
-
-    /**
      * @var string
      */
-    protected $template;
+    protected $template = 'field.html.twig';
 
     /**
      * @var array
@@ -148,54 +138,6 @@ class FieldModel implements FieldModelInterface
     public function setHasId($hasId)
     {
         $this->hasId = $hasId;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of includes.
-     *
-     * @return array
-     */
-    public function getIncludes()
-    {
-        return $this->includes;
-    }
-
-    /**
-     * Sets the value of includes.
-     *
-     * @param array $includes the includes
-     *
-     * @return self
-     */
-    public function setIncludes(array $includes)
-    {
-        $this->includes = $includes;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of isAuthorized.
-     *
-     * @return boolean
-     */
-    public function getIsAuthorized()
-    {
-        return $this->isAuthorized;
-    }
-
-    /**
-     * Sets the value of isAuthorized.
-     *
-     * @param boolean $isAuthorized the is authorized
-     *
-     * @return self
-     */
-    public function setIsAuthorized($isAuthorized)
-    {
-        $this->isAuthorized = $isAuthorized;
 
         return $this;
     }

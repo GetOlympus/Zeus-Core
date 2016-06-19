@@ -28,29 +28,9 @@ abstract class Field implements FieldInterface
     protected $field;
 
     /**
-     * @var string
-     */
-    protected $faIcon = 'fa-circle-o';
-
-    /**
-     * @var boolean
-     */
-    protected $hasId = true;
-
-    /**
      * @var Field
      */
     protected static $instance = null;
-
-    /**
-     * @var boolean
-     */
-    protected $isAuthorized = true;
-
-    /**
-     * @var string
-     */
-    protected $template = 'field.html.twig';
 
     /**
      * Constructor.
@@ -59,10 +39,8 @@ abstract class Field implements FieldInterface
     {
         $this->field = new FieldModel();
 
-        $this->field->setFaIcon($this->faIcon);
-        $this->field->setHasId($this->hasId);
-        $this->field->setIsAuthorized($this->isAuthorized);
-        $this->field->setTemplate($this->template);
+        // Initialize
+        $this->setVars();
     }
 
     /**
@@ -83,15 +61,15 @@ abstract class Field implements FieldInterface
 
         // Set class
         $class = get_class($field);
+        $hasid = $field->field->getHasId();
 
         // Check ID
-        if ($field->getHasId() && empty($id)) {
-            // Error
+        if ($hasid && empty($id)) {
             throw new FieldException(sprintf(Translate::t('field.errors.field_id_is_not_defined'), $class));
-        } else if ($field->getHasId()) {
-            // Set ID
-            $contents['id'] = $id;
         }
+
+        // Set ID
+        $contents['id'] = $id;
 
         // Set contents and details
         $field->field->setContents($contents);
@@ -102,26 +80,6 @@ abstract class Field implements FieldInterface
     }
 
     /**
-     * Gets the value of field.
-     *
-     * @return FieldModel
-     */
-    public function getField()
-    {
-        return $this->field;
-    }
-
-    /**
-     * Define if field has an ID or not.
-     *
-     * @return boolean $hasId
-     */
-    public static function getHasId()
-    {
-        return self::getInstance()->hasId;
-    }
-
-    /**
      * Gets the value of instance.
      *
      * @return Field
@@ -129,16 +87,6 @@ abstract class Field implements FieldInterface
     public static function getInstance()
     {
         return new static();
-    }
-
-    /**
-     * Define if field is authorized or not.
-     *
-     * @return boolean $isAuthorized
-     */
-    public static function getIsAuthorized()
-    {
-        return self::getInstance()->isAuthorized;
     }
 
     /**
@@ -155,14 +103,6 @@ abstract class Field implements FieldInterface
     {
         return Option::getFieldValue($details, $default, $id, $multiple);
     }
-
-    /**
-     * Prepare HTML component.
-     *
-     * @param array $content
-     * @param array $details
-     */
-    abstract protected function getVars($content, $details = []);
 
     /**
      * Render HTML component.
@@ -202,8 +142,7 @@ abstract class Field implements FieldInterface
         // Render view or return values
         if ($renderView) {
             Render::view($tpl['template'], $tpl['vars'], $tpl['context']);
-        }
-        else {
+        } else {
             return $tpl;
         }
     }
@@ -225,4 +164,17 @@ abstract class Field implements FieldInterface
         // Return template to extend
         return '@core/fields/'.$twigtpl.'.html.twig';
     }
+
+    /**
+     * Prepare HTML component.
+     *
+     * @param array $content
+     * @param array $details
+     */
+    abstract protected function getVars($content, $details = []);
+
+    /**
+     * Prepare variables.
+     */
+    abstract protected function setVars();
 }

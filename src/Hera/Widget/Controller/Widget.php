@@ -6,6 +6,7 @@ use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Translate\Controller\Translate;
 use GetOlympus\Hera\Widget\Controller\WidgetInterface;
+use GetOlympus\Hera\Widget\Model\WidgetModel;
 
 /**
  * Gets its own widget.
@@ -24,42 +25,6 @@ if (!class_exists('WP_Widget') && defined('ABSPATH')) {
 abstract class Widget extends \WP_Widget implements WidgetInterface
 {
     /**
-     * @var string
-     */
-    protected $classname;
-
-    /**
-     * @var array
-     */
-    protected $fields;
-
-    /**
-     * The "height" key is never used. For more informations:
-     * @see https://core.trac.wordpress.org/browser/tags/4.5.2/src/wp-includes/widgets.php#L490
-     *
-     * @var array
-     */
-    protected $options = [
-        'height'    => 200,
-        'width'     => 250,
-    ];
-
-    /**
-     * @var array
-     */
-    protected $settings = [];
-
-    /**
-     * @var string
-     */
-    protected $template;
-
-    /**
-     * @var string
-     */
-    protected $title;
-
-    /**
      * @var WidgetModel
      */
     protected $widget;
@@ -69,30 +34,11 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      */
     public function __construct()
     {
-        // Update vars
-        $this->setVars();
-
-        // Set classname
-        $this->classname = strtolower(Render::urlize($this->classname));
-
-        // Update default settings
-        $this->settings = array_merge([
-            'classname' => $this->classname,
-            'description' => Translate::t('widget.settings.description'),
-        ], $this->settings);
-
-        // Create the widget
-        parent::__construct(
-            $this->classname,
-            $this->title,
-            $this->settings,
-            $this->options
-        );
-
-        // Add alternative options
-        $this->alt_option_name = $this->classname;
+        // Initialize TermModel
+        $this->widget = new WidgetModel();
 
         // Initialize
+        $this->setVars();
         $this->init();
     }
 
@@ -101,6 +47,29 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      */
     public function init()
     {
+        // Update classname
+        $classname = Render::urlize($this->widget->getClassname());
+        $classname = strtolower($classname);
+        $this->widget->setClassname($classname);
+
+        // Update default settings
+        $settings = $this->widget->getSettings();
+        $this->widget->setSettings(array_merge([
+            'classname' => $classname,
+            'description' => Translate::t('widget.settings.description'),
+        ], $settings));
+
+        // Create the widget
+        parent::__construct(
+            $this->widget->getClassname(),
+            $this->widget->getTitle(),
+            $this->widget->getSettings(),
+            $this->widget->getOptions()
+        );
+
+        // Update alternative options
+        $this->alt_option_name = $classname;
+
         // Add theme actions
         add_action('save_post', [&$this, 'flush_widget_cache']);
         add_action('deleted_post', [&$this, 'flush_widget_cache']);
@@ -123,7 +92,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
          * @return string $classname
          */
         wp_cache_set(
-            $this->classname,
+            $this->widget->getClassname(),
             [$args['widget_id'] => $content],
             'widget'
         );
@@ -138,7 +107,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      **/
     public function flush_widget_cache()
     {
-        wp_cache_delete($this->classname, 'widget');
+        wp_cache_delete($this->widget->getClassname(), 'widget');
     }
 
     /**
@@ -149,7 +118,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      */
     public function get_cached_widget($args)
     {
-        $cache = wp_cache_get($this->classname, 'widget');
+        $cache = wp_cache_get($this->widget->getClassname(), 'widget');
 
         if (!is_array($cache)) {
             $cache = [];
@@ -170,22 +139,24 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
      */
     public function form($instance)
     {
+        $fields = $this->widget->getFields();
+
         // Check fields
-        if (empty($this->fields)) {
+        if (empty($fields)) {
             return;
         }
 
         $vars = [];
 
         // Get fields
-        foreach ($this->fields as $field) {
+        foreach ($fields as $field) {
             if (!$field) {
                 continue;
             }
 
             // Build contents
-            $ctn = (array) $field->getField()->getContents();
-            $hasId = (boolean) $field->getField()->getHasId();
+            $ctn = (array) $field->field->getContents();
+            $hasId = (boolean) $field->field->getHasId();
 
             // Check fields
             if (empty($ctn) || !$hasId) {
@@ -240,8 +211,8 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
         $alloptions = wp_cache_get('alloptions', 'options');
 
         // Delete options.
-        if (isset($alloptions[$this->classname])) {
-            delete_option($this->classname);
+        if (isset($alloptions[$this->widget->getClassname()])) {
+            delete_option($this->widget->getClassname());
         }
 
         // Return new data.
@@ -287,7 +258,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
         global $wpdb;
 
         // Try to get cached widget.
-        $cache = wp_cache_get($this->classname, 'widget');
+        $cache = wp_cache_get($this->widget->getClassname(), 'widget');
 
         if (!is_array($cache)) {
             $cache = [];
@@ -311,7 +282,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
 
         // Title
         $title = empty($instance['title']) ? '' : $instance['title'];
-        $title = apply_filters('widget_title', $title, $instance, $this->classname);
+        $title = apply_filters('widget_title', $title, $instance, $this->widget->getClassname());
 
         // Display content widget
         $this->widget_start($args, $instance, $title);
@@ -320,7 +291,7 @@ abstract class Widget extends \WP_Widget implements WidgetInterface
 
         // Renew the cache.
         $cache[$args['widget_id']] = ob_get_flush();
-        wp_cache_set($this->classname, $cache, 'widget');
+        wp_cache_set($this->widget->getClassname(), $cache, 'widget');
     }
 
     /**
