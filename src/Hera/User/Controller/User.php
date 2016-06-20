@@ -3,6 +3,7 @@
 namespace GetOlympus\Hera\User\Controller;
 
 use GetOlympus\Hera\User\Controller\UserInterface;
+use GetOlympus\Hera\User\Controller\UserHook;
 use GetOlympus\Hera\User\Exception\UserException;
 use GetOlympus\Hera\User\Model\UserModel;
 
