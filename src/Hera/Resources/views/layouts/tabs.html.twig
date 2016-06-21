@@ -1,6 +1,6 @@
 {% set class = class ? ' ' ~ class : '' %}
 
-<div class="olz-screen-meta olz-field-container">
+<div class="olh-screen-meta olh-field-container">
     <div class="contextual-help-wrap">
         <div class="contextual-help-back"></div>
 
@@ -11,7 +11,7 @@
                         {% set active = i == 1 ? ' class="active"' : '' %}
 
                         <li{{ active|raw }}>
-                            <a href="#olz-{{ item.id }}">{{ item.name|raw }}</a>
+                            <a href="#olh-{{ item.id }}">{{ item.name|raw }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -30,9 +30,9 @@
                 {% for i,item in items %}
                     {% set active = i == 1 ? ' active' : '' %}
 
-                    <div id="olz-{{ item.id }}" class="help-tab-content{{ active }}">
+                    <div id="olh-{{ item.id }}" class="help-tab-content{{ active }}">
                         {{ item.contents|raw }}
-                        <br class="olz-clear"/>
+                        <br class="olh-clear"/>
                     </div>
                 {% endfor %}
 

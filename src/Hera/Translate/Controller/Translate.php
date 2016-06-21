@@ -47,9 +47,9 @@ class Translate implements TranslateInterface
 
         // Build all YAML files to add
         $yamls = [
+            OLH_PATH.S.'AdminPage'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Configuration'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Field'.S.'Resources'.S.'languages' => 'core',
-            OLH_PATH.S.'Menu'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Metabox'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Posttype'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Template'.S.'Resources'.S.'languages' => 'core',

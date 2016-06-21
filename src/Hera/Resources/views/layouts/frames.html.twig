@@ -1,9 +1,9 @@
-<div class="olz-media-frame media-frame">
+<div class="olh-media-frame media-frame">
     <div class="media-frame-router">
         <div class="media-router">
             {% for i,item in items %}
                 {% set active = i == 1 ? ' active' : '' %}
-                <a href="#olz-{{ item.id }}" class="media-menu-item{{ active }}">{{ item.name|raw }}</a>
+                <a href="#olh-{{ item.id }}" class="media-menu-item{{ active }}">{{ item.name|raw }}</a>
             {% endfor %}
         </div>
     </div>
@@ -12,9 +12,9 @@
         {% for i,item in items %}
             {% set active = i == 1 ? ' active' : '' %}
 
-            <div id="olz-{{ item.id }}" class="media-menu-content{{ active }}">
+            <div id="olh-{{ item.id }}" class="media-menu-content{{ active }}">
                 {{ item.contents|raw }}
-                <br class="olz-clear"/>
+                <br class="olh-clear"/>
             </div>
         {% endfor %}
     </div>

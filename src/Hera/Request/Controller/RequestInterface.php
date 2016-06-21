@@ -15,9 +15,11 @@ namespace GetOlympus\Hera\Request\Controller;
 interface RequestInterface
 {
     /**
-     * Return request value.
+     * Return $_GET value.
      *
-     * @param string $param
+     * @param   string $param
+     * @param   string $default
+     * @return  string $value
      */
     public static function get($param, $default = '');
 
@@ -29,9 +31,11 @@ interface RequestInterface
     public static function getCurrentSlug();
 
     /**
-     * Return request value.
+     * Return $_POST value.
      *
-     * @param string $param
+     * @param   string $param
+     * @param   string $default
+     * @return  string $value
      */
     public static function post($param, $default = '');
 }

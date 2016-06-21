@@ -96,11 +96,8 @@ abstract class Application implements ApplicationInterface
         // Register configurations
         $this->initConfigs();
 
-        // Register post types / terms / and more
-        $this->registerComponents($this->paths, 'paths');
-
-        // Register widgets
-        $this->registerComponents($this->widgets, 'widgets', 'widgets_init', 'registerWidgets');
+        // Register post types / terms / widgets / admin pages and more
+        $this->registerComponents();
     }
 
     /**
@@ -147,12 +144,12 @@ abstract class Application implements ApplicationInterface
     public function getComponents()
     {
         $components = [
+            'AdminPage'                 => 'GetOlympus\Hera\AdminPage\Controller\AdminPage',
             'Ajax'                      => 'GetOlympus\Hera\Ajax\Controller\Ajax',
             'Configuration'             => 'GetOlympus\Hera\Configuration\Controller\Configuration',
             'Error'                     => 'GetOlympus\Hera\Error\Controller\Error',
             'Field'                     => 'GetOlympus\Hera\Field\Controller\Field',
             'Hook'                      => 'GetOlympus\Hera\Hook\Controller\Hook',
-            'Menu'                      => 'GetOlympus\Hera\Menu\Controller\Menu',
             'Metabox'                   => 'GetOlympus\Hera\Metabox\Controller\Metabox',
             'Notification'              => 'GetOlympus\Hera\Notification\Controller\Notification',
             'Option'                    => 'GetOlympus\Hera\Option\Controller\Option',
@@ -249,48 +246,48 @@ abstract class Application implements ApplicationInterface
 
     /**
      * Register components
-     *
-     * @param array     $objects
-     * @param string    $filename
-     * @param string    $action
-     * @param string    $function
      */
-    public function registerComponents($objects, $filename, $action = 'init', $function = 'registerObjects')
+    public function registerComponents()
     {
         // Check objects
-        if (empty($objects)) {
+        if (empty($this->paths)) {
             return;
         }
 
-        // Work on file path
-        $filepath = OLH_CACHE.$this->classname.'-'.$filename.'-components.php';
+        // Work on file paths
+        foreach ($this->paths as $action => $paths) {
+            // Work on paths
+            $paths = !is_array($paths) ? [$paths] : $paths;
 
-        // Check cache file
-        if (!file_exists($filepath)) {
-            // Store all in cache file
-            ClassMapGenerator::dump($objects, $filepath);
-        }
+            // Work on file name
+            $filepath = OLH_CACHE.$this->classname.'-'.$action.'-components.php';
 
-        $classmap = include_once $filepath;
+            // Check cache file
+            if (!file_exists($filepath)) {
+                // Store all in cache file
+                ClassMapGenerator::dump($paths, $filepath);
+            }
 
-        // Instanciate new ClassLoader to load components
-        $loader = new MapClassLoader($classmap);
+            $classmap = include_once $filepath;
 
-        // Register components
-        $loader->register();
+            // Instanciate new ClassLoader to load and register components
+            $loader = new MapClassLoader($classmap);
+            $loader->register();
 
-        // Get current hook
-        $current = current_filter();
+            // Get current hook
+            $current = current_filter();
+            $function = in_array($action, ['widget_init']) ? 'registerWidgets' : 'registerObjects';
 
-        // Register post type
-        if ($action === $current) {
-            // Already inside an `init` action
-            $this->$function($classmap);
-        } else {
-            // Outside an `init` action
-            add_action($action, function () use ($classmap, $function){
+            // Register post type
+            if ($action === $current) {
+                // Already inside an `init` action
                 $this->$function($classmap);
-            });
+            } else {
+                // Outside an `init` action
+                add_action($action, function () use ($classmap, $function){
+                    $this->$function($classmap);
+                });
+            }
         }
     }
 

@@ -4,7 +4,7 @@
 {% block label %}<label for="{{ id }}">{{ title|raw }}</label>{% endblock %}
 
 {% block field %}
-    <div class="olz-field-content text {{ type }}">
+    <div class="olh-field-content text {{ type }}">
         <input type="{{ type }}" name="{{ id }}" id="{{ id }}" value="{{ val|raw }}" {{ attributes|raw }} />
 
         {% if type == 'range' %}

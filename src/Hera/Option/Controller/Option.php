@@ -74,7 +74,7 @@ class Option implements OptionInterface
      * @param string    $option
      * @param string    $value
      * @param string    $type
-     * @param integer   $type
+     * @param integer   $id
      */
     public static function set($option, $value, $type = '', $id = 0)
     {
@@ -110,6 +110,27 @@ class Option implements OptionInterface
     }
 
     /**
+     * Clean details on value
+     *
+     * @param array     $value
+     * @return mixed    $value
+     */
+    public static function cleanValue($value)
+    {
+        if (is_array($value)) {
+            $new_value = [];
+
+            foreach ($value as $k => $v) {
+                $new_value[$k] = stripslashes($v);
+            }
+
+            return $new_value;
+        }
+
+        return stripslashes($value);
+    }
+
+    /**
      * Retrieve field value
      *
      * @param array     $details
@@ -135,7 +156,7 @@ class Option implements OptionInterface
             $value = self::getPostMeta($post->ID, $post->post_type.'-'.$id);
             $value = empty($value) ? $default : $value;
 
-            return !is_array($value) ? stripslashes($value) : $value;
+            return self::cleanValue($value);
         }
 
         // ~
@@ -148,7 +169,7 @@ class Option implements OptionInterface
             $value = self::getTermMeta($term->term_id, $term->taxonomy.'-'.$id, $default);
             $value = empty($value) ? $default : $value;
 
-            return !is_array($value) ? stripslashes($value) : $value;
+            return self::cleanValue($value);
         }
 
         // ~
@@ -161,7 +182,7 @@ class Option implements OptionInterface
             $value = self::getAuthorMeta($user->ID, $id);
             $value = empty($value) ? $default : $value;
 
-            return !is_array($value) ? stripslashes($value) : $value;
+            return self::cleanValue($value);
         }
 
         // ~
@@ -171,16 +192,16 @@ class Option implements OptionInterface
 
         // Widget metaboxes
         if (!empty($widget_value)) {
-            return !is_array($widget_value) ? stripslashes($widget_value) : $widget_value;
+            return self::cleanValue($widget_value);
         }
 
         // ~
 
         // Default action
         $option = isset($details['option']) ? $details['option'] : '';
-        $value = !empty($option) ? self::get($option, $default) : $default;
+        $value = !empty($option) ? self::get($option, $default) : self::get($id, $default);
 
-        return !is_array($value) ? stripslashes($value) : $value;
+        return self::cleanValue($value);
     }
 
     /**

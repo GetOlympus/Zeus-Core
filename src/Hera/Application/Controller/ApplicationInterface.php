@@ -72,13 +72,8 @@ interface ApplicationInterface
 
     /**
      * Register components
-     *
-     * @param array     $objects
-     * @param string    $filename
-     * @param string    $action
-     * @param string    $function
      */
-    public function registerComponents($objects, $filename, $action = 'init', $function = 'registerObjects');
+    public function registerComponents();
 
     /**
      * Register post types / terms / and more.

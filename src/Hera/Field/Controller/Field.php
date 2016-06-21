@@ -25,7 +25,7 @@ abstract class Field implements FieldInterface
     /**
      * @var FieldModel
      */
-    protected $field;
+    public $field;
 
     /**
      * @var Field
@@ -153,13 +153,13 @@ abstract class Field implements FieldInterface
      * @param   string  $template
      * @return  string  $extend_template
      */
-    public function setExtendedTemplate($template = 'page')
+    public function setExtendedTemplate($template = 'metabox')
     {
         // Define available templates to extends
-        $available = ['metabox','page','term-add','term-edit','user','widget'];
+        $available = ['adminpage','metabox','term-add','term-edit','user','widget'];
 
         // Work on template
-        $twigtpl = in_array($template, $available) ? $template : 'page';
+        $twigtpl = in_array($template, $available) ? $template : 'metabox';
 
         // Return template to extend
         return '@core/fields/'.$twigtpl.'.html.twig';

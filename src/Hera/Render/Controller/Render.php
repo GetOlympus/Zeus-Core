@@ -39,6 +39,7 @@ class Render implements RenderInterface
     {
         // Build all views folders to add
         $paths = [
+            'adminpage'     => OLH_PATH.S.'AdminPage'.S.'Resources'.S.'views',
             'core'          => OLH_PATH.S.'Resources'.S.'views',
             'field'         => OLH_PATH.S.'Field'.S.'Resources'.S.'views',
             'metabox'       => OLH_PATH.S.'Metabox'.S.'Resources'.S.'views',

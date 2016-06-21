@@ -42,6 +42,32 @@ interface OptionInterface
     public static function get($option, $default = '', $item = '');
 
     /**
+     * Set a value into options
+     *
+     * @param string    $option
+     * @param string    $value
+     * @param string    $type
+     * @param integer   $id
+     */
+    public static function set($option, $value, $type = '', $id = 0);
+
+    /**
+     * Force update a value into options
+     *
+     * @param string $option
+     * @param string $value
+     */
+    public static function update($option, $value);
+
+    /**
+     * Clean details on value
+     *
+     * @param array     $value
+     * @return mixed    $value
+     */
+    public static function cleanValue($value);
+
+    /**
      * Retrieve field value
      *
      * @param array     $details
@@ -53,7 +79,25 @@ interface OptionInterface
     public static function getFieldValue($details, $default, $id = '', $multiple = false);
 
     /**
-     * Force update a value into post options without transient
+     * Get a value from user options
+     *
+     * @param string    $user_id
+     * @param string    $option
+     * @return mixed    $value
+     */
+    public static function getAuthorMeta($user_id, $option);
+
+    /**
+     * Force update a value into user options
+     *
+     * @param string $user_id
+     * @param string $option
+     * @param string $value
+     */
+    public static function updateAuthorMeta($user_id, $option, $value);
+
+    /**
+     * Get a value from post options
      *
      * @param string    $post_id
      * @param string    $option
@@ -62,7 +106,16 @@ interface OptionInterface
     public static function getPostMeta($post_id, $option);
 
     /**
-     * Force update a value into term options without transient
+     * Force update a value into post options
+     *
+     * @param string $post_id
+     * @param string $option
+     * @param string $value
+     */
+    public static function updatePostMeta($post_id, $option, $value);
+
+    /**
+     * Get a value from term options
      *
      * @param string    $term_id
      * @param string    $option
@@ -72,34 +125,7 @@ interface OptionInterface
     public static function getTermMeta($term_id, $option, $default = '');
 
     /**
-     * Set a value into options
-     *
-     * @param string    $option
-     * @param string    $value
-     * @param string    $type
-     * @param integer   $type
-     */
-    public static function set($option, $value, $type = '', $id = 0);
-
-    /**
-     * Force update a value into options without transient
-     *
-     * @param string $option
-     * @param string $value
-     */
-    public static function update($option, $value);
-
-    /**
-     * Force update a value into post options without transient
-     *
-     * @param string $post_id
-     * @param string $option
-     * @param string $value
-     */
-    public static function updatePostMeta($post_id, $option, $value);
-
-    /**
-     * Force update a value into term options without transient
+     * Force update a value into term options
      *
      * @param string $term_id
      * @param string $option
