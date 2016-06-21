@@ -6,7 +6,7 @@
  *
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
- */#wp-content-editor-tools,html{background-color:#fff}html.wp-toolbar{padding-top:0}.wrap{margin:10px 2px 0}/*!
+ */#wp-content-editor-tools,html{background-color:#fff}html.wp-toolbar{padding-top:0}.wrap{margin:10px 0 0}/*!
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
  *
@@ -51,7 +51,7 @@
  * Achraf Chouk (https://github.com/crewstyle)
  *
  * 10.messages.less
- */.notice,div.error,div.updated{background-color:rgba(40,44,56,.05);border-radius:100px}/*!
+ */#update-nag,.notice,.update-nag,div.error,div.updated{background-color:rgba(40,44,56,.025);border-radius:100px}#update-nag,.update-nag{display:block;margin:25px 4px 0 2px}/*!
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
  *

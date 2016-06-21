@@ -5,9 +5,12 @@
  * 10.messages.less
  */
 
-.notice,
-div.updated,
-div.error {
-    background-color: fade(@skelblack, 5%);
+.notice, #update-nag, .update-nag, div.updated, div.error {
+    background-color: fade(@skelblack, 2.5%);
     border-radius: 100px;
+}
+
+#update-nag, .update-nag {
+    display: block;
+    margin: 25px 4px 0 2px;
 }
