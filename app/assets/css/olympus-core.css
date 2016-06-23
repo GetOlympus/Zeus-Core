@@ -105,7 +105,7 @@
  * 22.meta.publish.less
  *//*!
  * Main block
- */#minor-publishing-actions .preview{float:none}#misc-publishing-actions{font-weight:200}#misc-publishing-actions label[for=post_status]:before,#post-body #visibility:before,#post-body .misc-pub-revisions:before,.curtime #timestamp:before,span.wp-media-buttons-icon:before{display:none}#post-status-display,#post-visibility-display{font-weight:700}/*!
+ */#minor-publishing-actions .preview{float:none}#misc-publishing-actions{font-weight:200}#misc-publishing-actions label[for=post_status]:before,#post-body #visibility:before,#post-body .misc-pub-revisions:before,.curtime #timestamp:before{display:none}#post-status-display,#post-visibility-display{font-weight:700}/*!
  * Second block
  */#major-publishing-actions{background-color:#fff;padding:10px 0;position:relative}#delete-action{bottom:-15px;float:none;font-size:10px;position:absolute;right:0}#link-post_tag,.taxonomy-add-new{font-size:12px;text-decoration:none}#publishing-action{float:none;text-align:left}#publishing-action .spinner{float:right}/*!
  * Copyright 2016 Achraf Chouk
@@ -143,4 +143,4 @@
  * Achraf Chouk (https://github.com/crewstyle)
  *
  * 40.widget.less
- */.widget-control-actions{padding-top:15px;line-height:30px}
+ */.widget-control-actions{padding-top:15px;line-height:30px}.widget-content .olh-field{margin:13px 0}.widget-content .olh-field p.description{padding:0}
