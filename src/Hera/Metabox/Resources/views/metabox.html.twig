@@ -2,7 +2,7 @@
     <tbody>
         {% for field in fields %}
             {% set tpl = '@' ~ field.context ~ '/' ~ field.template %}
-            {% include [tpl, '@notification/notification.html.twig'] with field.vars %}
+            {% include [tpl, '@core/components/notification.html.twig'] with field.vars %}
         {% endfor %}
     </tbody>
 </table>
