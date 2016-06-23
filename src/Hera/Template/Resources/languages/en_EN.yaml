@@ -1,8 +1,0 @@
-# Main contents
-template:
-  capabilities: capabilities
-  olympus: Olympus
-  update: Update
-  copyright: "Built with ♥ by <a href=\"https://github.com/crewstyle\" target=\"_blank\"><b>Achraf Chouk</b></a>"
-  errors:
-    page_is_empty: The page is empty.
