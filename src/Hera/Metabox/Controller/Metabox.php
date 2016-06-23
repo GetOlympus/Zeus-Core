@@ -2,10 +2,10 @@
 
 namespace GetOlympus\Hera\Metabox\Controller;
 
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Metabox\Controller\MetaboxInterface;
 use GetOlympus\Hera\Metabox\Exception\MetaboxException;
 use GetOlympus\Hera\Metabox\Model\MetaboxModel;
-use GetOlympus\Hera\Notification\Controller\Notification;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Translate\Controller\Translate;
 
@@ -19,19 +19,14 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-class Metabox implements MetaboxInterface
+class Metabox extends Base implements MetaboxInterface
 {
-    /**
-     * @var MetaboxModel
-     */
-    protected $metabox;
-
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->metabox = new MetaboxModel();
+        $this->model = new MetaboxModel();
     }
 
     /**
@@ -54,31 +49,11 @@ class Metabox implements MetaboxInterface
         $id = Render::urlize($title);
 
         // Set details
-        $metabox->metabox->setTitle($title);
-        $metabox->metabox->setFields($fields);
+        $metabox->getModel()->setTitle($title);
+        $metabox->getModel()->setFields($fields);
 
         // Get field
         return $metabox;
-    }
-
-    /**
-     * Gets the value of instance.
-     *
-     * @return Metabox
-     */
-    public static function getInstance()
-    {
-        return new static();
-    }
-
-    /**
-     * Gets the value of metabox.
-     *
-     * @return MetaboxModel
-     */
-    public function getMetabox()
-    {
-        return $this->metabox;
     }
 
     /**
@@ -89,8 +64,8 @@ class Metabox implements MetaboxInterface
      */
     public function init($identifier, $slug)
     {
-        $this->metabox->setId($identifier);
-        $this->metabox->setSlug($slug);
+        $this->getModel()->setId($identifier);
+        $this->getModel()->setSlug($slug);
 
         $this->addMetabox();
     }
@@ -101,13 +76,13 @@ class Metabox implements MetaboxInterface
     public function addMetabox()
     {
         add_meta_box(
-            $this->metabox->getId(),
-            $this->metabox->getTitle(),
+            $this->getModel()->getId(),
+            $this->getModel()->getTitle(),
             [$this, 'callback'],
-            $this->metabox->getSlug(),
-            $this->metabox->getContext(),
-            $this->metabox->getPriority(),
-            $this->metabox->getFields()
+            $this->getModel()->getSlug(),
+            $this->getModel()->getContext(),
+            $this->getModel()->getPriority(),
+            $this->getModel()->getFields()
         );
     }
 

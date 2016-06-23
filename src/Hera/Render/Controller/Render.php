@@ -43,7 +43,6 @@ class Render implements RenderInterface
             'core'          => OLH_PATH.S.'Resources'.S.'views',
             'field'         => OLH_PATH.S.'Field'.S.'Resources'.S.'views',
             'metabox'       => OLH_PATH.S.'Metabox'.S.'Resources'.S.'views',
-            'notification'  => OLH_PATH.S.'Notification'.S.'Resources'.S.'views',
             'posttype'      => OLH_PATH.S.'Posttype'.S.'Resources'.S.'views',
             'user'          => OLH_PATH.S.'User'.S.'Resources'.S.'views',
             'widget'        => OLH_PATH.S.'Widget'.S.'Resources'.S.'views',
@@ -66,7 +65,7 @@ class Render implements RenderInterface
         }
 
         // Build Twig renderer
-        $this->twig = new Twig_Environment($loader, ['cache' => OLH_CACHE]);
+        $this->twig = new Twig_Environment($loader/*, ['cache' => OLH_CACHE]*/);
 
 
         /**

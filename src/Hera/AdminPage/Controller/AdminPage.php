@@ -6,6 +6,7 @@ use GetOlympus\Hera\AdminPage\Controller\AdminPageHook;
 use GetOlympus\Hera\AdminPage\Controller\AdminPageInterface;
 use GetOlympus\Hera\AdminPage\Exception\AdminPageException;
 use GetOlympus\Hera\AdminPage\Model\AdminPageModel;
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Request\Controller\Request;
 use GetOlympus\Hera\Translate\Controller\Translate;
@@ -20,20 +21,15 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-abstract class AdminPage implements AdminPageInterface
+abstract class AdminPage extends Base implements AdminPageInterface
 {
-    /**
-     * @var AdminPageModel
-     */
-    protected $adminpage;
-
     /**
      * Constructor.
      */
     public function __construct()
     {
         // Initialize AdminPageModel
-        $this->adminpage = new AdminPageModel();
+        $this->model = new AdminPageModel();
 
         // Initialize variables and filters
         $this->setVars();
@@ -50,7 +46,7 @@ abstract class AdminPage implements AdminPageInterface
      */
     public function init()
     {
-        $pages = $this->adminpage->getPages();
+        $pages = $this->getModel()->getPages();
 
         // Check datas
         if (empty($pages)) {
@@ -63,7 +59,7 @@ abstract class AdminPage implements AdminPageInterface
 
         // Update identifier
         $identifier = Render::urlize(key($pages));
-        $this->adminpage->setIdentifier($identifier);
+        $this->getModel()->setIdentifier($identifier);
 
         // Add root single menu if identifier is unknown
         if (!isset($admin_page_hooks[$identifier])) {
@@ -89,10 +85,10 @@ abstract class AdminPage implements AdminPageInterface
      */
     public function addRootPage()
     {
-        $identifier = $this->adminpage->getIdentifier();
+        $identifier = $this->getModel()->getIdentifier();
 
         // Check page
-        if (!$this->adminpage->hasPage($identifier)) {
+        if (!$this->getModel()->hasPage($identifier)) {
             throw new AdminPageException(sprintf(Translate::t('adminpage.errors.page_is_empty'), $identifier));
         }
 
@@ -115,12 +111,11 @@ abstract class AdminPage implements AdminPageInterface
         ];
 
         // Update pages
-        $options = $this->adminpage->getPages($identifier);
+        $options = $this->getModel()->getPages($identifier);
         $options = array_merge($defaults, $options);
-        $this->adminpage->updatePage($identifier, $options);
+        $this->getModel()->updatePage($identifier, $options);
 
         // Add main page
-        // @todo add_posts_page
         add_menu_page(
             $options['title'],
             $options['name'],
@@ -142,8 +137,8 @@ abstract class AdminPage implements AdminPageInterface
      */
     public function addRootAdminBar()
     {
-        $identifier = $this->adminpage->getIdentifier();
-        $options = $this->adminpage->getPages($identifier);
+        $identifier = $this->getModel()->getIdentifier();
+        $options = $this->getModel()->getPages($identifier);
 
         add_action('admin_bar_menu', function () use ($identifier, $options) {
             global $wp_admin_bar;
@@ -167,7 +162,7 @@ abstract class AdminPage implements AdminPageInterface
      */
     public function addChild($slug, $options)
     {
-        $identifier = $this->adminpage->getIdentifier();
+        $identifier = $this->getModel()->getIdentifier();
         // Check slug
         if (empty($slug)) {
             throw new AdminPageException(Translate::t('adminpage.errors.slug_is_not_defined'));
@@ -191,7 +186,7 @@ abstract class AdminPage implements AdminPageInterface
 
         // Merge options
         $options = array_merge($defaults, $options);
-        $this->adminpage->updatePage($slug, $options);
+        $this->getModel()->updatePage($slug, $options);
 
         $pageid = $slug === $identifier ? $identifier : $identifier.'-'.$slug;
 
@@ -219,7 +214,7 @@ abstract class AdminPage implements AdminPageInterface
      */
     public function addChildAdminBar($slug, $options)
     {
-        $identifier = $this->adminpage->getIdentifier();
+        $identifier = $this->getModel()->getIdentifier();
 
         add_action('admin_bar_menu', function () use ($identifier, $slug, $options) {
             global $wp_admin_bar;
@@ -248,23 +243,23 @@ abstract class AdminPage implements AdminPageInterface
     public function callback()
     {
         // Get current page and section
-        $identifier = $this->adminpage->getIdentifier();
+        $identifier = $this->getModel()->getIdentifier();
         $currentPage = Request::get('page');
         $currentSection = Request::get('section');
 
         $page_id = str_replace($identifier.'-', '', $currentPage);
 
         // Check current page
-        if (!$this->adminpage->hasPage($page_id)) {
+        if (!$this->getModel()->hasPage($page_id)) {
             return;
         }
 
         // Store details
-        $options = $this->adminpage->getPages($page_id);
+        $options = $this->getModel()->getPages($page_id);
 
         // Works on hook
         $hook = new AdminPageHook($currentPage, $currentSection, $options);
-        $this->adminpage->setHook($hook);
+        $this->getModel()->setHook($hook);
     }
 
     /**

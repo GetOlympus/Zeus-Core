@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\User\Controller;
 
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\User\Controller\UserInterface;
 use GetOlympus\Hera\User\Controller\UserHook;
 use GetOlympus\Hera\User\Exception\UserException;
@@ -17,20 +18,15 @@ use GetOlympus\Hera\User\Model\UserModel;
  *
  */
 
-abstract class User implements UserInterface
+abstract class User extends Base implements UserInterface
 {
-    /**
-     * @var UserModel
-     */
-    protected $user;
-
     /**
      * Constructor.
      */
     public function __construct()
     {
         // Initialize UserModel
-        $this->user = new UserModel();
+        $this->model = new UserModel();
 
         // Initialize
         $this->setVars();
@@ -42,7 +38,7 @@ abstract class User implements UserInterface
      */
     public function init()
     {
-        $fields = $this->user->getFields();
+        $fields = $this->getModel()->getFields();
 
         // Check fields
         if (empty($fields)) {
@@ -59,12 +55,12 @@ abstract class User implements UserInterface
     public function register()
     {
         // Store details
-        $fields = $this->user->getFields();
-        $title = $this->user->getTitle();
+        $fields = $this->getModel()->getFields();
+        $title = $this->getModel()->getTitle();
 
         // Works on hook
         $hook = new UserHook($title, $fields);
-        $this->user->setHook($hook);
+        $this->getModel()->setHook($hook);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\Field\Controller;
 
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Field\Controller\FieldInterface;
 use GetOlympus\Hera\Field\Exception\FieldException;
 use GetOlympus\Hera\Field\Model\FieldModel;
@@ -20,27 +21,18 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-abstract class Field implements FieldInterface
+abstract class Field extends Base implements FieldInterface
 {
-    /**
-     * @var FieldModel
-     */
-    public $field;
-
-    /**
-     * @var Field
-     */
-    protected static $instance = null;
-
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->field = new FieldModel();
+        $this->model = new FieldModel();
 
         // Initialize
         $this->setVars();
+        $this->setAssets();
     }
 
     /**
@@ -61,7 +53,7 @@ abstract class Field implements FieldInterface
 
         // Set class
         $class = get_class($field);
-        $hasid = $field->field->getHasId();
+        $hasid = $field->getModel()->getHasId();
 
         // Check ID
         if ($hasid && empty($id)) {
@@ -72,21 +64,11 @@ abstract class Field implements FieldInterface
         $contents['id'] = $id;
 
         // Set contents and details
-        $field->field->setContents($contents);
-        $field->field->setDetails($details);
+        $field->getModel()->setContents($contents);
+        $field->getModel()->setDetails($details);
 
         // Get field
         return $field;
-    }
-
-    /**
-     * Gets the value of instance.
-     *
-     * @return Field
-     */
-    public static function getInstance()
-    {
-        return new static();
     }
 
     /**
@@ -115,12 +97,12 @@ abstract class Field implements FieldInterface
     public function render($contents = [], $details = [], $renderView = true, $context = 'field')
     {
         // Merge datum
-        $contents = array_merge($this->field->getContents(), $contents);
-        $details = array_merge($this->field->getDetails(), $details);
+        $contents = array_merge($this->getModel()->getContents(), $contents);
+        $details = array_merge($this->getModel()->getDetails(), $details);
 
         // Get context
-        $class = new \ReflectionClass(get_class($this));
-        $context = strtolower($class->getShortName());
+        $class = $this->getClass();
+        $context = strtolower($class['name']);
 
         // Get template to extends
         $template = isset($details['template']) ? $details['template'] : '';
@@ -129,9 +111,9 @@ abstract class Field implements FieldInterface
         // Get vars and tpl data
         $this->getVars($contents, $details);
         $tpl = [
-            'hasId' => $this->field->getHasId(),
-            'template' => $this->field->getTemplate(),
-            'vars' => $this->field->getVars(),
+            'hasId' => $this->getModel()->getHasId(),
+            'template' => $this->getModel()->getTemplate(),
+            'vars' => $this->getModel()->getVars(),
             'context' => $context
         ];
 
@@ -164,6 +146,11 @@ abstract class Field implements FieldInterface
         // Return template to extend
         return '@core/fields/'.$twigtpl.'.html.twig';
     }
+
+    /**
+     * Prepare scripts and styles.
+     */
+    protected function setAssets(){}
 
     /**
      * Prepare HTML component.

@@ -144,6 +144,9 @@ abstract class Application implements ApplicationInterface
     public function getComponents()
     {
         $components = [
+            'Base'                      => 'GetOlympus\Hera\Base\Controller\Base',
+            'BaseWidget'                => 'GetOlympus\Hera\Base\Controller\BaseWidget',
+
             'AdminPage'                 => 'GetOlympus\Hera\AdminPage\Controller\AdminPage',
             'Ajax'                      => 'GetOlympus\Hera\Ajax\Controller\Ajax',
             'Configuration'             => 'GetOlympus\Hera\Configuration\Controller\Configuration',
@@ -151,7 +154,6 @@ abstract class Application implements ApplicationInterface
             'Field'                     => 'GetOlympus\Hera\Field\Controller\Field',
             'Hook'                      => 'GetOlympus\Hera\Hook\Controller\Hook',
             'Metabox'                   => 'GetOlympus\Hera\Metabox\Controller\Metabox',
-            'Notification'              => 'GetOlympus\Hera\Notification\Controller\Notification',
             'Option'                    => 'GetOlympus\Hera\Option\Controller\Option',
             'Posttype'                  => 'GetOlympus\Hera\Posttype\Controller\Posttype',
             'PosttypeHook'              => 'GetOlympus\Hera\Posttype\Controller\PosttypeHook',
@@ -276,7 +278,7 @@ abstract class Application implements ApplicationInterface
 
             // Get current hook
             $current = current_filter();
-            $function = in_array($action, ['widget_init']) ? 'registerWidgets' : 'registerObjects';
+            $function = in_array($action, ['widgets_init']) ? 'registerWidgets' : 'registerObjects';
 
             // Register post type
             if ($action === $current) {

@@ -23,20 +23,6 @@ interface MetaboxInterface
     public static function build($title, $fields = []);
 
     /**
-     * Gets the value of instance.
-     *
-     * @return Metabox
-     */
-    public static function getInstance();
-
-    /**
-     * Gets the value of metabox.
-     *
-     * @return MetaboxModel
-     */
-    public function getMetabox();
-
-    /**
      * Initialization.
      *
      * @param string $identifier

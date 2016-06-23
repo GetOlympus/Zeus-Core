@@ -24,13 +24,6 @@ interface FieldInterface
     public static function build($id, $contents = [], $details = []);
 
     /**
-     * Gets the value of instance.
-     *
-     * @return Field
-     */
-    public static function getInstance();
-
-    /**
      * Retrieve field value
      *
      * @param array $details

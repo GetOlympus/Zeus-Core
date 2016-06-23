@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Hera\Posttype\Controller;
 
-use GetOlympus\Hera\Notification\Controller\Notification;
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Option\Controller\Option;
 use GetOlympus\Hera\Posttype\Controller\PosttypeHook;
 use GetOlympus\Hera\Posttype\Controller\PosttypeInterface;
@@ -21,17 +21,12 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-abstract class Posttype implements PosttypeInterface
+abstract class Posttype extends Base implements PosttypeInterface
 {
     /**
      * @var array
      */
     protected $forbidden_slugs = ['action', 'author', 'order', 'theme'];
-
-    /**
-     * @var PosttypeModel
-     */
-    protected $posttype;
 
     /**
      * @var array
@@ -44,7 +39,7 @@ abstract class Posttype implements PosttypeInterface
     public function __construct()
     {
         // Initialize PosttypeModel
-        $this->posttype = new PosttypeModel();
+        $this->model = new PosttypeModel();
 
         // Initialize
         $this->setVars();
@@ -57,8 +52,8 @@ abstract class Posttype implements PosttypeInterface
     public function init()
     {
         // Update slug
-        $slug = Render::urlize($this->posttype->getSlug());
-        $this->posttype->setSlug($slug);
+        $slug = Render::urlize($this->getModel()->getSlug());
+        $this->getModel()->setSlug($slug);
 
         // Check forbidden slugs
         if (in_array($slug, $this->forbidden_slugs)) {
@@ -72,8 +67,8 @@ abstract class Posttype implements PosttypeInterface
                 throw new PosttypeException(Translate::t('posttype.errors.slug_already_exists'));
             }
 
-            $args = $this->posttype->getArgs();
-            $labels = $this->posttype->getLabels();
+            $args = $this->getModel()->getArgs();
+            $labels = $this->getModel()->getLabels();
 
             // Initialize plural and singular vars
             $labels['name'] = isset($labels['name']) ? $labels['name'] : '';
@@ -91,8 +86,8 @@ abstract class Posttype implements PosttypeInterface
             );
 
             // Update PosttypeModel args
-            $this->posttype->setArgs($args);
-            $this->posttype->setLabels($labels);
+            $this->getModel()->setArgs($args);
+            $this->getModel()->setLabels($labels);
         }
 
         // Register post type
@@ -107,7 +102,7 @@ abstract class Posttype implements PosttypeInterface
     public function defaultArgs()
     {
         // Get slug
-        $slug = $this->posttype->getSlug();
+        $slug = $this->getModel()->getSlug();
 
         // Return args
         return [
@@ -193,9 +188,9 @@ abstract class Posttype implements PosttypeInterface
     public function register()
     {
         // Store details
-        $args = $this->posttype->getArgs();
-        $metaboxes = $this->posttype->getMetaboxes();
-        $slug = $this->posttype->getSlug();
+        $args = $this->getModel()->getArgs();
+        $metaboxes = $this->getModel()->getMetaboxes();
+        $slug = $this->getModel()->getSlug();
 
         // Register post type if not post or page
         if (!in_array($slug, $this->reserved_slugs)) {
@@ -218,7 +213,7 @@ abstract class Posttype implements PosttypeInterface
 
         // Works on hook
         $hook = new PosttypeHook($slug, $name, $metaboxes, $this->reserved_slugs);
-        $this->posttype->setHook($hook);
+        $this->getModel()->setHook($hook);
     }
 
     /**

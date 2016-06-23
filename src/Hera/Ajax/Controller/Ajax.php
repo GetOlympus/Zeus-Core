@@ -4,6 +4,7 @@ namespace GetOlympus\Hera\Ajax\Controller;
 
 use GetOlympus\Hera\Ajax\Controller\AjaxInterface;
 use GetOlympus\Hera\Ajax\Model\AjaxModel;
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Hook\Controller\Hook;
 
 /**
@@ -16,13 +17,8 @@ use GetOlympus\Hera\Hook\Controller\Hook;
  *
  */
 
-class Ajax implements AjaxInterface
+class Ajax extends Base implements AjaxInterface
 {
-    /**
-     * @var AjaxModel
-     */
-    protected $ajax;
-
     /**
      * @var Hook
      */
@@ -38,7 +34,7 @@ class Ajax implements AjaxInterface
      */
     public function __construct()
     {
-        $this->ajax = new AjaxModel();
+        $this->model = new AjaxModel();
     }
 
     /**
@@ -49,10 +45,10 @@ class Ajax implements AjaxInterface
      */
     public function init($identifier, $callback)
     {
-        $this->ajax->setIdentifier($identifier);
-        $this->ajax->setCallback($callback);
+        $this->getModel()->setIdentifier($identifier);
+        $this->getModel()->setCallback($callback);
 
-        $id = $this->ajax->getIdentifier();
+        $id = $this->getModel()->getIdentifier();
 
         $this->hook_connected = new Hook('wp_ajax_'.$id, array($this, 'callbackConnected'));
         $this->hook_disconnected = new Hook('wp_ajax_nopriv_'.$id, array($this, 'callbackDisconnected'));

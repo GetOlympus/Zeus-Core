@@ -86,8 +86,8 @@ class UserHook implements UserHookInterface
             }
 
             // Build contents
-            $ctn = (array) $field->field->getContents();
-            $hasId = (boolean) $field->field->getHasId();
+            $ctn = (array) $field->getModel()->getContents();
+            $hasId = (boolean) $field->getModel()->getHasId();
 
             // Check ID
             if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {

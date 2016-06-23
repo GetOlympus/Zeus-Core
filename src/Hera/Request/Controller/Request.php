@@ -6,7 +6,7 @@ use GetOlympus\Hera\Request\Controller\RequestInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
- * Displays admin messages and notifications when its needed.
+ * Return $_REQUEST parameters when it is needed.
  *
  * @package Olympus Hera
  * @subpackage Request\Controller

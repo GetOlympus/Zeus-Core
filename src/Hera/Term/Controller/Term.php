@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Hera\Term\Controller;
 
-use GetOlympus\Hera\Notification\Controller\Notification;
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Option\Controller\Option;
 use GetOlympus\Hera\Render\Controller\Render;
 use GetOlympus\Hera\Term\Controller\TermHook;
@@ -21,7 +21,7 @@ use GetOlympus\Hera\Translate\Controller\Translate;
  *
  */
 
-abstract class Term implements TermInterface
+abstract class Term extends Base implements TermInterface
 {
     /**
      * @var array
@@ -34,17 +34,12 @@ abstract class Term implements TermInterface
     protected $reserved_slugs = ['category', 'post_tag'];
 
     /**
-     * @var TermModel
-     */
-    protected $term;
-
-    /**
      * Constructor.
      */
     public function __construct()
     {
         // Initialize TermModel
-        $this->term = new TermModel();
+        $this->model = new TermModel();
 
         // Initialize
         $this->setVars();
@@ -57,8 +52,8 @@ abstract class Term implements TermInterface
     public function init()
     {
         // Update slug
-        $slug = Render::urlize($this->term->getSlug());
-        $this->term->setSlug($slug);
+        $slug = Render::urlize($this->getModel()->getSlug());
+        $this->getModel()->setSlug($slug);
 
         // Check forbidden slugs
         if (in_array($slug, $this->forbidden_slugs)) {
@@ -66,11 +61,11 @@ abstract class Term implements TermInterface
         }
 
         // Check post type association
-        $posttype = $this->term->getPosttype();
+        $posttype = $this->getModel()->getPosttype();
 
         // Association with post by default
         if ($posttype) {
-            $this->term->setPosttype('post');
+            $this->getModel()->setPosttype('post');
         }
 
         // Update args on terms except reserved ones
@@ -80,8 +75,8 @@ abstract class Term implements TermInterface
                 throw new TermException(Translate::t('term.errors.slug_already_exists'));
             }
 
-            $args = $this->term->getArgs();
-            $labels = $this->term->getLabels();
+            $args = $this->getModel()->getArgs();
+            $labels = $this->getModel()->getLabels();
 
             // Initialize plural and singular vars
             $labels['name'] = isset($labels['name']) ? $labels['name'] : '';
@@ -99,8 +94,8 @@ abstract class Term implements TermInterface
             );
 
             // Update TermModel args
-            $this->term->setArgs($args);
-            $this->term->setLabels($labels);
+            $this->getModel()->setArgs($args);
+            $this->getModel()->setLabels($labels);
         }
 
         // Register term
@@ -115,7 +110,7 @@ abstract class Term implements TermInterface
     public function defaultArgs()
     {
         // Get slug
-        $slug = $this->term->getSlug();
+        $slug = $this->getModel()->getSlug();
 
         // Return args
         return [
@@ -182,10 +177,10 @@ abstract class Term implements TermInterface
     public function register()
     {
         // Store details
-        $args = $this->term->getArgs();
-        $fields = $this->term->getFields();
-        $posttype = $this->term->getPosttype();
-        $slug = $this->term->getSlug();
+        $args = $this->getModel()->getArgs();
+        $fields = $this->getModel()->getFields();
+        $posttype = $this->getModel()->getPosttype();
+        $slug = $this->getModel()->getSlug();
 
         $is_single = 'single' === $args['choice'] ? true : false;
 
@@ -196,7 +191,7 @@ abstract class Term implements TermInterface
 
         // Works on hook
         $hook = new TermHook($slug, $posttype, $fields, $is_single);
-        $this->term->setHook($hook);
+        $this->getModel()->setHook($hook);
     }
 
     /**

@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\Hook\Controller;
 
+use GetOlympus\Hera\Base\Controller\Base;
 use GetOlympus\Hera\Hook\Controller\HookInterface;
 use GetOlympus\Hera\Hook\Model\HookModel;
 
@@ -15,19 +16,14 @@ use GetOlympus\Hera\Hook\Model\HookModel;
  *
  */
 
-class Hook implements HookInterface
+class Hook extends Base implements HookInterface
 {
-    /**
-     * @var HookModel
-     */
-    protected $hook;
-
     /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->hook = new HookModel();
+        $this->model = new HookModel();
     }
 
     /**
@@ -40,10 +36,10 @@ class Hook implements HookInterface
      */
     public function initialize($type, $identifier, $callback, $priority = 10)
     {
-        $this->hook->setType($type);
-        $this->hook->setIdentifier($identifier);
-        $this->hook->setCallback($callback);
-        $this->hook->setPriority($priority);
+        $this->getModel()->setType($type);
+        $this->getModel()->setIdentifier($identifier);
+        $this->getModel()->setCallback($callback);
+        $this->getModel()->setPriority($priority);
     }
 
     /**
@@ -51,7 +47,7 @@ class Hook implements HookInterface
      */
     public function callback()
     {
-        $this->hook->runCallback();
+        $this->getModel()->runCallback();
     }
 
     /**
@@ -62,11 +58,11 @@ class Hook implements HookInterface
      */
     public function listen($args = null)
     {
-        if ('action' === $this->hook->getType()) {
-            return do_action($this->hook->getIdentifier(), $args);
+        if ('action' === $this->getModel()->getType()) {
+            return do_action($this->getModel()->getIdentifier(), $args);
         }
 
-        return apply_filters($this->hook->getIdentifier(), $args);
+        return apply_filters($this->getModel()->getIdentifier(), $args);
     }
 
     /**
@@ -76,10 +72,10 @@ class Hook implements HookInterface
      */
     public function run()
     {
-        if ('action' === $this->hook->getType()) {
-            return add_action($this->hook->getIdentifier(), [&$this, 'callback'], $this->hook->getPriority());
+        if ('action' === $this->getModel()->getType()) {
+            return add_action($this->getModel()->getIdentifier(), [&$this, 'callback'], $this->getModel()->getPriority());
         }
 
-        return add_filter($this->hook->getIdentifier(), [&$this, 'callback'], $this->hook->getPriority());
+        return add_filter($this->getModel()->getIdentifier(), [&$this, 'callback'], $this->getModel()->getPriority());
     }
 }

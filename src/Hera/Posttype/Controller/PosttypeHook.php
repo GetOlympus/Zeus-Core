@@ -278,9 +278,9 @@ class PosttypeHook implements PosttypeHookInterface
             }
 
             // Get contents
-            $id = (integer) $metabox->getMetabox()->getId();
-            $title = (string) $metabox->getMetabox()->getTitle();
-            $fields = (array) $metabox->getMetabox()->getFields();
+            $id = (integer) $metabox->getModel()->getId();
+            $title = (string) $metabox->getModel()->getTitle();
+            $fields = (array) $metabox->getModel()->getFields();
 
             // Check fields
             if (empty($fields)) {
@@ -329,9 +329,9 @@ class PosttypeHook implements PosttypeHookInterface
             }
 
             // Get contents
-            $id = (integer) $metabox->getMetabox()->getId();
-            $title = (string) $metabox->getMetabox()->getTitle();
-            $fields = (array) $metabox->getMetabox()->getFields();
+            $id = (integer) $metabox->getModel()->getId();
+            $title = (string) $metabox->getModel()->getTitle();
+            $fields = (array) $metabox->getModel()->getFields();
 
             // Check fields
             if (empty($fields)) {
@@ -345,8 +345,8 @@ class PosttypeHook implements PosttypeHookInterface
                 }
 
                 // Build contents
-                $ctn = (array) $field->field->getContents();
-                $hasId = (boolean) $field->field->getHasId();
+                $ctn = (array) $field->getModel()->getContents();
+                $hasId = (boolean) $field->getModel()->getHasId();
 
                 // Check ID
                 if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {

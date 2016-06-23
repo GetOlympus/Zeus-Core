@@ -36,19 +36,19 @@ interface WidgetInterface
     public function flush_widget_cache();
 
     /**
+     * Displays the form for this widget on the Widgets page of the WP Admin area.
+     *
+     * @return void
+     */
+    public function form($instance);
+
+    /**
      * Get cached widget.
      *
      * @param array $args
      * @return boolean true|false
      */
     public function get_cached_widget($args);
-
-    /**
-     * Displays the form for this widget on the Widgets page of the WP Admin area.
-     *
-     * @return void
-     */
-    public function form($instance);
 
     /**
      * Deals with the settings when they are saved by the admin. Here is
