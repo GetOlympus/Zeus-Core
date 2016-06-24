@@ -97,38 +97,31 @@ define('OLH_WP_CAP', 'edit_posts');
 abstract class Hera extends Application
 {
     /**
-     * Constructor.
+     * @var array
      */
-    public function __construct()
-    {
-        // Components to load
-        $this->externals = array_merge($this->externals, [
-            // Hera field components
-            'Background'                => 'GetOlympus\Field\Background',
-            'Checkbox'                  => 'GetOlympus\Field\Checkbox',
-            'Code'                      => 'GetOlympus\Field\Code',
-            'Color'                     => 'GetOlympus\Field\Color',
-            'Date'                      => 'GetOlympus\Field\Date',
-            'File'                      => 'GetOlympus\Field\File',
-            'Font'                      => 'GetOlympus\Field\Font',
-            'Hidden'                    => 'GetOlympus\Field\Hidden',
-            'Html'                      => 'GetOlympus\Field\Html',
-            'Link'                      => 'GetOlympus\Field\Link',
-            'Map'                       => 'GetOlympus\Field\Map',
-            'Multiselect'               => 'GetOlympus\Field\Multiselect',
-            'Radio'                     => 'GetOlympus\Field\Radio',
-            'Rte'                       => 'GetOlympus\Field\Rte',
-            'Select'                    => 'GetOlympus\Field\Select',
-            'Text'                      => 'GetOlympus\Field\Text',
-            'Textarea'                  => 'GetOlympus\Field\Textarea',
-            'Toggle'                    => 'GetOlympus\Field\Toggle',
-            'Upload'                    => 'GetOlympus\Field\Upload',
-            'Wordpress'                 => 'GetOlympus\Field\Wordpress',
-        ]);
-
-        // Use parent constructor
-        parent::__construct();
-    }
+    protected $externals = [
+        // Hera field components
+        'Background'                => 'GetOlympus\Field\Background',
+        'Checkbox'                  => 'GetOlympus\Field\Checkbox',
+        'Code'                      => 'GetOlympus\Field\Code',
+        'Color'                     => 'GetOlympus\Field\Color',
+        'Date'                      => 'GetOlympus\Field\Date',
+        'File'                      => 'GetOlympus\Field\File',
+        'Font'                      => 'GetOlympus\Field\Font',
+        'Hidden'                    => 'GetOlympus\Field\Hidden',
+        'Html'                      => 'GetOlympus\Field\Html',
+        'Link'                      => 'GetOlympus\Field\Link',
+        'Map'                       => 'GetOlympus\Field\Map',
+        'Multiselect'               => 'GetOlympus\Field\Multiselect',
+        'Radio'                     => 'GetOlympus\Field\Radio',
+        'Rte'                       => 'GetOlympus\Field\Rte',
+        'Select'                    => 'GetOlympus\Field\Select',
+        'Text'                      => 'GetOlympus\Field\Text',
+        'Textarea'                  => 'GetOlympus\Field\Textarea',
+        'Toggle'                    => 'GetOlympus\Field\Toggle',
+        'Upload'                    => 'GetOlympus\Field\Upload',
+        'Wordpress'                 => 'GetOlympus\Field\Wordpress',
+    ];
 
     /**
      * Prepare externals.

@@ -32,11 +32,6 @@ abstract class Application implements ApplicationInterface
     protected $configurations = [];
 
     /**
-     * @var array
-     */
-    protected $components = [];
-
-    /**
      * @var Container
      */
     protected $container = null;
@@ -86,7 +81,6 @@ abstract class Application implements ApplicationInterface
     {
         // Get services
         $services = $this->getServices();
-        $externals = $this->externals;
 
         // Register all
         foreach ($services as $alias => $service) {
@@ -199,7 +193,7 @@ abstract class Application implements ApplicationInterface
      */
     public function getServices()
     {
-        return array_merge($this->components, $this->getComponents(), $this->getConfigurations());
+        return array_merge($this->getComponents(), $this->getConfigurations());
     }
 
     /**
