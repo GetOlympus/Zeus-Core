@@ -1,3 +1,6 @@
+## 0.0.9 (June 24, 2016)
+Enhance Field and Translate controllers. Add new Base and BaseWidget controllers to make internal model access easy. Fix lots of bugs.
+
 ## 0.0.8 (June 21, 2016)
 Add new AdminPage component.
 
