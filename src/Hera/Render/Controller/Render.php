@@ -65,7 +65,7 @@ class Render implements RenderInterface
         }
 
         // Build Twig renderer
-        $this->twig = new Twig_Environment($loader/*, ['cache' => OLH_CACHE]*/);
+        $this->twig = new Twig_Environment($loader, ['cache' => OLH_CACHE]);
 
 
         /**
