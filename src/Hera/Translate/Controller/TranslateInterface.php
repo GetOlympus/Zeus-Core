@@ -20,21 +20,34 @@ interface TranslateInterface
     public static function getInstance();
 
     /**
-     * Noop typo.
+     * Choice typo.
      *
-     * @param string $singular
-     * @param string $plural
-     * @return string
+     * @param   string  $message
+     * @param   integer $number
+     * @param   array   $args
+     * @param   string  $domain
+     * @param   string  $locale
+     * @return  string
+     */
+    public static function c($message, $number, $args = [], $domain = 'core', $locale = 'en_EN');
+
+    /**
+     * Noop typo from WordPress.
+     *
+     * @param   string $singular
+     * @param   string $plural
+     * @return  string
      */
     public static function n($singular, $plural);
 
     /**
      * Translate typo.
      *
-     * @param   string  $content
+     * @param   string  $message
      * @param   array   $args
-     * @param   string  $alias
+     * @param   string  $domain
+     * @param   string  $locale
      * @return  Translate
      */
-    public static function t($content, $args = [], $alias = 'core');
+    public static function t($message, $args = [], $domain = 'core', $locale = 'en_EN');
 }

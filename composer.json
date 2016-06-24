@@ -48,6 +48,7 @@
     "league/container": "^2.2",
     "ruflin/Elastica": ">=3.0",
     "symfony/class-loader": "^3.1",
+    "symfony/config": "^3.1",
     "symfony/http-foundation": "^3.0",
     "symfony/translation": "^3.0",
     "symfony/yaml": "^3.0",

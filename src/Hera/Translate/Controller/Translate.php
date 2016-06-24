@@ -3,6 +3,7 @@
 namespace GetOlympus\Hera\Translate\Controller;
 
 use GetOlympus\Hera\Translate\Controller\TranslateInterface;
+use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 
@@ -52,7 +53,6 @@ class Translate implements TranslateInterface
             OLH_PATH.S.'Field'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Metabox'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Posttype'.S.'Resources'.S.'languages' => 'core',
-            OLH_PATH.S.'Template'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Term'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'User'.S.'Resources'.S.'languages' => 'core',
             OLH_PATH.S.'Widget'.S.'Resources'.S.'languages' => 'core',
@@ -67,7 +67,7 @@ class Translate implements TranslateInterface
         $yamls = apply_filters('olh_translate_resources', $yamls);
 
         // Define Translator
-        $this->translator = new Translator($lang);
+        $this->translator = new Translator($lang, new MessageSelector(), OLH_CACHE);
         $this->translator->addLoader('yaml', new YamlFileLoader());
 
         // Add Hera core languages in `core` dictionary
@@ -90,7 +90,22 @@ class Translate implements TranslateInterface
     }
 
     /**
-     * Noop typo.
+     * Choice typo.
+     *
+     * @param   string  $message
+     * @param   integer $number
+     * @param   array   $args
+     * @param   string  $domain
+     * @param   string  $locale
+     * @return  string
+     */
+    public static function c($message, $number, $args = [], $domain = 'core', $locale = 'en_EN')
+    {
+        return self::getInstance()->translator->transChoice($message, $number, $args, $domain, $locale);
+    }
+
+    /**
+     * Noop typo from WordPress.
      *
      * @param   string $singular
      * @param   string $plural
@@ -104,13 +119,14 @@ class Translate implements TranslateInterface
     /**
      * Translate typo.
      *
-     * @param   string  $content
+     * @param   string  $message
      * @param   array   $args
-     * @param   string  $alias
+     * @param   string  $domain
+     * @param   string  $locale
      * @return  Translate
      */
-    public static function t($content, $args = [], $alias = 'core')
+    public static function t($message, $args = [], $domain = 'core', $locale = 'en_EN')
     {
-        return self::getInstance()->translator->trans($content, $args, $alias);
+        return self::getInstance()->translator->trans($message, $args, $domain, $locale);
     }
 }
