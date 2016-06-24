@@ -39,6 +39,16 @@ class FieldModel implements FieldModelInterface
     /**
      * @var string
      */
+    protected $script = '';
+
+    /**
+     * @var string
+     */
+    protected $style = '';
+
+    /**
+     * @var string
+     */
     protected $template = 'field.html.twig';
 
     /**
@@ -138,6 +148,54 @@ class FieldModel implements FieldModelInterface
     public function setHasId($hasId)
     {
         $this->hasId = $hasId;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of script.
+     *
+     * @return string
+     */
+    public function getScript()
+    {
+        return $this->script;
+    }
+
+    /**
+     * Sets the value of script.
+     *
+     * @param string $script the script
+     *
+     * @return self
+     */
+    public function setScript($script)
+    {
+        $this->script = $script;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of style.
+     *
+     * @return string
+     */
+    public function getStyle()
+    {
+        return $this->style;
+    }
+
+    /**
+     * Sets the value of style.
+     *
+     * @param string $style the style
+     *
+     * @return self
+     */
+    public function setStyle($style)
+    {
+        $this->style = $style;
 
         return $this;
     }

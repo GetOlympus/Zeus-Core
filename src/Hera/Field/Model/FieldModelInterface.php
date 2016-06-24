@@ -79,6 +79,38 @@ interface FieldModelInterface
     public function setHasId($hasId);
 
     /**
+     * Gets the value of script.
+     *
+     * @return string
+     */
+    public function getScript();
+
+    /**
+     * Sets the value of script.
+     *
+     * @param string $script the script
+     *
+     * @return self
+     */
+    public function setScript($script);
+
+    /**
+     * Gets the value of style.
+     *
+     * @return string
+     */
+    public function getStyle();
+
+    /**
+     * Sets the value of style.
+     *
+     * @param string $style the style
+     *
+     * @return self
+     */
+    public function setStyle($style);
+
+    /**
      * Gets the value of template.
      *
      * @return string
