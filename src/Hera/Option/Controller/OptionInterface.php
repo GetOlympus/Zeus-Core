@@ -62,21 +62,20 @@ interface OptionInterface
     /**
      * Clean details on value
      *
-     * @param array     $value
-     * @return mixed    $value
+     * @param   mixed $value
+     * @return  mixed $value
      */
     public static function cleanValue($value);
 
     /**
      * Retrieve field value
      *
+     * @param string    $id
      * @param array     $details
      * @param object    $default
-     * @param string    $id
-     * @param boolean   $multiple
      * @return mixed    $value
      */
-    public static function getFieldValue($details, $default, $id = '', $multiple = false);
+    public static function getValue($id, $details, $default);
 
     /**
      * Get a value from user options

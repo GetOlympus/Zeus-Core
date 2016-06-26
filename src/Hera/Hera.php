@@ -48,6 +48,7 @@ if (!defined('ABSPATH')) {
 
 // The path
 define('OLH_PATH', dirname(__FILE__));
+$path = dirname(dirname(OLH_PATH));
 
 /**
  * Customizable constants.
@@ -65,8 +66,10 @@ defined('OLH_HOME')         or define('OLH_HOME', get_option('home'));
 defined('OLH_LOCAL')        or define('OLH_LOCAL', get_bloginfo('language'));
 // URI
 defined('OLH_URI')          or define('OLH_URI', OLH_HOME.'/app/assets/');
+// Assets folder
+defined('OLH_ASSETS')       or define('OLH_ASSETS', $path.S.'app'.S.'assets'.S);
 // Twig cache folder
-defined('OLH_CACHE')        or define('OLH_CACHE', dirname(dirname(OLH_PATH)).S.'app'.S.'cache'.S);
+defined('OLH_CACHE')        or define('OLH_CACHE', $path.S.'app'.S.'cache'.S);
 
 /**
  * Main constants.
@@ -116,6 +119,7 @@ abstract class Hera extends Application
         'Radio'                     => 'GetOlympus\Field\Radio',
         'Rte'                       => 'GetOlympus\Field\Rte',
         'Select'                    => 'GetOlympus\Field\Select',
+        'Social'                    => 'GetOlympus\Field\Social',
         'Text'                      => 'GetOlympus\Field\Text',
         'Textarea'                  => 'GetOlympus\Field\Textarea',
         'Toggle'                    => 'GetOlympus\Field\Toggle',

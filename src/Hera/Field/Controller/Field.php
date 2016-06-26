@@ -32,7 +32,6 @@ abstract class Field extends Base implements FieldInterface
 
         // Initialize
         $this->setVars();
-        $this->setAssets();
     }
 
     /**
@@ -74,16 +73,15 @@ abstract class Field extends Base implements FieldInterface
     /**
      * Retrieve field value
      *
+     * @param string $id
      * @param array $details
      * @param object $default
-     * @param string $id
-     * @param boolean $multiple
      *
      * @return string|integer|array|object|boolean|null
      */
-    public static function getValue($details, $default, $id = '', $multiple = false)
+    public static function getValue($id, $details, $default)
     {
-        return Option::getFieldValue($details, $default, $id, $multiple);
+        return Option::getValue($id, $details, $default);
     }
 
     /**
@@ -145,53 +143,6 @@ abstract class Field extends Base implements FieldInterface
 
         // Return template to extend
         return '@core/fields/'.$twigtpl.'.html.twig';
-    }
-
-    /**
-     * Prepare scripts and styles.
-     */
-    protected function setAssets()
-    {
-        // Prepare assets to be displayed
-        static $done = false;
-
-        // Check if we need to display assets
-        if ($done) {
-            return;
-        }
-
-        // Do not display assets anymore
-        $done = true;
-
-        // Get assets
-        $script = $this->getModel()->getScript();
-        $style = $this->getModel()->getStyle();
-
-        // Check assets
-        if (empty($script) && empty($style)) {
-            return;
-        }
-
-        // Retrieve path to Resources and shortname's class
-        $class = $this->getClass();
-        $path = $class['resources'].S.'assets'.S;
-
-        // Enqueue styles and scripts after `olympus-core`
-        add_action('admin_enqueue_scripts', function () use ($path, $script, $style) {
-            $handle = wp_style_is('olympus-core', 'registered') ? 'olympus-core' : 'wp-admin';
-
-            // Check if `olympus-core` or `wp-admin` has been queued and display script
-            if (!empty($script) && wp_script_is($handle, 'enqueued')) {
-                $file_script = file_get_contents($path.$script);
-                wp_add_inline_script($handle, $file_script);
-            }
-
-            // Check if `olympus-core` or `wp-admin` has been queued and display style
-            if (!empty($style) && wp_style_is($handle, 'enqueued')) {
-                $file_style = file_get_contents($path.$style);
-                wp_add_inline_style($handle, $file_style);
-            }
-        });
     }
 
     /**

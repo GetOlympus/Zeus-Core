@@ -112,8 +112,8 @@ class Option implements OptionInterface
     /**
      * Clean details on value
      *
-     * @param array     $value
-     * @return mixed    $value
+     * @param   mixed $value
+     * @return  mixed $value
      */
     public static function cleanValue($value)
     {
@@ -121,7 +121,7 @@ class Option implements OptionInterface
             $new_value = [];
 
             foreach ($value as $k => $v) {
-                $new_value[$k] = stripslashes($v);
+                $new_value[$k] = self::cleanValue($v);
             }
 
             return $new_value;
@@ -133,16 +133,17 @@ class Option implements OptionInterface
     /**
      * Retrieve field value
      *
+     * @param string    $id
      * @param array     $details
      * @param object    $default
-     * @param string    $id
-     * @param boolean   $multiple
      * @return mixed    $value
      */
-    public static function getFieldValue($details, $default, $id = '', $multiple = false)
+    public static function getValue($id, $details, $default)
     {
+        $sep = '-';
+
         // Check id
-        if (empty($id)) {
+        if (empty($id) || null === $id) {
             return null;
         }
 
@@ -153,7 +154,7 @@ class Option implements OptionInterface
 
         // Post metaboxes
         if (!empty($post)) {
-            $value = self::getPostMeta($post->ID, $post->post_type.'-'.$id);
+            $value = self::getPostMeta($post->ID, $post->post_type.$sep.$id);
             $value = empty($value) ? $default : $value;
 
             return self::cleanValue($value);
@@ -166,7 +167,7 @@ class Option implements OptionInterface
 
         // Term metaboxes
         if (!empty($term)) {
-            $value = self::getTermMeta($term->term_id, $term->taxonomy.'-'.$id, $default);
+            $value = self::getTermMeta($term->term_id, $term->taxonomy.$sep.$id, $default);
             $value = empty($value) ? $default : $value;
 
             return self::cleanValue($value);
@@ -199,7 +200,8 @@ class Option implements OptionInterface
 
         // Default action
         $option = isset($details['option']) ? $details['option'] : '';
-        $value = !empty($option) ? self::get($option, $default) : self::get($id, $default);
+        $handle = !empty($option) ? $option : $id;
+        $value = self::get($id, $default);
 
         return self::cleanValue($value);
     }

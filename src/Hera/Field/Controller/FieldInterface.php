@@ -26,14 +26,13 @@ interface FieldInterface
     /**
      * Retrieve field value
      *
+     * @param string $id
      * @param array $details
      * @param object $default
-     * @param string $id
-     * @param boolean $multiple
      *
      * @return string|integer|array|object|boolean|null
      */
-    public static function getValue($details, $default, $id = '', $multiple = false);
+    public static function getValue($id, $details, $default);
 
     /**
      * Render HTML component.
