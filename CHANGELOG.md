@@ -1,3 +1,6 @@
+## 0.0.10 (June 26, 2016)
+Enhance Field and Option controllers.
+
 ## 0.0.9 (June 24, 2016)
 Enhance Field and Translate controllers. Add new Base and BaseWidget controllers to make internal model access easy. Fix lots of bugs.
 
