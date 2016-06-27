@@ -16,3 +16,9 @@ Thumbs.db
 # Auto-generated folders
 /node_modules/
 /bower_components/
+
+# Auto-generated files
+/app/assets/dist/css/*
+!/app/assets/dist/css/.gitkeep
+/app/assets/dist/js/*
+!/app/assets/dist/js/.gitkeep
