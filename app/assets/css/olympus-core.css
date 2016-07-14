@@ -65,7 +65,7 @@
  * Global
  */.widefat td,.widefat td ol,.widefat td p,.widefat td ul{font-size:11px}/*!
  * Default table
- */.form-table tr:nth-child(odd){background-color:rgba(0,0,0,.025)}.form-table th{padding:20px 0 20px 10px}.form-table th label small{display:block}table.fixed{border:none;box-shadow:none}.alternate,.striped>tbody>:nth-child(odd),ul.striped>:nth-child(odd){background-color:rgba(24,26,33,.015)}/*!
+ */.form-table tr:nth-child(odd){background-color:rgba(0,0,0,.015)}.form-table th{padding:20px 0 20px 10px}.form-table th label small{display:block}table.fixed{border:none;box-shadow:none}.alternate,.striped>tbody>:nth-child(odd),ul.striped>:nth-child(odd){background-color:rgba(24,26,33,.015)}/*!
  * Action toolbox
  */.row-actions{padding-top:4px;text-transform:uppercase}.row-actions span{display:inline-block;font-size:0;margin:0 10px 0 0}.row-actions span a{font-size:10px}/*!
  * Unapprouved
