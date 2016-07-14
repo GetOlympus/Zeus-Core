@@ -75,6 +75,9 @@ class Metabox extends Base implements MetaboxInterface
      */
     public function addMetabox()
     {
+        $fields = $this->getModel()->getFields();
+
+        // Add meta box
         add_meta_box(
             $this->getModel()->getId(),
             $this->getModel()->getTitle(),
@@ -82,8 +85,11 @@ class Metabox extends Base implements MetaboxInterface
             $this->getModel()->getSlug(),
             $this->getModel()->getContext(),
             $this->getModel()->getPriority(),
-            $this->getModel()->getFields()
+            $fields
         );
+
+        // Render assets
+        Render::assets(['post.php'], $fields);
     }
 
     /**

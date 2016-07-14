@@ -20,6 +20,14 @@ interface RenderInterface
     public static function getInstance();
 
     /**
+     * Render assets on asked page.
+     *
+     * @param array $currentPage
+     * @param array $fields
+     */
+    public static function assets($currentPage, $fields);
+
+    /**
      * Camelize string.
      *
      * @param string $text

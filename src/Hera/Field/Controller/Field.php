@@ -128,6 +128,61 @@ abstract class Field extends Base implements FieldInterface
     }
 
     /**
+     * Render assets' component.
+     *
+     * @return array $assets
+     */
+    public function renderAssets()
+    {
+        // Retrieve path to Resources and shortname's class
+        $class = $this->getClass();
+        $path = $class['resources'].S.'assets'.S;
+
+        // Get assets
+        $script = $this->getModel()->getScript();
+        $style = $this->getModel()->getStyle();
+
+        // Do nothing if all empty
+        if (empty($script) && empty($style)) {
+            return;
+        }
+
+        $assets = [];
+
+        // Scripts
+        if (!empty($script)) {
+            $name = basename($script);
+
+            // Create file
+            if (!file_exists($file_sc = OLH_ASSETS.'dist'.S.'js'.S.$name)) {
+                file_put_contents($file_sc, "/**\n * This file is auto-generated\n */\n\n".file_get_contents($path.$script)."\n");
+            }
+
+            $assets['script'] = [
+                'name' => $name,
+                'file' => OLH_URI.'dist/js/'.$name,
+            ];
+        }
+
+        // Styles
+        if (!empty($style)) {
+            $name = basename($style);
+
+            // Create file
+            if (!file_exists($file_st = OLH_ASSETS.'dist'.S.'css'.S.$name)) {
+                file_put_contents($file_st, "/**\n * This file is auto-generated\n */\n\n".file_get_contents($path.$style)."\n");
+            }
+
+            $assets['style'] = [
+                'name' => $name,
+                'file' => OLH_URI.'dist/css/'.$name,
+            ];
+        }
+
+        return $assets;
+    }
+
+    /**
      * Define the right template to extend.
      *
      * @param   string  $template

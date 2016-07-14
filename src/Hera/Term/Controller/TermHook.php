@@ -60,6 +60,9 @@ class TermHook implements TermHookInterface
         $this->posttype = $posttype;
         $this->is_single = $is_single;
 
+        // Render assets
+        Render::assets(['edit-tags.php', 'term.php'], $this->fields);
+
         // Edit custom fields
         add_action($slug.'_edit_form_fields', [$this, 'editFormFields'], 10, 1);
 

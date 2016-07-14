@@ -44,6 +44,13 @@ interface FieldInterface
     public function render($details = [], $renderView = true, $context = 'field');
 
     /**
+     * Render assets' component.
+     *
+     * @return array $assets
+     */
+    public function renderAssets();
+
+    /**
      * Define the right template to extend.
      *
      * @param   string  $template

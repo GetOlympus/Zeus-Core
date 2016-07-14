@@ -38,6 +38,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
         // Work on admin only
         if (OLH_ISADMIN) {
             $this->init();
+            $this->initAssets();
         }
     }
 
@@ -78,6 +79,39 @@ abstract class AdminPage extends Base implements AdminPageInterface
             // Add child menu
             $this->addChild($slug, $options);
         }
+    }
+
+    /**
+     * Initialize assets in admin pages.
+     */
+    public function initAssets()
+    {
+        // Get current page
+        $currentPage = Request::get('page');
+        $currentSection = Request::get('section');
+        $identifier = $this->getModel()->getIdentifier();
+        $page_id = str_replace($identifier.'-', '', $currentPage);
+
+        // Check current page
+        if (!$this->getModel()->hasPage($page_id)) {
+            return;
+        }
+
+        // Build page details
+        $optionPage = $this->getModel()->getPages($page_id);
+        $filter_slug = empty($currentSection) ? $currentPage : $currentPage.'-'.$currentSection;
+
+        /**
+         * Build page contents.
+         *
+         * @var     string  $currentPage
+         * @param   array   $contents
+         * @return  array   $contents
+         */
+        $fields = apply_filters('olh_adminpage_'.$filter_slug.'_contents', []);
+
+        // Render assets
+        Render::assets(['admin.php'], $fields);
     }
 
     /**

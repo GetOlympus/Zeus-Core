@@ -20,16 +20,6 @@ interface AdminPageHookInterface
     public function init();
 
     /**
-     * Get page fields.
-     */
-    public function getPageFields();
-
-    /**
-     * Get section fields.
-     */
-    public function getSectionFields();
-
-    /**
      * Get section fields.
      */
     public function renderFields();

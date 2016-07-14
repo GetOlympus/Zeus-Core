@@ -2,7 +2,9 @@
 
 namespace GetOlympus\Hera\Render\Controller;
 
+use GetOlympus\Hera\AdminPage\Controller\AdminPageHook;
 use GetOlympus\Hera\Render\Controller\RenderInterface;
+use GetOlympus\Hera\Request\Controller\Request;
 use Behat\Transliterator\Transliterator;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -155,6 +157,64 @@ class Render implements RenderInterface
         }
 
         return self::$instance;
+    }
+
+    /**
+     * Render assets on asked page.
+     *
+     * @param array $currentPage
+     * @param array $fields
+     */
+    public static function assets($currentPage, $fields)
+    {
+        global $pagenow;
+
+        // Check current page
+        if (empty($fields) || !in_array($pagenow, $currentPage)) {
+            return;
+        }
+
+        $assets = [
+            'scripts' => [],
+            'styles' => [],
+        ];
+
+        if (!empty($fields)) {
+            foreach ($fields as $field) {
+                if (!$field) {
+                    continue;
+                }
+
+                $asts = $field->renderAssets();
+
+                if (!empty($asts['script'])) {
+                    $assets['scripts'][] = $asts['script'];
+                }
+
+                if (!empty($asts['style'])) {
+                    $assets['styles'][] = $asts['style'];
+                }
+            }
+        }
+
+        // Add all in admin panel
+        add_action('admin_enqueue_scripts', function ($hook) use ($assets) {
+            // Scripts
+            if (!empty($assets['scripts'])) {
+                foreach ($assets['scripts'] as $script) {
+                    wp_enqueue_script($script['name'], $script['file'], ['jquery']);
+                }
+            }
+
+            // Styles
+            if (!empty($assets['styles'])) {
+                $handle = wp_style_is('olympus-core', 'registered') ? 'olympus-core' : false;
+
+                foreach ($assets['styles'] as $style) {
+                    wp_enqueue_style($style['name'], $style['file'], $handle);
+                }
+            }
+        });
     }
 
     /**

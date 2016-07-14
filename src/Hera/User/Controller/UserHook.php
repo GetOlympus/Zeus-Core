@@ -49,6 +49,9 @@ class UserHook implements UserHookInterface
 
         // Save or show custom fields
         if (OLH_ISADMIN) {
+            // Render assets
+            Render::assets(['profile.php'], $this->fields);
+
             // Save
             add_action('personal_options_update', [&$this, 'saveProfileFields']);
             add_action('edit_user_profile_update', [&$this, 'saveProfileFields']);

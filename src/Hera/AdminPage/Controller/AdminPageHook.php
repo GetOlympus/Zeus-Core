@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Hera\AdminPage\Controller;
 
+use GetOlympus\Hera\AdminPage\Controller\AdminPageField;
 use GetOlympus\Hera\AdminPage\Controller\AdminPageHookInterface;
 use GetOlympus\Hera\Field\Controller\Field;
 use GetOlympus\Hera\Option\Controller\Option;
@@ -74,28 +75,19 @@ class AdminPageHook implements AdminPageHookInterface
     public function init()
     {
         // Get options
-        $options = $this->options;
+        $filter_slug = $this->currentPage;
 
         // Check sections
-        if (!empty($options['sections']) && is_array($options['sections'])) {
-            $fields = $this->getSectionFields();
-        } else {
-            $fields = $this->getPageFields();
+        if (!empty($this->options['sections']) && is_array($this->options['sections'])) {
+            foreach ($this->options['sections'] as $sectionSlug => $sectionName) {
+                if ($sectionSlug !== $this->currentSection) {
+                    continue;
+                }
+
+                $filter_slug .= '-'.$this->currentSection;
+                break;
+            }
         }
-
-        $this->fields = $fields;
-
-        // Display main render
-        $this->renderFields();
-    }
-
-    /**
-     * Get page fields.
-     */
-    public function getPageFields()
-    {
-        // Get current page
-        $currentPage = $this->currentPage;
 
         /**
          * Build page contents.
@@ -104,35 +96,10 @@ class AdminPageHook implements AdminPageHookInterface
          * @param   array   $contents
          * @return  array   $contents
          */
-        return apply_filters('olh_adminpage_'.$currentPage.'_contents', []);
-    }
+        $this->fields = apply_filters('olh_adminpage_'.$filter_slug.'_contents', []);
 
-    /**
-     * Get section fields.
-     */
-    public function getSectionFields()
-    {
-        // Get contents
-        $currentPage = $this->currentPage;
-        $currentSection = $this->currentSection;
-        $options = $this->options;
-
-        // Get all datas
-        foreach ($options['sections'] as $sectionSlug => $sectionName) {
-            if ($sectionSlug !== $currentSection) {
-                continue;
-            }
-
-            /**
-             * Build section page contents.
-             *
-             * @var     string  $currentPage
-             * @var     string  $currentSection
-             * @param   array   $contents
-             * @return  array   $contents
-             */
-            return apply_filters('olh_adminpage_'.$currentPage.'-'.$currentSection.'_contents', []);
-        }
+        // Display main render
+        $this->renderFields();
     }
 
     /**
