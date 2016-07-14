@@ -1,3 +1,6 @@
+## 0.0.11 (July 14, 2016)
+Render assets only when its needed.
+
 ## 0.0.10 (June 26, 2016)
 Enhance Field and Option controllers.
 
