@@ -21,17 +21,17 @@ $('.tooltip').tooltip({
 
 ## Settings
 
-Option      | Type      | Default   | Description
-------      | ----      | -------   | -----------
-css         | string    | 'tooltip' | CSS class name assigned to tooltip
-delayIn     | integer   | 0         | Delay in milliseconds before opening tooltip
-delayOut    | integer   | 0         | Delay in milliseconds before closing tooltip
-fade        | boolean   | false     | Transition animation - `true|false`
-position    | string    | 'top'     | Tooltip position - `top|bottom|left|right`
-offset      | integer   | 0         | Tooltip offset between element and itself
-onHidden    | function  | null      | Callback called when the tooltip is hidden
-onShown     | function  | null      | Callback called when the tooltip is shown
-trigger     | string    | 'hover'   | Event to bind to open or close tooltip - `hover|click|focus`
+Option      | Type      | Default   | Description                                   | Possible values
+------      | ----      | -------   | -----------                                   | ---------------
+css         | string    | 'tooltip' | CSS class name assigned to Tooltip            | 
+delayIn     | integer   | 0         | Delay in milliseconds before opening tooltip  | 
+delayOut    | integer   | 0         | Delay in milliseconds before closing tooltip  | 
+fade        | boolean   | false     | Transition animation                          | `true` `false`
+position    | string    | 'top'     | Tooltip position                              | `top` `bottom` `left` `right`
+offset      | integer   | 0         | Tooltip offset between element and itself     | 
+onHidden    | function  | null      | Callback called when the tooltip is hidden    | 
+onShown     | function  | null      | Callback called when the tooltip is shown     | 
+trigger     | string    | 'hover'   | Event to bind to open or close tooltip        | `hover` `click` `focus`
 
 ## Dependencies
 
