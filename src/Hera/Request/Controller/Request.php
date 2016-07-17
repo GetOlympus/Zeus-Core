@@ -18,6 +18,18 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 class Request implements RequestInterface
 {
     /**
+     * Return a slug list where it is authorized to render assets.
+     *
+     * @return  array $authorizedPage
+     */
+    public static function authorizedAssets()
+    {
+        return [
+            'admin', 'comment', 'post', 'user', 'widget'
+        ];
+    }
+
+    /**
      * Return $_GET value.
      *
      * @param   string $param
@@ -49,6 +61,11 @@ class Request implements RequestInterface
             }
 
             global $pagenow;
+
+            // Custom page slug
+            if (in_array($pagenow, ['admin.php'])) {
+                return 'admin';
+            }
 
             // Post slug
             if (in_array($pagenow, ['edit.php', 'post-new.php', 'post.php', 'edit-tags.php'])) {

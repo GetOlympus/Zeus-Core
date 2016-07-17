@@ -142,41 +142,21 @@ abstract class Field extends Base implements FieldInterface
         $script = $this->getModel()->getScript();
         $style = $this->getModel()->getStyle();
 
+        $assets = [];
+
         // Do nothing if all empty
         if (empty($script) && empty($style)) {
-            return;
+            return $assets;
         }
-
-        $assets = [];
 
         // Scripts
         if (!empty($script)) {
-            $name = basename($script);
-
-            // Create file
-            if (!file_exists($file_sc = OLH_ASSETS.'dist'.S.'js'.S.$name)) {
-                file_put_contents($file_sc, "/**\n * This file is auto-generated\n */\n\n".file_get_contents($path.$script)."\n");
-            }
-
-            $assets['script'] = [
-                'name' => $name,
-                'file' => OLH_URI.'dist/js/'.$name,
-            ];
+            $assets[$script] = $path.$script;
         }
 
         // Styles
         if (!empty($style)) {
-            $name = basename($style);
-
-            // Create file
-            if (!file_exists($file_st = OLH_ASSETS.'dist'.S.'css'.S.$name)) {
-                file_put_contents($file_st, "/**\n * This file is auto-generated\n */\n\n".file_get_contents($path.$style)."\n");
-            }
-
-            $assets['style'] = [
-                'name' => $name,
-                'file' => OLH_URI.'dist/css/'.$name,
-            ];
+            $assets[$style] = $path.$style;
         }
 
         return $assets;

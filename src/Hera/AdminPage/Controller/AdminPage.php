@@ -99,6 +99,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Build page details
         $optionPage = $this->getModel()->getPages($page_id);
+        $currentSection = !empty($optionPage['sections']) && empty($currentSection) ? key($optionPage['sections']) : $currentSection;
         $filter_slug = empty($currentSection) ? $currentPage : $currentPage.'-'.$currentSection;
 
         /**

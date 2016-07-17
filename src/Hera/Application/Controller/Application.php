@@ -49,6 +49,11 @@ abstract class Application implements ApplicationInterface
     /**
      * @var array
      */
+    protected $internals = [];
+
+    /**
+     * @var array
+     */
     protected $paths = [];
 
     /**

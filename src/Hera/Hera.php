@@ -128,6 +128,16 @@ abstract class Hera extends Application
     ];
 
     /**
+     * @var array
+     */
+    protected $internals = [
+        // Hera common assets
+        'js/dragndrop.js'           => 'Resources/assets/js/dragndrop/dragndrop.js',
+        'js/modal.js'               => 'Resources/assets/js/modal/modal.js',
+        'js/tooltip.js'             => 'Resources/assets/js/tooltip/tooltip.js',
+    ];
+
+    /**
      * Prepare externals.
      */
     protected function setExternals()
@@ -138,6 +148,7 @@ abstract class Hera extends Application
         }
 
         $externals = [];
+        $internals = $this->internals;
 
         // Iterate
         foreach ($this->externals as $alias => $component) {
@@ -151,6 +162,15 @@ abstract class Hera extends Application
         add_filter('olh_render_views', function ($paths) use ($externals){
             foreach ($externals as $alias => $path) {
                 $paths[$alias] = $path.'views';
+            }
+
+            return $paths;
+        });
+
+        // Register all internal assets
+        add_filter('olh_render_assets', function ($paths) use ($internals){
+            foreach ($internals as $name => $path) {
+                $paths[$name] = OLH_PATH.S.$path;
             }
 
             return $paths;

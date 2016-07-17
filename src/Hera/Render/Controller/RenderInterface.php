@@ -28,6 +28,14 @@ interface RenderInterface
     public static function assets($currentPage, $fields);
 
     /**
+     * Create temporary asset accessible file.
+     *
+     * @param string $source
+     * @param string $filename
+     */
+    public static function assetsInCache($source, $filename);
+
+    /**
      * Camelize string.
      *
      * @param string $text

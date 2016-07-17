@@ -179,22 +179,39 @@ class Render implements RenderInterface
             'styles' => [],
         ];
 
+        /**
+         * Add your custom assets to make them accessible.
+         *
+         * @param   array $paths
+         * @return  array $paths
+         */
+        $paths = apply_filters('olh_render_assets', []);
+
+        // Iterate on fields to render assets
         if (!empty($fields)) {
             foreach ($fields as $field) {
                 if (!$field) {
                     continue;
                 }
 
-                $asts = $field->renderAssets();
-
-                if (!empty($asts['script'])) {
-                    $assets['scripts'][] = $asts['script'];
-                }
-
-                if (!empty($asts['style'])) {
-                    $assets['styles'][] = $asts['style'];
-                }
+                $paths = array_merge($paths, $field->renderAssets());
             }
+        }
+
+        // Check paths
+        if (empty($paths)) {
+            return;
+        }
+
+        // Create temp accessible files and update assets
+        foreach ($paths as $name => $path) {
+            self::assetsInCache($path, $name);
+            $type = 'js/' === substr($name, 0, 3) ? 'scripts' : 'styles';
+
+            $assets[$type][] = [
+                'name' => $name,
+                'file' => OLH_URI.'dist/'.$name,
+            ];
         }
 
         // Add all in admin panel
@@ -215,6 +232,22 @@ class Render implements RenderInterface
                 }
             }
         });
+    }
+
+    /**
+     * Create temporary asset accessible file.
+     *
+     * @param string $source
+     * @param string $filename
+     */
+    public static function assetsInCache($source, $filename)
+    {
+        $dest = OLH_ASSETS.'dist'.S.$filename;
+
+        // Create file
+        if (!file_exists($dest)) {
+            file_put_contents($dest, "/**\n * This file is auto-generated\n */\n\n".file_get_contents($source)."\n");
+        }
     }
 
     /**

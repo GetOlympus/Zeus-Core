@@ -15,6 +15,13 @@ namespace GetOlympus\Hera\Request\Controller;
 interface RequestInterface
 {
     /**
+     * Return a slug list where it is authorized to render assets.
+     *
+     * @return  array $authorizedPage
+     */
+    public static function authorizedAssets();
+
+    /**
      * Return $_GET value.
      *
      * @param   string $param
