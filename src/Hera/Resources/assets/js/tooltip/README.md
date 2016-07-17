@@ -1,7 +1,5 @@
 # Hera Modal  
 
----
-
 ## Install
 
 ````html
@@ -21,7 +19,7 @@ $('.tooltip').tooltip({
 
 ## Settings
 
-Option      | Type      | Default   | Description                                   | Possible values
+Option      | Type      | Default   | Description                                   | Accepted values
 ------      | ----      | -------   | -----------                                   | ---------------
 css         | string    | 'tooltip' | CSS class name assigned to Tooltip            | 
 delayIn     | integer   | 0         | Delay in milliseconds before opening tooltip  | 

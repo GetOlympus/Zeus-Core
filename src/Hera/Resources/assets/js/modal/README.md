@@ -1,7 +1,5 @@
 # Hera Modal  
 
----
-
 ## Install
 
 ````html

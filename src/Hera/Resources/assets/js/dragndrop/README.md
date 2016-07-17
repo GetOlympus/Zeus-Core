@@ -1,7 +1,5 @@
 # Hera Drag'n drop  
 
----
-
 ## Install
 
 ````html
