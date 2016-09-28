@@ -16,19 +16,18 @@ interface AjaxInterface
 {
     /**
      * Initialization.
+     */
+    public function init();
+
+    /**
+     * Hooks and enqueue script.
      *
-     * @param string $identifier
-     * @param string $callback
+     * @param array $options the options
      */
-    public function init($identifier, $callback);
+    public function enqueueScript($options);
 
     /**
-     * Hook method.
+     * Hook callback method.
      */
-    public function callbackConnected();
-
-    /**
-     * Hook method.
-     */
-    public function callbackDisconnected();
+    public function hookCallback();
 }

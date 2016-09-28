@@ -22,8 +22,9 @@ class Settings extends Configuration
      */
     protected $available = [
         'admin-bar',
-        'admin-css',
         'admin-footer',
+        'admin-scripts',
+        'admin-styles',
         'admin-menu-order',
         'admin-meta-boxes',
         'clean-headers',
@@ -81,22 +82,6 @@ class Settings extends Configuration
     }
 
     /**
-     * Remove some items from WP admin bar.
-     *
-     * @param boolean $css
-     */
-    public function adminCssSetting($css)
-    {
-        if (!$css) {
-            return;
-        }
-
-        add_action('admin_enqueue_scripts', function (){
-            wp_enqueue_style('olympus-core', OLH_URI.'css/olympus-core.css', false);
-        }, 10);
-    }
-
-    /**
      * Update WP footer copyright.
      *
      * @param string $description
@@ -146,6 +131,38 @@ class Settings extends Configuration
                 remove_meta_box($plugin, $page, $column);
             }
         });
+    }
+
+    /**
+     * Add some admin JS improvements.
+     *
+     * @param boolean $js
+     */
+    public function adminScriptsSetting($js)
+    {
+        if (!$js) {
+            return;
+        }
+
+        add_action('admin_enqueue_scripts', function (){
+            wp_enqueue_script('olympus-core', OLH_URI.'js/olympus-core.js', ['jquery']);
+        }, 10);
+    }
+
+    /**
+     * Add some admin CSS improvements.
+     *
+     * @param boolean $css
+     */
+    public function adminStylesSetting($css)
+    {
+        if (!$css) {
+            return;
+        }
+
+        add_action('admin_enqueue_scripts', function (){
+            wp_enqueue_style('olympus-core', OLH_URI.'css/olympus-core.css', false);
+        }, 10);
     }
 
     /**

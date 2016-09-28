@@ -1,3 +1,6 @@
+## 0.0.12 (September 28, 2016)
+Add Cron and Assets settings controllers, make Ajax controller works, update design and more.
+
 ## 0.0.11 (July 14, 2016)
 Render assets only when its needed.
 

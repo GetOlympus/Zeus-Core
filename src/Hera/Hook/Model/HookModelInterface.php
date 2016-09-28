@@ -17,7 +17,7 @@ interface HookModelInterface
     /**
      * Gets the value of callback.
      *
-     * @return function
+     * @return string|array
      */
     public function getCallback();
 
@@ -29,11 +29,11 @@ interface HookModelInterface
     /**
      * Sets the value of callback.
      *
-     * @param function $callback the callback
+     * @param string|array $callback the callback
      *
      * @return self
      */
-    public function setCallback(function $callback);
+    public function setCallback($callback);
 
     /**
      * Gets the value of identifier.

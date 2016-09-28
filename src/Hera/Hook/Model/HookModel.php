@@ -17,7 +17,7 @@ use GetOlympus\Hera\Hook\Model\HookModelInterface;
 class HookModel implements HookModelInterface
 {
     /**
-     * @var function
+     * @var string|array
      */
     protected $callback;
 
@@ -58,11 +58,11 @@ class HookModel implements HookModelInterface
     /**
      * Sets the value of callback.
      *
-     * @param function $callback the callback
+     * @param string|array $callback the callback
      *
      * @return self
      */
-    public function setCallback(function $callback)
+    public function setCallback($callback)
     {
         $this->callback = $callback;
 

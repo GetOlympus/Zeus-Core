@@ -17,17 +17,12 @@ interface HookInterface
     /**
      * Initialize all data.
      *
-     * @param string $type
-     * @param string $identifier
-     * @param string|array $callback
-     * @param mixed $priority
+     * @param string        $type
+     * @param string        $identifier
+     * @param array|string  $callback
+     * @param mixed         $priority
      */
-    public function initialize($type, $identifier, $callback, $priority = 10);
-
-    /**
-     * Hook method.
-     */
-    public function callback();
+    public function init($type, $identifier, $callback, $priority = 10);
 
     /**
      * Define hook.

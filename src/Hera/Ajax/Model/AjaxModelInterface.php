@@ -15,34 +15,50 @@ namespace GetOlympus\Hera\Ajax\Model;
 interface AjaxModelInterface
 {
     /**
-     * Gets the value of callback.
+     * Gets the value of args.
      *
-     * @return function
+     * @return array
      */
-    public function getCallback();
+    public function getArgs();
 
     /**
-     * Sets the value of callback.
+     * Sets the value of args.
      *
-     * @param function $callback the callback
+     * @param array $args the args
      *
      * @return self
      */
-    public function setCallback(function $callback);
+    public function setArgs($args);
 
     /**
-     * Gets the value of identifier.
+     * Gets the value of handle.
      *
      * @return string
      */
-    public function getIdentifier();
+    public function getHandle();
 
     /**
-     * Sets the value of identifier.
+     * Sets the value of handle.
      *
-     * @param string $identifier the identifier
+     * @param string $handle the handle
      *
      * @return self
      */
-    public function setIdentifier($identifier);
+    public function setHandle($handle);
+
+    /**
+     * Gets the value of name.
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
+     * Sets the value of name.
+     *
+     * @param string $name the name
+     *
+     * @return self
+     */
+    public function setName($name);
 }

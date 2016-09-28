@@ -17,7 +17,7 @@ use GetOlympus\Hera\Hook\Controller\Hook;
  *
  */
 
-class Ajax extends Base implements AjaxInterface
+abstract class Ajax extends Base implements AjaxInterface
 {
     /**
      * @var Hook
@@ -35,38 +35,90 @@ class Ajax extends Base implements AjaxInterface
     public function __construct()
     {
         $this->model = new AjaxModel();
+
+        // Initialize
+        $this->setVars();
+        $this->init();
     }
 
     /**
      * Initialization.
+     */
+    public function init()
+    {
+        // Build vars
+        $args = $this->getModel()->getArgs();
+        $handle = $this->getModel()->getHandle();
+        $name = $this->getModel()->getName();
+
+        // Check name and callback
+        if (empty($handle) || empty($name)) {
+            return;
+        }
+
+        // Work on args
+        $args = !empty($args) ? $args : [];
+        $args = is_array($args) ? $args : [$args];
+
+        // Build options to pass through action
+        $options = [
+            'args'      => array_merge([
+                'action'    => $name,
+                'nonce'     => wp_create_nonce($name),
+                'url'       => admin_url('admin-ajax.php'),
+            ], $args),
+            'handle'    => $handle,
+            'name'      => $name,
+        ];
+
+        // Enqueue scripts
+        $this->enqueueScript($options);
+    }
+
+    /**
+     * Hooks and enqueue script.
      *
-     * @param string $identifier
-     * @param string $callback
+     * @param array $options the options
      */
-    public function init($identifier, $callback)
+    public function enqueueScript($options)
     {
-        $this->getModel()->setIdentifier($identifier);
-        $this->getModel()->setCallback($callback);
+        // Connected hook
+        add_action('wp_ajax_'.$options['name'], [&$this, 'hookCallback']);
 
-        $id = $this->getModel()->getIdentifier();
+        // Disconnected hook
+        add_action('wp_ajax_nopriv_'.$options['name'], [&$this, 'hookCallback']);
 
-        $this->hook_connected = new Hook('wp_ajax_'.$id, array($this, 'callbackConnected'));
-        $this->hook_disconnected = new Hook('wp_ajax_nopriv_'.$id, array($this, 'callbackDisconnected'));
+        // Action
+        wp_localize_script($options['handle'], $options['name'], $options['args']);
     }
 
     /**
-     * Hook method.
+     * Hook callback method.
      */
-    public function callbackConnected()
+    public function hookCallback()
     {
-        $this->hook_connected->runCallback();
+        $name = $this->getModel()->getName();
+
+        // Check Ajax referer
+        check_ajax_referer($name, 'nonce');
+
+        // Call custom callback function
+        $data = $this->callback();
+
+        // Build JSON data
+        wp_send_json_success($data);
+
+        // Stops everything
+        wp_die();
     }
 
     /**
-     * Hook method.
+     * Callback custom function.
      */
-    public function callbackDisconnected()
-    {
-        $this->hook_disconnected->runCallback();
-    }
+    abstract public function callback();
+
+    /**
+     * Prepare variables.
+     */
+    abstract public function setVars();
 }

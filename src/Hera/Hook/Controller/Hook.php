@@ -29,25 +29,17 @@ class Hook extends Base implements HookInterface
     /**
      * Initialize all data.
      *
-     * @param string $type
-     * @param string $identifier
-     * @param string|array $callback
-     * @param mixed $priority
+     * @param string        $type
+     * @param string        $identifier
+     * @param array|string  $callback
+     * @param mixed         $priority
      */
-    public function initialize($type, $identifier, $callback, $priority = 10)
+    public function init($type, $identifier, $callback, $priority = 10)
     {
         $this->getModel()->setType($type);
         $this->getModel()->setIdentifier($identifier);
         $this->getModel()->setCallback($callback);
         $this->getModel()->setPriority($priority);
-    }
-
-    /**
-     * Hook method.
-     */
-    public function callback()
-    {
-        $this->getModel()->runCallback();
     }
 
     /**
@@ -73,9 +65,9 @@ class Hook extends Base implements HookInterface
     public function run()
     {
         if ('action' === $this->getModel()->getType()) {
-            return add_action($this->getModel()->getIdentifier(), [&$this, 'callback'], $this->getModel()->getPriority());
+            return add_action($this->getModel()->getIdentifier(), $this->getModel()->getCallback(), $this->getModel()->getPriority());
         }
 
-        return add_filter($this->getModel()->getIdentifier(), [&$this, 'callback'], $this->getModel()->getPriority());
+        return add_filter($this->getModel()->getIdentifier(), $this->getModel()->getCallback(), $this->getModel()->getPriority());
     }
 }

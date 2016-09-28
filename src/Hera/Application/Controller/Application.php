@@ -149,6 +149,7 @@ abstract class Application implements ApplicationInterface
             'AdminPage'                 => 'GetOlympus\Hera\AdminPage\Controller\AdminPage',
             'Ajax'                      => 'GetOlympus\Hera\Ajax\Controller\Ajax',
             'Configuration'             => 'GetOlympus\Hera\Configuration\Controller\Configuration',
+            'Cron'                      => 'GetOlympus\Hera\Cron\Controller\Cron',
             'Error'                     => 'GetOlympus\Hera\Error\Controller\Error',
             'Field'                     => 'GetOlympus\Hera\Field\Controller\Field',
             'Hook'                      => 'GetOlympus\Hera\Hook\Controller\Hook',
@@ -182,6 +183,7 @@ abstract class Application implements ApplicationInterface
     public function getConfigurations()
     {
         return [
+            'AssetsConfiguration'       => 'GetOlympus\Hera\Configuration\Controller\Assets',
             'MenusConfiguration'        => 'GetOlympus\Hera\Configuration\Controller\Menus',
             'SettingsConfiguration'     => 'GetOlympus\Hera\Configuration\Controller\Settings',
             'ShortcodesConfiguration'   => 'GetOlympus\Hera\Configuration\Controller\Shortcodes',

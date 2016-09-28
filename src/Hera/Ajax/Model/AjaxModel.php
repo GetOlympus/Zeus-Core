@@ -17,59 +17,88 @@ use GetOlympus\Hera\Ajax\Model\AjaxModelInterface;
 class AjaxModel implements AjaxModelInterface
 {
     /**
-     * @var function
+     * @var array
      */
-    protected $callback;
+    protected $args;
 
     /**
      * @var string
      */
-    protected $identifier;
+    protected $handle;
 
     /**
-     * Gets the value of callback.
-     *
-     * @return function
+     * @var string
      */
-    public function getCallback()
+    protected $name;
+
+    /**
+     * Gets the value of args.
+     *
+     * @return array
+     */
+    public function getArgs()
     {
-        return $this->callback;
+        return $this->args;
     }
 
     /**
-     * Sets the value of callback.
+     * Sets the value of args.
      *
-     * @param function $callback the callback
+     * @param array $args the args
      *
      * @return self
      */
-    public function setCallback(function $callback)
+    public function setArgs($args)
     {
-        $this->callback = $callback;
+        $this->args = $args;
 
         return $this;
     }
 
     /**
-     * Gets the value of identifier.
+     * Gets the value of handle.
      *
      * @return string
      */
-    public function getIdentifier()
+    public function getHandle()
     {
-        return $this->identifier;
+        return $this->handle;
     }
 
     /**
-     * Sets the value of identifier.
+     * Sets the value of handle.
      *
-     * @param string $identifier the identifier
+     * @param string $handle the handle
      *
      * @return self
      */
-    public function setIdentifier($identifier)
+    public function setHandle($handle)
     {
-        $this->identifier = $identifier;
+        $this->handle = $handle;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of name.
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Sets the value of name.
+     *
+     * @param string $name the name
+     *
+     * @return self
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
 
         return $this;
     }

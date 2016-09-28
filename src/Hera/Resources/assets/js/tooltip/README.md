@@ -1,4 +1,4 @@
-# Hera Modal  
+# Hera Tooltip  
 
 ## Install
 
