@@ -18,9 +18,4 @@ interface CronInterface
      * Initialization.
      */
     public function init();
-
-    /**
-     * Cron hook callback method.
-     */
-    public function cronCallback();
 }

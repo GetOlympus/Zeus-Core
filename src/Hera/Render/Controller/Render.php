@@ -66,7 +66,7 @@ class Render implements RenderInterface
             $loader->addPath($path, $alias);
         }
 
-        // Build Twig renderer
+        // Build Twig renderer - no cache needed for twig rendering
         $this->twig = new Twig_Environment($loader/*, ['cache' => OLH_CACHE]*/);
 
 

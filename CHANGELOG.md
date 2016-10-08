@@ -1,3 +1,6 @@
+## 0.0.13 (October 08, 2016)
+Fix Cache folder, fix Cron schedule with custom interval options, add automatically field name attribute, make Widgets working with an option to display or not title.
+
 ## 0.0.12 (September 28, 2016)
 Add Cron and Assets settings controllers, make Ajax controller works, update design and more.
 

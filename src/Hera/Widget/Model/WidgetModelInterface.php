@@ -64,6 +64,22 @@ interface WidgetModelInterface
     public function setIdentifier($identifier);
 
     /**
+     * Gets the value of isVisible.
+     *
+     * @return boolean
+     */
+    public function getIsVisible();
+
+    /**
+     * Sets the value of isVisible.
+     *
+     * @param boolean $isVisible the isVisible
+     *
+     * @return self
+     */
+    public function setIsVisible($isVisible);
+
+    /**
      * Gets the The "height" key is never used. For more informations:.
      *
      * @return array

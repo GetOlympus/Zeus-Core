@@ -222,7 +222,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     {
         echo $args['before_widget'];
 
-        if ($title) {
+        if ($title && $this->getModel()->getIsVisible()) {
             echo $args['before_title'].$title.$args['after_title'];
         }
     }

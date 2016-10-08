@@ -69,7 +69,7 @@ defined('OLH_URI')          or define('OLH_URI', OLH_HOME.'/app/assets/');
 // Assets folder
 defined('OLH_ASSETS')       or define('OLH_ASSETS', $path.S.'app'.S.'assets'.S);
 // Twig cache folder
-defined('OLH_CACHE')        or define('OLH_CACHE', $path.S.'app'.S.'cache'.S);
+defined('OLH_CACHE')        or define('OLH_CACHE', defined('CACHEPATH') ? CACHEPATH : $path.S.'app'.S.'cache'.S);
 
 /**
  * Main constants.

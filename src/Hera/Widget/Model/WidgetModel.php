@@ -32,6 +32,11 @@ class WidgetModel implements WidgetModelInterface
     protected $identifier;
 
     /**
+     * @var boolean
+     */
+    protected $isVisible;
+
+    /**
      * The "height" key is never used. For more informations:
      * @see https://core.trac.wordpress.org/browser/tags/4.5.2/src/wp-includes/widgets.php#L490
      *
@@ -125,6 +130,30 @@ class WidgetModel implements WidgetModelInterface
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of isVisible.
+     *
+     * @return boolean
+     */
+    public function getIsVisible()
+    {
+        return $this->isVisible;
+    }
+
+    /**
+     * Sets the value of isVisible.
+     *
+     * @param boolean $isVisible the isVisible
+     *
+     * @return self
+     */
+    public function setIsVisible($isVisible)
+    {
+        $this->isVisible = $isVisible;
 
         return $this;
     }

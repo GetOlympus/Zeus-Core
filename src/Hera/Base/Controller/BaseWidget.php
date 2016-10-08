@@ -13,7 +13,7 @@ namespace GetOlympus\Hera\Base\Controller;
  */
 
 if (!class_exists('WP_Widget') && defined('ABSPATH')) {
-    require_once ABSPATH.'wp-includes/widgets.php';
+    require_once ABSPATH.'wp-includes'.S.'class-wp-widget.php';
 }
 
 class BaseWidget extends \WP_Widget

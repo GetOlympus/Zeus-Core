@@ -243,6 +243,9 @@ class FieldModel implements FieldModelInterface
      */
     public function setVars(array $vars)
     {
+        $name = isset($vars['name']) && !empty($vars['name']) ? $vars['name'] : $vars['id'];
+        $vars['name'] = $name;
+
         $this->vars = $vars;
 
         return $this;

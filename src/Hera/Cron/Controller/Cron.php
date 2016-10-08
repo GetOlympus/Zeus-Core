@@ -37,8 +37,8 @@ abstract class Cron extends Base implements CronInterface
     public function init()
     {
         // Build vars
-        $schedule = $this->getModel()->getSchedule();
         $options = $this->getModel()->getOptions();
+        $schedule = $this->getModel()->getSchedule();
 
         // Check schedule
         if (empty($schedule)) {
@@ -49,7 +49,7 @@ abstract class Cron extends Base implements CronInterface
         if (!in_array($schedule, ['hourly', 'twicedaily', 'daily']) && !empty($options)) {
             // Build new vars
             $new_evt = [
-                $key => $options
+                $schedule => $options
             ];
 
             // Add schedule details
@@ -58,22 +58,17 @@ abstract class Cron extends Base implements CronInterface
             });
         }
 
+        // Set name
+        $class = $this->getClass();
+        $name = 'hera_cron_'.$class['name'].'_'.$schedule;
+
         // Execute the right function
-        if (!wp_next_scheduled('hera_cron_'.$schedule)) {
-            wp_schedule_event(time(), $schedule, 'hera_cron_'.$schedule);
+        if (!wp_next_scheduled($name)) {
+            wp_schedule_event(time(), $schedule, $name);
         }
 
         // Enable action
-        add_action('hera_cron_'.$schedule, [&$this, 'cronCallback']);
-    }
-
-    /**
-     * Cron hook callback method.
-     */
-    public function cronCallback()
-    {
-        // Call custom callback function
-        $this->callback();
+        add_action($name, [&$this, 'callback']);
     }
 
     /**
