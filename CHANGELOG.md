@@ -1,3 +1,6 @@
+## 0.0.14 (October 09, 2016)
+Add a default title field to Widget controller, update Shortcodes with default formatter.
+
 ## 0.0.13 (October 08, 2016)
 Fix Cache folder, fix Cron schedule with custom interval options, add automatically field name attribute, make Widgets working with an option to display or not title.
 

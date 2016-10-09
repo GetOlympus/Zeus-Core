@@ -22,6 +22,11 @@ class WidgetModel implements WidgetModelInterface
     protected $classname;
 
     /**
+     * @var boolean
+     */
+    protected $displayTitle = true;
+
+    /**
      * @var array
      */
     protected $fields;
@@ -30,11 +35,6 @@ class WidgetModel implements WidgetModelInterface
      * @var string
      */
     protected $identifier;
-
-    /**
-     * @var boolean
-     */
-    protected $isVisible;
 
     /**
      * The "height" key is never used. For more informations:
@@ -87,6 +87,30 @@ class WidgetModel implements WidgetModelInterface
     }
 
     /**
+     * Gets the value of displayTitle.
+     *
+     * @return boolean
+     */
+    public function getDisplayTitle()
+    {
+        return $this->displayTitle;
+    }
+
+    /**
+     * Sets the value of displayTitle.
+     *
+     * @param boolean $displayTitle the displayTitle
+     *
+     * @return self
+     */
+    public function setDisplayTitle($displayTitle)
+    {
+        $this->displayTitle = $displayTitle;
+
+        return $this;
+    }
+
+    /**
      * Gets the value of fields.
      *
      * @return array
@@ -130,30 +154,6 @@ class WidgetModel implements WidgetModelInterface
     public function setIdentifier($identifier)
     {
         $this->identifier = $identifier;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of isVisible.
-     *
-     * @return boolean
-     */
-    public function getIsVisible()
-    {
-        return $this->isVisible;
-    }
-
-    /**
-     * Sets the value of isVisible.
-     *
-     * @param boolean $isVisible the isVisible
-     *
-     * @return self
-     */
-    public function setIsVisible($isVisible)
-    {
-        $this->isVisible = $isVisible;
 
         return $this;
     }

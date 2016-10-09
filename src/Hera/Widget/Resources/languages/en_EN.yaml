@@ -1,4 +1,6 @@
 # Main contents
 widget:
+  fields:
+    title: "Title:"
   settings:
     description: The widget entire description.

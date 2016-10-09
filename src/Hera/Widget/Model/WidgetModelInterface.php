@@ -32,6 +32,22 @@ interface WidgetModelInterface
     public function setClassname($classname);
 
     /**
+     * Gets the value of displayTitle.
+     *
+     * @return boolean
+     */
+    public function getDisplayTitle();
+
+    /**
+     * Sets the value of displayTitle.
+     *
+     * @param boolean $displayTitle the displayTitle
+     *
+     * @return self
+     */
+    public function setDisplayTitle($displayTitle);
+
+    /**
      * Gets the value of fields.
      *
      * @return array
@@ -62,22 +78,6 @@ interface WidgetModelInterface
      * @return self
      */
     public function setIdentifier($identifier);
-
-    /**
-     * Gets the value of isVisible.
-     *
-     * @return boolean
-     */
-    public function getIsVisible();
-
-    /**
-     * Sets the value of isVisible.
-     *
-     * @param boolean $isVisible the isVisible
-     *
-     * @return self
-     */
-    public function setIsVisible($isVisible);
 
     /**
      * Gets the The "height" key is never used. For more informations:.

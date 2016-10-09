@@ -116,6 +116,26 @@ abstract class Widget extends BaseWidget implements WidgetInterface
             return;
         }
 
+        // Add Title field from `olympus-text-field` component
+        if (class_exists('\\GetOlympus\\Field\\Text')) {
+            $new_title = \GetOlympus\Field\Text::build('title', [
+                'title' => Translate::t('widget.fields.title'),
+            ]);
+        }
+        // Add Title field from default mode
+        else {
+            $new_title = [
+                'special' => [
+                    'id' => 'title',
+                    'title' => Translate::t('widget.fields.title'),
+                ],
+            ];
+        }
+
+        // Add title on 1st place
+        array_unshift($fields, $new_title);
+        unset($new_title);
+
         $vars = [];
 
         // Get fields
@@ -125,8 +145,13 @@ abstract class Widget extends BaseWidget implements WidgetInterface
             }
 
             // Build contents
-            $ctn = (array) $field->getModel()->getContents();
-            $hasId = (boolean) $field->getModel()->getHasId();
+            if (is_array($field) && isset($field['special'])) {
+                $ctn = (array) $field['special'];
+                $hasId = true;
+            } else {
+                $ctn = (array) $field->getModel()->getContents();
+                $hasId = (boolean) $field->getModel()->getHasId();
+            }
 
             // Check fields
             if (empty($ctn) || !$hasId) {
@@ -222,7 +247,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     {
         echo $args['before_widget'];
 
-        if ($title && $this->getModel()->getIsVisible()) {
+        if ($title && $this->getModel()->getDisplayTitle()) {
             echo $args['before_title'].$title.$args['after_title'];
         }
     }
