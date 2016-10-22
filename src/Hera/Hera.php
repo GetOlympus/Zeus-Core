@@ -8,7 +8,7 @@ use GetOlympus\Hera\Application\Controller\Application;
  * OLYMPUS HERA
  *
  * Library Name: Olympus Hera
- * Version: 0.0.7
+ * Version: 0.0.15
  * Snippet URI: https://github.com/GetOlympus/Hera
  * Read The Doc: http://olympus.readme.io/
  * Description: Core bundles of the Olympus framework, used by Olympus Zeus
@@ -79,9 +79,9 @@ defined('OLH_CACHE')        or define('OLH_CACHE', defined('CACHEPATH') ? CACHEP
  */
 
 // Current version
-define('OLH_VERSION', '0.0.7');
+define('OLH_VERSION', '0.0.15');
 // Current baseline
-define('OLH_QUOTE', 'I\'m a damsel, I\'m in distress, I can handle this. Have a nice day. ~ Hercules');
+define('OLH_QUOTE', 'Don\'t start a fight if you can\'t end it. ~ One Piece');
 // Context used to define if the PHP files can be executed
 define('OLH_CONTEXT', 'olympus-hera');
 // Capabilities
