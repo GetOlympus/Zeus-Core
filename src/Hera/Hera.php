@@ -49,6 +49,7 @@ if (!defined('ABSPATH')) {
 // The path
 define('OLH_PATH', dirname(__FILE__));
 $path = dirname(dirname(OLH_PATH));
+$apppath = $path.S.'app'.S;
 
 /**
  * Customizable constants.
@@ -67,9 +68,11 @@ defined('OLH_LOCAL')        or define('OLH_LOCAL', get_bloginfo('language'));
 // URI
 defined('OLH_URI')          or define('OLH_URI', OLH_HOME.'/app/assets/');
 // Assets folder
-defined('OLH_ASSETS')       or define('OLH_ASSETS', $path.S.'app'.S.'assets'.S);
+defined('OLH_ASSETS')       or define('OLH_ASSETS', defined('DISTPATH') ? DISTPATH : $apppath.'assets'.S);
+// Hera assets folder
+defined('OLH_HERA_ASSETS')  or define('OLH_HERA_ASSETS', $apppath.'assets'.S);
 // Twig cache folder
-defined('OLH_CACHE')        or define('OLH_CACHE', defined('CACHEPATH') ? CACHEPATH : $path.S.'app'.S.'cache'.S);
+defined('OLH_CACHE')        or define('OLH_CACHE', defined('CACHEPATH') ? CACHEPATH : $apppath.'cache'.S);
 
 /**
  * Main constants.

@@ -8,14 +8,14 @@
 module.exports = {
   src: {
     files: {
-      '<%= olympus.paths.tar %>/css/olympus-core.css': [
+      '<%= olympus.paths.tar %>/css/olympus-hera-core.css': [
         '<%= olympus.paths.bow %>/font-awesome/css/font-awesome.css',
-        '<%= olympus.paths.src %>/css/olympus-core.css'
+        '<%= olympus.paths.src %>/css/olympus-hera-core.css'
       ],
 
-      '<%= olympus.paths.tar %>/css/olympus-login.css': [
+      '<%= olympus.paths.tar %>/css/olympus-hera-login.css': [
         '<%= olympus.paths.bow %>/fontawesome/css/font-awesome.css',
-        '<%= olympus.paths.src %>/css/olympus-login.css'
+        '<%= olympus.paths.src %>/css/olympus-hera-login.css'
       ]
     }
   }

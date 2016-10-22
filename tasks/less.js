@@ -42,7 +42,7 @@ module.exports = {
       optimization: 2
     },
     files: {
-      '<%= olympus.paths.src %>/css/olympus-core.css': [
+      '<%= olympus.paths.src %>/css/olympus-hera-core.css': [
         '<%= olympus.paths.src %>/less/core.less',
         '<%= olympus.paths.src %>/less/core/*.less'
       ]
@@ -55,7 +55,7 @@ module.exports = {
       optimization: 2
     },
     files: {
-      '<%= olympus.paths.src %>/css/olympus-login.css': [
+      '<%= olympus.paths.src %>/css/olympus-hera-login.css': [
         '<%= olympus.paths.src %>/less/login.less',
         '<%= olympus.paths.src %>/less/login/*.less'
       ]

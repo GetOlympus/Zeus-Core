@@ -1,3 +1,6 @@
+## 0.0.15 (October 22, 2016)
+Copy distributed files physically from assets to Olympus core resources, change assets names.
+
 ## 0.0.14 (October 09, 2016)
 Add a default title field to Widget controller, update Shortcodes with default formatter.
 

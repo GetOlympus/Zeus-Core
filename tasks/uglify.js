@@ -9,7 +9,7 @@ module.exports = {
   src: {
     files: {
       //main package contains all scripts
-      '<%= olympus.paths.tar %>/js/olympus-core.js': [
+      '<%= olympus.paths.tar %>/js/olympus-hera-core.js': [
         //jQuery
         '<%= olympus.paths.bow %>/jquery/dist/jquery.js',
         //HandlebarsJS
@@ -40,8 +40,8 @@ module.exports = {
         '<%= olympus.paths.bow %>/selectize/dist/js/standalone/selectize.js',
         //Zeus packages
         '<%= olympus.paths.src %>/js/**/*.js',
-        '!<%= olympus.paths.src %>/js/olympus-core.js',
-        '<%= olympus.paths.src %>/js/olympus-core.js'
+        '!<%= olympus.paths.src %>/js/olympus-hera-core.js',
+        '<%= olympus.paths.src %>/js/olympus-hera-core.js'
       ]
     }
   },

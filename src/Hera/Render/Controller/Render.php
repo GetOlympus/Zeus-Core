@@ -210,7 +210,7 @@ class Render implements RenderInterface
 
             $assets[$type][] = [
                 'name' => $name,
-                'file' => OLH_URI.'dist/'.$name,
+                'file' => OLH_URI.$name,
             ];
         }
 
@@ -225,13 +225,13 @@ class Render implements RenderInterface
 
             // Styles
             if (!empty($assets['styles'])) {
-                $handle = wp_style_is('olympus-core', 'registered') ? 'olympus-core' : false;
+                $handle = wp_style_is('olympus-core-css', 'registered') ? 'olympus-core-css' : false;
 
                 foreach ($assets['styles'] as $style) {
                     wp_enqueue_style($style['name'], $style['file'], $handle);
                 }
             }
-        });
+        }, 9);
     }
 
     /**
@@ -242,11 +242,12 @@ class Render implements RenderInterface
      */
     public static function assetsInCache($source, $filename)
     {
-        $dest = OLH_ASSETS.'dist'.S.$filename;
+        $dest = OLH_ASSETS.$filename;
 
         // Create file
         if (!file_exists($dest)) {
-            file_put_contents($dest, "/**\n * This file is auto-generated\n */\n\n".file_get_contents($source)."\n");
+            $ctns = file_exists($source) ? file_get_contents($source) : '';
+            file_put_contents($dest, "/**\n * This file is auto-generated\n */\n\n".$ctns."\n");
         }
     }
 
