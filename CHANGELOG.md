@@ -1,3 +1,6 @@
+## 0.0.16 (November 09, 2016)
+Hiding wp-login.php in the login and registration URLs.
+
 ## 0.0.15 (October 22, 2016)
 Copy distributed files physically from assets to Olympus core resources, change assets names.
 

@@ -2,3 +2,6 @@
 configuration:
   sidebar:
     name: Olympus sidebar title
+  settings:
+    login:
+      error: Incorrect login errors

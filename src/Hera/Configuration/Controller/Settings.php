@@ -4,6 +4,7 @@ namespace GetOlympus\Hera\Configuration\Controller;
 
 use GetOlympus\Hera\Configuration\Controller\Configuration;
 use GetOlympus\Hera\Render\Controller\Render;
+use GetOlympus\Hera\Translate\Controller\Translate;
 
 /**
  * Hera Settings controller
@@ -32,6 +33,7 @@ class Settings extends Configuration
         'jpeg-quality',
         'login-shake',
         'login-style',
+        'login-urls',
         'shutdown',
     ];
 
@@ -315,9 +317,84 @@ class Settings extends Configuration
             //wp_enqueue_script('olympus-login', OLH_URI.'js/olympus-login.js', false);
         }, 1);
 
+        // Change login head URL
         add_filter('login_headerurl', function ($url) {
             return OLH_HOME;
         });
+
+        // Change login error message
+        add_filter('login_errors', function (){
+            return Translate::t('configuration.settings.login.error');
+        });
+    }
+
+    /**
+     * Hiding wp-login.php in the login and registration URLs
+     *
+     * @param array $args
+     */
+    public function loginUrlsSetting($args)
+    {
+        if (!$args) {
+            return;
+        }
+
+        // Define defaults
+        $configs = array_merge([
+            'login'         => '',
+            'logout'        => '',
+            'lostpassword'  => '',
+            'register'      => '',
+        ], $args);
+
+        // Change login URL
+        add_filter('login_redirect', function ($url) use ($configs){
+            return empty($configs['login']) ? $url : site_url().$configs['login'];
+        });
+
+        // Customize Site URL
+        add_filter('site_url', function ($url,$path,$scheme = null) use ($configs){
+            $pattern = [
+                'login'         => '/wp-login.php',
+                'logout'        => '/wp-login.php?action=logout',
+                'lostpassword'  => '/wp-login.php?action=lostpassword',
+                'register'      => '/wp-login.php?action=register',
+            ];
+
+            // Iterate on all queries and replace the current Site URL
+            foreach ($pattern as $key => $query) {
+                if (empty($configs[$key])) {
+                    continue;
+                }
+
+                $url = str_replace($query, $configs[$key], $url);
+            }
+
+            return $url;
+        }, 10, 3);
+
+        // Make the redirection works properly
+        add_filter('wp_redirect', function ($url,$status) use ($configs){
+            // Check login configuration
+            if (empty($configs['login'])) {
+                return $url;
+            }
+
+            $triggers = [
+                'wp-login.php?checkemail=confirm'
+                'wp-login.php?checkemail=registered',
+            ];
+
+            foreach ($triggers as $trigger) {
+                if ($url !== $trigger) {
+                    continue;
+                }
+
+                return str_replace('wp-login.php', site_url().$configs['login'], $url);
+            }
+
+            return $url;
+        }, 10, 2);
     }
 
     /**
