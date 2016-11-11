@@ -200,6 +200,12 @@ class Settings extends Configuration
 
         // Copy contents
         $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'css'.S.'olympus-hera-core.css');
+        $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'fonts'.S.'FontAwesome.otf');
+        $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'fonts'.S.'fontawesome-webfont.eot');
+        $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'fonts'.S.'fontawesome-webfont.svg');
+        $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'fonts'.S.'fontawesome-webfont.ttf');
+        $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'fonts'.S.'fontawesome-webfont.woff');
+        $this->_copyAssetFile(OLH_HERA_ASSETS, OLH_ASSETS, 'fonts'.S.'fontawesome-webfont.woff2');
 
         add_action('admin_enqueue_scripts', function (){
             wp_enqueue_style('olympus-core-css', OLH_URI.'css/olympus-hera-core.css', false);

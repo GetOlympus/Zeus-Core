@@ -35,7 +35,7 @@ class Assets extends Configuration
         $configs = include $this->filepath;
 
         // Check
-        if (empty($configs)) {
+        if (empty($configs) || in_array($GLOBALS['pagenow'], ['wp-login.php'])) {
             return;
         }
 
@@ -46,7 +46,7 @@ class Assets extends Configuration
             if ('scripts' === $key) {
                 // Enqueue scripts
                 $this->enqueueScripts($props);
-            } else {
+            } else if ('styles' === $key) {
                 // Enqueue styles
                 $this->enqueueStyles($props);
             }

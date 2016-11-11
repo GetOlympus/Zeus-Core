@@ -1,3 +1,6 @@
+## 0.0.17 (November 11, 2016)
+Add font-awesome files copied in the public folder, do not enqueue assets in login page anymore.
+
 ## 0.0.16 (November 09, 2016)
 Hiding wp-login.php in the login and registration URLs.
 
