@@ -1,3 +1,6 @@
+## 0.0.18 (November 11, 2016)
+Fix fontawesome call on login css generation.
+
 ## 0.0.17 (November 11, 2016)
 Add font-awesome files copied in the public folder, do not enqueue assets in login page anymore.
 
