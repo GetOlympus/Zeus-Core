@@ -387,7 +387,7 @@ class Settings extends Configuration
             }
 
             $triggers = [
-                'wp-login.php?checkemail=confirm'
+                'wp-login.php?checkemail=confirm',
                 'wp-login.php?checkemail=registered',
             ];
 
