@@ -1,3 +1,6 @@
+## 0.0.19 (November 13, 2016)
+Make all theme support enabled.
+
 ## 0.0.18 (November 11, 2016)
 Fix fontawesome call on login css generation.
 

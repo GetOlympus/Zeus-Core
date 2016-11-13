@@ -103,11 +103,7 @@ class Supports extends Configuration
      */
     public function addRemoveThemeSupport($key, $props = [])
     {
-        // Check key
-        if (!in_array($key, ['post-formats', 'post-thumbnails', 'custom-background', 'custom-header', 'custom-logo', 'automatic-feed-links', 'html5', 'title-tag'])) {
-            return;
-        }
-
+        // Setup theme
         add_action('after_setup_theme', function () use ($key, $props){
             // Check props
             if (is_bool($props) && !$props) {
