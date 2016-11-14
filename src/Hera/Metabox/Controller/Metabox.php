@@ -89,7 +89,7 @@ class Metabox extends Base implements MetaboxInterface
         );
 
         // Render assets
-        Render::assets(['post.php'], $fields);
+        Render::assets(['post.php', 'post-new.php'], $fields);
     }
 
     /**

@@ -21,7 +21,7 @@
  * Achraf Chouk (https://github.com/crewstyle)
  *
  * 03.buttons.less
- */.wp-core-ui .button,.wp-core-ui .button-primary,.wp-core-ui .button-secondary{border-radius:100px;border-width:0;font-size:11px;padding:0 24px;text-shadow:none;vertical-align:middle;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none}.wp-core-ui .button-primary{background-color:#2c92da;height:auto;padding:6px 24px}.wp-core-ui .button.button-primary.button-hero{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none}.wrap .add-new-h2,.wrap .add-new-h2:active,.wrap .page-title-action,.wrap .page-title-action:active{border-radius:100px;border-width:0;height:auto;padding:6px 24px;text-shadow:none}#wpadminbar,#wpadminbar .quicklinks .ab-empty-item,#wpadminbar .quicklinks a,#wpadminbar .shortlink-input{height:32px}.spinner{margin-top:11px}/*!
+ */.wp-core-ui .button,.wp-core-ui .button-primary,.wp-core-ui .button-secondary{border-radius:20px;border-width:0;font-size:11px;padding:0 24px;text-shadow:none;vertical-align:middle;-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none}.wp-core-ui .button-primary{background-color:#2c92da;height:auto;padding:6px 24px}.wp-core-ui .button.button-primary.button-hero{-webkit-box-shadow:none;-moz-box-shadow:none;box-shadow:none}.wrap .add-new-h2,.wrap .add-new-h2:active,.wrap .page-title-action,.wrap .page-title-action:active{border-radius:20px;border-width:0;height:auto;padding:6px 24px;text-shadow:none}#wpadminbar,#wpadminbar .quicklinks .ab-empty-item,#wpadminbar .quicklinks a,#wpadminbar .shortlink-input{height:32px}.spinner{margin-top:11px}/*!
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
  *
@@ -51,7 +51,7 @@
  * Achraf Chouk (https://github.com/crewstyle)
  *
  * 10.messages.less
- */#update-nag,.notice,.update-nag,div.error,div.updated{background-color:rgba(40,44,56,.025);border-radius:100px}#update-nag,.update-nag{display:block;margin:25px 4px 0 2px}/*!
+ */#update-nag,.notice,.update-nag,div.error,div.updated{background-color:rgba(40,44,56,.025);border-radius:20px}#update-nag,.update-nag{display:block;margin:25px 4px 0 2px}/*!
  * Copyright 2016 Achraf Chouk
  * Achraf Chouk (https://github.com/crewstyle)
  *

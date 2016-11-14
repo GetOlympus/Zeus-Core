@@ -76,7 +76,17 @@ class Assets extends Configuration
         foreach ($scripts as $handle => $opts) {
             // Special case: de/register handle
             if (!is_array($opts)) {
-                if (!$opts) {
+                // Special case: jQuery-Migrate deregistration
+                if ('jquery-migrate' === $handle && !$opts) {
+                    add_action('wp_default_scripts', function($scripts){
+                        if (OLH_ISADMIN || empty($scripts->registered['jquery'])) {
+                            return;
+                        }
+
+                        $jquery_dependencies = $scripts->registered['jquery']->deps;
+                        $scripts->registered['jquery']->deps = array_diff($jquery_dependencies, array('jquery-migrate'));
+                    });
+                } else if (!$opts) {
                     wp_deregister_script($handle);
                 } else {
                     wp_enqueue_script($handle);

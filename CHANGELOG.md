@@ -1,3 +1,6 @@
+## 0.0.20 (November 14, 2016)
+Make jQuery-Migrate deregistrable, fix border radius bug, fix assets integration on post-new.php page.
+
 ## 0.0.19 (November 13, 2016)
 Make all theme support enabled.
 
