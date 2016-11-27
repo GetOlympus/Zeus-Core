@@ -1,3 +1,6 @@
+## 0.0.21 (November 27, 2016)
+Fix an array_split bug in menu order settings.
+
 ## 0.0.20 (November 14, 2016)
 Make jQuery-Migrate deregistrable, fix border radius bug, fix assets integration on post-new.php page.
 

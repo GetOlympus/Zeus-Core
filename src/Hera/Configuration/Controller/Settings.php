@@ -140,7 +140,7 @@ class Settings extends Configuration
     {
         add_filter('custom_menu_order', '__return_true');
         add_filter('menu_order', function ($menu_ord) use ($args){
-            return !$menu_ord ? true : $args;
+            return !$menu_ord ? [] : $args;
         });
     }
 
