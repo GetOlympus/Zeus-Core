@@ -34,12 +34,13 @@ interface PosttypeHookInterface
      * Hook building custom permalinks for post types.
      * @see http://shibashake.com/wordpress-theme/custom-post-type-permalinks-part-2
      *
-     * @param string $permalink
-     * @param integer $post_id
-     * @param boolean $leavename
-     * @return string $permalink
+     * @param   string  $post_link
+     * @param   object  $post
+     * @param   boolean $leavename
+     * @param   boolean $sample
+     * @return  string  $permalink
      */
-    public function postTypeLink($permalink, $post_id, $leavename);
+    public function postTypeLink($post_link, $post, $leavename, $sample);
 
     /**
      * Hook building custom metaboxes for Post types.

@@ -28,6 +28,7 @@ class Settings extends Configuration
         'admin-styles',
         'admin-menu-order',
         'admin-meta-boxes',
+        'clean-assets',
         'clean-headers',
         'comments-fields-order',
         'jpeg-quality',
@@ -210,6 +211,28 @@ class Settings extends Configuration
         add_action('admin_enqueue_scripts', function (){
             wp_enqueue_style('olympus-core-css', OLH_URI.'css/olympus-hera-core.css', false);
         }, 10);
+    }
+
+    /**
+     * Remove assets version.
+     *
+     * @param boolean $clean
+     */
+    public function cleanAssetsSetting($clean)
+    {
+        if (!$clean) {
+            return;
+        }
+
+        // Remove WP Version from styles
+        add_filter('style_loader_src', function ($src){
+            return strpos($src, 'ver=') ? remove_query_arg('ver', $src) : $src;
+        }, 9999);
+
+        // Remove WP Version from scripts
+        add_filter('script_loader_src', function ($src){
+            return strpos($src, 'ver=') ? remove_query_arg('ver', $src) : $src;
+        }, 9999);
     }
 
     /**

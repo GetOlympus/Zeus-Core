@@ -64,7 +64,7 @@ class PosttypeHook implements PosttypeHookInterface
         $this->reserved_slugs = $reserved_slugs;
 
         // Permalink structures
-        add_action('post_type_link', [&$this, 'postTypeLink'], 10, 3);
+        add_filter('post_type_link', [&$this, 'postTypeLink'], 10, 4);
 
         if (OLH_ISADMIN) {
             // Manage columns
@@ -140,20 +140,14 @@ class PosttypeHook implements PosttypeHookInterface
      * Hook building custom permalinks for post types.
      * @see http://shibashake.com/wordpress-theme/custom-post-type-permalinks-part-2
      *
-     * @param string $permalink
-     * @param integer $post_id
-     * @param boolean $leavename
-     * @return string $permalink
+     * @param   string  $post_link
+     * @param   object  $post
+     * @param   boolean $leavename
+     * @param   boolean $sample
+     * @return  string  $permalink
      */
-    public function postTypeLink($permalink, $post_id, $leavename)
+    public function postTypeLink($post_link, $post, $leavename, $sample)
     {
-        if (!$post_id) {
-            return '';
-        }
-
-        // Get post's datas
-        $post = get_post($post_id);
-
         // Define permalink structure
         $rewritecode = [
             '%year%',
@@ -167,10 +161,11 @@ class PosttypeHook implements PosttypeHookInterface
             '%category%',
             '%author%',
             $leavename ? '' : '%pagename%',
+            $leavename ? '' : '%'.$post->post_type.'%',
         ];
 
-        if ('' === $permalink || in_array($post->post_status, ['draft', 'pending', 'auto-draft'])) {
-            return $permalink;
+        if ('' === $post_link || in_array($post->post_status, ['draft', 'pending', 'auto-draft'])) {
+            return $post_link;
         }
 
         // Need time
@@ -181,7 +176,7 @@ class PosttypeHook implements PosttypeHookInterface
         $category = '';
 
         // Get categories
-        if (strpos($permalink, '%category%') !== false) {
+        if (strpos($post_link, '%category%') !== false) {
             $cats = get_the_category($post->ID);
 
             if ($cats) {
@@ -204,7 +199,7 @@ class PosttypeHook implements PosttypeHookInterface
         $author = '';
 
         // Get authors
-        if (strpos($permalink, '%author%') !== false) {
+        if (strpos($post_link, '%author%') !== false) {
             $authordata = get_userdata($post->post_author);
             $author = $authordata->__get('user_nicename');
         }
@@ -222,10 +217,11 @@ class PosttypeHook implements PosttypeHookInterface
             $category,
             $author,
             $post->post_name,
+            $post->post_name,
         ];
 
         // Change structure
-        $permalink = str_replace($rewritecode, $rewritereplace, $permalink);
+        $post_link = str_replace($rewritecode, $rewritereplace, $post_link);
 
         // Check custom post type with custom taxonomy
         if (!in_array($post->post_type, ['post', 'page'])) {
@@ -241,16 +237,17 @@ class PosttypeHook implements PosttypeHookInterface
                     }
 
                     // Sort all
-                    usort($terms, '_usort_terms_by_ID');
+                    //usort($terms, '_usort_terms_by_ID');
+                    $terms = wp_list_sort($terms, 'ID', 'DESC');
 
                     // Update permalink
-                    $permalink = str_replace('%'.$tax.'%', $terms[0]->slug, $permalink);
+                    $post_link = str_replace('%'.$tax.'%', $terms[0]->slug, $post_link);
                 }
             }
         }
 
         // Return permalink
-        return $permalink;
+        return $post_link;
     }
 
     /**
@@ -385,7 +382,7 @@ class PosttypeHook implements PosttypeHookInterface
         }
 
         // Option
-        $opt = str_replace('%SLUG%', $this->slug, '/%'.$this->slug.'%-%post_id%');
+        $opt = 'permalink_structure_'.$this->slug;
 
         // Check POST
         if (isset($_POST[$opt])) {

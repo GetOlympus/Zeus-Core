@@ -1,3 +1,6 @@
+## 0.0.22 (January 08, 2017)
+Fix some permalinks, assets and DB storage bugs.
+
 ## 0.0.21 (November 27, 2016)
 Fix an array_split bug in menu order settings.
 

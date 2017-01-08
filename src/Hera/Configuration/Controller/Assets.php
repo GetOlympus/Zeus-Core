@@ -39,18 +39,21 @@ class Assets extends Configuration
             return;
         }
 
-        // Iterate on configs
-        foreach ($configs as $key => $props) {
-            $props = !is_array($props) && !is_bool($props) ? [$props] : $props;
+        // Enqueue scripts and styles
+        add_action('wp_enqueue_scripts', function () use ($configs){
+            // Iterate on configs
+            foreach ($configs as $key => $props) {
+                $props = !is_array($props) && !is_bool($props) ? [$props] : $props;
 
-            if ('scripts' === $key) {
-                // Enqueue scripts
-                $this->enqueueScripts($props);
-            } else if ('styles' === $key) {
-                // Enqueue styles
-                $this->enqueueStyles($props);
+                if ('scripts' === $key) {
+                    // Enqueue scripts
+                    $this->enqueueScripts($props);
+                } else if ('styles' === $key) {
+                    // Enqueue styles
+                    $this->enqueueStyles($props);
+                }
             }
-        }
+        });
     }
 
     /**

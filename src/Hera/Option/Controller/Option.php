@@ -227,7 +227,7 @@ class Option implements OptionInterface
      */
     public static function updateAuthorMeta($user_id, $option, $value)
     {
-        update_usermeta($user_id, $option, $value);
+        update_user_meta($user_id, $option, $value);
     }
 
     /**
