@@ -1,3 +1,6 @@
+## 0.0.23 (January 15, 2017)
+Fix default vars on permalinks.
+
 ## 0.0.22 (January 08, 2017)
 Fix some permalinks, assets and DB storage bugs.
 
