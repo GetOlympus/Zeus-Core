@@ -1,3 +1,6 @@
+## 0.0.24 (January 16, 2017)
+Finally fix permalink structures.
+
 ## 0.0.23 (January 15, 2017)
 Fix default vars on permalinks.
 

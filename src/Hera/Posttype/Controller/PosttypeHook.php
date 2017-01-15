@@ -161,12 +161,7 @@ class PosttypeHook implements PosttypeHookInterface
             '%category%',
             '%author%',
             $leavename ? '' : '%pagename%',
-            $leavename ? '' : '%'.$post->post_type.'%',
         ];
-
-        if ('' === $post_link || in_array($post->post_status, ['draft', 'pending', 'auto-draft'])) {
-            return $post_link;
-        }
 
         // Need time
         $unixtime = strtotime($post->post_date);
@@ -217,7 +212,6 @@ class PosttypeHook implements PosttypeHookInterface
             $category,
             $author,
             $post->post_name,
-            $post->post_name,
         ];
 
         // Change structure
@@ -237,7 +231,6 @@ class PosttypeHook implements PosttypeHookInterface
                     }
 
                     // Sort all
-                    //usort($terms, '_usort_terms_by_ID');
                     $terms = wp_list_sort($terms, 'ID', 'DESC');
 
                     // Update permalink

@@ -80,6 +80,7 @@ abstract class Posttype extends Base implements PosttypeInterface
             }
 
             $args = array_merge($this->defaultArgs(), $args);
+            $args['rewrite'] = false;
             $args['labels'] = array_merge(
                 $this->defaultLabels($labels['name'], $labels['singular_name']),
                 $labels
@@ -199,18 +200,20 @@ abstract class Posttype extends Base implements PosttypeInterface
 
         // Register post type if not post or page
         if (!in_array($slug, $this->reserved_slugs)) {
+            global $wp_rewrite;
+
             // Action to register
             register_post_type($slug, $args);
 
             // Option
-            $opt = str_replace('%SLUG%', $slug, '%SLUG%-olympus-structure');
+            $opt = 'permalink_structure_'.$slug;
 
             // Get value
             $structure = Option::get($opt, '/%'.$slug.'%-%post_id%');
 
             // Change structure
-            add_rewrite_tag('%'.$slug.'%', '([^/]+)', $slug.'=');
-            add_permastruct($slug, $structure, false);
+            $wp_rewrite->add_rewrite_tag('%'.$slug.'%', '([^/]+)', $slug.'=');
+            $wp_rewrite->add_permastruct($slug, $structure, false);
         }
 
         // Check name
