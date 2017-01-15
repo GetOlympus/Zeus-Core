@@ -1,3 +1,6 @@
+## 0.0.25 (January 16, 2017)
+Set correct default values to make CPT permalink customizable.
+
 ## 0.0.24 (January 16, 2017)
 Finally fix permalink structures.
 

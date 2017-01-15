@@ -80,7 +80,6 @@ abstract class Posttype extends Base implements PosttypeInterface
             }
 
             $args = array_merge($this->defaultArgs(), $args);
-            $args['rewrite'] = false;
             $args['labels'] = array_merge(
                 $this->defaultLabels($labels['name'], $labels['singular_name']),
                 $labels
@@ -120,12 +119,7 @@ abstract class Posttype extends Base implements PosttypeInterface
 
             'permalink_epmask' => EP_PERMALINK,
             'query_var' => true,
-            'rewrite' => [
-                'slug' => $slug,
-                'with_front' => true,
-                'feeds' => true,
-                'pages' => true,
-            ],
+            'rewrite' => false,
             'show_in_menu' => true,
             'show_ui' => true,
 
