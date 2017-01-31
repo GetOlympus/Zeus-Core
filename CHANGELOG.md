@@ -1,3 +1,6 @@
+## 0.0.26 (February 01, 2017)
+Fix bugs with Terms.
+
 ## 0.0.25 (January 16, 2017)
 Set correct default values to make CPT permalink customizable.
 

@@ -64,7 +64,7 @@ abstract class Term extends Base implements TermInterface
         $posttype = $this->getModel()->getPosttype();
 
         // Association with post by default
-        if ($posttype) {
+        if (!$posttype) {
             $this->getModel()->setPosttype('post');
         }
 
@@ -75,8 +75,8 @@ abstract class Term extends Base implements TermInterface
                 throw new TermException(Translate::t('term.errors.slug_already_exists'));
             }
 
-            $args = $this->getModel()->getArgs();
-            $labels = $this->getModel()->getLabels();
+            $args = (array) $this->getModel()->getArgs();
+            $labels = (array) $this->getModel()->getLabels();
 
             // Initialize plural and singular vars
             $labels['name'] = isset($labels['name']) ? $labels['name'] : '';
@@ -114,6 +114,7 @@ abstract class Term extends Base implements TermInterface
 
         // Return args
         return [
+            'choice' => 'multiple',
             'hierarchical' => true,
             'query_var' => true,
             'rewrite' => ['slug' => $slug],
