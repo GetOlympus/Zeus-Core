@@ -1,3 +1,6 @@
+## 0.0.27 (February 15, 2017)
+Do not save custom fields when their not posted.
+
 ## 0.0.26 (February 01, 2017)
 Fix bugs with Terms.
 

@@ -254,7 +254,13 @@ class TermHook implements TermHookInterface
                 continue;
             }
 
-            $value = Request::post($ctn['id']);
+            $value = Request::post($ctn['id'], null);
+
+            // Check value
+            if (is_null($value)) {
+                continue;
+            }
+
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);
         }
 
