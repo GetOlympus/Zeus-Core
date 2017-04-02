@@ -258,7 +258,7 @@ class TermHook implements TermHookInterface
 
             // Check value
             if (is_null($value)) {
-                continue;
+                $value = Option::getTermMeta($term_id, $slug.'-'.$ctn['id']);
             }
 
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);

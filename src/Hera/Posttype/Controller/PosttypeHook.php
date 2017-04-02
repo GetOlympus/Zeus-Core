@@ -347,7 +347,7 @@ class PosttypeHook implements PosttypeHookInterface
 
                 // Check value
                 if (is_null($value)) {
-                    continue;
+                    $value = Option::getPostMeta($post->ID, $slug.'-'.$ctn['id']);
                 }
 
                 Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);

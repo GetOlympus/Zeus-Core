@@ -1,5 +1,8 @@
+## 0.0.28 (April 02, 2017)
+Get back custom fields values from DB when they're not posted.
+
 ## 0.0.27 (February 15, 2017)
-Do not save custom fields when their not posted.
+Do not save custom fields when they're not posted.
 
 ## 0.0.26 (February 01, 2017)
 Fix bugs with Terms.
