@@ -1,3 +1,6 @@
+## 0.0.29 (April 17, 2017)
+Fix shortcode backend integration.
+
 ## 0.0.28 (April 02, 2017)
 Get back custom fields values from DB when they're not posted.
 

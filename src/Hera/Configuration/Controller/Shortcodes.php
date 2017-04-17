@@ -98,6 +98,10 @@ class Shortcodes extends Configuration
     {
         // Iterate on configs
         foreach ($this->configs as $key => $file) {
+            if (empty($file)) {
+                continue;
+            }
+
             $plugins[$key] = $file;
         }
 
