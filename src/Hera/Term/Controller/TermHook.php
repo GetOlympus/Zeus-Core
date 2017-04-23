@@ -239,6 +239,14 @@ class TermHook implements TermHookInterface
             return;
         }
 
+        /**
+         * Fires for all term's fields.
+         *
+         * @var string $slug
+         * @param int $metaboxes
+         */
+        do_action('olh_termhook_save_'.$slug, $this->fields);
+
         // Update all metas
         foreach ($this->fields as $field) {
             if (!$field) {
@@ -254,6 +262,7 @@ class TermHook implements TermHookInterface
                 continue;
             }
 
+            // Gets the value
             $value = Request::post($ctn['id'], null);
 
             // Check value
@@ -261,6 +270,17 @@ class TermHook implements TermHookInterface
                 $value = Option::getTermMeta($term_id, $slug.'-'.$ctn['id']);
             }
 
+            /**
+             * Filter field contents for a specific term.
+             *
+             * @var string $slug
+             * @var integer $ctn_id
+             * @param object $value
+             * @return object $value
+             */
+            $value = apply_filters('olh_termhook_save_'.$slug.'_'.$ctn['id'], $value);
+
+            // Updates meta
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);
         }
 

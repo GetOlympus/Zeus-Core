@@ -312,6 +312,14 @@ class PosttypeHook implements PosttypeHookInterface
             return;
         }
 
+        /**
+         * Fires for all post's fields through metaboxes.
+         *
+         * @var string $slug
+         * @param int $metaboxes
+         */
+        do_action('olh_posttypehook_save_'.$slug, $this->metaboxes);
+
         // Update all metas
         foreach ($this->metaboxes as $metabox) {
             if (!$metabox) {
@@ -343,6 +351,7 @@ class PosttypeHook implements PosttypeHookInterface
                     continue;
                 }
 
+                // Gets the value
                 $value = Request::post($ctn['id'], null);
 
                 // Check value
@@ -350,6 +359,17 @@ class PosttypeHook implements PosttypeHookInterface
                     $value = Option::getPostMeta($post->ID, $slug.'-'.$ctn['id']);
                 }
 
+                /**
+                 * Filter field contents for a specific post type.
+                 *
+                 * @var string $slug
+                 * @var integer $ctn_id
+                 * @param object $value
+                 * @return object $value
+                 */
+                $value = apply_filters('olh_posttypehook_save_'.$slug.'_'.$ctn['id'], $value);
+
+                // Updates meta
                 Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
             }
         }
