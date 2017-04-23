@@ -243,9 +243,10 @@ class TermHook implements TermHookInterface
          * Fires for all term's fields.
          *
          * @var string $slug
-         * @param int $metaboxes
+         * @param int $term_id
+         * @param array $fields
          */
-        do_action('olh_termhook_save_'.$slug, $this->fields);
+        do_action('olh_termhook_save_'.$slug, $term_id, $this->fields);
 
         // Update all metas
         foreach ($this->fields as $field) {
@@ -269,16 +270,6 @@ class TermHook implements TermHookInterface
             if (is_null($value)) {
                 $value = Option::getTermMeta($term_id, $slug.'-'.$ctn['id']);
             }
-
-            /**
-             * Filter field contents for a specific term.
-             *
-             * @var string $slug
-             * @var integer $ctn_id
-             * @param object $value
-             * @return object $value
-             */
-            $value = apply_filters('olh_termhook_save_'.$slug.'_'.$ctn['id'], $value);
 
             // Updates meta
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);

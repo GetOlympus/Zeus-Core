@@ -316,9 +316,10 @@ class PosttypeHook implements PosttypeHookInterface
          * Fires for all post's fields through metaboxes.
          *
          * @var string $slug
-         * @param int $metaboxes
+         * @param int $post_id
+         * @param array $metaboxes
          */
-        do_action('olh_posttypehook_save_'.$slug, $this->metaboxes);
+        do_action('olh_posttypehook_save_'.$slug, $post->ID, $this->metaboxes);
 
         // Update all metas
         foreach ($this->metaboxes as $metabox) {
@@ -358,16 +359,6 @@ class PosttypeHook implements PosttypeHookInterface
                 if (is_null($value)) {
                     $value = Option::getPostMeta($post->ID, $slug.'-'.$ctn['id']);
                 }
-
-                /**
-                 * Filter field contents for a specific post type.
-                 *
-                 * @var string $slug
-                 * @var integer $ctn_id
-                 * @param object $value
-                 * @return object $value
-                 */
-                $value = apply_filters('olh_posttypehook_save_'.$slug.'_'.$ctn['id'], $value);
 
                 // Updates meta
                 Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
