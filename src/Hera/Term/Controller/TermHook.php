@@ -271,6 +271,17 @@ class TermHook implements TermHookInterface
                 $value = Option::getTermMeta($term_id, $slug.'-'.$ctn['id']);
             }
 
+            /**
+             * Filter the value content.
+             *
+             * @var string $current
+             * @param int $term_id
+             * @param string $option_name
+             * @param object $value
+             * @return object $value
+             */
+            $value = apply_filters('olh_termhook_save_'.$slug.'_field', $term_id, $slug.'-'.$ctn['id'], $value);
+
             // Updates meta
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);
         }

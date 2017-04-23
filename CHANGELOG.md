@@ -1,3 +1,6 @@
+## 0.0.32 (April 23, 2017)
+Add new filters on post type / term hooks.
+
 ## 0.0.31 (April 23, 2017)
 Fix filters and actions on post type / term hooks.
 
