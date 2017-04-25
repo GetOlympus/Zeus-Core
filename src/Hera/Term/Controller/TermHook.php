@@ -280,7 +280,7 @@ class TermHook implements TermHookInterface
              * @param object $value
              * @return object $value
              */
-            $value = apply_filters('olh_termhook_save_'.$slug.'_field', $term_id, $slug.'-'.$ctn['id'], $value);
+            $value = apply_filters('olh_termhook_save_'.$slug.'_field', $value, $term_id, $slug.'-'.$ctn['id']);
 
             // Updates meta
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);

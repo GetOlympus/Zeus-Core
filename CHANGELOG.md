@@ -1,3 +1,6 @@
+## 0.0.33 (April 25, 2017)
+Fix filters arguments.
+
 ## 0.0.32 (April 23, 2017)
 Add new filters on post type / term hooks.
 

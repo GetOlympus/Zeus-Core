@@ -369,7 +369,7 @@ class PosttypeHook implements PosttypeHookInterface
                  * @param object $value
                  * @return object $value
                  */
-                $value = apply_filters('olh_posttypehook_save_'.$slug.'_field', $post->ID, $slug.'-'.$ctn['id'], $value);
+                $value = apply_filters('olh_posttypehook_save_'.$slug.'_field', $value, $post->ID, $slug.'-'.$ctn['id']);
 
                 // Updates meta
                 Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
