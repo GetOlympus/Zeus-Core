@@ -118,6 +118,14 @@ class Shortcodes extends Configuration
         remove_filter('the_content', 'wptexturize');
         add_filter('the_content', [&$this, 'contentFormatter'], 99);
 
+        remove_filter('comment_text', 'wpautop');
+        remove_filter('comment_text', 'wptexturize');
+        add_filter('comment_text', [&$this, 'contentFormatter'], 99);
+
+        remove_filter('the_excerpt', 'wpautop');
+        remove_filter('the_excerpt', 'wptexturize');
+        add_filter('the_excerpt', [&$this, 'contentFormatter'], 99);
+
         // Iterate on configs
         foreach ($this->configs as $key => $file) {
             // Avoid special cases
@@ -155,7 +163,7 @@ class Shortcodes extends Configuration
                 $new_content .= $matches[1];
             }
             else {
-                $new_content .= wptexturize(wpautop($piece));
+                $new_content .= wpautop($piece);
             }
         }
 

@@ -1,3 +1,6 @@
+## 0.0.34 (May 14, 2017)
+Fix content wptexturize and wpautop filters.
+
 ## 0.0.33 (April 25, 2017)
 Fix filters arguments.
 
