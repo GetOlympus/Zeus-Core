@@ -244,6 +244,9 @@ class Settings extends Configuration
     {
         $available = [
             'adjacent_posts_rel_link_wp_head',
+            'emoji',
+            'feed_links',
+            'feed_links_extra',
             'index_rel_link',
             'rsd_link',
             'wlwmanifest_link',
@@ -261,7 +264,19 @@ class Settings extends Configuration
 
             if ('wp_admin_bar_init' === $key) {
                 add_filter('show_admin_bar', '__return_false');
-            } else {
+                remove_action('init', 'wp_admin_bar_init');
+            }
+            else if ('automatic-feed-links' === $key) {
+                remove_theme_support($key);
+            }
+            else if ('emoji' === $key) {
+                remove_action('wp_head', 'print_emoji_detection_script', 7);
+                remove_action('wp_print_styles', 'print_emoji_styles');
+                remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+                remove_filter('the_content_feed', 'wp_staticize_emoji');
+                remove_filter('comment_text_rss', 'wp_staticize_emoji');
+            }
+            else {
                 remove_action('wp_head', $key);
             }
         }

@@ -1,3 +1,6 @@
+## 0.0.35 (May 23, 2017)
+Possible to remove emoji integration in frontend.
+
 ## 0.0.34 (May 14, 2017)
 Fix content wptexturize and wpautop filters.
 
