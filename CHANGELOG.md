@@ -1,3 +1,6 @@
+## 0.0.36 (June 11, 2017)
+Fix TinyMCE display.
+
 ## 0.0.35 (May 23, 2017)
 Possible to remove emoji integration in frontend.
 
