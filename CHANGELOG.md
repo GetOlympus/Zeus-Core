@@ -1,3 +1,6 @@
+## 0.0.37 (July 09, 2017)
+Autoload option set to 'yes'.
+
 ## 0.0.36 (June 11, 2017)
 Fix TinyMCE display.
 

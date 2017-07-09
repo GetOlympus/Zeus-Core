@@ -24,7 +24,7 @@ class Option implements OptionInterface
      * @param string $deprecated
      * @param string $autoload
      */
-    public static function add($option, $value, $deprecated = '', $autoload = 'no')
+    public static function add($option, $value, $deprecated = '', $autoload = 'yes')
     {
         add_option($option, $value, $deprecated, $autoload);
     }
@@ -87,7 +87,7 @@ class Option implements OptionInterface
          */
         $value = apply_filters('olh_option_set_'.$option, $value);
 
-        // Set value into DB without autoload
+        // Set value into DB with autoload
         if (!empty($id)) {
             $func = 'term' === $type ? 'updateTermMeta' : 'updatePostMeta';
             self::$func($id, $option, $value);
