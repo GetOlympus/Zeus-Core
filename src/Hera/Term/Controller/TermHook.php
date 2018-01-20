@@ -239,6 +239,10 @@ class TermHook implements TermHookInterface
             return;
         }
 
+        // Remove action hook and add it again later for no infinite loop
+        remove_action('created_'.$slug, [&$this, 'saveFields']);
+        remove_action('edited_'.$slug, [&$this, 'saveFields']);
+
         /**
          * Fires for all term's fields.
          *
@@ -285,6 +289,10 @@ class TermHook implements TermHookInterface
             // Updates meta
             Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);
         }
+
+        // Add back action hook again for no infinite loop
+        add_action('created_'.$slug, [$this, 'saveFields'], 10, 2);
+        add_action('edited_'.$slug, [$this, 'saveFields'], 10, 2);
 
         return true;
     }

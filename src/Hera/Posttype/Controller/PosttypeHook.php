@@ -312,6 +312,9 @@ class PosttypeHook implements PosttypeHookInterface
             return;
         }
 
+        // Remove action hook and add it again later for no infinite loop
+        remove_action('save_post', [&$this, 'postTypeSave']);
+
         /**
          * Fires for all post's fields through metaboxes.
          *
@@ -375,6 +378,9 @@ class PosttypeHook implements PosttypeHookInterface
                 Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
             }
         }
+
+        // Add back action hook again for no infinite loop
+        add_action('save_post', [&$this, 'postTypeSave']);
 
         return true;
     }

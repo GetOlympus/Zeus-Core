@@ -1,3 +1,7 @@
+## 0.0.38 (January 20, 2018)
+**HAPPY NEW YEAR everyone**
+Fix hook infinite loop bug on PostType and Term.
+
 ## 0.0.37 (July 09, 2017)
 Autoload option set to 'yes'.
 
