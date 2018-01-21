@@ -1,3 +1,6 @@
+## 0.0.39 (January 21, 2018)
+Allow to add new dashboard widgets.
+
 ## 0.0.38 (January 20, 2018)
 **HAPPY NEW YEAR everyone**
 Fix hook infinite loop bug on PostType and Term.

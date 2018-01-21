@@ -155,16 +155,36 @@ class Settings extends Configuration
         add_action('wp_dashboard_setup', function () use ($args){
             // Iterate on all
             foreach ($args as $widget) {
-                if (!is_array($widget) || 3 !== count($widget)) {
+                if (!is_array($widget)) {
                     continue;
                 }
 
-                $plugin = $widget[0];
-                $page = $widget[1];
-                $column = $widget[2];
+                $count = count($widget);
+
+                if (3 > $count) {
+                    continue;
+                }
 
                 // Remove item
-                remove_meta_box($plugin, $page, $column);
+                if (3 === $count) {
+                    $plugin = $widget[0];
+                    $page = $widget[1];
+                    $column = $widget[2];
+
+                    remove_meta_box($plugin, $page, $column);
+                }
+                // Add item
+                else if (4 <= $count && 'add' === $widget[0]) {
+                    $id = $widget[1];
+                    $title = $widget[2];
+                    $content = $widget[3];
+                    $control = isset($widget[4]) ? $widget[4] : null;
+                    $callback_args = isset($widget[5]) && is_array($widget[5]) ? $widget[5] : null;
+
+                    wp_add_dashboard_widget($id, $title, function () use ($content){
+                        echo $content;
+                    }, $control, $callback_args);
+                }
             }
         });
     }
