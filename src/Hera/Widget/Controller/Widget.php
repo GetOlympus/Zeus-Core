@@ -39,19 +39,22 @@ abstract class Widget extends BaseWidget implements WidgetInterface
      */
     public function init()
     {
-        $classname = '';
+        // Get user defined class name
+        $model_classname = $this->getModel()->getClassname();
+
+        // Set identifier
+        $identifier = Render::urlize($model_classname);
+        $this->getModel()->setIdentifier($identifier);
 
         // Update classnames
-        $classes = explode(' ', $this->getModel()->getClassname());
-        $names = [];
+        $classnames = explode(' ', $model_classname);
+        $classname = '';
 
         // Iterate on all class names
-        foreach ($classes as $name) {
-            $name = Render::urlize($name);
-            $names[] = strtolower($name);
+        foreach ($classnames as $name) {
+            $classname .= (empty($classname) ? '' : ' ').strtolower(Render::urlize($name));
         }
 
-        $classname = implode(' ', $names);
         $this->getModel()->setClassname($classname);
 
         // Update default settings
@@ -63,7 +66,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
 
         // Create the widget
         parent::__construct(
-            $this->getModel()->getClassname(),
+            $this->getModel()->getIdentifier(),
             $this->getModel()->getTitle(),
             $this->getModel()->getSettings(),
             $this->getModel()->getOptions()
@@ -94,7 +97,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
          * @return string $classname
          */
         wp_cache_set(
-            $this->getModel()->getClassname(),
+            $this->getModel()->getIdentifier(),
             [$args['widget_id'] => $content],
             'widget'
         );
@@ -109,7 +112,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
      **/
     public function flush_widget_cache()
     {
-        wp_cache_delete($this->getModel()->getClassname(), 'widget');
+        wp_cache_delete($this->getModel()->getIdentifier(), 'widget');
     }
 
     /**
@@ -200,7 +203,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
      */
     public function get_cached_widget($args)
     {
-        $cache = wp_cache_get($this->getModel()->getClassname(), 'widget');
+        $cache = wp_cache_get($this->getModel()->getIdentifier(), 'widget');
 
         if (!is_array($cache)) {
             $cache = [];
@@ -238,8 +241,8 @@ abstract class Widget extends BaseWidget implements WidgetInterface
         $alloptions = wp_cache_get('alloptions', 'options');
 
         // Delete options.
-        if (isset($alloptions[$this->getModel()->getClassname()])) {
-            delete_option($this->getModel()->getClassname());
+        if (isset($alloptions[$this->getModel()->getIdentifier()])) {
+            delete_option($this->getModel()->getIdentifier());
         }
 
         // Return new data.
@@ -285,7 +288,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
         global $wpdb;
 
         // Try to get cached widget.
-        $cache = wp_cache_get($this->getModel()->getClassname(), 'widget');
+        $cache = wp_cache_get($this->getModel()->getIdentifier(), 'widget');
 
         if (!is_array($cache)) {
             $cache = [];
@@ -309,7 +312,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
 
         // Title
         $title = empty($instance['title']) ? '' : $instance['title'];
-        $title = apply_filters('widget_title', $title, $instance, $this->getModel()->getClassname());
+        $title = apply_filters('widget_title', $title, $instance, $this->getModel()->getIdentifier());
 
         // Display content widget
         $this->widget_start($args, $instance, $title);
@@ -318,7 +321,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
 
         // Renew the cache.
         $cache[$args['widget_id']] = ob_get_flush();
-        wp_cache_set($this->getModel()->getClassname(), $cache, 'widget');
+        wp_cache_set($this->getModel()->getIdentifier(), $cache, 'widget');
     }
 
     /**

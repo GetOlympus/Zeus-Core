@@ -1,3 +1,6 @@
+## 0.0.45 (January 25, 2018)
+Build an identifier instead of using classname in Widget Class.
+
 ## 0.0.40 > 44 (January 25, 2018)
 Widget classname accepts now spaces.
 Allow Widget classname to contain spaces.
