@@ -45,7 +45,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
 
         // Iterate on all class names
         foreach ($classnames as $name) {
-            $classname .= strtolower(Render::urlize($name, '-'));
+            $classname .= (empty($classname) ? '' : ' ').strtolower(Render::urlize($name, '-'));
         }
 
         $this->getModel()->setClassname($classname);

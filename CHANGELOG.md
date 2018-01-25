@@ -1,3 +1,6 @@
+## 0.0.42 (January 25, 2018)
+Fix space bug on Widget classnames.
+
 ## 0.0.41 (January 25, 2018)
 Allow Widget classname to contain spaces.
 
