@@ -40,7 +40,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     public function init()
     {
         // Update classname
-        $classname = Render::urlize($this->getModel()->getClassname());
+        $classname = Render::urlize($this->getModel()->getClassname(), ' ');
         $classname = strtolower($classname);
         $this->getModel()->setClassname($classname);
 

@@ -1,3 +1,6 @@
+## 0.0.40 (January 25, 2018)
+Widget classname accepts now spaces.
+
 ## 0.0.39 (January 21, 2018)
 Allow to add new dashboard widgets.
 
