@@ -1,11 +1,7 @@
-## 0.0.42 (January 25, 2018)
-Fix space bug on Widget classnames.
-
-## 0.0.41 (January 25, 2018)
-Allow Widget classname to contain spaces.
-
-## 0.0.40 (January 25, 2018)
+## 0.0.40 > 43 (January 25, 2018)
 Widget classname accepts now spaces.
+Allow Widget classname to contain spaces.
+Fix space bug on Widget classnames. (x2)
 
 ## 0.0.39 (January 21, 2018)
 Allow to add new dashboard widgets.

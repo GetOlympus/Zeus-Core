@@ -39,15 +39,19 @@ abstract class Widget extends BaseWidget implements WidgetInterface
      */
     public function init()
     {
-        // Update classname
-        $classnames = explode(' ', $this->getModel()->getClassname());
         $classname = '';
+
+        // Update classnames
+        $classes = explode(' ', $this->getModel()->getClassname());
+        $names = [];
 
         // Iterate on all class names
         foreach ($classnames as $name) {
-            $classname .= (empty($classname) ? '' : ' ').strtolower(Render::urlize($name, '-'));
+            $name = Render::urlize($name);
+            $names[] = strtolower($name);
         }
 
+        $classname = implode(' ', $names);
         $this->getModel()->setClassname($classname);
 
         // Update default settings
