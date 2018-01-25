@@ -46,7 +46,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
         $names = [];
 
         // Iterate on all class names
-        foreach ($classnames as $name) {
+        foreach ($classes as $name) {
             $name = Render::urlize($name);
             $names[] = strtolower($name);
         }
