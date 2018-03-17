@@ -1,5 +1,5 @@
 /*!
- * @package olympus-hera
+ * @package olympus-zeus-core
  * @subpackage uglify.js
  * @author Achraf Chouk <achrafchouk@gmail.com>
  * @since 0.0.2
@@ -9,7 +9,7 @@ module.exports = {
   src: {
     files: {
       //main package contains all scripts
-      '<%= olympus.paths.tar %>/js/olympus-hera-core.js': [
+      '<%= olympus.paths.tar %>/js/zeus-core.js': [
         //jQuery
         '<%= olympus.paths.bow %>/jquery/dist/jquery.js',
         //HandlebarsJS
@@ -37,11 +37,11 @@ module.exports = {
         '<%= olympus.paths.bow %>/pickadate/lib/picker.time.js',
         '<%= olympus.paths.bow %>/pickadate/lib/legacy.js',
         //Selectize
-        '<%= olympus.paths.bow %>/selectize/dist/js/standalone/selectize.js',
+        '<%= olympus.paths.bow %>/selectize/dist/js/standalone/selectize.js'
         //Zeus packages
-        '<%= olympus.paths.src %>/js/**/*.js',
-        '!<%= olympus.paths.src %>/js/olympus-hera-core.js',
-        '<%= olympus.paths.src %>/js/olympus-hera-core.js'
+        //'<%= olympus.paths.src %>/js/**/*.js',
+        //'!<%= olympus.paths.src %>/js/zeus-core.js',
+        //'<%= olympus.paths.src %>/js/zeus-core.js'
       ]
     }
   },

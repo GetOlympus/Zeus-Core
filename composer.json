@@ -1,9 +1,9 @@
 {
-  "name": "getolympus/olympus-hera",
+  "name": "getolympus/olympus-zeus-core",
   "type": "framework",
   "description": "The Olympus framework core system used to make all libraries work efficiently. Build with ♥ for WordPress developers.",
-  "keywords": ["olympus", "hera", "wordpress", "framework", "php"],
-  "homepage": "https://github.com/GetOlympus/Hera",
+  "keywords": ["olympus", "zeus", "wordpress", "framework", "php"],
+  "homepage": "https://github.com/GetOlympus/Zeus-Core",
   "license": "MIT",
   "authors": [
     {
@@ -13,7 +13,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "GetOlympus\\Hera\\": "src/Hera/"
+      "GetOlympus\\Zeus\\": "src/Zeus/"
     }
   },
   "extra": {

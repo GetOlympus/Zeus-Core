@@ -9,14 +9,5 @@ default:
   tasks:
     # Clean target fodlers
     - 'clean:app'
-    # Process less files
-    - 'less:core'
-    - 'less:login'
-    # Minify css and js
-    - 'cssmin:src'
+    # Minify js
     #- 'uglify:src'
-    # Move files to target
-    - 'copy:app'
-    # Minify images and clean source folders
-    - 'imagemin:app'
-    - 'clean:src'

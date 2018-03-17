@@ -1,5 +1,5 @@
 /*!
- * @package olympus-hera
+ * @package olympus-zeus-core
  * @subpackage jshint.js
  * @author Achraf Chouk <achrafchouk@gmail.com>
  * @since 0.0.2

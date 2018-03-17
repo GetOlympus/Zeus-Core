@@ -1,5 +1,5 @@
 /*!
- * @package olympus-hera
+ * @package olympus-zeus-core
  * @author Achraf Chouk <achrafchouk@gmail.com>
  * @since 0.0.2
  */
@@ -9,7 +9,7 @@ module.exports = function(grunt) {
     olympus = {
       paths: {
         bow: 'bower_components',
-        src: 'src/Hera/Resources/assets',
+        src: 'src/Zeus/Resources/assets',
         tar: 'app/assets'
       }
     };

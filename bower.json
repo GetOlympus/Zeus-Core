@@ -1,13 +1,13 @@
 {
-  "name": "olympus-hera",
+  "name": "olympus-zeus-core",
   "version": "0.0.1",
-  "homepage": "https://github.com/GetOlympus/Hera",
+  "homepage": "https://github.com/GetOlympus/Zeus-Core",
   "description": "The Olympus framework core system used to make all libraries work efficiently. Build with ♥ for WordPress developers.",
   "authors": [
     "Achraf Chouk <achrafchouk@gmail.com>"
   ],
   "main": [
-    "app/assets/js/hera.min.js"
+    "app/assets/js/zeus.min.js"
   ],
   "moduleType": [
     "globals",
@@ -17,7 +17,7 @@
     "wordpress",
     "framework",
     "olympus",
-    "hera",
+    "zeus",
     "theme",
     "options",
     "field",

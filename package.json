@@ -1,21 +1,20 @@
 {
-  "name": "olympus-hera",
+  "name": "olympus-zeus-core",
   "version": "0.0.1",
-  "description": "The Olympus framework core system used to make all libraries work efficiently. Build with ♥ for WordPress developers.",
-  "main": "app/assets/js/hera.min.js",
+  "description": "Olympus Zeus framework core system used to make all Olympus libraries work efficiently. Build with ♥ for WordPress developers.",
+  "main": "app/assets/js/zeus.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/GetOlympus/Hera"
+    "url": "https://github.com/GetOlympus/Zeus-Core"
   },
   "keywords": [
     "wordpress",
     "framework",
     "olympus",
-    "hera",
-    "theme",
+    "zeus",
     "options",
     "field",
     "posttype",
@@ -39,6 +38,7 @@
     "load-grunt-config": "^0.19.2"
   },
   "dependencies": {
+    "npm": "^5.7.1",
     "time-grunt": "^1.3.0"
   }
 }

@@ -1,3 +1,6 @@
+## 0.0.46 (March 17, 2018)
+Hera became Zeus Core package. Add new Admin theme and Access management settings.
+
 ## 0.0.45 (January 25, 2018)
 Build an identifier instead of using classname in Widget Class.
 
@@ -104,7 +107,7 @@ Enhance Field and Translate controllers. Add new Base and BaseWidget controllers
 Add new AdminPage component.
 
 ## 0.0.7 (June 19, 2016)
-Add User custom fields integration, remove <Section> useless field, make all protected vars in models strictly, update Hera main class.
+Add User custom fields integration, remove <Section> useless field, make all protected vars in models strictly, update main class.
 
 ## 0.0.6 (June 18, 2016)
 Add new widget twig template, add less vars in grunt task.
@@ -126,13 +129,13 @@ Widgets, Post types, terms are now easy to use.
 Restart everything! New package, with new code. Use this as a new repository.
 
 ## -.-.- (April 02, 2016)
-Okay okay... **Hera** contains now the Core source-code used by **Zeus** and others.
+Okay okay... **Zeus** contains now the Core source-code used by others.
 
 ## -.-.- (March 16, 2016)
-The **Olympus Hera** is now a library with models and controllers usefull for all Olympus packages.
+The **Olympus Zeus** is now a library with models and controllers usefull for all Olympus packages.
 
 ## -.-.- (January 24, 2016)
-The **Olympus Hera** is now a standalone WordPress plugin which allows you to easily add professional looking to your WordPress pages with simple drag'n drop.
+The **Olympus Zeus** is now a standalone WordPress plugin which allows you to easily add professional looking to your WordPress pages with simple drag'n drop.
 
 ## -.-.- (xxx xx, 2015)
 **INITIAL RELEASE**
