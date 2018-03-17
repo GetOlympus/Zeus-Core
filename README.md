@@ -2,7 +2,7 @@
 
 _**Olympus Zeus** framework core system used to make all your **WordPress** plugins and themes developments easier and efficient.  
 Build with ♥ for **WordPress developers**._  
-[![Build Status](https://travis-ci.org/GetOlympus/Zeus-Core.svg?branch=master)](https://travis-ci.org/GetOlympus/Zeus-Core) - [![Packagist version](https://img.shields.io/packagist/v/getolympus/olympus-zeus-core.svg?style=flat-square)](https://packagist.org/packages/getolympus/olympus-zeus-core) - [![Olympus bundle](https://img.shields.io/badge/olympus-bundle-brightgreen.svg?style=flat-square)](https://github.com/GetOlympus)  
+[![Build Status](https://travis-ci.org/GetOlympus/Zeus-Core.svg?style=flat-square&branch=master)](https://travis-ci.org/GetOlympus/Zeus-Core) - [![Packagist version](https://img.shields.io/packagist/v/getolympus/olympus-zeus-core.svg?style=flat-square)](https://packagist.org/packages/getolympus/olympus-zeus-core) - [![Olympus bundle](https://img.shields.io/badge/olympus-bundle-brightgreen.svg?style=flat-square)](https://github.com/GetOlympus)  
 
 ---
 
