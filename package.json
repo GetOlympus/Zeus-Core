@@ -1,11 +1,8 @@
 {
   "name": "olympus-zeus-core",
   "version": "0.0.1",
-  "description": "Olympus Zeus framework core system used to make all Olympus libraries work efficiently. Build with ♥ for WordPress developers.",
+  "description": "Olympus Zeus framework core system used to make all your WordPress plugins and themes developments easier and efficient.",
   "main": "app/assets/js/zeus.min.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/GetOlympus/Zeus-Core"
