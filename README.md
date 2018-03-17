@@ -1,8 +1,8 @@
-# Zeus Core [![Build Status](https://travis-ci.org/GetOlympus/Zeus-Core.svg?branch=master)](https://travis-ci.org/GetOlympus/Zeus-Core)  
+# Zeus Core  
 
-_**Olympus Zeus** framework core system used to make all **Olympus** libraries work efficiently -- Olympus bundle  
+_**Olympus Zeus** framework core system used to make all your **WordPress** plugins and themes developments easier and efficient.  
 Build with ♥ for **WordPress developers**._  
-[![Packagist version](https://img.shields.io/packagist/v/getolympus/olympus-zeus-core.svg?style=flat-square)](https://packagist.org/packages/getolympus/olympus-zeus-core)  
+[![Build Status](https://travis-ci.org/GetOlympus/Zeus-Core.svg?branch=master)](https://travis-ci.org/GetOlympus/Zeus-Core) - [![Packagist version](https://img.shields.io/packagist/v/getolympus/olympus-zeus-core.svg?style=flat-square)](https://packagist.org/packages/getolympus/olympus-zeus-core) - [![Olympus bundle](https://img.shields.io/badge/olympus-bundle-brightgreen.svg?style=flat-square)](https://github.com/GetOlympus)  
 
 ---
 
@@ -16,7 +16,7 @@ Build with ♥ for **WordPress developers**._
 + [**Twig**](https://github.com/twigphp/Twig) renderer
 + And more...
 
-Works ![With Composer](https://img.shields.io/badge/with-Composer-885630.svg?style=flat-square)
+![With Composer](https://img.shields.io/badge/with-Composer-885630.svg?style=flat-square)
 
 ---
 
@@ -46,7 +46,7 @@ The **Olympus WordPress framework** uses [ReadMe.io](https://readme.io) which wa
 
 ## All we need is looooooooooooove :)
 
-[![Salt Bountysource page](https://img.shields.io/badge/Salt%20Bountysource-♥-brightgreen.svg?style=flat-square)](https://salt.bountysource.com/teams/olympus) [![Bountysource page](https://img.shields.io/badge/Bountysource-♥-brightgreen.svg?style=flat-square)](https://www.bountysource.com/teams/olympus)  
+[![Salt Bountysource page](https://img.shields.io/badge/Salt%20Bountysource-♥-brightred.svg?style=flat-square)](https://salt.bountysource.com/teams/olympus) [![Bountysource page](https://img.shields.io/badge/Bountysource-♥-brightred.svg?style=flat-square)](https://www.bountysource.com/teams/olympus)  
 Guys, do **not** hesitate to spread your love about the **Olympus WordPress framework** and **all its packages** ;)
 
 ---
@@ -64,4 +64,4 @@ Please, read [LICENSE](https://github.com/GetOlympus/Zeus-Core/blob/master/LICEN
 
 ---
 
-**Built with ♥ by [Achraf Chouk](http://github.com/crewstyle "Achraf Chouk") ~ (c) since 2015.**
+**Built with ♥ by [Achraf Chouk](http://github.com/crewstyle "Achraf Chouk").**
