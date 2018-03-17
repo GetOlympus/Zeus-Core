@@ -1,7 +1,7 @@
 {
   "name": "getolympus/olympus-zeus-core",
   "type": "framework",
-  "description": "The Olympus framework core system used to make all libraries work efficiently. Build with ♥ for WordPress developers.",
+  "description": "Olympus Zeus framework core system used to make all your WordPress plugins and themes developments easier and efficient.",
   "keywords": ["olympus", "zeus", "wordpress", "framework", "php"],
   "homepage": "https://github.com/GetOlympus/Zeus-Core",
   "license": "MIT",
