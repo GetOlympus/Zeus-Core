@@ -25,7 +25,7 @@ Build with ♥ for **WordPress developers**._
 
 ## Requirements
 
-+ PHP >= 5.4
++ PHP >= 7
 + [**Composer**](https://getcomposer.org/)
 
 ---
