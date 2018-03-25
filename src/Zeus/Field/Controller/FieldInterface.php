@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Field\Controller;
 /**
  * Field interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Field\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 

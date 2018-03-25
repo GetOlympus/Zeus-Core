@@ -7,10 +7,10 @@ use Exception;
 /**
  * AdminPage exception.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage AdminPage\Exception
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.7
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.7
  *
  */
 

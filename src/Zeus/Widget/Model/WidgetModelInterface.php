@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Widget\Model;
 /**
  * Widget model interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Widget\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.3
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.3
  *
  */
 

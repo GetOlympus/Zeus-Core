@@ -8,10 +8,10 @@ use GetOlympus\Zeus\User\Model\UserModelInterface;
 /**
  * User model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage User\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.6
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.6
  *
  */
 

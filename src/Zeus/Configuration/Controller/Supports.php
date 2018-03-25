@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Supports controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 
@@ -60,7 +60,7 @@ class Supports extends Configuration
             return;
         }
 
-        add_action('init', function () use ($props){
+        add_action('init', function () use ($props) {
             // Set available supports
             $available = ['title', 'editor', 'author', 'thumbnail', 'excerpt', 'trackbacks', 'custom-fields', 'comments', 'revisions', 'page-attributes', 'post-formats'];
 
@@ -104,7 +104,7 @@ class Supports extends Configuration
     public function addRemoveThemeSupport($key, $props = [])
     {
         // Setup theme
-        add_action('after_setup_theme', function () use ($key, $props){
+        add_action('after_setup_theme', function () use ($key, $props) {
             // Check props
             if (is_bool($props) && !$props) {
                 // Remove theme support

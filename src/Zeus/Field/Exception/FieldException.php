@@ -7,10 +7,10 @@ use Exception;
 /**
  * Field exception.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Field\Exception
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 

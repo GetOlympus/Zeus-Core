@@ -9,10 +9,10 @@ use GetOlympus\Zeus\Hook\Model\HookModel;
 /**
  * Gets its own hooks.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Hook\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

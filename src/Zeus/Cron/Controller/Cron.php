@@ -10,10 +10,10 @@ use GetOlympus\Zeus\Hook\Controller\Hook;
 /**
  * Gets its own cron task.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Cron\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.11
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.11
  *
  */
 

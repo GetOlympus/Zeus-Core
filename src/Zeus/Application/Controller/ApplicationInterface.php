@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Application\Controller;
 /**
  * Application interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Application\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 

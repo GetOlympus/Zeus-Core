@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Metabox\Model\MetaboxModelInterface;
 /**
  * Metabox model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Metabox\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

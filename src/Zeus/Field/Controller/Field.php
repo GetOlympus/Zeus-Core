@@ -14,10 +14,10 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  * Abstract class to define all field context with authorized fields, how to
  * write some functions and every usefull checks.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Field\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

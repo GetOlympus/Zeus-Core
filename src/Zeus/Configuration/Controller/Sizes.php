@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Sizes controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 
@@ -63,7 +63,7 @@ class Sizes extends Configuration
     public function addImagesDroplist($configs)
     {
         // Add image names
-        add_filter('image_size_names_choose', function ($sizes) use ($configs){
+        add_filter('image_size_names_choose', function ($sizes) use ($configs) {
             // New sizes array
             $new_sizes = [];
 

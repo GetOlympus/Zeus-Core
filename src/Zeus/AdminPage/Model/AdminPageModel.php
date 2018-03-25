@@ -8,10 +8,10 @@ use GetOlympus\Zeus\AdminPage\Model\AdminPageModelInterface;
 /**
  * AdminPage model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage AdminPage\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.7
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.7
  *
  */
 

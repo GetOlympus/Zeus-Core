@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Shortcodes controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 
@@ -161,8 +161,7 @@ class Shortcodes extends Configuration
         foreach ($pieces as $piece) {
             if (preg_match($pattern_contents, $piece, $matches)) {
                 $new_content .= $matches[1];
-            }
-            else {
+            } else {
                 $new_content .= wpautop($piece);
             }
         }

@@ -8,10 +8,10 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 /**
  * Return $_REQUEST parameters when it is needed.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Request\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

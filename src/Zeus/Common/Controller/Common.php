@@ -7,10 +7,10 @@ use Behat\Transliterator\Transliterator;
 /**
  * Common controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Common\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.46
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.46
  *
  */
 

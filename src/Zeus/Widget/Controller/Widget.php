@@ -13,10 +13,10 @@ use GetOlympus\Zeus\Widget\Model\WidgetModel;
 /**
  * Gets its own widget.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Widget\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 
@@ -130,20 +130,19 @@ abstract class Widget extends BaseWidget implements WidgetInterface
             return;
         }
 
+        // Add Title field from default mode
+        $new_title = [
+            'special' => [
+                'id' => 'title',
+                'title' => Translate::t('widget.fields.title'),
+            ],
+        ];
+
         // Add Title field from `olympus-text-field` component
         if (class_exists('\\GetOlympus\\Field\\Text')) {
             $new_title = \GetOlympus\Field\Text::build('title', [
                 'title' => Translate::t('widget.fields.title'),
             ]);
-        }
-        // Add Title field from default mode
-        else {
-            $new_title = [
-                'special' => [
-                    'id' => 'title',
-                    'title' => Translate::t('widget.fields.title'),
-                ],
-            ];
         }
 
         // Add title on 1st place

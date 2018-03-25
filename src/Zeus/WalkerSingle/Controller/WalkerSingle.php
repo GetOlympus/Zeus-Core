@@ -7,10 +7,10 @@ use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingleInterface;
 /**
  * Gets its own Walker.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage WalkerSingle\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 
@@ -92,8 +92,7 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
             $output .= "\n".'<li'.$class.'>';
             $output .= '<div class="'.$inner_class.'" data-term-id='.$category->term_id.' tabindex="0" ';
             $output .= 'role="checkbox" aria-checked="'.$aria_cheched.'">'.esc_html($category->name).'</div>';
-        }
-        else {
+        } else {
             /**
              * @see wp-includes/category-template.php
              */

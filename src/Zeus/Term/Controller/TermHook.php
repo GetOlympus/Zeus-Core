@@ -12,10 +12,10 @@ use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingle;
 /**
  * Works with Term Engine.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Term\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 
@@ -82,7 +82,7 @@ class TermHook implements TermHookInterface
         // Special case: single choice on post edit page
         if ($is_single) {
             // Apply filter
-            add_filter('wp_terms_checklist_args', function ($args, $post_id) use ($slug){
+            add_filter('wp_terms_checklist_args', function ($args, $post_id) use ($slug) {
                 if (isset($args['taxonomy']) && $slug === $args['taxonomy']) {
                     $args['walker'] = new WalkerSingle();
                     $args['popular_cats'] = [];

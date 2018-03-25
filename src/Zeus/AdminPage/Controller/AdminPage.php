@@ -15,10 +15,10 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 /**
  * Gets its own admin page.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage AdminPage\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.7
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.7
  *
  */
 

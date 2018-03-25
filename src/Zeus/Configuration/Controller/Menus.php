@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Menus controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 

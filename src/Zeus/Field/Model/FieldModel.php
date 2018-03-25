@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Field\Model\FieldModelInterface;
 /**
  * Field model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Field\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

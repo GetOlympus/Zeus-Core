@@ -15,10 +15,10 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 /**
  * Works with Posttype Engine.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Posttype\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

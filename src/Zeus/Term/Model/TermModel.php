@@ -8,10 +8,10 @@ use GetOlympus\Zeus\Term\Model\TermModelInterface;
 /**
  * Term model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Term\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

@@ -10,10 +10,10 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 /**
  * Settings controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 
@@ -73,7 +73,7 @@ class Settings extends Configuration
      */
     public function adminBarSetting($args)
     {
-        add_action('wp_before_admin_bar_render', function () use ($args){
+        add_action('wp_before_admin_bar_render', function () use ($args) {
             global $wp_admin_bar;
 
             // Iterate on all
@@ -93,7 +93,7 @@ class Settings extends Configuration
         // Work on description in case of an array
         $desc = is_array($description) ? $description[0] : $description;
 
-        add_filter('admin_footer_text', function () use ($desc){
+        add_filter('admin_footer_text', function () use ($desc) {
             echo '<span id="footer-thankyou">'.$desc.'</span>';
         });
     }
@@ -106,7 +106,7 @@ class Settings extends Configuration
     public function adminMenuOrderSetting($args)
     {
         add_filter('custom_menu_order', '__return_true');
-        add_filter('menu_order', function ($menu_ord) use ($args){
+        add_filter('menu_order', function ($menu_ord) use ($args) {
             return !$menu_ord ? [] : $args;
         });
     }
@@ -118,7 +118,7 @@ class Settings extends Configuration
      */
     public function adminMetaBoxesSetting($args)
     {
-        add_action('wp_dashboard_setup', function () use ($args){
+        add_action('wp_dashboard_setup', function () use ($args) {
             // Iterate on all
             foreach ($args as $widget) {
                 if (!is_array($widget)) {
@@ -138,16 +138,15 @@ class Settings extends Configuration
                     $column = $widget[2];
 
                     remove_meta_box($plugin, $page, $column);
-                }
-                // Add item
-                else if (4 <= $count && 'add' === $widget[0]) {
+                } else if (4 <= $count && 'add' === $widget[0]) {
+                    // Add item
                     $id = $widget[1];
                     $title = $widget[2];
                     $content = $widget[3];
                     $control = isset($widget[4]) ? $widget[4] : null;
                     $callback_args = isset($widget[5]) && is_array($widget[5]) ? $widget[5] : null;
 
-                    wp_add_dashboard_widget($id, $title, function () use ($content){
+                    wp_add_dashboard_widget($id, $title, function () use ($content) {
                         echo $content;
                     }, $control, $callback_args);
                 }
@@ -167,12 +166,12 @@ class Settings extends Configuration
         }
 
         // Remove WP Version from styles
-        add_filter('style_loader_src', function ($src){
+        add_filter('style_loader_src', function ($src) {
             return strpos($src, 'ver=') ? remove_query_arg('ver', $src) : $src;
         }, 9999);
 
         // Remove WP Version from scripts
-        add_filter('script_loader_src', function ($src){
+        add_filter('script_loader_src', function ($src) {
             return strpos($src, 'ver=') ? remove_query_arg('ver', $src) : $src;
         }, 9999);
     }
@@ -207,18 +206,15 @@ class Settings extends Configuration
             if ('wp_admin_bar_init' === $key) {
                 add_filter('show_admin_bar', '__return_false');
                 remove_action('init', 'wp_admin_bar_init');
-            }
-            else if ('automatic-feed-links' === $key) {
+            } else if ('automatic-feed-links' === $key) {
                 remove_theme_support($key);
-            }
-            else if ('emoji' === $key) {
+            } else if ('emoji' === $key) {
                 remove_action('wp_head', 'print_emoji_detection_script', 7);
                 remove_action('wp_print_styles', 'print_emoji_styles');
                 remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
                 remove_filter('the_content_feed', 'wp_staticize_emoji');
                 remove_filter('comment_text_rss', 'wp_staticize_emoji');
-            }
-            else {
+            } else {
                 remove_action('wp_head', $key);
             }
         }
@@ -231,7 +227,7 @@ class Settings extends Configuration
      */
     public function commentsFieldsOrderSetting($fields)
     {
-        add_filter('comment_form_fields', function ($comment_fields) use ($fields){
+        add_filter('comment_form_fields', function ($comment_fields) use ($fields) {
             $new_fields = [];
 
             // Iterate on fields
@@ -269,7 +265,7 @@ class Settings extends Configuration
      */
     public function shutdownSetting($args)
     {
-        add_action('shutdown', function (){
+        add_action('shutdown', function () {
             global $wpdb;
             unset($wpdb);
         }, 99);

@@ -7,10 +7,10 @@ use Exception;
 /**
  * User exception.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage User\Exception
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.6
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.6
  *
  */
 

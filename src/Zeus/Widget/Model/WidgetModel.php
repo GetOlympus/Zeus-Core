@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Widget\Model\WidgetModelInterface;
 /**
  * Widget model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Widget\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

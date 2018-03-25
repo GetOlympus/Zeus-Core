@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Access Management controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.46
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.46
  *
  */
 
@@ -59,7 +59,7 @@ class AccessManagement extends Configuration
      *
      * @param array $args
      */
-    public function AccessUrlsSetting($args)
+    public function accessUrlsSetting($args)
     {
         if (!$args) {
             return;
@@ -74,12 +74,12 @@ class AccessManagement extends Configuration
         ], $args);
 
         // Change login URL
-        add_filter('login_redirect', function ($url) use ($configs){
+        add_filter('login_redirect', function ($url) use ($configs) {
             return empty($configs['login']) ? $url : site_url().$configs['login'];
         });
 
         // Customize Site URL
-        add_filter('site_url', function ($url,$path,$scheme = null) use ($configs){
+        add_filter('site_url', function ($url, $path, $scheme = null) use ($configs) {
             $pattern = [
                 'login'         => '/wp-login.php',
                 'logout'        => '/wp-login.php?action=logout',
@@ -100,7 +100,7 @@ class AccessManagement extends Configuration
         }, 10, 3);
 
         // Make the redirection works properly
-        add_filter('wp_redirect', function ($url,$status) use ($configs){
+        add_filter('wp_redirect', function ($url, $status) use ($configs) {
             // Check login configuration
             if (empty($configs['login'])) {
                 return $url;
@@ -134,7 +134,7 @@ class AccessManagement extends Configuration
             return;
         }
 
-        add_action('login_head', function (){
+        add_action('login_head', function () {
             remove_action('login_head', 'wp_shake_js', 12);
         });
     }
@@ -159,14 +159,14 @@ class AccessManagement extends Configuration
         ], $args);
 
         // Change login error message
-        add_filter('login_errors', function () use ($configs){
+        add_filter('login_errors', function () use ($configs) {
             if (!empty($configs['errors'])) {
                 return $configs['errors'];
             }
         });
 
         // Change login head URL
-        add_filter('login_headerurl', function ($url) use ($configs){
+        add_filter('login_headerurl', function ($url) use ($configs) {
             if (!empty($configs['headerurl'])) {
                 return $configs['headerurl'];
             }
@@ -174,12 +174,12 @@ class AccessManagement extends Configuration
 
         // Render assets
 
-        add_action('login_enqueue_scripts', function () use ($configs){
+        add_action('login_enqueue_scripts', function () use ($configs) {
             if (!empty($configs['styles'])) {
                 return;
             }
 
-            foreach($configs['styles'] as $style) {
+            foreach ($configs['styles'] as $style) {
                 if (3 !== count($style)) {
                     continue;
                 }
@@ -188,12 +188,12 @@ class AccessManagement extends Configuration
             }
         }, 10);
 
-        add_action('login_enqueue_scripts', function () use ($configs){
+        add_action('login_enqueue_scripts', function () use ($configs) {
             if (!empty($configs['scripts'])) {
                 return;
             }
 
-            foreach($configs['scripts'] as $script) {
+            foreach ($configs['scripts'] as $script) {
                 if (3 !== count($script)) {
                     continue;
                 }

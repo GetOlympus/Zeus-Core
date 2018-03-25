@@ -12,10 +12,10 @@ use Symfony\Component\ClassLoader\MapClassLoader;
 /**
  * Application controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Application\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 
@@ -290,7 +290,7 @@ abstract class Application implements ApplicationInterface
                 $this->$function($classmap);
             } else {
                 // Outside an `init` action
-                add_action($action, function () use ($classmap, $function){
+                add_action($action, function () use ($classmap, $function) {
                     $this->$function($classmap);
                 });
             }

@@ -1,3 +1,6 @@
+## 0.0.47 (March 25, 2018)
+Add CodeSniffer extension and validation. Remove JS scripts from package.
+
 ## 0.0.46 (March 17, 2018)
 Hera became Zeus Core package. Add new Admin theme and Access management settings.
 

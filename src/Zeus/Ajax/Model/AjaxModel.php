@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Ajax\Model\AjaxModelInterface;
 /**
  * Ajax model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Ajax\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

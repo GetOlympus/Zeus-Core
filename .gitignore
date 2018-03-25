@@ -12,7 +12,3 @@ composer.lock
 .DS_Store
 .idea/
 Thumbs.db
-
-# Auto-generated folders
-/node_modules/
-/bower_components/

@@ -70,19 +70,19 @@ define('OL_ZEUS_WP_CAP', 'edit_posts');
 $path = dirname(dirname(OL_ZEUS_PATH));
 
 // Defining if we are in admin panel or not
-define('OL_ZEUS_ISADMIN',   defined('OL_ISADMIN') ? OL_ISADMIN : is_admin());
+define('OL_ZEUS_ISADMIN', defined('OL_ISADMIN') ? OL_ISADMIN : is_admin());
 // Nonce ajax value
-define('OL_ZEUS_NONCE',     defined('OL_NONCE') ? OL_NONCE : wp_create_nonce('ol-zeus-ajax-nonce'));
+define('OL_ZEUS_NONCE', defined('OL_NONCE') ? OL_NONCE : wp_create_nonce('ol-zeus-ajax-nonce'));
 // Blog home url
-define('OL_ZEUS_HOME',      defined('OL_BLOG_HOME') ? OL_BLOG_HOME : get_option('home'));
+define('OL_ZEUS_HOME', defined('OL_BLOG_HOME') ? OL_BLOG_HOME : get_option('home'));
 // URI
-define('OL_ZEUS_URI',       defined('OL_DISTURI') ? OL_DISTURI : OL_ZEUS_HOME.'/app/assets/');
+define('OL_ZEUS_URI', defined('OL_DISTURI') ? OL_DISTURI : OL_ZEUS_HOME.'/app/assets/');
 // Language blog
-define('OL_ZEUS_LOCAL',     defined('OL_BLOG_LANGUAGE') ? OL_BLOG_LANGUAGE : get_bloginfo('language'));
+define('OL_ZEUS_LOCAL', defined('OL_BLOG_LANGUAGE') ? OL_BLOG_LANGUAGE : get_bloginfo('language'));
 // Assets folder
-define('OL_ZEUS_DISTPATH',  defined('DISTPATH') ? DISTPATH : $path.S.'app'.S.'assets'.S);
+define('OL_ZEUS_DISTPATH', defined('DISTPATH') ? DISTPATH : $path.S.'app'.S.'assets'.S);
 // Twig cache folder
-define('OL_ZEUS_CACHE',     defined('CACHEPATH') ? CACHEPATH : $path.S.'app'.S.'cache'.S);
+define('OL_ZEUS_CACHE', defined('CACHEPATH') ? CACHEPATH : $path.S.'app'.S.'cache'.S);
 
 
 /**
@@ -91,9 +91,9 @@ define('OL_ZEUS_CACHE',     defined('CACHEPATH') ? CACHEPATH : $path.S.'app'.S.'
  * To get its own settings, define all functions used to build custom pages and
  * custom post types.
  *
- * @package Olympus Zeus
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @package OlympusZeusCore
+ * @author  Achraf Chouk <achrafchouk@gmail.com>
+ * @since   0.0.1
  *
  */
 
@@ -159,7 +159,7 @@ abstract class Zeus extends Application
         }
 
         // Register all vendor views
-        add_filter('ol_zeus_render_views', function ($paths) use ($externals){
+        add_filter('ol_zeus_render_views', function ($paths) use ($externals) {
             foreach ($externals as $alias => $path) {
                 $paths[$alias] = $path.'views';
             }
@@ -168,7 +168,7 @@ abstract class Zeus extends Application
         });
 
         // Register all internal assets
-        add_filter('ol_zeus_render_assets', function ($paths) use ($internals){
+        add_filter('ol_zeus_render_assets', function ($paths) use ($internals) {
             foreach ($internals as $name => $path) {
                 $paths[$name] = OL_ZEUS_PATH.S.$path;
             }
@@ -177,7 +177,7 @@ abstract class Zeus extends Application
         });
 
         // Register all vendor translations
-        add_filter('ol_zeus_translate_resources', function ($yamls) use ($externals){
+        add_filter('ol_zeus_translate_resources', function ($yamls) use ($externals) {
             foreach ($externals as $alias => $path) {
                 $yamls[$path.'languages'] = $alias.'field';
             }

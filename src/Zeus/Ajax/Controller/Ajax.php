@@ -10,10 +10,10 @@ use GetOlympus\Zeus\Hook\Controller\Hook;
 /**
  * Gets its own ajax call.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Ajax\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

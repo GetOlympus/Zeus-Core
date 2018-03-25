@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Assets controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.2
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.2
  *
  */
 
@@ -40,7 +40,7 @@ class Assets extends Configuration
         }
 
         // Enqueue scripts and styles
-        add_action('wp_enqueue_scripts', function () use ($configs){
+        add_action('wp_enqueue_scripts', function () use ($configs) {
             // Iterate on configs
             foreach ($configs as $key => $props) {
                 $props = !is_array($props) && !is_bool($props) ? [$props] : $props;
@@ -81,7 +81,7 @@ class Assets extends Configuration
             if (!is_array($opts)) {
                 // Special case: jQuery-Migrate deregistration
                 if ('jquery-migrate' === $handle && !$opts) {
-                    add_action('wp_default_scripts', function($scripts){
+                    add_action('wp_default_scripts', function ($scripts) {
                         if (OL_ZEUS_ISADMIN || empty($scripts->registered['jquery'])) {
                             return;
                         }

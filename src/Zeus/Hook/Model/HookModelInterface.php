@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Hook\Model;
 /**
  * Hook model interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Hook\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.3
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.3
  *
  */
 

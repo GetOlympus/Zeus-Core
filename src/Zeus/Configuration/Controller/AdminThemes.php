@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Configuration\Controller\Configuration;
 /**
  * Admin Themes controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Configuration\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.46
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.46
  *
  */
 
@@ -44,7 +44,7 @@ class AdminThemes extends Configuration
             $props = !is_array($props) ? [$props] : $props;
 
             // Add admin theme
-            $this->AddAdminTheme($key, $props);
+            $this->addAdminTheme($key, $props);
         }
     }
 
@@ -54,7 +54,7 @@ class AdminThemes extends Configuration
      * @param string $key
      * @param array  $args
      */
-    public function AddAdminTheme($key, $args)
+    public function addAdminTheme($key, $args)
     {
         // Check args
         if (empty($args)) {

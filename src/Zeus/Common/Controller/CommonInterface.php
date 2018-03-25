@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Common\Controller;
 /**
  * Common interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Common\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.46
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.46
  *
  */
 

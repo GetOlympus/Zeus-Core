@@ -11,10 +11,10 @@ use GetOlympus\Zeus\User\Model\UserModel;
 /**
  * Gets its own user.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage User\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.6
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.6
  *
  */
 

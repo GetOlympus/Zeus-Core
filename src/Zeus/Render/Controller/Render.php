@@ -10,10 +10,10 @@ use Twig_SimpleFunction;
 /**
  * Render HTML entities.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Render\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 
@@ -126,7 +126,9 @@ class Render implements RenderInterface
 
         // Dump array
         $this->twig->addFunction(new Twig_SimpleFunction('dump', function ($array) {
-            echo '<pre>'; var_dump($array); echo '</pre>';
+            echo '<pre>';
+            var_dump($array);
+            echo '</pre>';
         }));
 
         // File inclusion

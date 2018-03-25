@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Cron\Model\CronModelInterface;
 /**
  * Cron model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Cron\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.11
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.11
  *
  */
 

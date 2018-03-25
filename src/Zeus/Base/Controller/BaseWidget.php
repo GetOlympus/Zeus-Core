@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Base\Controller;
 /**
  * Base Widget controller
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Base\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.8
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.8
  *
  */
 

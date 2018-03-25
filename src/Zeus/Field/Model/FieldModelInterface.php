@@ -5,10 +5,10 @@ namespace GetOlympus\Zeus\Field\Model;
 /**
  * Field model interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Field\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.3
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.3
  *
  */
 

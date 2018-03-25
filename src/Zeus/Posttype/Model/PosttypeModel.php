@@ -8,10 +8,10 @@ use GetOlympus\Zeus\Posttype\Model\PosttypeModelInterface;
 /**
  * Post type model.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Posttype\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  *
  */
 

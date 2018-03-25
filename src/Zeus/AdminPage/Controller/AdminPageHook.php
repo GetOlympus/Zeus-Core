@@ -13,10 +13,10 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 /**
  * Works with AdminPage Engine.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage AdminPage\Controller
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.7
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.7
  *
  */
 

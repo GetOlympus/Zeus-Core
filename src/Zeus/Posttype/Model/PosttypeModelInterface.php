@@ -7,10 +7,10 @@ use GetOlympus\Zeus\Posttype\Controller\PosttypeHook;
 /**
  * Post type model interface.
  *
- * @package Olympus Zeus-Core
+ * @package    OlympusZeusCore
  * @subpackage Posttype\Model
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.3
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.3
  *
  */
 

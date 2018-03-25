@@ -55,9 +55,13 @@
     "twig/twig": "~1.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.5"
+    "phpunit/phpunit": "^6.5",
+    "squizlabs/php_codesniffer": "2.*"
   },
   "scripts": {
-    "test": "phpunit"
+    "test": [
+      "phpunit",
+      "vendor/bin/phpcs --standard=phpcs.xml ."
+    ]
   }
 }

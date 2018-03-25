@@ -7,9 +7,11 @@
     convertWarningsToExceptions="true"
     processIsolation="false"
     verbose="true">
+
   <testsuites>
-    <testsuite name="Zeus Core">
+    <testsuite name="Olympus Zeus Core">
       <directory suffix="Test.php">./tests</directory>
     </testsuite>
   </testsuites>
+
 </phpunit>
