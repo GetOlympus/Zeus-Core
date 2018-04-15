@@ -21,6 +21,8 @@ class AccessManagement extends Configuration
      */
     protected $available = [
         'access-urls',
+        'login-error',
+        'login-header',
         'login-shake',
         'login-style',
     ];
@@ -124,6 +126,56 @@ class AccessManagement extends Configuration
     }
 
     /**
+     * Redisign wp-login.php page with custom error message.
+     *
+     * @param string|boolean $error
+     */
+    public function loginErrorSetting($error)
+    {
+        // Define default message
+        $message = is_bool($error) && $error ? Translate::t('configuration.settings.login.error') : $error;
+
+        // Change login error message
+        add_filter('login_errors', function () use ($message) {
+            if (!empty($message)) {
+                return $message;
+            }
+        });
+    }
+
+    /**
+     * Redisign wp-login.php page with custom header configurations.
+     *
+     * @param array $args
+     */
+    public function loginHeaderSetting($args)
+    {
+        if (!$args) {
+            return;
+        }
+
+        // Define defaults
+        $configs = array_merge([
+            'headerurl'     => OL_ZEUS_HOME,
+            'headertitle'   => OL_ZEUS_NAME,
+        ], $args);
+
+        // Change login head URL
+        add_filter('login_headerurl', function ($url) use ($configs) {
+            if (!empty($configs['headerurl'])) {
+                return $configs['headerurl'];
+            }
+        });
+
+        // Change login head title
+        add_filter('login_headertitle', function ($title) use ($configs) {
+            if (!empty($configs['headertitle'])) {
+                return $configs['headertitle'];
+            }
+        });
+    }
+
+    /**
      * Define wether if WP has to shake the login box or not.
      *
      * @param boolean $shake
@@ -152,25 +204,9 @@ class AccessManagement extends Configuration
 
         // Define defaults
         $configs = array_merge([
-            'errors'    => Translate::t('configuration.settings.login.error'),
-            'headerurl' => OL_ZEUS_HOME,
             'scripts'   => '',
             'styles'    => '',
         ], $args);
-
-        // Change login error message
-        add_filter('login_errors', function () use ($configs) {
-            if (!empty($configs['errors'])) {
-                return $configs['errors'];
-            }
-        });
-
-        // Change login head URL
-        add_filter('login_headerurl', function ($url) use ($configs) {
-            if (!empty($configs['headerurl'])) {
-                return $configs['headerurl'];
-            }
-        });
 
         // Render assets
 

@@ -1,3 +1,6 @@
+## 0.0.48 (April 15, 2018)
+Fix hook function calls, php bugs
+
 ## 0.0.47 (March 25, 2018)
 Add CodeSniffer extension and validation. Remove JS scripts from package.
 

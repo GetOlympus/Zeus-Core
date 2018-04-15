@@ -31,9 +31,6 @@ class Settings extends Configuration
         'clean-headers',
         'comments-fields-order',
         'jpeg-quality',
-        'login-shake',
-        'login-style',
-        'login-urls',
         'shutdown',
     ];
 

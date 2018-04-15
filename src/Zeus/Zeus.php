@@ -71,10 +71,10 @@ $path = dirname(dirname(OL_ZEUS_PATH));
 
 // Defining if we are in admin panel or not
 define('OL_ZEUS_ISADMIN', defined('OL_ISADMIN') ? OL_ISADMIN : is_admin());
-// Nonce ajax value
-define('OL_ZEUS_NONCE', defined('OL_NONCE') ? OL_NONCE : wp_create_nonce('ol-zeus-ajax-nonce'));
 // Blog home url
 define('OL_ZEUS_HOME', defined('OL_BLOG_HOME') ? OL_BLOG_HOME : get_option('home'));
+// Blog name
+define('OL_ZEUS_NAME', defined('OL_BLOG_NAME') ? OL_BLOG_NAME : get_bloginfo('name'));
 // URI
 define('OL_ZEUS_URI', defined('OL_DISTURI') ? OL_DISTURI : OL_ZEUS_HOME.'/app/assets/');
 // Language blog

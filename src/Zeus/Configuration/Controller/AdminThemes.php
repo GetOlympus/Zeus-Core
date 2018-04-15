@@ -90,7 +90,7 @@ class AdminThemes extends Configuration
                 'current'   => isset($opts['icons']['current']) ? $opts['icons']['current'] : $opts['colors'][2],
             ];
         } else {
-            $opts['icons']  => [
+            $opts['icons'] = [
                 'base'      => $opts['colors'][0],
                 'focus'     => $opts['colors'][1],
                 'current'   => $opts['colors'][2],

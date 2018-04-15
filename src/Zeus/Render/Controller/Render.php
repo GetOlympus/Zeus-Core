@@ -244,7 +244,7 @@ class Render implements RenderInterface
      */
     public static function assetsInCache($source, $filename)
     {
-        $dest = OL_ZEUS_ASSETS.$filename;
+        $dest = OL_ZEUS_DISTPATH.$filename;
 
         // Create file
         if (!file_exists($dest)) {
