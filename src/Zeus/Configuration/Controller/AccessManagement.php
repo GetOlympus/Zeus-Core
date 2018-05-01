@@ -3,6 +3,7 @@
 namespace GetOlympus\Zeus\Configuration\Controller;
 
 use GetOlympus\Zeus\Configuration\Controller\Configuration;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 
 /**
  * Access Management controller
@@ -51,7 +52,7 @@ class AccessManagement extends Configuration
                 continue;
             }
 
-            $func = Common::toFunctionFormat($key).'Setting';
+            $func = Helpers::toFunctionFormat($key).'Setting';
             $this->$func($args);
         }
     }
@@ -156,21 +157,21 @@ class AccessManagement extends Configuration
 
         // Define defaults
         $configs = array_merge([
-            'headerurl'     => OL_ZEUS_HOME,
-            'headertitle'   => OL_ZEUS_NAME,
+            'url'     => OL_ZEUS_HOME,
+            'title'   => OL_ZEUS_NAME,
         ], $args);
 
         // Change login head URL
         add_filter('login_headerurl', function ($url) use ($configs) {
-            if (!empty($configs['headerurl'])) {
-                return $configs['headerurl'];
+            if (!empty($configs['url'])) {
+                return $configs['url'];
             }
         });
 
         // Change login head title
         add_filter('login_headertitle', function ($title) use ($configs) {
-            if (!empty($configs['headertitle'])) {
-                return $configs['headertitle'];
+            if (!empty($configs['title'])) {
+                return $configs['title'];
             }
         });
     }
@@ -204,25 +205,11 @@ class AccessManagement extends Configuration
 
         // Define defaults
         $configs = array_merge([
-            'scripts'   => '',
-            'styles'    => '',
+            'scripts'   => [],
+            'styles'    => [],
         ], $args);
 
         // Render assets
-
-        add_action('login_enqueue_scripts', function () use ($configs) {
-            if (!empty($configs['styles'])) {
-                return;
-            }
-
-            foreach ($configs['styles'] as $style) {
-                if (3 !== count($style)) {
-                    continue;
-                }
-
-                wp_enqueue_style($style[0], $style[1], $style[2]);
-            }
-        }, 10);
 
         add_action('login_enqueue_scripts', function () use ($configs) {
             if (!empty($configs['scripts'])) {
@@ -236,6 +223,20 @@ class AccessManagement extends Configuration
 
                 wp_enqueue_script($script[0], $script[1], $script[2]);
             }
-        }, 1);
+        }, 10);
+
+        add_action('login_enqueue_scripts', function () use ($configs) {
+            if (!empty($configs['styles'])) {
+                return;
+            }
+
+            foreach ($configs['styles'] as $style) {
+                if (3 !== count($style)) {
+                    continue;
+                }
+
+                wp_enqueue_style($style[0], $style[1], $style[2]);
+            }
+        }, 9);
     }
 }

@@ -145,7 +145,7 @@ abstract class Application implements ApplicationInterface
         $components = [
             'Base'                          => 'GetOlympus\Zeus\Base\Controller\Base',
             'BaseWidget'                    => 'GetOlympus\Zeus\Base\Controller\BaseWidget',
-            'Common'                        => 'GetOlympus\Zeus\Common\Controller\Common',
+            'Helpers'                       => 'GetOlympus\Zeus\Helpers\Controller\Helpers',
 
             'AdminPage'                     => 'GetOlympus\Zeus\AdminPage\Controller\AdminPage',
             'Ajax'                          => 'GetOlympus\Zeus\Ajax\Controller\Ajax',

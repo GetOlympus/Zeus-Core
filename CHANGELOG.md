@@ -1,3 +1,6 @@
+## 0.0.49 (May 1st, 2018)
+Fix AccessManagement, rename Common to Helpers
+
 ## 0.0.48 (April 15, 2018)
 Fix hook function calls, php bugs
 

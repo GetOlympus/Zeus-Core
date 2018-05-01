@@ -2,8 +2,8 @@
 
 namespace GetOlympus\Zeus\Posttype\Controller;
 
-use GetOlympus\Zeus\Common\Controller\Common;
 use GetOlympus\Zeus\Field\Controller\Field;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Metabox\Controller\Metabox;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Posttype\Controller\Posttype;
@@ -280,7 +280,7 @@ class PosttypeHook implements PosttypeHookInterface
 
             // Title
             $title = empty($title) ? Translate::t('posttypehook.metabox') : $title;
-            $id = empty($id) ? Common::urlize($title) : $id;
+            $id = empty($id) ? Helpers::urlize($title) : $id;
 
             // Update vars
             $identifier = $slug.'-meta-box-'.$id;

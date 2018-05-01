@@ -1,18 +1,18 @@
 <?php
 
-namespace GetOlympus\Zeus\Common\Controller;
+namespace GetOlympus\Zeus\Helpers\Controller;
 
 /**
- * Common interface.
+ * Helpers interface.
  *
  * @package    OlympusZeusCore
- * @subpackage Common\Controller
+ * @subpackage Helpers\Controller
  * @author     Achraf Chouk <achrafchouk@gmail.com>
  * @since      0.0.46
  *
  */
 
-interface CommonInterface
+interface HelpersInterface
 {
     /**
      * Get singleton.

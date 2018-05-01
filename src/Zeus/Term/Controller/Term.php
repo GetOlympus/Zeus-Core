@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Term\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Common\Controller\Common;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Term\Controller\TermHook;
 use GetOlympus\Zeus\Term\Controller\TermInterface;
@@ -52,7 +52,7 @@ abstract class Term extends Base implements TermInterface
     public function init()
     {
         // Update slug
-        $slug = Common::urlize($this->getModel()->getSlug());
+        $slug = Helpers::urlize($this->getModel()->getSlug());
         $this->getModel()->setSlug($slug);
 
         // Check forbidden slugs

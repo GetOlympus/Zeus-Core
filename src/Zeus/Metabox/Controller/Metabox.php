@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Metabox\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Common\Controller\Common;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Metabox\Controller\MetaboxInterface;
 use GetOlympus\Zeus\Metabox\Exception\MetaboxException;
 use GetOlympus\Zeus\Metabox\Model\MetaboxModel;
@@ -47,7 +47,7 @@ class Metabox extends Base implements MetaboxInterface
         }
 
         // Define ID
-        $id = Common::urlize($title);
+        $id = Helpers::urlize($title);
 
         // Set details
         $metabox->getModel()->setTitle($title);

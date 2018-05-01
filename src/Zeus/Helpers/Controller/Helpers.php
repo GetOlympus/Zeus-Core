@@ -1,20 +1,20 @@
 <?php
 
-namespace GetOlympus\Zeus\Common\Controller;
+namespace GetOlympus\Zeus\Helpers\Controller;
 
 use Behat\Transliterator\Transliterator;
 
 /**
- * Common controller
+ * Helpers controller
  *
  * @package    OlympusZeusCore
- * @subpackage Common\Controller
+ * @subpackage Helpers\Controller
  * @author     Achraf Chouk <achrafchouk@gmail.com>
  * @since      0.0.46
  *
  */
 
-class Common implements CommonInterface
+class Helpers implements HelpersInterface
 {
     /**
      * @var Singleton

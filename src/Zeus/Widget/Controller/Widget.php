@@ -3,8 +3,8 @@
 namespace GetOlympus\Zeus\Widget\Controller;
 
 use GetOlympus\Zeus\Base\Controller\BaseWidget;
-use GetOlympus\Zeus\Common\Controller\Common;
 use GetOlympus\Zeus\Field\Controller\Field;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 use GetOlympus\Zeus\Widget\Controller\WidgetInterface;
@@ -44,7 +44,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
         $model_classname = $this->getModel()->getClassname();
 
         // Set identifier
-        $identifier = Common::urlize($model_classname);
+        $identifier = Helpers::urlize($model_classname);
         $this->getModel()->setIdentifier($identifier);
 
         // Update classnames
@@ -53,7 +53,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
 
         // Iterate on all class names
         foreach ($classnames as $name) {
-            $classname .= (empty($classname) ? '' : ' ').strtolower(Common::urlize($name));
+            $classname .= (empty($classname) ? '' : ' ').strtolower(Helpers::urlize($name));
         }
 
         $this->getModel()->setClassname($classname);

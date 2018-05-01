@@ -7,7 +7,7 @@ use GetOlympus\Zeus\AdminPage\Controller\AdminPageInterface;
 use GetOlympus\Zeus\AdminPage\Exception\AdminPageException;
 use GetOlympus\Zeus\AdminPage\Model\AdminPageModel;
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Common\Controller\Common;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -61,7 +61,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
         reset($pages);
 
         // Update identifier
-        $identifier = Common::urlize(key($pages));
+        $identifier = Helpers::urlize(key($pages));
         $this->getModel()->setIdentifier($identifier);
 
         // Add root single menu if identifier is unknown
@@ -76,7 +76,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
             }
 
             // Get slug
-            $slug = Common::urlize($slug);
+            $slug = Helpers::urlize($slug);
 
             // Add child menu
             $this->addChild($slug, $options);

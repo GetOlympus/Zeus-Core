@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Posttype\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Common\Controller\Common;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Posttype\Controller\PosttypeHook;
 use GetOlympus\Zeus\Posttype\Controller\PosttypeInterface;
@@ -52,7 +52,7 @@ abstract class Posttype extends Base implements PosttypeInterface
     public function init()
     {
         // Update slug
-        $slug = Common::urlize($this->getModel()->getSlug());
+        $slug = Helpers::urlize($this->getModel()->getSlug());
         $this->getModel()->setSlug($slug);
 
         // Check forbidden slugs

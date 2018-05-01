@@ -2,8 +2,8 @@
 
 namespace GetOlympus\Zeus\Configuration\Controller;
 
-use GetOlympus\Zeus\Common\Controller\Common;
 use GetOlympus\Zeus\Configuration\Controller\Configuration;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 
@@ -58,7 +58,7 @@ class Settings extends Configuration
                 continue;
             }
 
-            $func = Common::toFunctionFormat($key).'Setting';
+            $func = Helpers::toFunctionFormat($key).'Setting';
             $this->$func($args);
         }
     }
