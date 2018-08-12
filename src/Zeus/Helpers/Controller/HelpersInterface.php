@@ -35,7 +35,7 @@ interface HelpersInterface
      * @param string $message
      * @param boolean $useDate
      */
-    public function filePutContents($filepath, $contents, $message, $usedate = true);
+    public static function filePutContents($filepath, $contents, $message, $usedate = true);
 
     /**
      * Camelize string.
