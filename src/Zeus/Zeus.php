@@ -76,7 +76,7 @@ define('OL_ZEUS_HOME', defined('OL_BLOG_HOME') ? OL_BLOG_HOME : get_option('home
 // Blog name
 define('OL_ZEUS_NAME', defined('OL_BLOG_NAME') ? OL_BLOG_NAME : get_bloginfo('name'));
 // URI
-define('OL_ZEUS_URI', defined('OL_DISTURI') ? OL_DISTURI : OL_ZEUS_HOME.'/app/assets/');
+define('OL_ZEUS_URI', defined('DISTPATH') ? str_replace(WEBPATH, '/../', DISTPATH) : OL_ZEUS_HOME.'/app/assets/');
 // Language blog
 define('OL_ZEUS_LOCAL', defined('OL_BLOG_LANGUAGE') ? OL_BLOG_LANGUAGE : get_bloginfo('language'));
 // Assets folder

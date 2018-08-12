@@ -29,6 +29,15 @@ interface HelpersInterface
     public function copyFile($sourcePath, $targetPath, $filename);
 
     /**
+     * Helper function to create a file in a target path with its contents.
+     *
+     * @param string $targetFilepath
+     * @param string $message
+     * @param boolean $useDate
+     */
+    public function filePutContents($filepath, $contents, $message, $usedate = true);
+
+    /**
      * Camelize string.
      *
      * @param string $text

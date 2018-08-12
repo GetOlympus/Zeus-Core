@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Zeus\Render\Controller;
 
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\RenderInterface;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
@@ -249,7 +250,7 @@ class Render implements RenderInterface
         // Create file
         if (!file_exists($dest)) {
             $ctns = file_exists($source) ? file_get_contents($source) : '';
-            file_put_contents($dest, "/**\n * This file is auto-generated\n */\n\n".$ctns."\n");
+            Helpers::filePutContents($dest, $ctns, 'This file has been auto-generated');
         }
     }
 

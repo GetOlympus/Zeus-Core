@@ -21,7 +21,7 @@ class AccessManagement extends Configuration
      * @var array
      */
     protected $available = [
-        'access-urls',
+        'access-url',
         'login-error',
         'login-header',
         'login-shake',
@@ -58,71 +58,29 @@ class AccessManagement extends Configuration
     }
 
     /**
-     * Hiding wp-login.php/wp-register.php in the login and registration URLs
+     * Hiding `wp-login.php` in the login and registration URLs
      *
-     * @param array $args
+     * @param string $slug
      */
-    public function accessUrlsSetting($args)
+    public function accessUrlSetting($slug)
     {
-        if (!$args) {
+        if (empty($slug) || 'wp-login.php' === $slug) {
             return;
         }
 
-        // Define defaults
-        $configs = array_merge([
-            'login'         => '',
-            'logout'        => '',
-            'lostpassword'  => '',
-            'register'      => '',
-        ], $args);
-
         // Change login URL
-        add_filter('login_redirect', function ($url) use ($configs) {
-            return empty($configs['login']) ? $url : site_url().$configs['login'];
+        add_filter('login_redirect', function ($url) use ($slug) {
+            return site_url().$slug;
         });
 
         // Customize Site URL
-        add_filter('site_url', function ($url, $path, $scheme = null) use ($configs) {
-            $pattern = [
-                'login'         => '/wp-login.php',
-                'logout'        => '/wp-login.php?action=logout',
-                'lostpassword'  => '/wp-login.php?action=lostpassword',
-                'register'      => '/wp-login.php?action=register',
-            ];
-
-            // Iterate on all queries and replace the current Site URL
-            foreach ($pattern as $key => $query) {
-                if (empty($configs[$key])) {
-                    continue;
-                }
-
-                $url = str_replace($query, $configs[$key], $url);
-            }
-
-            return $url;
+        add_filter('site_url', function ($url, $path, $scheme = null) use ($slug) {
+            return str_replace('wp-login.php', $slug, $url);
         }, 10, 3);
 
         // Make the redirection works properly
-        add_filter('wp_redirect', function ($url, $status) use ($configs) {
-            // Check login configuration
-            if (empty($configs['login'])) {
-                return $url;
-            }
-
-            $triggers = [
-                'wp-login.php?checkemail=confirm',
-                'wp-login.php?checkemail=registered',
-            ];
-
-            foreach ($triggers as $trigger) {
-                if ($url !== $trigger) {
-                    continue;
-                }
-
-                return str_replace('wp-login.php', site_url().$configs['login'], $url);
-            }
-
-            return $url;
+        add_filter('wp_redirect', function ($url, $status) use ($slug) {
+            return str_replace('wp-login.php', $slug, $url);
         }, 10, 2);
     }
 

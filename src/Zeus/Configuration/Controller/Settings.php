@@ -207,10 +207,15 @@ class Settings extends Configuration
                 remove_theme_support($key);
             } else if ('emoji' === $key) {
                 remove_action('wp_head', 'print_emoji_detection_script', 7);
+                remove_action('admin_print_scripts', 'print_emoji_detection_script');
                 remove_action('wp_print_styles', 'print_emoji_styles');
-                remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+                remove_action('admin_print_styles', 'print_emoji_styles');
                 remove_filter('the_content_feed', 'wp_staticize_emoji');
                 remove_filter('comment_text_rss', 'wp_staticize_emoji');
+                remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
+                add_filter('tiny_mce_plugins', function ($plugins){
+                    return is_array($plugins) ? array_diff($plugins, ['wpemoji']) : [];
+                });
             } else {
                 remove_action('wp_head', $key);
             }
@@ -249,10 +254,12 @@ class Settings extends Configuration
     {
         // Work on quality
         $q = (integer) $quality;
-        $q = 0 < $q && $q < 100 ? $q : 75;
+        $q = 0 < $q && $q <= 100 ? $q : 75;
 
         // Apply filter hook
-        add_filter('jpeg_quality', create_function('', 'return '.$q.';'));
+        add_filter('jpeg_quality', function () use ($q) {
+            return $q;
+        });
     }
 
     /**
