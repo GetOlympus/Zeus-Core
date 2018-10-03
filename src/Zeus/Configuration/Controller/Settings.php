@@ -27,11 +27,8 @@ class Settings extends Configuration
         'admin-footer',
         'admin-menu-order',
         'admin-meta-boxes',
-        'clean-assets',
-        'clean-headers',
         'comments-fields-order',
         'jpeg-quality',
-        'shutdown',
     ];
 
     /**
@@ -70,6 +67,10 @@ class Settings extends Configuration
      */
     public function adminBarSetting($args)
     {
+        if (empty($args)) {
+            return;
+        }
+
         add_action('wp_before_admin_bar_render', function () use ($args) {
             global $wp_admin_bar;
 
@@ -102,6 +103,10 @@ class Settings extends Configuration
      */
     public function adminMenuOrderSetting($args)
     {
+        if (empty($args)) {
+            return;
+        }
+
         add_filter('custom_menu_order', '__return_true');
         add_filter('menu_order', function ($menu_ord) use ($args) {
             return !$menu_ord ? [] : $args;
@@ -115,6 +120,10 @@ class Settings extends Configuration
      */
     public function adminMetaBoxesSetting($args)
     {
+        if (empty($args)) {
+            return;
+        }
+
         add_action('wp_dashboard_setup', function () use ($args) {
             // Iterate on all
             foreach ($args as $widget) {
@@ -152,77 +161,6 @@ class Settings extends Configuration
     }
 
     /**
-     * Remove assets version.
-     *
-     * @param boolean $clean
-     */
-    public function cleanAssetsSetting($clean)
-    {
-        if (!$clean) {
-            return;
-        }
-
-        // Remove WP Version from styles
-        add_filter('style_loader_src', function ($src) {
-            return strpos($src, 'ver=') ? remove_query_arg('ver', $src) : $src;
-        }, 9999);
-
-        // Remove WP Version from scripts
-        add_filter('script_loader_src', function ($src) {
-            return strpos($src, 'ver=') ? remove_query_arg('ver', $src) : $src;
-        }, 9999);
-    }
-
-    /**
-     * Define what to clean from the theme header frontend, via the "remove_action" hook.
-     *
-     * @param array $args
-     */
-    public function cleanHeadersSetting($args)
-    {
-        $available = [
-            'adjacent_posts_rel_link_wp_head',
-            'emoji',
-            'feed_links',
-            'feed_links_extra',
-            'index_rel_link',
-            'rsd_link',
-            'wlwmanifest_link',
-            'wp_admin_bar_init',
-            'wp_dlmp_l10n_style',
-            'wp_generator',
-            'wp_shortlink_wp_head',
-        ];
-
-        // Iterate on all
-        foreach ($args as $key) {
-            if (!in_array($key, $available)) {
-                continue;
-            }
-
-            if ('wp_admin_bar_init' === $key) {
-                add_filter('show_admin_bar', '__return_false');
-                remove_action('init', 'wp_admin_bar_init');
-            } else if ('automatic-feed-links' === $key) {
-                remove_theme_support($key);
-            } else if ('emoji' === $key) {
-                remove_action('wp_head', 'print_emoji_detection_script', 7);
-                remove_action('admin_print_scripts', 'print_emoji_detection_script');
-                remove_action('wp_print_styles', 'print_emoji_styles');
-                remove_action('admin_print_styles', 'print_emoji_styles');
-                remove_filter('the_content_feed', 'wp_staticize_emoji');
-                remove_filter('comment_text_rss', 'wp_staticize_emoji');
-                remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
-                add_filter('tiny_mce_plugins', function ($plugins){
-                    return is_array($plugins) ? array_diff($plugins, ['wpemoji']) : [];
-                });
-            } else {
-                remove_action('wp_head', $key);
-            }
-        }
-    }
-
-    /**
      * Comment fields in wanted order.
      *
      * @param array $fields
@@ -253,25 +191,12 @@ class Settings extends Configuration
     public function jpegQualitySetting($quality)
     {
         // Work on quality
-        $q = (integer) $quality;
-        $q = 0 < $q && $q <= 100 ? $q : 75;
+        $q = is_bool($quality) && $quality ? 72 : (integer) $quality;
+        $q = 0 < $q && $q <= 100 ? $q : 72;
 
         // Apply filter hook
         add_filter('jpeg_quality', function () use ($q) {
             return $q;
         });
-    }
-
-    /**
-     * Define wether if WP has to shut the DB connections off or not.
-     *
-     * @param array $args
-     */
-    public function shutdownSetting($args)
-    {
-        add_action('shutdown', function () {
-            global $wpdb;
-            unset($wpdb);
-        }, 99);
     }
 }
