@@ -89,7 +89,7 @@ class HelpersCleanHeaders extends HelpersClean
      */
     public function headerDeferJavascripts()
     {
-        add_filter('script_loader_tag', function ($tag, $handle){
+        add_filter('script_loader_tag', function ($tag, $handle) {
             // Main WP jQuery is not concerned
             if (strpos($tag, '/wp-includes/js/jquery/jquery')) {
                 return $tag;
@@ -100,7 +100,7 @@ class HelpersCleanHeaders extends HelpersClean
                 return $tag;
             }
 
-            return str_replace(' src',' defer src', $tag);
+            return str_replace(' src', ' defer src', $tag);
         }, 10, 2);
     }
 

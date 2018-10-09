@@ -73,7 +73,7 @@ class HelpersCleanCore extends HelpersClean
             return;
         }
 
-        add_action('wp_print_scripts', function (){
+        add_action('wp_print_scripts', function () {
             wp_deregister_script('autosave');
         });
     }
@@ -83,7 +83,7 @@ class HelpersCleanCore extends HelpersClean
      */
     public function coreHeartbeat($location)
     {
-        add_action('init', function () use ($location){
+        add_action('init', function () use ($location) {
             if ('all' === $location) {
                 wp_deregister_script('heartbeat');
             } else if (OL_ZEUS_ISADMIN) {
@@ -131,7 +131,7 @@ class HelpersCleanCore extends HelpersClean
             return;
         }
 
-        add_action('wp_default_scripts', function ($scripts){
+        add_action('wp_default_scripts', function ($scripts) {
             if (!empty($scripts->registered['jquery'])) {
                 $scripts->registered['jquery']->deps = array_diff($scripts->registered['jquery']->deps, ['jquery-migrate']);
             }
@@ -161,7 +161,7 @@ class HelpersCleanCore extends HelpersClean
 
         // add_filter('rest_enabled', '__return_false'); // Deprecated
         add_filter('rest_jsonp_enabled', '__return_false');
-        add_filter('rest_authentication_errors', function ($access){
+        add_filter('rest_authentication_errors', function ($access) {
             return new WP_Error(
                 'rest_disabled',
                 __('The REST API on this site has been disabled.'),
@@ -202,7 +202,7 @@ class HelpersCleanCore extends HelpersClean
     {
         add_filter('xmlrpc_enabled', '__return_false');
 
-        add_filter('wp_headers', function ($headers){
+        add_filter('wp_headers', function ($headers) {
             unset($headers['X-Pingback']);
             return $headers;
         });
@@ -210,7 +210,7 @@ class HelpersCleanCore extends HelpersClean
         remove_action('xmlrpc_rsd_apis', 'rest_output_rsd');
         add_filter('xmlrpc_enabled', '__return_false');
 
-        add_filter('xmlrpc_methods', function ($methods){
+        add_filter('xmlrpc_methods', function ($methods) {
             unset($methods['pingback.ping']);
             return $methods;
         });

@@ -107,7 +107,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featureCommentsReply()
     {
-        add_action('wp_print_scripts', function (){
+        add_action('wp_print_scripts', function () {
             if (is_singular() && (1 === get_option('thread_comments')) && comments_open() && have_comments()) {
                 wp_enqueue_script('comment-reply');
             } else {
@@ -121,7 +121,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featureDashicons()
     {
-        add_action('wp_print_styles', function (){
+        add_action('wp_print_styles', function () {
             if (!is_admin_bar_showing() && !is_customize_preview()) {
                 wp_deregister_style('dashicons');
             }
@@ -143,11 +143,11 @@ class HelpersCleanFeatures extends HelpersClean
         remove_action('wp_head', 'wp_oembed_add_discovery_links');
         remove_action('wp_head', 'wp_oembed_add_host_js');
 
-        add_filter('tiny_mce_plugins', function ($plugins){
+        add_filter('tiny_mce_plugins', function ($plugins) {
             return array_diff($plugins, ['wpembed']);
         });
 
-        add_filter('rewrite_rules_array', function ($rules){
+        add_filter('rewrite_rules_array', function ($rules) {
             foreach ($rules as $rule => $rewrite) {
                 if (false !== strpos($rewrite, 'embed=true')) {
                     unset($rules[$rule]);
@@ -183,11 +183,11 @@ class HelpersCleanFeatures extends HelpersClean
         remove_filter('comment_text_rss', 'wp_staticize_emoji');
         remove_filter('wp_mail', 'wp_staticize_emoji_for_email');
 
-        add_filter('tiny_mce_plugins', function ($plugins){
+        add_filter('tiny_mce_plugins', function ($plugins) {
             return is_array($plugins) ? array_diff($plugins, ['wpemoji']) : [];
         });
 
-        add_filter('wp_resource_hints', function ($urls, $relation_type){
+        add_filter('wp_resource_hints', function ($urls, $relation_type) {
             if ('dns-prefetch' === $relation_type) {
                 $emoji_url = 'https://s.w.org/images/core/emoji/';
 
@@ -207,7 +207,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featureGravatarQueries()
     {
-        add_filter('get_avatar_url', function ($url){
+        add_filter('get_avatar_url', function ($url) {
             $url_parts = explode('?', $url);
             return $url_parts[0];
         });
@@ -239,7 +239,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featurePdfThumbnails()
     {
-        add_filter('fallback_intermediate_image_sizes', function (){
+        add_filter('fallback_intermediate_image_sizes', function () {
             return [];
         });
     }
@@ -249,7 +249,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featureSelfPingback()
     {
-        add_action('pre_ping', function (&$links){
+        add_action('pre_ping', function (&$links) {
             $home = get_option('home');
 
             foreach ($links as $l => $link) {
@@ -265,7 +265,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featureSlowHeartbeat()
     {
-        add_filter('heartbeat_settings', function ($settings){
+        add_filter('heartbeat_settings', function ($settings) {
             $settings['interval'] = 60;
             return $settings;
         });

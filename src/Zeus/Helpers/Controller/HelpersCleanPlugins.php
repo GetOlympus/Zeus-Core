@@ -88,7 +88,7 @@ class HelpersCleanPlugins extends HelpersClean
             }
 
             if ('enqueue_styles' === $key && !OL_ZEUS_ISADMIN) {
-                add_action('wp_enqueue_scripts', function (){
+                add_action('wp_enqueue_scripts', function () {
                     wp_localize_script('contact-form-7', 'wpcf7', [
                         'apiSettings' => [
                             'root'      => esc_url_raw(rest_url('contact-form-7/v1')),
@@ -202,7 +202,7 @@ class HelpersCleanPlugins extends HelpersClean
             }
 
             if ('enqueue_scripts' === $key && function_exists('is_woocommerce')) {
-                add_action('wp_print_scripts', function (){
+                add_action('wp_print_scripts', function () {
                     if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page()) {
                         wp_dequeue_script('wc-add-to-cart');
                         wp_dequeue_script('woocommerce');
@@ -210,13 +210,13 @@ class HelpersCleanPlugins extends HelpersClean
                     }
                 }, 100);
 
-                add_action('wp_enqueue_scripts', function (){
+                add_action('wp_enqueue_scripts', function () {
                     if (!is_woocommerce()) {
                         remove_action('wp_head', array($GLOBALS['woocommerce'], 'generator'));
                     }
                 }, 99);
 
-                add_action('wp_enqueue_scripts', function (){
+                add_action('wp_enqueue_scripts', function () {
                     if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page()) {
                         wp_dequeue_style('woocommerce-layout');
                         wp_dequeue_style('woocommerce-smallscreen');
@@ -224,13 +224,13 @@ class HelpersCleanPlugins extends HelpersClean
                     }
                 });
             } else if ('enqueue_styles' === $key && function_exists('is_woocommerce')) {
-                add_filter('woocommerce_enqueue_styles', function ($return_false){
+                add_filter('woocommerce_enqueue_styles', function ($return_false) {
                     return !is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page() ? false : $return_false;
                 });
             } else if ('cart_fragments' === $key && is_front_page()) {
                 wp_dequeue_script('wc-cart-fragments');
             } else if ('generator_tag' === $key) {
-                add_action('get_header', function (){
+                add_action('get_header', function () {
                     remove_action('wp_head', 'wc_generator_tag');
 
                     if (isset($GLOBALS['woocommerce']) && is_object($GLOBALS['woocommerce'])) {
@@ -238,7 +238,7 @@ class HelpersCleanPlugins extends HelpersClean
                     }
                 });
 
-                add_action('woocommerce_init', function (){
+                add_action('woocommerce_init', function () {
                     remove_action('wp_head', 'wc_generator_tag');
 
                     if (isset($GLOBALS['woocommerce']) && is_object($GLOBALS['woocommerce'])) {
@@ -246,7 +246,7 @@ class HelpersCleanPlugins extends HelpersClean
                     }
                 });
             } else if ('reviews_tab' === $key) {
-                add_filter('woocommerce_product_tabs', function ($tabs){
+                add_filter('woocommerce_product_tabs', function ($tabs) {
                     unset($tabs['reviews']);
                     return $tabs;
                 }, 98);
@@ -280,17 +280,17 @@ class HelpersCleanPlugins extends HelpersClean
             }
 
             if ('remove_breadcrumbs_duplicates' === $key) {
-                add_filter('wpseo_breadcrumb_single_link', function ($link){
+                add_filter('wpseo_breadcrumb_single_link', function ($link) {
                     return false !== strpos($link, 'breadcrumb_last') ? '' : $link;
                 });
             } else if ('remove_comment' === $key) {
-                add_action('get_header', function (){
-                    ob_start(function ($html){
+                add_action('get_header', function () {
+                    ob_start(function ($html) {
                         return preg_replace('/^\n?\<\!\-\-.*?[Y]oast.*?\-\-\>\n?$/mi', '', $html);
                     });
                 });
 
-                add_action('wp_head', function (){
+                add_action('wp_head', function () {
                     ob_end_flush();
                 }, 999);
             }
