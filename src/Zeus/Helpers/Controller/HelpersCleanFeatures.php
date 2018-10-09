@@ -25,11 +25,15 @@ class HelpersCleanFeatures extends HelpersClean
         'capital_p_dangit',   // Remove the filter that converts "Wordpress" to "WordPress"
         'comment_autolinks',  // Remove auto-converted URLs in comments to avoid spammers
         'comments_reply',     // Loads the comment-reply JS file only when needed
+        'dashicons',          // Remove Dashicons from admin bar for non-logged users
         'embeds',             // Remove embeds integration
         'embeds_script',      // Remove embeds script integration
         'emojicons',          // Remove emojicons integration
+        'gravatar_queries',   // Remove Gravatar query strings
         'medium_large_size',  // Prevents WordPress from generating the medium_large 768px thumbnail size of image uploads
+        'oembed_scripts',     // Remove default oEmbed scripts
         'pdf_thumbnails',     // Remove PDF thumbnails generator
+        'self_pingback',      // Remove self pingbacks
         'slow_heartbeat',     // Changes Heartbeat post calls from 15 to 60 seconds for less CPU usage
         'version',            // Remove WP Version (?ver=) from scripts and styles
     ];
@@ -113,6 +117,18 @@ class HelpersCleanFeatures extends HelpersClean
     }
 
     /**
+     * Remove Dashicons from admin bar for non-logged users
+     */
+    public function featureDashicons()
+    {
+        add_action('wp_print_styles', function (){
+            if (!is_admin_bar_showing() && !is_customize_preview()) {
+                wp_deregister_style('dashicons');
+            }
+        }, 100);
+    }
+
+    /**
      * Remove embeds integration
      */
     public function featureEmbeds()
@@ -187,6 +203,17 @@ class HelpersCleanFeatures extends HelpersClean
     }
 
     /**
+     * Remove Gravatar query strings
+     */
+    public function featureGravatarQueries()
+    {
+        add_filter('get_avatar_url', function ($url){
+            $url_parts = explode('?', $url);
+            return $url_parts[0];
+        });
+    }
+
+    /**
      * Prevents WordPress from generating the medium_large 768px thumbnail size of image uploads
      */
     public function featureMediumLargeSize()
@@ -196,12 +223,40 @@ class HelpersCleanFeatures extends HelpersClean
     }
 
     /**
+     * Remove default oEmbed scripts
+     */
+    public function featureOembedScripts()
+    {
+        if (OL_ZEUS_ISADMIN) {
+            return;
+        }
+
+        wp_deregister_script('wp-embed');
+    }
+
+    /**
      * Remove PDF thumbnails generator
      */
     public function featurePdfThumbnails()
     {
         add_filter('fallback_intermediate_image_sizes', function (){
-            return array();
+            return [];
+        });
+    }
+
+    /**
+     * Remove self pingbacks
+     */
+    public function featureSelfPingback()
+    {
+        add_action('pre_ping', function (&$links){
+            $home = get_option('home');
+
+            foreach ($links as $l => $link) {
+                if (0 === strpos($link, $home)) {
+                    unset($links[$l]);
+                }
+            }
         });
     }
 

@@ -27,7 +27,6 @@ class HelpersCleanCore extends HelpersClean
         'heartbeat-dashboard',// Remove HeartBeat scripts in admin panel dashboard only
         'jquery-migrate',     // Remove jQuery Migrate default script
         'json-api',           // Remove json api and link from header
-        'oembed-scripts',     // Remove default oEmbed scripts
         'post-custom-metabox',// Remove post custom metaboxes from post editor to prevent very slow queries
         'shutdown',           // Define wether if WP has to shut the DB connections off or not
         'xmlrpc',             // Remove XMLRPC
@@ -132,11 +131,11 @@ class HelpersCleanCore extends HelpersClean
             return;
         }
 
-        global $wp_scripts;
-
-        if (!empty($wp_scripts->registered['jquery'])) {
-            $wp_scripts->registered['jquery']->deps = array_diff($wp_scripts->registered['jquery']->deps, ['jquery-migrate']);
-        }
+        add_action('wp_default_scripts', function ($scripts){
+            if (!empty($scripts->registered['jquery'])) {
+                $scripts->registered['jquery']->deps = array_diff($scripts->registered['jquery']->deps, ['jquery-migrate']);
+            }
+        });
     }
 
     /**
@@ -171,18 +170,6 @@ class HelpersCleanCore extends HelpersClean
                 ]
             );
         });
-    }
-
-    /**
-     * Remove default oEmbed scripts
-     */
-    public function coreOembedScripts()
-    {
-        if (OL_ZEUS_ISADMIN) {
-            return;
-        }
-
-        wp_deregister_script('wp-embed');
     }
 
     /**

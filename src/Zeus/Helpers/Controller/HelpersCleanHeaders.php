@@ -22,6 +22,7 @@ class HelpersCleanHeaders extends HelpersClean
      */
     protected $available = [
         'adjacent_posts_rel', // Remove the next and previous post links from the header
+        'defer_javascripts',  // Defer Javascripts calls
         'feed_links',         // Remove Automatics RSS links, which will still work with your own links
         'shortlink',          // Remove the shortlink url from header
         'recent_comments',    // Remove a block of inline CSS used by old themes from the header
@@ -81,6 +82,26 @@ class HelpersCleanHeaders extends HelpersClean
     {
         remove_action('wp_head', 'adjacent_posts_rel_link', 10, 0);
         remove_action('wp_head', 'adjacent_posts_rel_link_wp_head', 10, 0);
+    }
+
+    /**
+     * Defer Javascripts calls
+     */
+    public function headerDeferJavascripts()
+    {
+        add_filter('script_loader_tag', function ($tag, $handle){
+            // Main WP jQuery is not concerned
+            if (strpos($tag, '/wp-includes/js/jquery/jquery')) {
+                return $tag;
+            }
+
+            // Defer on MSIE is not permitted
+            if (false !== strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 9.')) {
+                return $tag;
+            }
+
+            return str_replace(' src',' defer src', $tag);
+        }, 10, 2);
     }
 
     /**
