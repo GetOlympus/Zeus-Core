@@ -74,7 +74,7 @@ class Clean extends Configuration
         }
 
         // Initialization
-        HelpersCleanCore::init($args);
+        (new HelpersCleanCore)->init($args);
     }
 
     /**
@@ -89,7 +89,7 @@ class Clean extends Configuration
         }
 
         // Initialization
-        HelpersCleanFeatures::init($args);
+        (new HelpersCleanFeatures)->init($args);
     }
 
     /**
@@ -104,7 +104,7 @@ class Clean extends Configuration
         }
 
         // Initialization
-        HelpersCleanHeaders::init($args);
+        (new HelpersCleanHeaders)->init($args);
     }
 
     /**
@@ -119,6 +119,6 @@ class Clean extends Configuration
         }
 
         // Initialization
-        HelpersCleanPlugins::init($args);
+        (new HelpersCleanPlugins)->init($args);
     }
 }

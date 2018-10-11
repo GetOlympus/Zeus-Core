@@ -177,11 +177,13 @@ class HelpersCleanCore extends HelpersClean
      */
     public function corePostCustomMetabox()
     {
-        $pts = get_post_types('', 'names');
+        add_action('wp_dashboard_setup', function () {
+            $pts = get_post_types('', 'names');
 
-        foreach ($pts as $post_type) {
-            remove_meta_box('postcustom', $post_type, 'normal');
-        }
+            foreach ($pts as $post_type) {
+                remove_meta_box('postcustom', $post_type, 'normal');
+            }
+        });
     }
 
     /**

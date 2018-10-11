@@ -135,9 +135,12 @@ class HelpersCleanPlugins extends HelpersClean
 
             if ('enqueue_styles' === $key && !OL_ZEUS_ISADMIN) {
                 add_filter('jetpack_implode_frontend_css', '__return_false');
-            } else if (OL_ZEUS_ISADMIN) {
-                wp_deregister_style($key);
+                continue;
             }
+
+            add_action('wp_print_styles', function () use ($key) {
+                wp_deregister_style($key);
+            });
         }
     }
 
@@ -228,7 +231,9 @@ class HelpersCleanPlugins extends HelpersClean
                     return !is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page() ? false : $return_false;
                 });
             } else if ('cart_fragments' === $key && is_front_page()) {
-                wp_dequeue_script('wc-cart-fragments');
+                add_action('wp_print_styles', function () {
+                    wp_dequeue_script('wc-cart-fragments');
+                });
             } else if ('generator_tag' === $key) {
                 add_action('get_header', function () {
                     remove_action('wp_head', 'wc_generator_tag');

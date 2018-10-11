@@ -165,9 +165,13 @@ class HelpersCleanFeatures extends HelpersClean
      */
     public function featureEmbedsScript()
     {
-        if (!OL_ZEUS_ISADMIN) {
-            wp_deregister_script('wp-embed');
+        if (OL_ZEUS_ISADMIN) {
+            return;
         }
+
+        add_action('wp_footer', function () {
+            wp_deregister_script('wp-embed');
+        });
     }
 
     /**
@@ -231,7 +235,9 @@ class HelpersCleanFeatures extends HelpersClean
             return;
         }
 
-        wp_deregister_script('wp-embed');
+        add_action('wp_footer', function () {
+            wp_deregister_script('wp-embed');
+        });
     }
 
     /**
