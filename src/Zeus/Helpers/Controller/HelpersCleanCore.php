@@ -22,6 +22,7 @@ class HelpersCleanCore extends HelpersClean
      */
     protected $available = [
         'autosave',           // Remove auto-save posts
+        'file-edit',          // Disallow file edition from admin panel
         'heartbeat-admin',    // Remove HeartBeat scripts in all admin panel pages
         'heartbeat-all',      // Remove HeartBeat scripts in all WordPress pages
         'heartbeat-dashboard',// Remove HeartBeat scripts in admin panel dashboard only
@@ -76,6 +77,20 @@ class HelpersCleanCore extends HelpersClean
         add_action('wp_print_scripts', function () {
             wp_deregister_script('autosave');
         });
+    }
+
+    /**
+     * Disallow file edition from admin panel
+     */
+    public function coreFileEdit()
+    {
+        if (!OL_ZEUS_ISADMIN) {
+            return;
+        }
+
+        if (!defined('DISALLOW_FILE_EDIT')) {
+            define('DISALLOW_FILE_EDIT', true);
+        }
     }
 
     /**

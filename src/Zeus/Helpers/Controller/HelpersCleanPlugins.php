@@ -21,11 +21,15 @@ class HelpersCleanPlugins extends HelpersClean
      * @var array
      */
     protected $available = [
-            'contact-form' => true, // Contact Form 7               https://wordpress.org/plugins/contact-form-7/
-            'jetpack'      => true, // Jetpack by WordPress.com     https://wordpress.org/plugins/jetpack/
-            'w3tc'         => true, // W3 Total Cache               https://wordpress.org/plugins/w3-total-cache/
-            'woocommerce'  => true, // WooCommerce                  https://wordpress.org/plugins/woocommerce/
-            'yoast'        => true, // Yoast SEO                    https://wordpress.org/plugins/wordpress-seo/
+            'bbpress'             => true, // bbPress               https://wordpress.org/plugins/bbpress/
+            'contact-form'        => true, // Contact Form 7        https://wordpress.org/plugins/contact-form-7/
+            'gravity-form'        => true, // Gravity form          https://www.gravityforms.com/
+            'jetpack'             => true, // Jetpack               https://wordpress.org/plugins/jetpack/
+            'the-events-calendar' => true, // The Events Calendar   https://wordpress.org/plugins/the-events-calendar/
+            'w3tc'                => true, // W3 Total Cache        https://wordpress.org/plugins/w3-total-cache/
+            'woocommerce'         => true, // WooCommerce           https://wordpress.org/plugins/woocommerce/
+            'wp-socializer'       => true, // WP Socializer         https://wordpress.org/plugins/wp-socializer/
+            'yoast'               => true, // Yoast SEO             https://wordpress.org/plugins/wordpress-seo/
     ];
 
     /**
@@ -57,6 +61,43 @@ class HelpersCleanPlugins extends HelpersClean
             $function = Helpers::toFunctionFormat($plugin);
             $function = 'plugin'.ucfirst($function);
             $this->$function($settings);
+        }
+    }
+
+    /**
+     * Clean bbPress plugin functionalities.
+     *
+     * @param array $settings
+     */
+    public function pluginBbpress($settings)
+    {
+        if (empty($settings)) {
+            return;
+        }
+
+        $available = [
+            'remove_meta_box',
+        ];
+
+        // Special case
+        if (is_bool($settings) && $settings) {
+            $settings = $available;
+        }
+
+        foreach ($settings as $key) {
+            $key = strtolower($key);
+
+            if (!in_array($key, $available)) {
+                continue;
+            }
+
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('bbp-dashboard-right-now', 'dashboard', 'normal');
+                });
+
+                continue;
+            }
         }
     }
 
@@ -97,6 +138,44 @@ class HelpersCleanPlugins extends HelpersClean
                         'jqueryUi'    => 1,
                     ]);
                 }, 10);
+                continue;
+            }
+        }
+    }
+
+    /**
+     * Clean Gravity Form plugin functionalities.
+     *
+     * @param array $settings
+     */
+    public function pluginGravityForm($settings)
+    {
+        if (empty($settings)) {
+            return;
+        }
+
+        $available = [
+            'remove_meta_box',
+        ];
+
+        // Special case
+        if (is_bool($settings) && $settings) {
+            $settings = $available;
+        }
+
+        foreach ($settings as $key) {
+            $key = strtolower($key);
+
+            if (!in_array($key, $available)) {
+                continue;
+            }
+
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('rg_forms_dashboard', 'dashboard', 'normal');
+                });
+
+                continue;
             }
         }
     }
@@ -116,9 +195,9 @@ class HelpersCleanPlugins extends HelpersClean
             'enqueue_styles', 'AtD_style', 'jetpack-carousel', 'jetpack_display_posts_widget', 'jetpack_likes',
             'jetpack_related-posts', 'jetpack-slideshow', 'jetpack-subscriptions', 'jetpack-widgets',
             'gravatar-profile-widget', 'grunion.css', 'infinity-twentyten', 'infinity-twentyeleven',
-            'infinity-twentytwelve', 'noticons', 'post-by-email', 'presentations', 'publicize', 'sharedaddy',
-            'sharing', 'stats_reports_css', 'tiled-gallery', 'the-neverending-homepage', 'widget-conditions',
-            'widget-grid-and-list',
+            'infinity-twentytwelve', 'noticons', 'remove_meta_box', 'post-by-email', 'presentations', 'publicize',
+            'sharedaddy', 'sharing', 'stats_reports_css', 'tiled-gallery', 'the-neverending-homepage',
+            'widget-conditions', 'widget-grid-and-list',
         ];
 
         // Special case
@@ -138,9 +217,54 @@ class HelpersCleanPlugins extends HelpersClean
                 continue;
             }
 
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('jetpack_summary_widget', 'dashboard', 'normal');
+                });
+
+                continue;
+            }
+
             add_action('wp_print_styles', function () use ($key) {
                 wp_deregister_style($key);
             });
+        }
+    }
+
+    /**
+     * Clean The Events Calendar plugin functionalities.
+     *
+     * @param array $settings
+     */
+    public function pluginTheEventsCalendar($settings)
+    {
+        if (empty($settings)) {
+            return;
+        }
+
+        $available = [
+            'remove_meta_box',
+        ];
+
+        // Special case
+        if (is_bool($settings) && $settings) {
+            $settings = $available;
+        }
+
+        foreach ($settings as $key) {
+            $key = strtolower($key);
+
+            if (!in_array($key, $available)) {
+                continue;
+            }
+
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('tribe_dashboard_widget', 'dashboard', 'normal');
+                });
+
+                continue;
+            }
         }
     }
 
@@ -156,7 +280,7 @@ class HelpersCleanPlugins extends HelpersClean
         }
 
         $available = [
-            'remove_comment',
+            'remove_comment', 'remove_meta_box',
         ];
 
         // Special case
@@ -173,6 +297,15 @@ class HelpersCleanPlugins extends HelpersClean
 
             if ('remove_comment' === $key) {
                 add_filter('w3tc_can_print_comment', '__return_false', 10, 1);
+                continue;
+            }
+
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('w3tc_latest', 'dashboard', 'normal');
+                });
+
+                continue;
             }
         }
     }
@@ -204,7 +337,7 @@ class HelpersCleanPlugins extends HelpersClean
                 continue;
             }
 
-            if ('enqueue_scripts' === $key && function_exists('is_woocommerce')) {
+            if ('enqueue_scripts' === $key && function_exists('is_woocommerce') && !OL_ZEUS_ISADMIN) {
                 add_action('wp_print_scripts', function () {
                     if (!is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page()) {
                         wp_dequeue_script('wc-add-to-cart');
@@ -226,15 +359,27 @@ class HelpersCleanPlugins extends HelpersClean
                         wp_dequeue_style('woocommerce-general');
                     }
                 });
-            } else if ('enqueue_styles' === $key && function_exists('is_woocommerce')) {
+
+                continue;
+            }
+
+            if ('enqueue_styles' === $key && function_exists('is_woocommerce') && !OL_ZEUS_ISADMIN) {
                 add_filter('woocommerce_enqueue_styles', function ($return_false) {
                     return !is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page() ? false : $return_false;
                 });
-            } else if ('cart_fragments' === $key && is_front_page()) {
+
+                continue;
+            }
+
+            if ('cart_fragments' === $key && !OL_ZEUS_ISADMIN && is_front_page()) {
                 add_action('wp_print_styles', function () {
                     wp_dequeue_script('wc-cart-fragments');
                 });
-            } else if ('generator_tag' === $key) {
+
+                continue;
+            }
+
+            if ('generator_tag' === $key && !OL_ZEUS_ISADMIN) {
                 add_action('get_header', function () {
                     remove_action('wp_head', 'wc_generator_tag');
 
@@ -250,11 +395,54 @@ class HelpersCleanPlugins extends HelpersClean
                         remove_action('wp_head', [$GLOBALS['woocommerce'], 'generator']);
                     }
                 });
-            } else if ('reviews_tab' === $key) {
+
+                continue;
+            }
+
+            if ('reviews_tab' === $key && !OL_ZEUS_ISADMIN) {
                 add_filter('woocommerce_product_tabs', function ($tabs) {
                     unset($tabs['reviews']);
                     return $tabs;
                 }, 98);
+
+                continue;
+            }
+        }
+    }
+
+    /**
+     * Clean WP Socializer plugin functionalities.
+     *
+     * @param array $settings
+     */
+    public function pluginWpSocializer($settings)
+    {
+        if (empty($settings)) {
+            return;
+        }
+
+        $available = [
+            'remove_meta_box',
+        ];
+
+        // Special case
+        if (is_bool($settings) && $settings) {
+            $settings = $available;
+        }
+
+        foreach ($settings as $key) {
+            $key = strtolower($key);
+
+            if (!in_array($key, $available)) {
+                continue;
+            }
+
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('aw_dashboard', 'dashboard', 'normal');
+                });
+
+                continue;
             }
         }
     }
@@ -271,7 +459,7 @@ class HelpersCleanPlugins extends HelpersClean
         }
 
         $available = [
-            'remove_breadcrumbs_duplicates', 'remove_comment',
+            'remove_breadcrumbs_duplicates', 'remove_comment', 'remove_meta_box',
         ];
 
         // Special case
@@ -288,7 +476,11 @@ class HelpersCleanPlugins extends HelpersClean
                 add_filter('wpseo_breadcrumb_single_link', function ($link) {
                     return false !== strpos($link, 'breadcrumb_last') ? '' : $link;
                 });
-            } else if ('remove_comment' === $key) {
+
+                continue;
+            }
+
+            if ('remove_comment' === $key && !OL_ZEUS_ISADMIN) {
                 add_action('get_header', function () {
                     ob_start(function ($html) {
                         return preg_replace('/^\n?\<\!\-\-.*?[Y]oast.*?\-\-\>\n?$/mi', '', $html);
@@ -298,6 +490,16 @@ class HelpersCleanPlugins extends HelpersClean
                 add_action('wp_head', function () {
                     ob_end_flush();
                 }, 999);
+
+                continue;
+            }
+
+            if ('remove_meta_box' === $key && OL_ZEUS_ISADMIN) {
+                add_action('wp_dashboard_setup', function () {
+                    remove_meta_box('wpseo-dashboard-overview', 'dashboard', 'normal');
+                });
+
+                continue;
             }
         }
     }

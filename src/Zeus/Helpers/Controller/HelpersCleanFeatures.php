@@ -31,7 +31,6 @@ class HelpersCleanFeatures extends HelpersClean
         'emojicons',          // Remove emojicons integration
         'gravatar_queries',   // Remove Gravatar query strings
         'medium_large_size',  // Prevents WordPress from generating the medium_large 768px thumbnail size of image uploads
-        'oembed_scripts',     // Remove default oEmbed scripts
         'pdf_thumbnails',     // Remove PDF thumbnails generator
         'self_pingback',      // Remove self pingbacks
         'slow_heartbeat',     // Changes Heartbeat post calls from 15 to 60 seconds for less CPU usage
@@ -224,20 +223,6 @@ class HelpersCleanFeatures extends HelpersClean
     {
         // Simple add image size hook
         add_image_size('medium_large', 0, 0);
-    }
-
-    /**
-     * Remove default oEmbed scripts
-     */
-    public function featureOembedScripts()
-    {
-        if (OL_ZEUS_ISADMIN) {
-            return;
-        }
-
-        add_action('wp_footer', function () {
-            wp_deregister_script('wp-embed');
-        });
     }
 
     /**
