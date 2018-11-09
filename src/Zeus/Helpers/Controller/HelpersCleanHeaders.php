@@ -96,7 +96,7 @@ class HelpersCleanHeaders extends HelpersClean
             }
 
             // Defer on MSIE is not permitted
-            if (false !== strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 9.')) {
+            if (isset($_SERVER['HTTP_USER_AGENT']) && false !== strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE 9.')) {
                 return $tag;
             }
 
