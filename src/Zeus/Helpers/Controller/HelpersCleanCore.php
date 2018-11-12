@@ -177,7 +177,7 @@ class HelpersCleanCore extends HelpersClean
         // add_filter('rest_enabled', '__return_false'); // Deprecated
         add_filter('rest_jsonp_enabled', '__return_false');
         add_filter('rest_authentication_errors', function ($access) {
-            return new WP_Error(
+            return new \WP_Error(
                 'rest_disabled',
                 __('The REST API on this site has been disabled.'),
                 [
