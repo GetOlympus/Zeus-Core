@@ -15,7 +15,7 @@ use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingleInterface;
  */
 
 if (!class_exists('Walker')) {
-    require_once(ABSPATH.'wp-includes/class-wp-walker.php');
+    require_once(ABSPATH.'wp-includes'.S.'class-wp-walker.php');
 }
 
 class WalkerSingle extends \Walker implements WalkerSingleInterface

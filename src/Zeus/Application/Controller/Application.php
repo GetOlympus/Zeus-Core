@@ -187,6 +187,7 @@ abstract class Application implements ApplicationInterface
             'AccessManagementConfiguration' => 'GetOlympus\Zeus\Configuration\Controller\AccessManagement',
             'AdminThemesConfiguration'      => 'GetOlympus\Zeus\Configuration\Controller\AdminThemes',
             'AssetsConfiguration'           => 'GetOlympus\Zeus\Configuration\Controller\Assets',
+            'CleanConfiguration'            => 'GetOlympus\Zeus\Configuration\Controller\Clean',
             'MenusConfiguration'            => 'GetOlympus\Zeus\Configuration\Controller\Menus',
             'SettingsConfiguration'         => 'GetOlympus\Zeus\Configuration\Controller\Settings',
             'ShortcodesConfiguration'       => 'GetOlympus\Zeus\Configuration\Controller\Shortcodes',

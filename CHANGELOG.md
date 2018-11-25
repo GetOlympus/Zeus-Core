@@ -1,3 +1,6 @@
+## 1.0.0 (November 25th, 2018)
+Fix helpers and make WordPress website faster
+
 ## 0.0.49 (May 1st, 2018)
 Fix AccessManagement, rename Common to Helpers
 
