@@ -4,6 +4,12 @@ php:
   - 7.0
   - nightly
 
+addons:
+  sonarcloud:
+    organization: "getolympus"
+    token:
+      secure: f970bca02fb605810ba4e67328a4b38c6e5ad21a
+
 matrix:
   fast_finish: true
   allow_failures:
