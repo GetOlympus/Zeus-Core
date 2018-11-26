@@ -8,7 +8,7 @@ addons:
   sonarcloud:
     organization: "getolympus"
     token:
-      secure: f970bca02fb605810ba4e67328a4b38c6e5ad21a
+      secure: "j1c4AvUsI8zrUPm7H1JEjKc1zo61yZrVpkxExSHtsxUSJtF2LlT8a+FTMwJmN8Z3oTU//2Ofn/KDKxY6a8YbrReyvlBDmCq/g2IMcminwwW16wlrW0k2cAu8lGpGl20+hCauFqPEgMgaOG4LQjXKDylHnLPn4vkyD4lpMmeLZmrk6FCZYvF1zvkTcX7PgTTPj6KgEy8AAG7HAkEvy8bXRsQIRNhUNA8xQYtBSih0B73itOwKqwAokSb1RkGl8aeZflMZvqZffQKyCIx5GIgYZGitZ0C5YdXcY0zAbli5kM0xH5dQzKgaez/goc3RTdk1gQK/BAHUsAJfsm1fiscUy+EiFpYk09KxQHq9/m5x7g1Box0ZNPVyUjntIsa3CB0DAuye3PFNhj32Q3zngfRZH3m2Odmw1V9+sWrGi1+5XDsbkV4ZHGGmFO5uMeRzy9G5zvHo32XzqkhOM9yliE6jz4y5Xx+9My2FBfNFeLllPNrczvWzqFavBtlq9krrfj3UmtK19gEvs6dgPT7smc13/jL9ifLkRzj4p+gvpO6RjePyfuR/b8a74FOM0EFowWpVH/oYaPfNkdmZNAHJNyQriSDFgzhLpP4WRD3/cmmE/keFzI6i+qSkOEh/xvE8O1ixPTVFekPQ6cKFWtXsn3H1J5w2jOhbX/h/0lcsdNBTAJc="
 
 matrix:
   fast_finish: true
@@ -17,7 +17,7 @@ matrix:
 
 cache:
   directories:
-    - $HOME/.composer/cache
+    - "$HOME/.composer/cache"
     - app/cache
     - vendor
 
@@ -29,3 +29,4 @@ install:
 
 script:
   - composer test
+  - sonar-scanner
