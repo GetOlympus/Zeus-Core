@@ -3,7 +3,6 @@
 namespace GetOlympus\Zeus\Configuration\Controller;
 
 use GetOlympus\Zeus\Configuration\Controller\Configuration;
-use GetOlympus\Zeus\Helpers\Controller\Helpers;
 
 /**
  * Access Management controller
@@ -18,41 +17,26 @@ use GetOlympus\Zeus\Helpers\Controller\Helpers;
 class AccessManagement extends Configuration
 {
     /**
-     * @var array
-     */
-    protected $available = [
-        'access-url',
-        'login-error',
-        'login-header',
-        'login-shake',
-        'login-style',
-    ];
-
-    /**
      * Add all usefull WP filters and hooks.
      */
     public function init()
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Initialize filepath with configs
+        $funcs = $this->getFunctions('AccessManagement', [
+            'access-url',
+            'login-error',
+            'login-header',
+            'login-shake',
+            'login-style',
+        ]);
+
+        // Check functions
+        if (empty($funcs)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
-            return;
-        }
-
-        // Iterate on configs
-        foreach ($configs as $key => $args) {
-            if (!in_array($key, $this->available) || empty($args)) {
-                continue;
-            }
-
-            $func = Helpers::toFunctionFormat($key).'Setting';
+        // Iterate on functions
+        foreach ($funcs as $key => $args) {
             $this->$func($args);
         }
     }
@@ -62,24 +46,24 @@ class AccessManagement extends Configuration
      *
      * @param string $slug
      */
-    public function accessUrlSetting($slug)
+    public function accessUrlAccessManagement($slug)
     {
         if (empty($slug) || 'wp-login.php' === $slug) {
             return;
         }
 
         // Change login URL
-        add_filter('login_redirect', function ($url) use ($slug) {
+        add_filter('login_redirect', function () use ($slug) {
             return site_url().$slug;
         });
 
         // Customize Site URL
-        add_filter('site_url', function ($url, $path, $scheme = null) use ($slug) {
+        add_filter('site_url', function ($url) use ($slug) {
             return str_replace('wp-login.php', $slug, $url);
         }, 10, 3);
 
         // Make the redirection works properly
-        add_filter('wp_redirect', function ($url, $status) use ($slug) {
+        add_filter('wp_redirect', function ($url) use ($slug) {
             return str_replace('wp-login.php', $slug, $url);
         }, 10, 2);
     }
@@ -89,10 +73,10 @@ class AccessManagement extends Configuration
      *
      * @param string|boolean $error
      */
-    public function loginErrorSetting($error)
+    public function loginErrorAccessManagement($error)
     {
         // Define default message
-        $message = is_bool($error) && $error ? Translate::t('configuration.settings.login.error') : $error;
+        $message = is_bool($error) && $error ? Translate::t('configuration.accessmanagement.login.error') : $error;
 
         // Change login error message
         add_filter('login_errors', function () use ($message) {
@@ -107,7 +91,7 @@ class AccessManagement extends Configuration
      *
      * @param array $args
      */
-    public function loginHeaderSetting($args)
+    public function loginHeaderAccessManagement($args)
     {
         if (!$args) {
             return;
@@ -120,14 +104,14 @@ class AccessManagement extends Configuration
         ], $args);
 
         // Change login head URL
-        add_filter('login_headerurl', function ($url) use ($configs) {
+        add_filter('login_headerurl', function () use ($configs) {
             if (!empty($configs['url'])) {
                 return $configs['url'];
             }
         });
 
         // Change login head title
-        add_filter('login_headertitle', function ($title) use ($configs) {
+        add_filter('login_headertitle', function () use ($configs) {
             if (!empty($configs['title'])) {
                 return $configs['title'];
             }
@@ -139,7 +123,7 @@ class AccessManagement extends Configuration
      *
      * @param boolean $shake
      */
-    public function loginShakeSetting($shake)
+    public function loginShakeAccessManagement($shake)
     {
         if ($shake) {
             return;
@@ -155,7 +139,7 @@ class AccessManagement extends Configuration
      *
      * @param array $args
      */
-    public function loginStyleSetting($args)
+    public function loginStyleAccessManagement($args)
     {
         if (!$args) {
             return;

@@ -8,6 +8,9 @@
 vendor/
 composer.lock
 
+# Scanner
+.scannerwork
+
 # Useless auto-generated files
 .DS_Store
 .idea/

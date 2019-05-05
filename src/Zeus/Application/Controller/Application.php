@@ -168,9 +168,9 @@ abstract class Application implements ApplicationInterface
             'Widget'                        => 'GetOlympus\Zeus\Widget\Controller\Widget',
         ];
 
-        // Iterate on externals to add "Field" suffix
+        // Iterate on externals
         foreach ($this->externals as $shortname => $classname) {
-            $components[$shortname.'Field'] = $classname;
+            $components[$shortname] = $classname;
         }
 
         return $components;
@@ -262,9 +262,9 @@ abstract class Application implements ApplicationInterface
         }
 
         // Work on file paths
-        foreach ($this->paths as $action => $paths) {
+        foreach ($this->paths as $action => $actionPaths) {
             // Work on paths
-            $paths = !is_array($paths) ? [$paths] : $paths;
+            $actionPaths = !is_array($actionPaths) ? [$actionPaths] : $actionPaths;
 
             // Work on file name
             $filepath = OL_ZEUS_CACHE.$this->classname.'-'.$action.'-components.php';
@@ -272,7 +272,7 @@ abstract class Application implements ApplicationInterface
             // Check cache file
             if (!file_exists($filepath)) {
                 // Store all in cache file
-                ClassMapGenerator::dump($paths, $filepath);
+                ClassMapGenerator::dump($actionPaths, $filepath);
             }
 
             $classmap = include_once $filepath;

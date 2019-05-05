@@ -111,13 +111,13 @@ class AdminPageModel implements AdminPageModelInterface
      * Sets the value of page.
      *
      * @param string $identifier the identifier
-     * @param array  $options    the options
+     * @param array  $configs    the options configuration
      *
      * @return self
      */
-    public function updatePage($identifier, $options)
+    public function updatePage($identifier, $configs)
     {
-        $this->pages[$identifier] = $options;
+        $this->pages[$identifier] = $configs;
 
         return $this;
     }

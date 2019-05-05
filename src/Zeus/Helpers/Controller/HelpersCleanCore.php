@@ -181,6 +181,7 @@ class HelpersCleanCore extends HelpersClean
 
     /**
      * Remove post custom metaboxes from post editor to prevent very slow queries
+     * @see  https://9seeds.com/wordpress-admin-post-editor-performance/
      */
     public function corePostCustomMetabox()
     {
@@ -198,7 +199,7 @@ class HelpersCleanCore extends HelpersClean
      */
     public function coreRestApi()
     {
-        add_filter('rest_authentication_errors', function ($access) {
+        add_filter('rest_authentication_errors', function () {
             return new \WP_Error(
                 'rest_disabled',
                 __('The REST API on this site has been disabled.'),

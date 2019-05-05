@@ -1,3 +1,7 @@
+## 1.0.1 (May 5th, 2019)
+Remove PHP 7.2 deprecated `create_function` function
+Be SonarQube compliant
+
 ## 1.0.0 (November 25th, 2018)
 Fix helpers and make WordPress website faster
 

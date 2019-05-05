@@ -29,15 +29,15 @@ class Shortcodes extends Configuration
         }
 
         // Get configurations
-        $configs = include $this->filepath;
+        $settings = include $this->filepath;
 
         // Check
-        if (empty($configs)) {
+        if (empty($settings)) {
             return;
         }
 
         // Update
-        $this->configs = $configs;
+        $this->configs = $settings;
 
         // Enable backend~frontend actions
         if (OL_ZEUS_ISADMIN) {
@@ -129,7 +129,7 @@ class Shortcodes extends Configuration
         // Iterate on configs
         foreach ($this->configs as $key => $file) {
             // Avoid special cases
-            if (empty($file)) {
+            if (false !== $file && empty($file)) {
                 continue;
             }
 

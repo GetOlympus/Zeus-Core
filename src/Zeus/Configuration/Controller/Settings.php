@@ -3,7 +3,6 @@
 namespace GetOlympus\Zeus\Configuration\Controller;
 
 use GetOlympus\Zeus\Configuration\Controller\Configuration;
-use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 
@@ -20,42 +19,27 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 class Settings extends Configuration
 {
     /**
-     * @var array
-     */
-    protected $available = [
-        'admin-bar',
-        'admin-footer',
-        'admin-menu-order',
-        'admin-meta-boxes',
-        'comments-fields-order',
-        'jpeg-quality',
-    ];
-
-    /**
      * Add all usefull WP filters and hooks.
      */
     public function init()
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Initialize filepath with configs
+        $funcs = $this->getFunctions('Setting', [
+            'admin-bar',
+            'admin-footer',
+            'admin-menu-order',
+            'admin-meta-boxes',
+            'comments-fields-order',
+            'jpeg-quality',
+        ]);
+
+        // Check functions
+        if (empty($funcs)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
-            return;
-        }
-
-        // Iterate on configs
-        foreach ($configs as $key => $args) {
-            if (!in_array($key, $this->available) || empty($args)) {
-                continue;
-            }
-
-            $func = Helpers::toFunctionFormat($key).'Setting';
+        // Iterate on functions
+        foreach ($funcs as $key => $args) {
             $this->$func($args);
         }
     }

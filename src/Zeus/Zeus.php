@@ -104,27 +104,27 @@ abstract class Zeus extends Application
      */
     protected $externals = [
         // Zeus field components
-        'Background'                => 'GetOlympus\Field\Background',
-        'Checkbox'                  => 'GetOlympus\Field\Checkbox',
-        'Code'                      => 'GetOlympus\Field\Code',
-        'Color'                     => 'GetOlympus\Field\Color',
-        'Date'                      => 'GetOlympus\Field\Date',
-        'File'                      => 'GetOlympus\Field\File',
-        'Font'                      => 'GetOlympus\Field\Font',
-        'Hidden'                    => 'GetOlympus\Field\Hidden',
-        'Html'                      => 'GetOlympus\Field\Html',
-        'Link'                      => 'GetOlympus\Field\Link',
-        'Map'                       => 'GetOlympus\Field\Map',
-        'Multiselect'               => 'GetOlympus\Field\Multiselect',
-        'Radio'                     => 'GetOlympus\Field\Radio',
-        'Rte'                       => 'GetOlympus\Field\Rte',
-        'Select'                    => 'GetOlympus\Field\Select',
-        'Social'                    => 'GetOlympus\Field\Social',
-        'Text'                      => 'GetOlympus\Field\Text',
-        'Textarea'                  => 'GetOlympus\Field\Textarea',
-        'Toggle'                    => 'GetOlympus\Field\Toggle',
-        'Upload'                    => 'GetOlympus\Field\Upload',
-        'Wordpress'                 => 'GetOlympus\Field\Wordpress',
+        'BackgroundField'   => 'GetOlympus\Field\Background',
+        'CheckboxField'     => 'GetOlympus\Field\Checkbox',
+        'CodeField'         => 'GetOlympus\Field\Code',
+        'ColorField'        => 'GetOlympus\Field\Color',
+        'DateField'         => 'GetOlympus\Field\Date',
+        'FileField'         => 'GetOlympus\Field\File',
+        'FontField'         => 'GetOlympus\Field\Font',
+        'HiddenField'       => 'GetOlympus\Field\Hidden',
+        'HtmlField'         => 'GetOlympus\Field\Html',
+        'LinkField'         => 'GetOlympus\Field\Link',
+        'MapField'          => 'GetOlympus\Field\Map',
+        'MultiselectField'  => 'GetOlympus\Field\Multiselect',
+        'RadioField'        => 'GetOlympus\Field\Radio',
+        'RteField'          => 'GetOlympus\Field\Rte',
+        'SelectField'       => 'GetOlympus\Field\Select',
+        'SocialField'       => 'GetOlympus\Field\Social',
+        'TextField'         => 'GetOlympus\Field\Text',
+        'TextareaField'     => 'GetOlympus\Field\Textarea',
+        'ToggleField'       => 'GetOlympus\Field\Toggle',
+        'UploadField'       => 'GetOlympus\Field\Upload',
+        'WordpressField'    => 'GetOlympus\Field\Wordpress',
     ];
 
     /**
@@ -132,9 +132,9 @@ abstract class Zeus extends Application
      */
     protected $internals = [
         // Zeus common assets
-        'js/dragndrop.js'           => 'Resources/assets/js/dragndrop/dragndrop.js',
-        'js/modal.js'               => 'Resources/assets/js/modal/modal.js',
-        'js/tooltip.js'             => 'Resources/assets/js/tooltip/tooltip.js',
+        'js/dragndrop.js'   => 'Resources/assets/js/dragndrop/dragndrop.js',
+        'js/modal.js'       => 'Resources/assets/js/modal/modal.js',
+        'js/tooltip.js'     => 'Resources/assets/js/tooltip/tooltip.js',
     ];
 
     /**

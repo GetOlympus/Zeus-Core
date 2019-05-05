@@ -1,7 +1,7 @@
 # Main contents
 configuration:
-  sidebar:
-    name: Olympus sidebar title
-  settings:
+  accessmanagement:
     login:
       error: Incorrect login errors
+  sidebar:
+    name: Olympus sidebar title

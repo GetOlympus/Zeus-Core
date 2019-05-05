@@ -111,20 +111,20 @@ class AdminPageHook implements AdminPageHookInterface
         $this->saveFields();
 
         // Get contents
-        $currentPage = $this->currentPage;
-        $currentSection = $this->currentSection;
-        $fields = $this->fields;
-        $options = $this->options;
+        $pageCurrent = $this->currentPage;
+        $sectionCurrent = $this->currentSection;
+        $formFields = $this->fields;
+        $contentOptions = $this->options;
 
         // Get links
-        $u_link = 'page='.$currentPage;
-        $u_section = !empty($currentSection) ? '&section='.$currentSection : '';
+        $u_link = 'page='.$pageCurrent;
+        $u_section = !empty($sectionCurrent) ? '&section='.$sectionCurrent : '';
 
         // Work on vars
         $vars = [
-            'title'         => $options['title'],
-            'description'   => $options['description'],
-            'submit'        => $options['submit'],
+            'title'         => $contentOptions['title'],
+            'description'   => $contentOptions['description'],
+            'submit'        => $contentOptions['submit'],
 
             // Texts and URLs
             't_submit'      => Translate::t('adminpage.submit'),
@@ -133,8 +133,8 @@ class AdminPageHook implements AdminPageHookInterface
         ];
 
         // Display sections
-        if (!empty($options['sections']) && is_array($options['sections'])) {
-            foreach ($options['sections'] as $slug => $opts) {
+        if (!empty($contentOptions['sections']) && is_array($contentOptions['sections'])) {
+            foreach ($contentOptions['sections'] as $slug => $opts) {
                 // Update option
                 $opts['slug'] = $slug;
                 $opts['u_link'] = admin_url('admin.php?'.$u_link.'&section='.$slug);
@@ -142,7 +142,7 @@ class AdminPageHook implements AdminPageHookInterface
                 // Update vars
                 $vars['sections'][] = $opts;
 
-                if ($slug !== $currentSection) {
+                if ($slug !== $sectionCurrent) {
                     continue;
                 }
 
@@ -152,12 +152,12 @@ class AdminPageHook implements AdminPageHookInterface
         }
 
         // Work on current vars
-        $vars['c_page'] = $currentPage;
-        $vars['c_section'] = $currentSection;
+        $vars['c_page'] = $pageCurrent;
+        $vars['c_section'] = $sectionCurrent;
 
         // Display fields
-        if (!empty($fields)) {
-            foreach ($fields as $field) {
+        if (!empty($formFields)) {
+            foreach ($formFields as $field) {
                 if (!$field) {
                     continue;
                 }
