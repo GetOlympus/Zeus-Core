@@ -1,4 +1,6 @@
-## 1.0.1 (May 5th, 2019)
+## 1.0.1 (May 5th, 2019 - June 10th, 2019)
+Add WordPress load textdomain MO files
+Update AdminPage class and fix AccessManagement functions
 Remove PHP 7.2 deprecated `create_function` function
 Be SonarQube compliant
 

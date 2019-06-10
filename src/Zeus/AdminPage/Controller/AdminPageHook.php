@@ -43,13 +43,19 @@ class AdminPageHook implements AdminPageHookInterface
     protected $options;
 
     /**
+     * @var string
+     */
+    protected $parent;
+
+    /**
      * Constructor.
      *
      * @param string    $currentPage
      * @param string    $currentSection
+     * @param string    $parent
      * @param array     $options
      */
-    public function __construct($currentPage, $currentSection, $options)
+    public function __construct($currentPage, $currentSection, $parent, $options)
     {
         // Check current page
         if (empty($currentPage)) {
@@ -65,6 +71,7 @@ class AdminPageHook implements AdminPageHookInterface
         $this->currentPage = $currentPage;
         $this->currentSection = $currentSection;
         $this->options = $options;
+        $this->parent = $parent;
 
         $this->init();
     }
@@ -76,12 +83,17 @@ class AdminPageHook implements AdminPageHookInterface
     {
         // Get options
         $filter_slug = $this->currentPage;
+        $fields = isset($this->options['fields']) ? $this->options['fields'] : [];
 
         // Check sections
         if (!empty($this->options['sections']) && is_array($this->options['sections'])) {
             foreach ($this->options['sections'] as $sectionSlug => $sectionName) {
                 if ($sectionSlug !== $this->currentSection) {
                     continue;
+                }
+
+                if (isset($this->options['sections'][$this->currentSection]['fields'])) {
+                    $fields = $this->options['sections'][$this->currentSection]['fields'];
                 }
 
                 $filter_slug .= '-'.$this->currentSection;
@@ -96,7 +108,7 @@ class AdminPageHook implements AdminPageHookInterface
          * @param   array   $contents
          * @return  array   $contents
          */
-        $this->fields = apply_filters('ol_zeus_adminpage_'.$filter_slug.'_contents', []);
+        $this->fields = apply_filters('ol_zeus_adminpage_'.$filter_slug.'_contents', $fields);
 
         // Display main render
         $this->renderFields();
@@ -117,6 +129,7 @@ class AdminPageHook implements AdminPageHookInterface
         $contentOptions = $this->options;
 
         // Get links
+        $u_parent = !empty($this->parent) ? $this->parent : 'admin.php';
         $u_link = 'page='.$pageCurrent;
         $u_section = !empty($sectionCurrent) ? '&section='.$sectionCurrent : '';
 
@@ -129,7 +142,7 @@ class AdminPageHook implements AdminPageHookInterface
             // Texts and URLs
             't_submit'      => Translate::t('adminpage.submit'),
             'u_link'        => $u_link,
-            'u_action'      => admin_url('admin.php?'.$u_link.$u_section),
+            'u_action'      => admin_url($u_parent.'?'.$u_link.$u_section),
         ];
 
         // Display sections
@@ -137,7 +150,7 @@ class AdminPageHook implements AdminPageHookInterface
             foreach ($contentOptions['sections'] as $slug => $opts) {
                 // Update option
                 $opts['slug'] = $slug;
-                $opts['u_link'] = admin_url('admin.php?'.$u_link.'&section='.$slug);
+                $opts['u_link'] = admin_url($u_parent.'?'.$u_link.'&section='.$slug);
 
                 // Update vars
                 $vars['sections'][] = $opts;

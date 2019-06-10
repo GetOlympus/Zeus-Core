@@ -52,7 +52,7 @@ abstract class Configuration
 
         // Iterate on configs
         foreach ($configs as $key => $args) {
-            if (!in_array($key, $available) || empty($args)) {
+            if (is_null($args) || !in_array($key, $available)) {
                 continue;
             }
 

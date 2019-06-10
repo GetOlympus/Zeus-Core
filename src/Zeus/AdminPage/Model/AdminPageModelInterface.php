@@ -93,4 +93,15 @@ interface AdminPageModelInterface
      * @return self
      */
     public function setPages($pages);
+
+    /**
+     * Adds a new value of section's page.
+     *
+     * @param string $identifier the identifier
+     * @param string $parent     the parent identifier
+     * @param array  $options    the options
+     *
+     * @return self
+     */
+    public function addSection($identifier, $parent, $options);
 }

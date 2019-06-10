@@ -37,7 +37,7 @@ class AccessManagement extends Configuration
 
         // Iterate on functions
         foreach ($funcs as $key => $args) {
-            $this->$func($args);
+            $this->$key($args);
         }
     }
 
@@ -48,7 +48,9 @@ class AccessManagement extends Configuration
      */
     public function accessUrlAccessManagement($slug)
     {
-        if (empty($slug) || 'wp-login.php' === $slug) {
+        $wplogin = 'wp-login.php';
+
+        if (empty($slug) || $wplogin === $slug) {
             return;
         }
 
@@ -58,25 +60,25 @@ class AccessManagement extends Configuration
         });
 
         // Customize Site URL
-        add_filter('site_url', function ($url) use ($slug) {
-            return str_replace('wp-login.php', $slug, $url);
+        add_filter('site_url', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
         }, 10, 3);
 
         // Make the redirection works properly
-        add_filter('wp_redirect', function ($url) use ($slug) {
-            return str_replace('wp-login.php', $slug, $url);
+        add_filter('wp_redirect', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
         }, 10, 2);
     }
 
     /**
      * Redisign wp-login.php page with custom error message.
      *
-     * @param string|boolean $error
+     * @param string $message
      */
-    public function loginErrorAccessManagement($error)
+    public function loginErrorAccessManagement($message)
     {
         // Define default message
-        $message = is_bool($error) && $error ? Translate::t('configuration.accessmanagement.login.error') : $error;
+        $message = $message ? $message : Translate::t('configuration.accessmanagement.login.error');
 
         // Change login error message
         add_filter('login_errors', function () use ($message) {
@@ -111,7 +113,7 @@ class AccessManagement extends Configuration
         });
 
         // Change login head title
-        add_filter('login_headertitle', function () use ($configs) {
+        add_filter('login_headertext', function () use ($configs) {
             if (!empty($configs['title'])) {
                 return $configs['title'];
             }
@@ -154,12 +156,12 @@ class AccessManagement extends Configuration
         // Render assets
 
         add_action('login_enqueue_scripts', function () use ($configs) {
-            if (!empty($configs['scripts'])) {
+            if (empty($configs['scripts'])) {
                 return;
             }
 
             foreach ($configs['scripts'] as $script) {
-                if (3 !== count($script)) {
+                if (3 > count($script)) {
                     continue;
                 }
 
@@ -168,12 +170,12 @@ class AccessManagement extends Configuration
         }, 10);
 
         add_action('login_enqueue_scripts', function () use ($configs) {
-            if (!empty($configs['styles'])) {
+            if (empty($configs['styles'])) {
                 return;
             }
 
             foreach ($configs['styles'] as $style) {
-                if (3 !== count($style)) {
+                if (3 > count($style)) {
                     continue;
                 }
 

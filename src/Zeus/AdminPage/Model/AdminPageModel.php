@@ -33,6 +33,11 @@ class AdminPageModel implements AdminPageModelInterface
     protected $pages = [];
 
     /**
+     * @var string
+     */
+    protected $parent = '';
+
+    /**
      * Gets the value of hook.
      *
      * @return AdminPageHook
@@ -147,6 +152,52 @@ class AdminPageModel implements AdminPageModelInterface
     public function setPages($pages)
     {
         $this->pages = $pages;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of parent.
+     *
+     * @return string
+     */
+    public function getParent()
+    {
+        return $this->parent;
+    }
+
+    /**
+     * Sets the value of parent.
+     *
+     * @param string $parent the parent
+     *
+     * @return self
+     */
+    public function setParent($parent)
+    {
+        $this->parent = $parent;
+
+        return $this;
+    }
+
+    /**
+     * Adds a new value of section's page.
+     *
+     * @param string $identifier the identifier
+     * @param string $parent     the parent identifier
+     * @param array  $options    the options
+     *
+     * @return self
+     */
+    public function addSection($identifier, $parent, $options)
+    {
+        $parent = empty($parent) ? $this->identifier : $parent;
+
+        if (!$this->hasPage($parent)) {
+            return;
+        }
+
+        $this->pages[$parent]['sections'][$identifier] = $options;
 
         return $this;
     }

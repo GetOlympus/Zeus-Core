@@ -32,14 +32,13 @@ abstract class AdminPage extends Base implements AdminPageInterface
         // Initialize AdminPageModel
         $this->model = new AdminPageModel();
 
-        // Initialize variables and filters
-        $this->setVars();
-        $this->setFilters();
-
         // Work on admin only
         if (OL_ZEUS_ISADMIN) {
+            // Initialize variables and filters
+            $this->setVars();
+            //$this->setFilters();
+
             $this->init();
-            $this->initAssets();
         }
     }
 
@@ -61,17 +60,21 @@ abstract class AdminPage extends Base implements AdminPageInterface
         reset($pages);
 
         // Update identifier
-        $identifier = Helpers::urlize(key($pages));
+        $identifier = $this->getModel()->getIdentifier();
+        $identifier = Helpers::urlize($identifier);
         $this->getModel()->setIdentifier($identifier);
 
+        // Get parent
+        $parent = $this->getModel()->getParent();
+
         // Add root single menu if identifier is unknown
-        if (!isset($admin_page_hooks[$identifier])) {
+        if (!isset($admin_page_hooks[$identifier]) && empty($parent)) {
             $this->addRootPage();
         }
 
         // Iterate on pages
         foreach ($pages as $slug => $options) {
-            if (empty($options)) {
+            if (empty($slug) || empty($options)) {
                 continue;
             }
 
@@ -81,40 +84,6 @@ abstract class AdminPage extends Base implements AdminPageInterface
             // Add child menu
             $this->addChild($slug, $options);
         }
-    }
-
-    /**
-     * Initialize assets in admin pages.
-     */
-    public function initAssets()
-    {
-        // Get current page
-        $currentPage = Request::get('page');
-        $currentSection = Request::get('section');
-        $identifier = $this->getModel()->getIdentifier();
-        $page_id = str_replace($identifier.'-', '', $currentPage);
-
-        // Check current page
-        if (!$this->getModel()->hasPage($page_id)) {
-            return;
-        }
-
-        // Build page details
-        $optionPage = $this->getModel()->getPages($page_id);
-        $currentSection = !empty($optionPage['sections']) && empty($currentSection) ? key($optionPage['sections']) : $currentSection;
-        $filter_slug = empty($currentSection) ? $currentPage : $currentPage.'-'.$currentSection;
-
-        /**
-         * Build page contents.
-         *
-         * @var     string  $currentPage
-         * @param   array   $contents
-         * @return  array   $contents
-         */
-        $fields = apply_filters('ol_zeus_adminpage_'.$filter_slug.'_contents', []);
-
-        // Render assets
-        Render::assets(['admin.php'], $fields);
     }
 
     /**
@@ -149,6 +118,11 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Update pages
         $options = $this->getModel()->getPages($identifier);
+
+        // Special case with name
+        $options['name'] = !isset($options['name']) ? $options['title'] : $options['name'];
+
+        // Merge values
         $options = array_merge($defaults, $options);
         $this->getModel()->updatePage($identifier, $options);
 
@@ -200,11 +174,17 @@ abstract class AdminPage extends Base implements AdminPageInterface
     public function addChild($slug, $options)
     {
         $identifier = $this->getModel()->getIdentifier();
+        $parent = $this->getModel()->getParent();
+
+        // Special case with name
+        $options['name'] = !isset($options['name']) ? $options['title'] : $options['name'];
 
         // Check slug
         if (empty($slug)) {
             throw new AdminPageException(Translate::t('adminpage.errors.slug_is_not_defined'));
         }
+
+        global $admin_page_hooks;
 
         // Set default option's values
         $defaults = [
@@ -229,17 +209,55 @@ abstract class AdminPage extends Base implements AdminPageInterface
         $pageid = $slug === $identifier ? $identifier : $identifier.'-'.$slug;
 
         // Add child page
-        add_submenu_page(
-            $identifier,
-            $options['title'],
-            $options['name'],
-            $options['capabilities'],
-            $pageid,
-            [&$this, 'callback']
-        );
+        if (!empty($parent) && isset($admin_page_hooks[$parent])) {
+            $function = 'add_options_page';
+
+            if ('index.php' === $parent) {
+                $function = 'add_dashboard_page';
+            } else if ('upload.php' === $parent) {
+                $function = 'add_media_page';
+            } else if ('link-manager.php' === $parent) {
+                $function = 'add_links_page';
+            } else if ('edit-comments.php' === $parent) {
+                $function = 'add_comments_page';
+            } else if ('edit.php' === $parent) {
+                $function = 'add_posts_page';
+            } else if ('edit.php?post_type=page' === $parent) {
+                $function = 'add_pages_page';
+            } else if ('themes.php' === $parent) {
+                $function = 'add_theme_page';
+            } else if ('plugins.php' === $parent) {
+                $function = 'add_plugins_page';
+            } else if ('users.php' === $parent) {
+                $function = 'add_users_page';
+            } else if ('tools.php' === $parent) {
+                $function = 'add_management_page';
+            }
+
+            // Add custom admin page
+            $function(
+                $options['title'],
+                $options['name'],
+                $options['capabilities'],
+                $pageid,
+                [&$this, 'callback']
+            );
+        } else {
+            add_submenu_page(
+                $identifier,
+                $options['title'],
+                $options['name'],
+                $options['capabilities'],
+                $pageid,
+                [&$this, 'callback']
+            );
+
+            // Update parent to empty
+            $this->getModel()->setParent('');
+        }
 
         // Add admin bar menu
-        if ($options['adminbar']) {
+        if ($options['adminbar'] && empty($parent)) {
             $this->addChildAdminBar($slug, $options);
         }
     }
@@ -282,6 +300,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
     {
         // Get current page and section
         $identifier = $this->getModel()->getIdentifier();
+        $parent = $this->getModel()->getParent();
         $currentPage = Request::get('page');
         $currentSection = Request::get('section');
 
@@ -296,14 +315,9 @@ abstract class AdminPage extends Base implements AdminPageInterface
         $options = $this->getModel()->getPages($page_id);
 
         // Works on hook
-        $hook = new AdminPageHook($currentPage, $currentSection, $options);
+        $hook = new AdminPageHook($currentPage, $currentSection, $parent, $options);
         $this->getModel()->setHook($hook);
     }
-
-    /**
-     * Prepare filters.
-     */
-    abstract public function setFilters();
 
     /**
      * Prepare variables.

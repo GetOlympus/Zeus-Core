@@ -161,6 +161,7 @@ abstract class Zeus extends Application
         // Register all vendor views
         add_filter('ol_zeus_render_views', function ($paths) use ($externals) {
             foreach ($externals as $alias => $path) {
+                $alias = str_replace('field', '', $alias);
                 $paths[$alias] = $path.'views';
             }
 
@@ -179,7 +180,7 @@ abstract class Zeus extends Application
         // Register all vendor translations
         add_filter('ol_zeus_translate_resources', function ($yamls) use ($externals) {
             foreach ($externals as $alias => $path) {
-                $yamls[$path.'languages'] = $alias.'field';
+                $yamls[$path.'languages'] = $alias;
             }
 
             return $yamls;

@@ -71,6 +71,20 @@ interface ApplicationInterface
     public function initConfigs();
 
     /**
+     * Initialize translation files.
+     */
+    public function initTranslations();
+
+    /**
+     * Load default domain MO file if needed.
+     *
+     * @param string $mofile
+     * @param string $domain
+     * @return string $mofile
+     */
+    public function loadTextdomain($mofile, $domain);
+
+    /**
      * Register components
      */
     public function registerComponents();

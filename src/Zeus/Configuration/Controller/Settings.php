@@ -40,7 +40,7 @@ class Settings extends Configuration
 
         // Iterate on functions
         foreach ($funcs as $key => $args) {
-            $this->$func($args);
+            $this->$key($args);
         }
     }
 

@@ -20,11 +20,6 @@ interface AdminPageInterface
     public function init();
 
     /**
-     * Initialize assets in admin pages.
-     */
-    public function initAssets();
-
-    /**
      * Add root admin page.
      */
     public function addRootPage();

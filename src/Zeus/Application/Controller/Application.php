@@ -37,6 +37,11 @@ abstract class Application implements ApplicationInterface
     protected $container = null;
 
     /**
+     * @var string
+     */
+    protected $defaultlocale = 'default';
+
+    /**
      * @var array
      */
     protected $externals = [];
@@ -52,9 +57,19 @@ abstract class Application implements ApplicationInterface
     protected $internals = [];
 
     /**
+     * @var string
+     */
+    protected $packagetype = 'theme';
+
+    /**
      * @var array
      */
     protected $paths = [];
+
+    /**
+     * @var array
+     */
+    protected $translations = [];
 
     /**
      * @var string
@@ -92,7 +107,10 @@ abstract class Application implements ApplicationInterface
             $this->add($service, $alias);
         }
 
-        // Register configurations
+        // Initialize translations
+        $this->initTranslations();
+
+        // Initialize configurations
         $this->initConfigs();
 
         // Register post types / terms / widgets / admin pages and more
@@ -249,6 +267,59 @@ abstract class Application implements ApplicationInterface
             $service->setPath($file);
             $service->init();
         }
+    }
+
+    /**
+     * Initialize translation files.
+     */
+    public function initTranslations()
+    {
+        // Check translations
+        if (empty($this->translations)) {
+            return;
+        }
+
+        add_action('load_textdomain_mofile', [$this, 'loadTextdomain'], 10, 2);
+
+        // Iterate
+        foreach ($this->translations as $textdomain => $languagesfolder) {
+            // Check if package type is a plugin and load plugin texts
+            if ('plugin' === $this->packagetype) {
+                load_plugin_textdomain($textdomain, false, $languagesfolder);
+                continue;
+            }
+
+            // Load theme texts
+            load_theme_textdomain($textdomain, $languagesfolder);
+        }
+    }
+
+    /**
+     * Load default domain MO file if needed.
+     *
+     * @param string $mofile
+     * @param string $domain
+     * @return string $mofile
+     */
+    public function loadTextdomain($mofile, $domain)
+    {
+        // Check translations
+        if (empty($this->translations)) {
+            return;
+        }
+
+        // Check domains
+        if (!array_key_exists($domain, $this->translations)) {
+            return $mofile;
+        }
+
+        // Change locale if needed
+        if (!file_exists($mofile)) {
+            $currentlocale = determine_locale();
+            $mofile = str_replace($currentlocale.'.mo', $this->defaultlocale.'.mo', $mofile);
+        }
+
+        return $mofile;
     }
 
     /**
