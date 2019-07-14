@@ -53,7 +53,7 @@ abstract class Cron extends Base implements CronImplementation
 
             $options = [
                 'display'   => $display,
-                'interval'  => $interval, 
+                'interval'  => $interval,
             ];
 
             unset($display);

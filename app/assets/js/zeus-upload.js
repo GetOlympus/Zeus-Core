@@ -31,10 +31,10 @@
  * Achraf Chouk (https://github.com/crewstyle)
  */
 
-(function ($){
+(function ($) {
     "use strict";
 
-    var Upload = function ($el,options){
+    var Upload = function ($el,options) {
         //vars
         var _this = this;
 
@@ -55,7 +55,7 @@
     Upload.prototype.options = null;
     Upload.prototype.selections = null;
 
-    Upload.prototype.init = function (){
+    Upload.prototype.init = function () {
         var _this = this;
 
         //get wp id
@@ -67,7 +67,7 @@
         _this.$el.find(_this.options.delallbutton).on('click', $.proxy(_this.remove_all, _this));
     };
 
-    Upload.prototype.open_medialib = function (e){
+    Upload.prototype.open_medialib = function (e) {
         e.preventDefault();
         var _this = this;
 
@@ -91,7 +91,7 @@
         _this.opened_medialib();
 
         //bind event when medias are selected
-        _this.media.on('select', function() {
+        _this.media.on('select', function () {
             //get all selected medias
             _this.selections = _this.media.state().get('selection');
 
@@ -106,11 +106,11 @@
         _this.media.open();
     };
 
-    Upload.prototype.opened_medialib = function ($items){
+    Upload.prototype.opened_medialib = function ($items) {
         var _this = this;
 
         //bind event when medialib popin is opened
-        _this.media.on('open', function (){
+        _this.media.on('open', function () {
             var $items = _this.$el.find(_this.options.items);
 
             //check selections
@@ -122,7 +122,7 @@
             _this.selections = _this.media.state().get('selection');
 
             //get all selected medias on multiple choices
-            $.each($items, function (){
+            $.each($items, function () {
                 var _id = $(this).attr('data-u'),
                     _attach = wp.media.attachment(_id);
 
@@ -132,7 +132,7 @@
         });
     };
 
-    Upload.prototype.remove_all = function (e){
+    Upload.prototype.remove_all = function (e) {
         e.preventDefault();
         var _this = this;
 
@@ -140,7 +140,7 @@
         _this.$el.find(_this.options.delbutton).click();
     };
 
-    Upload.prototype.remove_media = function (e){
+    Upload.prototype.remove_media = function (e) {
         e.preventDefault();
         var _this = this;
 
@@ -152,12 +152,12 @@
         $item.css('background', _this.options.color);
         $item.stop().animate({
             opacity: '0'
-        }, _this.options.animation, function (){
+        }, _this.options.animation, function () {
             $item.remove();
         });
     };
 
-    Upload.prototype._attach_items = function (_attach){
+    Upload.prototype._attach_items = function (_attach) {
         var _this = this;
 
         //check attachments
@@ -169,13 +169,12 @@
         var $target = _this.$el.find(_this.options.container);
 
         //iterate
-        $.each(_attach, function (ind,elm){
+        $.each(_attach, function (ind,elm) {
             //check if element already exists
             if ($target.find(_this.options.items + '[data-u="' + elm.id + '"]').length) {
                 return;
-            }
-            //in single case, remove the other media
-            else if (!_this.options.multiple) {
+            } else if (!_this.options.multiple) {
+                //in single case, remove the other media
                 _this.$el.find(_this.options.delbutton).click();
             }
 
@@ -213,7 +212,7 @@
     };
 
     var methods = {
-        init: function (options){
+        init: function (options) {
             if (!this.length) {
                 return false;
             }
@@ -237,7 +236,7 @@
                 wpid: null,
             };
 
-            return this.each(function (){
+            return this.each(function () {
                 if (options) {
                     $.extend(settings, options);
                 }
@@ -249,14 +248,12 @@
         destroy: function (){}
     };
 
-    $.fn.zeusUpload = function (method){
+    $.fn.zeusUpload = function (method) {
         if (methods[method]) {
             return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
-        }
-        else if (typeof method === 'object' || !method) {
+        } else if (typeof method === 'object' || !method) {
             return methods.init.apply(this, arguments);
-        }
-        else {
+        } else {
             $.error('Method '+method+' does not exist on zeusUpload');
             return false;
         }

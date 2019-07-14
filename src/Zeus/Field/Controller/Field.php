@@ -202,8 +202,8 @@ abstract class Field extends Base implements FieldImplementation
         $tpl        = $this->getModel()->getTemplate();
 
         // Define default value
-        $defaults['default'] = isset($options['default']) 
-            ? $options['default'] 
+        $defaults['default'] = isset($options['default'])
+            ? $options['default']
             : (isset($defaults['default']) ? $defaults['default'] : '');
 
         // Define object to never store `null` value

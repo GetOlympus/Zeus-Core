@@ -56,7 +56,7 @@ class Render implements RenderImplementation
      * @param  array   $vars
      * @param  array   $assets
      */
-    public function __construct($context = 'core', $template, $vars, $assets = [])
+    public function __construct($context, $template, $vars, $assets = [])
     {
         // Build all views folders to add
         $paths = [
@@ -221,7 +221,7 @@ class Render implements RenderImplementation
         $details = [];
 
         if (!empty($assets['scripts'])) {
-            foreach($assets['scripts'] as $script => $path) {
+            foreach ($assets['scripts'] as $script => $path) {
                 $key = !is_string($script) ? $path : $script;
 
                 if (array_key_exists($key, $details)) {
@@ -268,7 +268,7 @@ class Render implements RenderImplementation
         $details = [];
 
         if (!empty($assets['styles'])) {
-            foreach($assets['styles'] as $style => $path) {
+            foreach ($assets['styles'] as $style => $path) {
                 $key = !is_string($style) ? $path : $style;
 
                 if (array_key_exists($key, $details)) {

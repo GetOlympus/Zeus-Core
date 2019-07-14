@@ -8,9 +8,9 @@
 'use strict';
 
 module.exports = function (grunt, configs) {
-  return {
-    mo: [
-      configs.paths.i18n + '/*.mo'
-    ]
-  }
+    return {
+        mo: [
+            configs.paths.i18n + '/*.mo'
+        ]
+    }
 };
