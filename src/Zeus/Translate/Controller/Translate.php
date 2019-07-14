@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Translate\Controller;
 
-use GetOlympus\Zeus\Translate\Interface\TranslateInterface;
+use GetOlympus\Zeus\Translate\Implementation\TranslateImplementation;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
 
@@ -16,7 +16,7 @@ use Symfony\Component\Translation\Translator;
  *
  */
 
-class Translate implements TranslateInterface
+class Translate implements TranslateImplementation
 {
     /**
      * @var Singleton

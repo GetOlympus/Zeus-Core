@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Hook\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Hook\Interface\HookInterface;
+use GetOlympus\Zeus\Hook\Implementation\HookImplementation;
 use GetOlympus\Zeus\Hook\Model\HookModel;
 
 /**
@@ -16,7 +16,7 @@ use GetOlympus\Zeus\Hook\Model\HookModel;
  *
  */
 
-class Hook extends Base implements HookInterface
+class Hook extends Base implements HookImplementation
 {
     /**
      * Constructor.

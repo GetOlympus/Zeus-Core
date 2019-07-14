@@ -4,7 +4,7 @@ namespace GetOlympus\Zeus\AdminPage\Controller;
 
 use GetOlympus\Zeus\AdminPage\Controller\AdminPageHook;
 use GetOlympus\Zeus\AdminPage\Exception\AdminPageException;
-use GetOlympus\Zeus\AdminPage\Interface\AdminPageInterface;
+use GetOlympus\Zeus\AdminPage\Implementation\AdminPageImplementation;
 use GetOlympus\Zeus\AdminPage\Model\AdminPageModel;
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
@@ -20,7 +20,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-abstract class AdminPage extends Base implements AdminPageInterface
+abstract class AdminPage extends Base implements AdminPageImplementation
 {
     /**
      * @var boolean

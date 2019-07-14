@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\User\Model;
 
-use GetOlympus\Zeus\User\Interface\UserModelInterface;
+use GetOlympus\Zeus\User\Implementation\UserModelImplementation;
 
 /**
  * User model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\User\Interface\UserModelInterface;
  *
  */
 
-class UserModel implements UserModelInterface
+class UserModel implements UserModelImplementation
 {
     /**
      * @var array

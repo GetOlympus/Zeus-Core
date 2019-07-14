@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Application\Controller;
 
-use GetOlympus\Zeus\Application\Interface\ApplicationInterface;
+use GetOlympus\Zeus\Application\Implementation\ApplicationImplementation;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 use Symfony\Component\ClassLoader\ClassMapGenerator;
 use Symfony\Component\ClassLoader\MapClassLoader;
@@ -17,7 +17,7 @@ use Symfony\Component\ClassLoader\MapClassLoader;
  *
  */
 
-abstract class Application implements ApplicationInterface
+abstract class Application implements ApplicationImplementation
 {
     /**
      * @var array

@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Cron\Model;
 
-use GetOlympus\Zeus\Cron\Interface\CronModelInterface;
+use GetOlympus\Zeus\Cron\Implementation\CronModelImplementation;
 
 /**
  * Cron model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Cron\Interface\CronModelInterface;
  *
  */
 
-class CronModel implements CronModelInterface
+class CronModel implements CronModelImplementation
 {
     /**
      * @var array

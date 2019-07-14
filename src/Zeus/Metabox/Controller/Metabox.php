@@ -5,7 +5,7 @@ namespace GetOlympus\Zeus\Metabox\Controller;
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Metabox\Exception\MetaboxException;
-use GetOlympus\Zeus\Metabox\Interface\MetaboxInterface;
+use GetOlympus\Zeus\Metabox\Implementation\MetaboxImplementation;
 use GetOlympus\Zeus\Metabox\Model\MetaboxModel;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -20,7 +20,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-class Metabox extends Base implements MetaboxInterface
+class Metabox extends Base implements MetaboxImplementation
 {
     /**
      * Constructor.

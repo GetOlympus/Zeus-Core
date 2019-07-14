@@ -4,7 +4,7 @@ namespace GetOlympus\Zeus\Posttype\Controller;
 
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Option\Controller\Option;
-use GetOlympus\Zeus\Posttype\Interface\PosttypeHookInterface;
+use GetOlympus\Zeus\Posttype\Implementation\PosttypeHookImplementation;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -19,7 +19,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-class PosttypeHook implements PosttypeHookInterface
+class PosttypeHook implements PosttypeHookImplementation
 {
     /**
      * @var PostType

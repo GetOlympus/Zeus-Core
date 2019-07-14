@@ -7,7 +7,7 @@ use GetOlympus\Zeus\Field\Controller\Field;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
-use GetOlympus\Zeus\Widget\Interface\WidgetInterface;
+use GetOlympus\Zeus\Widget\Implementation\WidgetImplementation;
 use GetOlympus\Zeus\Widget\Model\WidgetModel;
 
 /**
@@ -20,7 +20,7 @@ use GetOlympus\Zeus\Widget\Model\WidgetModel;
  *
  */
 
-abstract class Widget extends BaseWidget implements WidgetInterface
+abstract class Widget extends BaseWidget implements WidgetImplementation
 {
     /**
      * Constructor.

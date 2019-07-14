@@ -5,7 +5,7 @@ namespace GetOlympus\Zeus\User\Controller;
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\User\Controller\UserHook;
 use GetOlympus\Zeus\User\Exception\UserException;
-use GetOlympus\Zeus\User\Interface\UserInterface;
+use GetOlympus\Zeus\User\Implementation\UserImplementation;
 use GetOlympus\Zeus\User\Model\UserModel;
 
 /**
@@ -18,7 +18,7 @@ use GetOlympus\Zeus\User\Model\UserModel;
  *
  */
 
-abstract class User extends Base implements UserInterface
+abstract class User extends Base implements UserImplementation
 {
     /**
      * Constructor.

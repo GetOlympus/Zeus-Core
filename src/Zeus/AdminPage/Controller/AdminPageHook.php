@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\AdminPage\Controller;
 
-use GetOlympus\Zeus\AdminPage\Interface\AdminPageHookInterface;
+use GetOlympus\Zeus\AdminPage\Implementation\AdminPageHookImplementation;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
@@ -18,7 +18,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-class AdminPageHook implements AdminPageHookInterface
+class AdminPageHook implements AdminPageHookImplementation
 {
     /**
      * @var AdminPage

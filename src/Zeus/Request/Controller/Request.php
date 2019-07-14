@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Request\Controller;
 
-use GetOlympus\Zeus\Request\Interface\RequestInterface;
+use GetOlympus\Zeus\Request\Implementation\RequestImplementation;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
  *
  */
 
-class Request implements RequestInterface
+class Request implements RequestImplementation
 {
     /**
      * Return a slug list where it is authorized to render assets.

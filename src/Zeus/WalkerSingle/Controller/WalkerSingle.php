@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\WalkerSingle\Controller;
 
-use GetOlympus\Zeus\WalkerSingle\Interface\WalkerSingleInterface;
+use GetOlympus\Zeus\WalkerSingle\Implementation\WalkerSingleImplementation;
 
 /**
  * Gets its own Walker.
@@ -18,7 +18,7 @@ if (!class_exists('Walker')) {
     require_once(ABSPATH.'wp-includes'.S.'class-wp-walker.php');
 }
 
-class WalkerSingle extends \Walker implements WalkerSingleInterface
+class WalkerSingle extends \Walker implements WalkerSingleImplementation
 {
     /**
      * @var string

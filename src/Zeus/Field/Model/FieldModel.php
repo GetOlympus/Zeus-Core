@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Field\Model;
 
-use GetOlympus\Zeus\Field\Interface\FieldModelInterface;
+use GetOlympus\Zeus\Field\Implementation\FieldModelImplementation;
 
 /**
  * Field model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Field\Interface\FieldModelInterface;
  *
  */
 
-class FieldModel implements FieldModelInterface
+class FieldModel implements FieldModelImplementation
 {
     /**
      * @var array

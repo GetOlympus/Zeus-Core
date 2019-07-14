@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Term\Model;
 
-use GetOlympus\Zeus\Term\Interface\TermModelInterface;
+use GetOlympus\Zeus\Term\Implementation\TermModelImplementation;
 
 /**
  * Term model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Term\Interface\TermModelInterface;
  *
  */
 
-class TermModel implements TermModelInterface
+class TermModel implements TermModelImplementation
 {
     /**
      * @var array

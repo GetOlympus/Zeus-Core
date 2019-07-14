@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Ajax\Model;
 
-use GetOlympus\Zeus\Ajax\Interface\AjaxModelInterface;
+use GetOlympus\Zeus\Ajax\Implementation\AjaxModelImplementation;
 
 /**
  * Ajax model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Ajax\Interface\AjaxModelInterface;
  *
  */
 
-class AjaxModel implements AjaxModelInterface
+class AjaxModel implements AjaxModelImplementation
 {
     /**
      * @var array

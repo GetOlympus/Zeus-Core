@@ -5,7 +5,7 @@ namespace GetOlympus\Zeus\Term\Controller;
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Term\Controller\TermHook;
-use GetOlympus\Zeus\Term\Interface\TermInterface;
+use GetOlympus\Zeus\Term\Implementation\TermImplementation;
 use GetOlympus\Zeus\Term\Exception\TermException;
 use GetOlympus\Zeus\Term\Model\TermModel;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -20,7 +20,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-abstract class Term extends Base implements TermInterface
+abstract class Term extends Base implements TermImplementation
 {
     /**
      * @var array

@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Hook\Model;
 
-use GetOlympus\Zeus\Hook\Interface\HookModelInterface;
+use GetOlympus\Zeus\Hook\Implementation\HookModelImplementation;
 
 /**
  * Hook model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Hook\Interface\HookModelInterface;
  *
  */
 
-class HookModel implements HookModelInterface
+class HookModel implements HookModelImplementation
 {
     /**
      * @var string|array

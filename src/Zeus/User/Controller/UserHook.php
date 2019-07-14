@@ -7,7 +7,7 @@ use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
 use GetOlympus\Zeus\Translate\Controller\Translate;
-use GetOlympus\Zeus\User\Interface\UserHookInterface;
+use GetOlympus\Zeus\User\Implementation\UserHookImplementation;
 
 /**
  * Works with User Engine.
@@ -19,7 +19,7 @@ use GetOlympus\Zeus\User\Interface\UserHookInterface;
  *
  */
 
-class UserHook implements UserHookInterface
+class UserHook implements UserHookImplementation
 {
     /**
      * @var User

@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Option\Controller;
 
-use GetOlympus\Zeus\Option\Interface\OptionInterface;
+use GetOlympus\Zeus\Option\Implementation\OptionImplementation;
 
 /**
  * Works with WP options.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Option\Interface\OptionInterface;
  *
  */
 
-class Option implements OptionInterface
+class Option implements OptionImplementation
 {
     /**
      * Force add a value into options

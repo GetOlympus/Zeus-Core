@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Ajax\Controller;
 
-use GetOlympus\Zeus\Ajax\Interface\AjaxInterface;
+use GetOlympus\Zeus\Ajax\Implementation\AjaxImplementation;
 use GetOlympus\Zeus\Ajax\Model\AjaxModel;
 use GetOlympus\Zeus\Base\Controller\Base;
 
@@ -16,7 +16,7 @@ use GetOlympus\Zeus\Base\Controller\Base;
  *
  */
 
-abstract class Ajax extends Base implements AjaxInterface
+abstract class Ajax extends Base implements AjaxImplementation
 {
     /**
      * @var Hook

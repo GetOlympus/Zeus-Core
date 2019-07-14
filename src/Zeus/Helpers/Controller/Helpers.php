@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Helpers\Controller;
 
-use GetOlympus\Zeus\Helpers\Interface\HelpersInterface;
+use GetOlympus\Zeus\Helpers\Implementation\HelpersImplementation;
 use Behat\Transliterator\Transliterator;
 
 /**
@@ -15,7 +15,7 @@ use Behat\Transliterator\Transliterator;
  *
  */
 
-class Helpers implements HelpersInterface
+class Helpers implements HelpersImplementation
 {
     /**
      * @var Singleton

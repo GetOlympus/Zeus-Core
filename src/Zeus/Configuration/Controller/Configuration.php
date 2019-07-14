@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Configuration\Controller;
 
-use GetOlympus\Zeus\Configuration\Interface\ConfigurationInterface;
+use GetOlympus\Zeus\Configuration\Implementation\ConfigurationImplementation;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 
 /**
@@ -15,7 +15,7 @@ use GetOlympus\Zeus\Helpers\Controller\Helpers;
  *
  */
 
-abstract class Configuration implements ConfigurationInterface
+abstract class Configuration implements ConfigurationImplementation
 {
     /**
      * @var string

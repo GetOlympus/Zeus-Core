@@ -4,7 +4,7 @@ namespace GetOlympus\Zeus\Field\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\Field\Exception\FieldException;
-use GetOlympus\Zeus\Field\Interface\FieldInterface;
+use GetOlympus\Zeus\Field\Implementation\FieldImplementation;
 use GetOlympus\Zeus\Field\Model\FieldModel;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Option\Controller\Option;
@@ -22,7 +22,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-abstract class Field extends Base implements FieldInterface
+abstract class Field extends Base implements FieldImplementation
 {
     /**
      * @var array

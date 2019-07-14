@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\AdminPage\Model;
 
-use GetOlympus\Zeus\AdminPage\Interface\AdminPageModelInterface;
+use GetOlympus\Zeus\AdminPage\Implementation\AdminPageModelImplementation;
 
 /**
  * AdminPage model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\AdminPage\Interface\AdminPageModelInterface;
  *
  */
 
-class AdminPageModel implements AdminPageModelInterface
+class AdminPageModel implements AdminPageModelImplementation
 {
     /**
      * @var boolean

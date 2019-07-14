@@ -2,19 +2,19 @@
 
 namespace GetOlympus\Zeus\Metabox\Model;
 
-use GetOlympus\Zeus\Metabox\Interface\MetaboxModelInterface;
+use GetOlympus\Zeus\Metabox\Implementation\MetaboxModelImplementation;
 
 /**
  * Metabox model.
  *
  * @package    OlympusZeusCore
- * @subpackage Metabox\Interface
+ * @subpackage Metabox\Implementation
  * @author     Achraf Chouk <achrafchouk@gmail.com>
  * @since      0.0.1
  *
  */
 
-class MetaboxModel implements MetaboxModelInterface
+class MetaboxModel implements MetaboxModelImplementation
 {
     /**
      * @var array

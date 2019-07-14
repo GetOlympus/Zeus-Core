@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Cron\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Cron\Interface\CronInterface;
+use GetOlympus\Zeus\Cron\Implementation\CronImplementation;
 use GetOlympus\Zeus\Cron\Model\CronModel;
 
 /**
@@ -16,7 +16,7 @@ use GetOlympus\Zeus\Cron\Model\CronModel;
  *
  */
 
-abstract class Cron extends Base implements CronInterface
+abstract class Cron extends Base implements CronImplementation
 {
     /**
      * @var array

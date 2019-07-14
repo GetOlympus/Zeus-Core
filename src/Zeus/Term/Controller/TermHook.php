@@ -6,7 +6,7 @@ use GetOlympus\Zeus\Field\Controller\Field;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
-use GetOlympus\Zeus\Term\Interface\TermHookInterface;
+use GetOlympus\Zeus\Term\Implementation\TermHookImplementation;
 use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingle;
 
 /**
@@ -19,7 +19,7 @@ use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingle;
  *
  */
 
-class TermHook implements TermHookInterface
+class TermHook implements TermHookImplementation
 {
     /**
      * @var Term

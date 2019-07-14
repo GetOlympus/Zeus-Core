@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Render\Controller;
 
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
-use GetOlympus\Zeus\Render\Interface\RenderInterface;
+use GetOlympus\Zeus\Render\Implementation\RenderImplementation;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_SimpleFunction;
@@ -18,7 +18,7 @@ use Twig_SimpleFunction;
  *
  */
 
-class Render implements RenderInterface
+class Render implements RenderImplementation
 {
     /**
      * @var array

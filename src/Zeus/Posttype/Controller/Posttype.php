@@ -7,7 +7,7 @@ use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Posttype\Controller\PosttypeHook;
 use GetOlympus\Zeus\Posttype\Exception\PosttypeException;
-use GetOlympus\Zeus\Posttype\Interface\PosttypeInterface;
+use GetOlympus\Zeus\Posttype\Implementation\PosttypeImplementation;
 use GetOlympus\Zeus\Posttype\Model\PosttypeModel;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 
@@ -21,7 +21,7 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
  *
  */
 
-abstract class Posttype extends Base implements PosttypeInterface
+abstract class Posttype extends Base implements PosttypeImplementation
 {
     /**
      * @var array

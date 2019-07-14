@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Widget\Model;
 
-use GetOlympus\Zeus\Widget\Interface\WidgetModelInterface;
+use GetOlympus\Zeus\Widget\Implementation\WidgetModelImplementation;
 
 /**
  * Widget model.
@@ -14,7 +14,7 @@ use GetOlympus\Zeus\Widget\Interface\WidgetModelInterface;
  *
  */
 
-class WidgetModel implements WidgetModelInterface
+class WidgetModel implements WidgetModelImplementation
 {
     /**
      * @var string

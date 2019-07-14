@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Posttype\Model;
 
 use GetOlympus\Zeus\Metabox\Controller\Metabox;
-use GetOlympus\Zeus\Posttype\Interface\PosttypeModelInterface;
+use GetOlympus\Zeus\Posttype\Implementation\PosttypeModelImplementation;
 
 /**
  * Post type model.
@@ -15,7 +15,7 @@ use GetOlympus\Zeus\Posttype\Interface\PosttypeModelInterface;
  *
  */
 
-class PosttypeModel implements PosttypeModelInterface
+class PosttypeModel implements PosttypeModelImplementation
 {
     /**
      * @var array
