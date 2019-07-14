@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Render\Controller;
 
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
-use GetOlympus\Zeus\Render\Controller\RenderInterface;
+use GetOlympus\Zeus\Render\Interface\RenderInterface;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_SimpleFunction;
@@ -21,9 +21,22 @@ use Twig_SimpleFunction;
 class Render implements RenderInterface
 {
     /**
-     * @var Singleton
+     * @var array
      */
-    private static $instance;
+    protected $scripts = [
+        'zeus-tabs'   => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-tabs.js',
+        'zeus-upload' => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-upload.js',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $styles = [];
+
+    /**
+     * @var string
+     */
+    protected $template;
 
     /**
      * @var Twig_Environment
@@ -31,30 +44,58 @@ class Render implements RenderInterface
     protected $twig;
 
     /**
+     * @var array
+     */
+    protected $vars;
+
+    /**
      * Constructor.
      *
-     * @param array $components
+     * @param  string  $context
+     * @param  string  $template
+     * @param  array   $vars
+     * @param  array   $assets
      */
-    public function __construct($components = [])
+    public function __construct($context = 'core', $template, $vars, $assets = [])
     {
         // Build all views folders to add
         $paths = [
-            'adminpage'     => OL_ZEUS_PATH.S.'AdminPage'.S.'Resources'.S.'views',
-            'core'          => OL_ZEUS_PATH.S.'Resources'.S.'views',
-            'field'         => OL_ZEUS_PATH.S.'Field'.S.'Resources'.S.'views',
-            'metabox'       => OL_ZEUS_PATH.S.'Metabox'.S.'Resources'.S.'views',
-            'posttype'      => OL_ZEUS_PATH.S.'Posttype'.S.'Resources'.S.'views',
-            'user'          => OL_ZEUS_PATH.S.'User'.S.'Resources'.S.'views',
-            'widget'        => OL_ZEUS_PATH.S.'Widget'.S.'Resources'.S.'views',
+            'core' => OL_ZEUS_PATH.S.'Resources'.S.'views',
         ];
+
+        // Iterate on fields to render html
+        if (isset($vars['fields'])) {
+            foreach ($vars['fields'] as $field) {
+                $paths[$field['context']] = $field['path'];
+            }
+        }
 
         /**
          * Add your custom views folder with alias.
          *
-         * @param   array $paths
-         * @return  array $paths
+         * @param  array   $paths
+         * @return array   $paths
          */
         $paths = apply_filters('ol_zeus_render_views', $paths);
+
+        // Check paths
+        if (empty($paths)) {
+            throw new RenderException(Translate::t('render.errors.no_render_paths_defined'));
+        }
+
+        // Check context
+        if (!array_key_exists($context, $paths)) {
+            throw new RenderException(sprintf(Translate::t('render.errors.context_does_not_exist'), $context));
+        }
+
+        // Check template
+        if (!file_exists($paths[$context].S.$template)) {
+            throw new RenderException(sprintf(Translate::t('render.errors.template_does_not_exist'), $template));
+        }
+
+        // Update internal vars
+        $this->template = '@'.$context.'/'.$template;
+        $this->vars = $vars;
 
         // Define Twig loaders
         $loader = new Twig_Loader_Filesystem();
@@ -65,12 +106,24 @@ class Render implements RenderInterface
         }
 
         // Check cache
-        $args = OL_ZEUS_USECACHE ? ['cache' => OL_ZEUS_CACHE] : [];
+        //$args = OL_ZEUS_USECACHE ? ['cache' => OL_ZEUS_CACHE] : [];
+        $args = OL_ZEUS_USECACHE ? ['cache' => false, 'debug' => true] : [];
 
         // Build Twig renderer - no cache needed for twig rendering
         $this->twig = new Twig_Environment($loader, $args);
 
+        // Add WordPress and Custom functions
+        $this->addFunctions();
 
+        // Enqueue scripts and styles
+        $this->enqueue($assets);
+    }
+
+    /**
+     * Add WordPress and Custom functions
+     */
+    public function addFunctions()
+    {
         /**
          * WORDPRESS functions
          */
@@ -151,119 +204,116 @@ class Render implements RenderInterface
     }
 
     /**
-     * Get singleton.
-     */
-    public static function getInstance()
-    {
-        if (is_null(self::$instance)) {
-            self::$instance = new self();
-        }
-
-        return self::$instance;
-    }
-
-    /**
-     * Render assets on asked page.
+     * Enqueue scripts and styles.
      *
-     * @param array $currentPage
-     * @param array $fields
+     * @param  array   $assets
      */
-    public static function assets($currentPage, $fields)
+    public function enqueue($assets = [])
     {
-        global $pagenow;
+        $assets = array_merge(['scripts' => [], 'styles' => []], $assets);
 
-        // Check current page
-        if (empty($fields) || !in_array($pagenow, $currentPage)) {
+        // Check lists
+        if (empty($assets['scripts']) && empty($assets['styles'])) {
             return;
         }
 
-        $assets = [
-            'scripts' => [],
-            'styles' => [],
-        ];
+        // Used to make uniq enqueue
+        $details = [];
 
-        /**
-         * Add your custom assets to make them accessible.
-         *
-         * @param   array $paths
-         * @return  array $paths
-         */
-        $paths = apply_filters('ol_zeus_render_assets', []);
+        if (!empty($assets['scripts'])) {
+            foreach($assets['scripts'] as $script => $path) {
+                $key = !is_string($script) ? $path : $script;
 
-        // Iterate on fields to render assets
-        if (!empty($fields)) {
-            foreach ($fields as $field) {
-                if (!$field) {
+                if (array_key_exists($key, $details)) {
                     continue;
                 }
 
-                $paths = array_merge($paths, $field->renderAssets());
-            }
-        }
+                $details[$key] = [];
 
-        // Check paths
-        if (empty($paths)) {
-            return;
-        }
-
-        // Create temp accessible files and update assets
-        foreach ($paths as $name => $path) {
-            self::assetsInCache($path, $name);
-            $type = 'js/' === substr($name, 0, 3) ? 'scripts' : 'styles';
-
-            $assets[$type][] = [
-                'name' => $name,
-                'file' => OL_ZEUS_URI.$name,
-            ];
-        }
-
-        // Add all in admin panel
-        add_action('admin_enqueue_scripts', function ($hook) use ($assets) {
-            // Scripts
-            if (!empty($assets['scripts'])) {
-                foreach ($assets['scripts'] as $script) {
-                    wp_enqueue_script($script['name'], $script['file'], ['jquery']);
+                // Media upload case
+                if ('media' === $key) {
+                    wp_enqueue_media();
+                    continue;
                 }
-            }
 
-            // Styles
-            if (!empty($assets['styles'])) {
-                $handle = wp_style_is('olympus-core-css', 'registered') ? 'olympus-core-css' : false;
-
-                foreach ($assets['styles'] as $style) {
-                    wp_enqueue_style($style['name'], $style['file'], $handle);
+                // WordPress case
+                if ($key === $path && !array_key_exists($key, $this->scripts)) {
+                    wp_enqueue_script($path);
+                    continue;
                 }
+
+                // Update path
+                $path = array_key_exists($key, $this->scripts) ? $this->scripts[$key] : $path;
+
+                // Update details
+                $details[$key]['basename'] = basename($path);
+                $details[$key]['fileuri']  = OL_ZEUS_URI.'js'.S.$details[$key]['basename'];
+                $details[$key]['source']   = rtrim(dirname($path), S);
+                $details[$key]['target']   = rtrim(OL_ZEUS_DISTPATH, S).S.'js';
+
+                // Update script path on dist accessible folder
+                Helpers::copyFile(
+                    $details[$key]['source'],
+                    $details[$key]['target'],
+                    $details[$key]['basename'],
+                    true
+                );
+
+                // Default case
+                wp_enqueue_script($script, $details[$key]['fileuri'], [], false, true);
             }
-        }, 9);
-    }
-
-    /**
-     * Create temporary asset accessible file.
-     *
-     * @param string $source
-     * @param string $filename
-     */
-    public static function assetsInCache($source, $filename)
-    {
-        $dest = OL_ZEUS_DISTPATH.$filename;
-
-        // Create file
-        if (!file_exists($dest)) {
-            $ctns = file_exists($source) ? file_get_contents($source) : '';
-            Helpers::filePutContents($dest, $ctns, 'This file has been auto-generated');
         }
+
+        // Used to make uniq enqueue
+        $details = [];
+
+        if (!empty($assets['styles'])) {
+            foreach($assets['styles'] as $style => $path) {
+                $key = !is_string($style) ? $path : $style;
+
+                if (array_key_exists($key, $details)) {
+                    continue;
+                }
+
+                $details[$key] = [];
+
+                // WordPress case
+                if ($key === $path) {
+                    wp_enqueue_style($key);
+                    continue;
+                }
+
+                // Update path
+                $path = array_key_exists($key, $this->styles) ? $this->styles[$key] : $path;
+
+                // Update details
+                $details[$key]['basename'] = basename($path);
+                $details[$key]['fileuri']  = OL_ZEUS_URI.'css'.S.$details[$key]['basename'];
+                $details[$key]['source']   = rtrim(dirname($path), S);
+                $details[$key]['target']   = rtrim(OL_ZEUS_DISTPATH, S).S.'css';
+
+                // Update script path on dist accessible folder
+                Helpers::copyFile(
+                    $details[$key]['source'],
+                    $details[$key]['target'],
+                    $details[$key]['basename'],
+                    true
+                );
+
+                // Default case
+                wp_enqueue_style($style, $details[$key]['fileuri'], [], false, 'all');
+            }
+        }
+
+        unset($assets);
+        unset($details);
     }
 
     /**
      * Render TWIG component.
-     *
-     * @param string $template
-     * @param array $vars
-     * @param string $context
      */
-    public static function view($template, $vars, $context = 'core')
+    public function view()
     {
-        // Display template
-        echo self::getInstance()->twig->render('@'.$context.'/'.$template, $vars);
+        echo $this->twig->render($this->template, $this->vars);
     }
 }

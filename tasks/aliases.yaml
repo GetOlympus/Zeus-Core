@@ -1,0 +1,14 @@
+textdomain:
+  description: 'Build MO files from JSON languages'
+  tasks:
+    # Clean MO old files
+    - 'clean:mo'
+    # Generate MO files and remove PO files
+    - 'potomo:app'
+
+# Default action to create all css
+default:
+  description: 'Build minified production-ready and MO files from LESS & JSON sources'
+  tasks:
+    # Build MO files
+    - 'textdomain'

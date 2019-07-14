@@ -1,0 +1,7 @@
+{
+  "paths": {
+    "i18n": "languages",
+    "src": "src/Zeus/Resources"
+  },
+  "textdomain": "olympus-zeus"
+}

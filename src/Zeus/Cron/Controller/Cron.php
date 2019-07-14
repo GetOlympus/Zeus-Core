@@ -2,10 +2,9 @@
 
 namespace GetOlympus\Zeus\Cron\Controller;
 
-use GetOlympus\Zeus\Cron\Controller\CronInterface;
-use GetOlympus\Zeus\Cron\Model\CronModel;
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Hook\Controller\Hook;
+use GetOlympus\Zeus\Cron\Interface\CronInterface;
+use GetOlympus\Zeus\Cron\Model\CronModel;
 
 /**
  * Gets its own cron task.
@@ -20,14 +19,52 @@ use GetOlympus\Zeus\Hook\Controller\Hook;
 abstract class Cron extends Base implements CronInterface
 {
     /**
+     * @var array
+     */
+    protected $available = ['hourly', 'twicedaily', 'daily'];
+
+    /**
+     * @var integer
+     */
+    protected $interval = 60;
+
+    /**
+     * @var string
+     */
+    protected $schedule = '';
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->model = new CronModel();
 
+        // Check schedule
+        if (empty($this->schedule)) {
+            return;
+        }
+
+        $options = [];
+
+        if (!in_array($this->schedule, $this->available)) {
+            $display  = !$this->interval ? Translate::t('cron.hourly') : $this->interval.Translate::t('cron.seconds');
+            $interval = !$this->interval ? 1440 : $this->interval; // 1 hour
+
+            $options = [
+                'display'   => $display,
+                'interval'  => $interval, 
+            ];
+
+            unset($display);
+            unset($interval);
+        }
+
+        // Update schedule
+        $this->getModel()->setOptions($options);
+        $this->getModel()->setSchedule($this->schedule);
+
         // Initialize
-        $this->setVars();
         $this->init();
     }
 
@@ -40,13 +77,8 @@ abstract class Cron extends Base implements CronInterface
         $options = $this->getModel()->getOptions();
         $schedule = $this->getModel()->getSchedule();
 
-        // Check schedule
-        if (empty($schedule)) {
-            return;
-        }
-
         // Check velocity
-        if (!in_array($schedule, ['hourly', 'twicedaily', 'daily']) && !empty($options)) {
+        if (!empty($options)) {
             // Build new vars
             $new_evt = [
                 $schedule => $options
@@ -75,9 +107,4 @@ abstract class Cron extends Base implements CronInterface
      * Callback custom function.
      */
     abstract public function callback();
-
-    /**
-     * Prepare variables.
-     */
-    abstract public function setVars();
 }

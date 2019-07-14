@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Field\Model;
 
-use GetOlympus\Zeus\Field\Model\FieldModelInterface;
+use GetOlympus\Zeus\Field\Interface\FieldModelInterface;
 
 /**
  * Field model.
@@ -19,22 +19,27 @@ class FieldModel implements FieldModelInterface
     /**
      * @var array
      */
-    protected $contents;
+    protected $adminscripts;
 
     /**
      * @var array
      */
-    protected $details;
+    protected $adminstyles;
+
+    /**
+     * @var array
+     */
+    protected $defaults;
 
     /**
      * @var string
      */
-    protected $faIcon = 'fa-circle-o';
+    protected $identifier = '';
 
     /**
-     * @var boolean
+     * @var array
      */
-    protected $hasId = true;
+    protected $options;
 
     /**
      * @var string
@@ -57,97 +62,121 @@ class FieldModel implements FieldModelInterface
     protected $vars;
 
     /**
-     * Gets the value of contents.
+     * Gets the value of adminscripts.
      *
      * @return array
      */
-    public function getContents()
+    public function getAdminscripts()
     {
-        return $this->contents;
+        return $this->adminscripts;
     }
 
     /**
-     * Sets the value of contents.
+     * Sets the value of adminscripts.
      *
-     * @param array $contents the contents
+     * @param  array   $adminscripts
      *
      * @return self
      */
-    public function setContents($contents)
+    public function setAdminscripts($adminscripts)
     {
-        $this->contents = $contents;
+        $this->adminscripts = $adminscripts;
 
         return $this;
     }
 
     /**
-     * Gets the value of details.
+     * Gets the value of adminstyles.
      *
      * @return array
      */
-    public function getDetails()
+    public function getAdminstyles()
     {
-        return $this->details;
+        return $this->adminstyles;
     }
 
     /**
-     * Sets the value of details.
+     * Sets the value of adminstyles.
      *
-     * @param array $details the details
+     * @param  array   $adminstyles
      *
      * @return self
      */
-    public function setDetails($details)
+    public function setAdminstyles($adminstyles)
     {
-        $this->details = $details;
+        $this->adminstyles = $adminstyles;
 
         return $this;
     }
 
     /**
-     * Gets the value of faIcon.
+     * Gets the value of defaults.
+     *
+     * @return array
+     */
+    public function getDefaults()
+    {
+        return $this->defaults;
+    }
+
+    /**
+     * Sets the value of defaults.
+     *
+     * @param  array   $defaults
+     *
+     * @return self
+     */
+    public function setDefaults($defaults)
+    {
+        $this->defaults = $defaults;
+
+        return $this;
+    }
+
+    /**
+     * Gets the value of identifier.
      *
      * @return string
      */
-    public function getFaIcon()
+    public function getIdentifier()
     {
-        return $this->faIcon;
+        return $this->identifier;
     }
 
     /**
-     * Sets the value of faIcon.
+     * Sets the value of identifier.
      *
-     * @param string $faIcon the fa icon
+     * @param  string  $identifier
      *
      * @return self
      */
-    public function setFaIcon($faIcon)
+    public function setIdentifier($identifier)
     {
-        $this->faIcon = $faIcon;
+        $this->identifier = $identifier;
 
         return $this;
     }
 
     /**
-     * Gets the value of hasId.
+     * Gets the value of options.
      *
-     * @return boolean
+     * @return array
      */
-    public function getHasId()
+    public function getOptions()
     {
-        return $this->hasId;
+        return $this->options;
     }
 
     /**
-     * Sets the value of hasId.
+     * Sets the value of options.
      *
-     * @param boolean $hasId the has id
+     * @param  array   $options
      *
      * @return self
      */
-    public function setHasId($hasId)
+    public function setOptions($options)
     {
-        $this->hasId = $hasId;
+        $this->options = $options;
 
         return $this;
     }
@@ -165,7 +194,7 @@ class FieldModel implements FieldModelInterface
     /**
      * Sets the value of script.
      *
-     * @param string $script the script
+     * @param  string  $script
      *
      * @return self
      */
@@ -189,7 +218,7 @@ class FieldModel implements FieldModelInterface
     /**
      * Sets the value of style.
      *
-     * @param string $style the style
+     * @param  string  $style
      *
      * @return self
      */
@@ -213,7 +242,7 @@ class FieldModel implements FieldModelInterface
     /**
      * Sets the value of template.
      *
-     * @param string $template the template
+     * @param  string  $template
      *
      * @return self
      */
@@ -237,14 +266,13 @@ class FieldModel implements FieldModelInterface
     /**
      * Sets the value of vars.
      *
-     * @param array $vars the vars
+     * @param  array   $vars
      *
      * @return self
      */
-    public function setVars(array $vars)
+    public function setVars($vars)
     {
-        $name = isset($vars['name']) && !empty($vars['name']) ? $vars['name'] : $vars['id'];
-        $vars['name'] = $name;
+        $vars['name'] = isset($vars['name']) && !empty($vars['name']) ? $vars['name'] : $this->getIdentifier();
 
         $this->vars = $vars;
 

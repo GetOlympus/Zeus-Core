@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Hook\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Hook\Controller\HookInterface;
+use GetOlympus\Zeus\Hook\Interface\HookInterface;
 use GetOlympus\Zeus\Hook\Model\HookModel;
 
 /**
@@ -29,10 +29,10 @@ class Hook extends Base implements HookInterface
     /**
      * Initialize all data.
      *
-     * @param string        $type
-     * @param string        $identifier
-     * @param array|string  $callback
-     * @param mixed         $priority
+     * @param  string  $type
+     * @param  string  $identifier
+     * @param  mixed   $callback
+     * @param  mixed   $priority
      */
     public function init($type, $identifier, $callback, $priority = 10)
     {
@@ -45,7 +45,7 @@ class Hook extends Base implements HookInterface
     /**
      * Define hook.
      *
-     * @param null|mixed $args
+     * @param  mixed   $args
      * @return void
      */
     public function listen($args = null)

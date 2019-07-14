@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Cron\Model;
 
-use GetOlympus\Zeus\Cron\Model\CronModelInterface;
+use GetOlympus\Zeus\Cron\Interface\CronModelInterface;
 
 /**
  * Cron model.
@@ -39,7 +39,7 @@ class CronModel implements CronModelInterface
     /**
      * Sets the value of options.
      *
-     * @param array $options the options
+     * @param  array   $options
      *
      * @return self
      */
@@ -63,8 +63,8 @@ class CronModel implements CronModelInterface
     /**
      * Sets the value of schedule.
      *
-     * @param string $schedule the schedule
-     * @param array $options the options
+     * @param  string  $schedule
+     * @param  array   $options
      *
      * @return self
      */

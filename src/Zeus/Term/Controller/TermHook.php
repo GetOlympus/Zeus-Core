@@ -6,7 +6,7 @@ use GetOlympus\Zeus\Field\Controller\Field;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
-use GetOlympus\Zeus\Term\Controller\TermHookInterface;
+use GetOlympus\Zeus\Term\Interface\TermHookInterface;
 use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingle;
 
 /**
@@ -22,52 +22,38 @@ use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingle;
 class TermHook implements TermHookInterface
 {
     /**
-     * @var array
+     * @var Term
      */
-    protected $fields;
-
-    /**
-     * @var boolean
-     */
-    protected $is_single;
-
-    /**
-     * @var string
-     */
-    protected $posttype;
-
-    /**
-     * @var string
-     */
-    protected $slug;
+    protected $term;
 
     /**
      * Constructor.
      *
-     * @param string $slug
-     * @param boolean $addCustomFields
-     * @param boolean $isSingle
+     * @param  Term    $term
      */
-    public function __construct($slug, $posttype, $fields, $is_single = false)
+    public function __construct($term)
     {
-        // Check slug or Admin panel
-        if (empty($slug) || !OL_ZEUS_ISADMIN) {
+        if (!OL_ZEUS_ISADMIN) {
             return;
         }
 
-        $this->slug = $slug;
-        $this->fields = $fields;
-        $this->posttype = $posttype;
-        $this->is_single = $is_single;
+        $slug = $term->getModel()->getSlug();
 
-        // Render assets
-        Render::assets(['edit-tags.php', 'term.php'], $this->fields);
+        // Check slug
+        if (empty($slug)) {
+            return;
+        }
+
+        $this->term = $term;
+
+        $args = $this->term->getModel()->getArgs();
+        $is_single = 'single' === $args['choice'] ? true : false;
 
         // Edit custom fields
         add_action($slug.'_edit_form_fields', [$this, 'editFormFields'], 10, 1);
 
         // Add custom fields
-        if (!empty($this->fields)) {
+        if (!empty($this->term->getModel()->getFields())) {
             add_action($slug.'_add_form_fields', [$this, 'addFormFields'], 10, 1);
         }
 
@@ -97,55 +83,75 @@ class TermHook implements TermHookInterface
     /**
      * Hook building custom fields.
      *
-     * @param string|object $term
-     * @param string        $mode
+     * @param  mixed   $term
+     * @param  string  $mode
      */
     public function addFields($term, $mode = 'edit')
     {
         // Check mode
         $mode = in_array($mode, ['add', 'edit']) ? $mode : 'edit';
+        $fields = $this->term->getModel()->getFields();
 
         // Check fields
-        if (empty($this->fields)) {
+        if (empty($fields)) {
             return;
         }
 
         // Get current
         $term = is_object($term) ? $term : get_term($term);
+        //$vars = [];
+
+        // Prepare admin scripts and styles
+        /*$assets = [
+            'scripts' => [],
+            'styles'  => [],
+        ];*/
 
         // Get fields
-        foreach ($this->fields as $field) {
+        foreach ($fields as $field) {
             if (!$field) {
                 continue;
             }
 
-            // Build contents
-            $ctn = (array) $field->getModel()->getContents();
-            $hasId = (boolean) $field->getModel()->getHasId();
+            $id = (string) $field->getModel()->getIdentifier();
 
-            // Check fields
-            if (empty($ctn)) {
+            if (empty($id)) {
                 continue;
             }
 
-            // Does the field have an ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
-                continue;
+            // Update scripts and styles
+            $fieldassets = $field->assets();
+            $assets = [];
+
+            if (!empty($fieldassets)) {
+                $assets['scripts'] = array_merge($assets['scripts'], $fieldassets['scripts']);
+                $assets['styles']  = array_merge($assets['styles'], $fieldassets['styles']);
             }
 
             // Display field
-            $field->render($ctn, [
+            /*$field->render($ctn, [
                 'structure' => '%TERM%-%SLUG%',
                 'template'  => 'term-'.$mode,
                 'term'      => $term,
-            ]);
+            ]);*/
+
+            //$vars['fields'][] = $field->prepare('term-'.$mode, $term, 'term');
+
+            // Render view
+            $render = new Render(
+                'core',
+                'fields'.S.'term-'.$mode.'.html.twig',
+                $field->prepare('term-'.$mode, $term, 'term'),
+                $assets
+            );
+            $render->view();
         }
     }
 
     /**
      * Hook building custom fields on term homepage.
      *
-     * @param string|object $term
+     * @param  mixed   $term
      */
     public function addFormFields($term)
     {
@@ -155,7 +161,7 @@ class TermHook implements TermHookInterface
     /**
      * Hook building custom fields.
      *
-     * @param string|object $term
+     * @param  mixed   $term
      */
     public function editFormFields($term)
     {
@@ -165,9 +171,9 @@ class TermHook implements TermHookInterface
     /**
      * Hook to add custom column.
      *
-     * @param string $content
-     * @param string $column
-     * @param int $term_id
+     * @param  string  $content
+     * @param  string  $column
+     * @param  integer $term_id
      */
     public function manageCustomColumn($content, $column, $term_id)
     {
@@ -182,9 +188,9 @@ class TermHook implements TermHookInterface
         /**
          * Fires for each custom column of a specific post type in the Posts list table.
          *
-         * @param string $content
-         * @param string $column
-         * @param int $term_id
+         * @param  string  $content
+         * @param  string  $column
+         * @param  integer $term_id
          */
         do_action('ol_zeus_termhook_manage_'.$current.'_custom_column', $content, $column, $term_id);
     }
@@ -192,8 +198,8 @@ class TermHook implements TermHookInterface
     /**
      * Hook to change columns on term list page.
      *
-     * @param array $columns
-     * @return array $columns
+     * @param  array   $columns
+     * @return array   $columns
      */
     public function manageEditColumns($columns)
     {
@@ -211,9 +217,9 @@ class TermHook implements TermHookInterface
          * The dynamic portion of the hook name, `$current`, refers to the
          * post type of the current edit screen ID.
          *
-         * @var string $current
-         * @param array $columns
-         * @return array $columns
+         * @var    string  $current
+         * @param  array   $columns
+         * @return array   $columns
          */
         return apply_filters('ol_zeus_termhook_manage_edit-'.$current.'_columns', $columns);
     }
@@ -221,8 +227,8 @@ class TermHook implements TermHookInterface
     /**
      * Hook building custom fields for Post types.
      *
-     * @param number $term_id
-     * @return number|void
+     * @param  integer $term_id
+     * @return integer|void
      */
     public function saveFields($term_id)
     {
@@ -232,10 +238,11 @@ class TermHook implements TermHookInterface
         }
 
         // Check slug
-        $slug = Request::post('taxonomy', '');
+        $slug         = $this->term->getModel()->getSlug();
+        $request_slug = Request::post('taxonomy', '');
 
         // Check integrity
-        if (empty($slug) || $slug !== $this->slug) {
+        if (empty($request_slug) || $request_slug !== $slug) {
             return;
         }
 
@@ -243,51 +250,51 @@ class TermHook implements TermHookInterface
         remove_action('created_'.$slug, [&$this, 'saveFields']);
         remove_action('edited_'.$slug, [&$this, 'saveFields']);
 
+        $fields = $this->term->getModel()->getFields();
+
         /**
          * Fires for all term's fields.
          *
-         * @var string $slug
-         * @param int $term_id
-         * @param array $fields
+         * @var    string  $slug
+         * @param  integer $term_id
+         * @param  array   $fields
          */
-        do_action('ol_zeus_termhook_save_'.$slug, $term_id, $this->fields);
+        do_action('ol_zeus_termhook_save_'.$slug, $term_id, $fields);
 
         // Update all metas
-        foreach ($this->fields as $field) {
+        foreach ($fields as $field) {
             if (!$field) {
                 continue;
             }
 
-            // Build contents
-            $ctn = (array) $field->getModel()->getContents();
-            $hasId = (boolean) $field->getModel()->getHasId();
+            $id = (string) $field->getModel()->getIdentifier();
 
-            // Check ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+            if (empty($id)) {
                 continue;
             }
 
             // Gets the value
-            $value = Request::post($ctn['id'], null);
+            $value = Request::post($id, null);
+            $option_name = $slug.'-'.$id;
 
             // Check value
             if (is_null($value)) {
-                $value = Option::getTermMeta($term_id, $slug.'-'.$ctn['id']);
+                $value = Option::getTermMeta($term_id, $option_name);
             }
 
             /**
              * Filter the value content.
              *
-             * @var string $current
-             * @param int $term_id
-             * @param string $option_name
-             * @param object $value
-             * @return object $value
+             * @var    string  $slug
+             * @param  object  $value
+             * @param  integer $term_id
+             * @param  string  $option_name
+             * @return object  $value
              */
-            $value = apply_filters('ol_zeus_termhook_save_'.$slug.'_field', $value, $term_id, $slug.'-'.$ctn['id']);
+            $value = apply_filters('ol_zeus_termhook_save_'.$slug.'_field', $value, $term_id, $option_name);
 
             // Updates meta
-            Option::updateTermMeta($term_id, $slug.'-'.$ctn['id'], $value);
+            Option::updateTermMeta($term_id, $option_name, $value);
         }
 
         // Add back action hook again for no infinite loop

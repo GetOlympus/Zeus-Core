@@ -3,9 +3,10 @@
 namespace GetOlympus\Zeus\Field\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Field\Controller\FieldInterface;
 use GetOlympus\Zeus\Field\Exception\FieldException;
+use GetOlympus\Zeus\Field\Interface\FieldInterface;
 use GetOlympus\Zeus\Field\Model\FieldModel;
+use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -24,24 +25,127 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 abstract class Field extends Base implements FieldInterface
 {
     /**
+     * @var array
+     */
+    protected $adminscripts = [];
+
+    /**
+     * @var array
+     */
+    protected $adminstyles = [];
+
+    /**
+     * @var array
+     */
+    protected $availabletemplates = ['adminpage', 'metabox', 'term-add', 'term-edit', 'user', 'widget'];
+
+    /**
+     * @var array
+     */
+    protected $defaults = [];
+
+    /**
+     * @var string
+     */
+    protected $script;
+
+    /**
+     * @var string
+     */
+    protected $style;
+
+    /**
+     * @var string
+     */
+    protected $template;
+
+    /**
+     * @var string
+     */
+    protected $textdomain = 'zeusfield';
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
         $this->model = new FieldModel();
 
-        // Initialize
-        $this->setVars();
+        // Set default value
+        $defaults = (array) $this->getDefaults();
+        $this->defaults = array_merge(['default' => ''], $defaults);
+
+        // Initialize configurations
+        $this->getModel()->setAdminscripts((array) $this->adminscripts);
+        $this->getModel()->setAdminstyles((array) $this->adminstyles);
+        $this->getModel()->setDefaults((array) $this->defaults);
+        $this->getModel()->setScript((string) $this->script);
+        $this->getModel()->setStyle((string) $this->style);
+        $this->getModel()->setTemplate((string) $this->template);
+    }
+
+    /**
+     * Render assets' component.
+     *
+     * @return array   $assets
+     */
+    public function assets()
+    {
+        // Retrieve path to Resources and shortname's class
+        $path = dirname(dirname($this->getClass()['resources'])).S.'assets'.S;
+
+        // Get assets
+        $adminscripts = $this->getModel()->getAdminscripts();
+        $adminstyles = $this->getModel()->getAdminstyles();
+        $script = $this->getModel()->getScript();
+        $style = $this->getModel()->getStyle();
+
+        // Do nothing if all empty
+        if (empty($adminscripts) && empty($adminstyles) && empty($script) && empty($style)) {
+            return [];
+        }
+
+        $assets = [
+            'scripts' => [],
+            'styles' => []
+        ];
+
+        // Admin scripts
+        if (!empty($adminscripts)) {
+            $assets['scripts'] = array_merge($assets['scripts'], $adminscripts);
+        }
+
+        // Admin styles
+        if (!empty($adminstyles)) {
+            $assets['styles'] = array_merge($assets['styles'], $adminstyles);
+        }
+
+        // Scripts
+        if (!empty($script)) {
+            $assets['scripts'] = array_merge($assets['scripts'], [
+                Helpers::urlize($script) => $path.$script
+            ]);
+        }
+
+        // Styles
+        if (!empty($style)) {
+            $assets['styles'] = array_merge($assets['styles'], [
+                Helpers::urlize($style) => $path.$style
+            ]);
+        }
+
+        return $assets;
     }
 
     /**
      * Build Field component.
      *
-     * @param string    $id
-     * @param array     $contents
-     * @param array     $details
+     * @param  string  $identifier
+     * @param  array   $options
+     *
+     * @return Field
      */
-    public static function build($id, $contents = [], $details = [])
+    public static function build($identifier, $options = [])
     {
         // Get instance
         try {
@@ -50,146 +154,187 @@ abstract class Field extends Base implements FieldInterface
             throw new FieldException(Translate::t('field.errors.class_is_not_defined'));
         }
 
-        // Set class
-        $class = get_class($field);
-        $hasid = $field->getModel()->getHasId();
-
         // Check ID
-        if ($hasid && empty($id)) {
-            throw new FieldException(sprintf(Translate::t('field.errors.field_id_is_not_defined'), $class));
+        if (empty($identifier)) {
+            throw new FieldException(sprintf(
+                Translate::t('field.errors.field_id_is_not_defined'),
+                $field->getClass()['name']
+            ));
         }
 
-        // Set ID
-        $contents['id'] = $id;
+        // Set identifier
+        $field->getModel()->setIdentifier($identifier);
 
-        // Set contents and details
-        $field->getModel()->setContents($contents);
-        $field->getModel()->setDetails($details);
+        // Set options
+        $options = array_merge($field->getModel()->getDefaults(), ['name' => $identifier], $options);
+        $field->getModel()->setOptions($options);
 
         // Get field
         return $field;
     }
 
     /**
-     * Retrieve field value
+     * Prepare HTML component for templating.
      *
-     * @param string $id
-     * @param array $details
-     * @param object $default
+     * @param  string  $template
+     * @param  object  $object
+     * @param  string  $type
      *
-     * @return string|integer|array|object|boolean|null
+     * @return string
      */
-    public static function getValue($id, $details, $default)
+    public function prepare($template = 'metabox', $object = null, $type = 'default')
     {
-        return Option::getValue($id, $details, $default);
-    }
-
-    /**
-     * Render HTML component.
-     *
-     * @param array     $contents
-     * @param array     $details
-     * @param boolean   $renderView
-     * @param string    $context
-     */
-    public function render($contents = [], $details = [], $renderView = true, $context = 'field')
-    {
-        // Merge datum
-        $contents = array_merge($this->getModel()->getContents(), $contents);
-        $details = array_merge($this->getModel()->getDetails(), $details);
-
-        // Get context
+        // Class
         $class = $this->getClass();
+
+        // Define available templates to extends
+        $twigtpl = in_array($template, $this->availabletemplates) ? $template : 'metabox';
+        $twigtpl = '@core/fields/'.$twigtpl.'.html.twig';
+
+        // Template definitions
         $context = strtolower($class['name']);
+        $views   = $class['resources'].S.'views';
 
-        // Get template to extends
-        $template = isset($details['template']) ? $details['template'] : '';
-        $contents['template_path'] = $this->setExtendedTemplate($template);
+        // Get field details
+        $defaults   = $this->getModel()->getDefaults();
+        $identifier = $this->getModel()->getIdentifier();
+        $options    = $this->getModel()->getOptions();
+        $tpl        = $this->getModel()->getTemplate();
 
-        // Get vars and tpl data
-        $this->getVars($contents, $details);
-        $tpl = [
-            'hasId' => $this->getModel()->getHasId(),
-            'template' => $this->getModel()->getTemplate(),
-            'vars' => $this->getModel()->getVars(),
-            'context' => $context
-        ];
+        // Define default value
+        $defaults['default'] = isset($options['default']) 
+            ? $options['default'] 
+            : (isset($defaults['default']) ? $defaults['default'] : '');
+
+        // Define object to never store `null` value
+        $object = is_null($object) ? 0 : $object;
+
+        // Set field value
+        $value = $this->value($identifier, $object, $defaults['default'], $type);
+        $value = is_string($value) ? stripslashes($value) : $value;
+
+        // Retrieve vars - used by field core system
+        $vars = $this->getVars($value, array_merge($defaults, [
+            'identifier' => $identifier,
+            'name'       => $identifier,
+            'value'      => $value,
+        ], $options));
 
         // Set error
-        $error = sprintf(Translate::t('field.errors.no_template_found'), $tpl['context'], $tpl['template']);
-        $tpl['vars']['error'] = isset($tpl['vars']['error']) ? $tpl['vars']['error'] : $error;
+        $error = sprintf(Translate::t('field.errors.no_template_found'), $context, $tpl);
+        $vars['error'] = isset($vars['error']) ? $vars['error'] : $error;
 
-        // Render view or return values
-        if ($renderView) {
-            Render::view($tpl['template'], $tpl['vars'], $tpl['context']);
-        } else {
-            return $tpl;
-        }
+        // Set parent template in vars
+        $vars['template_path'] = $twigtpl;
+
+        // Return template vars
+        return [
+            'context'  => $context,
+            'path'     => $views,
+            'template' => $tpl,
+            'vars'     => $vars,
+        ];
     }
 
     /**
-     * Render assets' component.
+     * Retrieve field translations
      *
-     * @return array $assets
+     * @return array
      */
-    public function renderAssets()
+    public static function translate()
     {
-        // Retrieve path to Resources and shortname's class
-        $class = $this->getClass();
-        $path = $class['resources'].S.'assets'.S;
-
-        // Get assets
-        $script = $this->getModel()->getScript();
-        $style = $this->getModel()->getStyle();
-
-        $assets = [];
-
-        // Do nothing if all empty
-        if (empty($script) && empty($style)) {
-            return $assets;
+        // Get instance
+        try {
+            $field = self::getInstance();
+        } catch (Exception $e) {
+            throw new FieldException(Translate::t('field.errors.class_is_not_defined'));
         }
 
-        // Scripts
-        if (!empty($script)) {
-            $assets[$script] = $path.$script;
-        }
+        // Set translations
+        $class = $field->getClass();
 
-        // Styles
-        if (!empty($style)) {
-            $assets[$style] = $path.$style;
-        }
-
-        return $assets;
+        return [
+            $field->textdomain => dirname(dirname($class['resources'])).S.'languages'
+        ];
     }
 
     /**
-     * Define the right template to extend.
+     * Retrieve field value
      *
-     * @param   string  $template
-     * @return  string  $extend_template
+     * @param  string  $identifier
+     * @param  object  $object
+     * @param  object  $default
+     * @param  string  $type
+     *
+     * @return object
      */
-    public function setExtendedTemplate($template = 'metabox')
+    public static function value($identifier, $object, $default, $type = 'default')
     {
-        // Define available templates to extends
-        $available = ['adminpage','metabox','term-add','term-edit','user','widget'];
+        $type = in_array($type, ['post', 'term', 'user', 'widget']) ? $type : 'default';
+        $sep = '-';
 
-        // Work on template
-        $twigtpl = in_array($template, $available) ? $template : 'metabox';
+        // Check id
+        if (empty($identifier) || null === $identifier) {
+            return null;
+        }
 
-        // Return template to extend
-        return '@core/fields/'.$twigtpl.'.html.twig';
+        // ~
+
+        // Post metaboxes
+        if ('post' === $type && $object) {
+            $value = Option::getPostMeta($object->ID, $object->post_type.$sep.$identifier, $default);
+            return Option::cleanValue($value);
+        }
+
+        // ~
+
+        // Term metaboxes
+        if ('term' === $type && $object) {
+            $value = Option::getTermMeta($object->term_id, $object->taxonomy.$sep.$identifier, $default);
+            return Option::cleanValue($value);
+        }
+
+        // ~
+
+        // Term metaboxes
+        if ('user' === $type && $object) {
+            $value = Option::getAuthorMeta($object->ID, $identifier, $default);
+            return Option::cleanValue($value);
+        }
+
+        // ~
+
+        // Widget metaboxes
+        if ('user' === $type && $object) {
+            $value = empty($object) ? $default : $object;
+            return Option::cleanValue($value);
+        }
+
+        // ~
+
+        // Default action
+        return Option::get($identifier, $default);
     }
 
     /**
-     * Prepare HTML component.
+     * Prepare defaults.
      *
-     * @param array $content
-     * @param array $details
+     * @return array   $defaults
      */
-    abstract protected function getVars($content, $details = []);
+    abstract protected function getDefaults();
 
     /**
      * Prepare variables.
+     *
+     * @param  object  $value
+     * @param  array   $contents
+     * @return array   $vars
      */
-    abstract protected function setVars();
+    abstract protected function getVars($value, $contents);
+
+    /**
+     * Update post value from request.
+     * @todo
+     */
+    //abstract protected function updatePost();
 }

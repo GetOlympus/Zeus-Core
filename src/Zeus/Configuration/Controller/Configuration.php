@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Zeus\Configuration\Controller;
 
+use GetOlympus\Zeus\Configuration\Interface\ConfigurationInterface;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 
 /**
@@ -14,7 +15,7 @@ use GetOlympus\Zeus\Helpers\Controller\Helpers;
  *
  */
 
-abstract class Configuration
+abstract class Configuration implements ConfigurationInterface
 {
     /**
      * @var string
@@ -22,16 +23,11 @@ abstract class Configuration
     protected $filepath = '';
 
     /**
-     * Add all usefull WP filters and hooks.
-     */
-    abstract public function init();
-
-    /**
      * Initialize filepath with configs.
      *
-     * @param string $prepend
-     * @param array $available
-     * @return array $functions
+     * @param  string  $prepend
+     * @param  array   $available
+     * @return array   $functions
      */
     public function getFunctions($prepend, $available)
     {
@@ -65,7 +61,7 @@ abstract class Configuration
     /**
      * Add resource path.
      *
-     * @param string $filepath
+     * @param  string  $filepath
      */
     public function setPath($filepath)
     {
@@ -76,4 +72,9 @@ abstract class Configuration
 
         $this->filepath = $file;
     }
+
+    /**
+     * Add all usefull WP filters and hooks.
+     */
+    abstract public function init();
 }

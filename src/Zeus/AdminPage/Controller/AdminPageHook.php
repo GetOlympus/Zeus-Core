@@ -2,9 +2,7 @@
 
 namespace GetOlympus\Zeus\AdminPage\Controller;
 
-use GetOlympus\Zeus\AdminPage\Controller\AdminPageField;
-use GetOlympus\Zeus\AdminPage\Controller\AdminPageHookInterface;
-use GetOlympus\Zeus\Field\Controller\Field;
+use GetOlympus\Zeus\AdminPage\Interface\AdminPageHookInterface;
 use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
@@ -23,14 +21,9 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 class AdminPageHook implements AdminPageHookInterface
 {
     /**
-     * @var string
+     * @var AdminPage
      */
-    protected $currentPage;
-
-    /**
-     * @var string
-     */
-    protected $currentSection;
+    protected $adminpage;
 
     /**
      * @var array
@@ -45,33 +38,54 @@ class AdminPageHook implements AdminPageHookInterface
     /**
      * @var string
      */
-    protected $parent;
+    protected $page;
+
+    /**
+     * @var boolean
+     */
+    protected $request;
+
+    /**
+     * @var string
+     */
+    protected $section;
 
     /**
      * Constructor.
      *
-     * @param string    $currentPage
-     * @param string    $currentSection
-     * @param string    $parent
-     * @param array     $options
+     * @param  AdminPage $adminpage
      */
-    public function __construct($currentPage, $currentSection, $parent, $options)
+    public function __construct($adminpage)
     {
+        $page = Request::get('page');
+
         // Check current page
-        if (empty($currentPage)) {
+        if (empty($page)) {
             return;
         }
 
-        // Define a current section if needed
-        if (!empty($options['sections']) && is_array($options['sections'])) {
-            reset($options['sections']);
-            $currentSection = empty($currentSection) ? key($options['sections']) : $currentSection;
+        $opts = $adminpage->getModel()->getPages($page);
+
+        // Check options
+        if (empty($opts)) {
+            return;
         }
 
-        $this->currentPage = $currentPage;
-        $this->currentSection = $currentSection;
-        $this->options = $options;
-        $this->parent = $parent;
+        $section = Request::get('section');
+
+        // Define a current section if needed
+        if (isset($opts['sections'])) {
+            reset($opts['sections']);
+            $section = !empty($section) && isset($opts['sections'][$section]) ? $section : key($opts['sections']);
+        } else {
+            $section = '';
+        }
+
+        $this->adminpage = $adminpage;
+        $this->options = $opts;
+        $this->page    = $page;
+        $this->request = false;
+        $this->section = $section;
 
         $this->init();
     }
@@ -82,31 +96,24 @@ class AdminPageHook implements AdminPageHookInterface
     public function init()
     {
         // Get options
-        $filter_slug = $this->currentPage;
+        $filter_slug = $this->page;
         $fields = isset($this->options['fields']) ? $this->options['fields'] : [];
 
         // Check sections
-        if (!empty($this->options['sections']) && is_array($this->options['sections'])) {
-            foreach ($this->options['sections'] as $sectionSlug => $sectionName) {
-                if ($sectionSlug !== $this->currentSection) {
-                    continue;
-                }
+        if (!empty($this->section)) {
+            $filter_slug .= '-'.$this->section;
 
-                if (isset($this->options['sections'][$this->currentSection]['fields'])) {
-                    $fields = $this->options['sections'][$this->currentSection]['fields'];
-                }
-
-                $filter_slug .= '-'.$this->currentSection;
-                break;
-            }
+            $fields = isset($this->options['sections'][$this->section]['fields'])
+                ? $this->options['sections'][$this->section]['fields']
+                : [];
         }
 
         /**
          * Build page contents.
          *
-         * @var     string  $currentPage
-         * @param   array   $contents
-         * @return  array   $contents
+         * @var    string  $filter_slug
+         * @param  array   $fields
+         * @return array   $fields
          */
         $this->fields = apply_filters('ol_zeus_adminpage_'.$filter_slug.'_contents', $fields);
 
@@ -122,32 +129,29 @@ class AdminPageHook implements AdminPageHookInterface
         // Save fields in DB
         $this->saveFields();
 
-        // Get contents
-        $pageCurrent = $this->currentPage;
-        $sectionCurrent = $this->currentSection;
-        $formFields = $this->fields;
-        $contentOptions = $this->options;
+        $parent = $this->adminpage->getModel()->getParent();
 
         // Get links
-        $u_parent = !empty($this->parent) ? $this->parent : 'admin.php';
-        $u_link = 'page='.$pageCurrent;
-        $u_section = !empty($sectionCurrent) ? '&section='.$sectionCurrent : '';
+        $u_parent  = !empty($parent) ? $parent : 'admin.php';
+        $u_link    = 'page='.$this->page;
+        $u_section = !empty($this->section) ? '&section='.$this->section : '';
 
         // Work on vars
         $vars = [
-            'title'         => $contentOptions['title'],
-            'description'   => $contentOptions['description'],
-            'submit'        => $contentOptions['submit'],
+            'title'         => $this->options['title'],
+            'description'   => $this->options['description'],
+            'submit'        => $this->options['submit'],
+            'request'       => $this->request ? Translate::t('adminpage.errors.successfully_updated') : false,
 
             // Texts and URLs
-            't_submit'      => Translate::t('adminpage.submit'),
+            't_submit'      => Translate::t('adminpage.labels.submit'),
             'u_link'        => $u_link,
             'u_action'      => admin_url($u_parent.'?'.$u_link.$u_section),
         ];
 
         // Display sections
-        if (!empty($contentOptions['sections']) && is_array($contentOptions['sections'])) {
-            foreach ($contentOptions['sections'] as $slug => $opts) {
+        if (!empty($this->options['sections'])) {
+            foreach ($this->options['sections'] as $slug => $opts) {
                 // Update option
                 $opts['slug'] = $slug;
                 $opts['u_link'] = admin_url($u_parent.'?'.$u_link.'&section='.$slug);
@@ -155,7 +159,7 @@ class AdminPageHook implements AdminPageHookInterface
                 // Update vars
                 $vars['sections'][] = $opts;
 
-                if ($slug !== $sectionCurrent) {
+                if ($slug !== $this->section) {
                     continue;
                 }
 
@@ -165,24 +169,38 @@ class AdminPageHook implements AdminPageHookInterface
         }
 
         // Work on current vars
-        $vars['c_page'] = $pageCurrent;
-        $vars['c_section'] = $sectionCurrent;
+        $vars['c_page']    = $this->page;
+        $vars['c_section'] = $this->section;
+
+        // Prepare admin scripts and styles
+        $assets = [
+            'scripts' => [],
+            'styles'  => [],
+        ];
 
         // Display fields
-        if (!empty($formFields)) {
-            foreach ($formFields as $field) {
+        if (!empty($this->fields)) {
+            foreach ($this->fields as $field) {
                 if (!$field) {
                     continue;
                 }
 
-                $vars['fields'][] = $field->render([], [
-                    'template' => 'adminpage',
-                ], false);
+                // Update scripts and styles
+                $fieldassets = $field->assets();
+
+                if (!empty($fieldassets)) {
+                    $assets['scripts'] = array_merge($assets['scripts'], $fieldassets['scripts']);
+                    $assets['styles']  = array_merge($assets['styles'], $fieldassets['styles']);
+                }
+
+                // Prepare fields to be displayed
+                $vars['fields'][] = $field->prepare('adminpage');
             }
         }
 
         // Render view
-        Render::view('adminpage.html.twig', $vars, 'adminpage');
+        $render = new Render('core', 'layouts'.S.'adminpage.html.twig', $vars, $assets);
+        $render->view();
     }
 
     /**
@@ -202,16 +220,15 @@ class AdminPageHook implements AdminPageHookInterface
                 continue;
             }
 
-            // Build contents
-            $ctn = (array) $field->getModel()->getContents();
-            $hasId = (boolean) $field->getModel()->getHasId();
+            $id = (string) $field->getModel()->getIdentifier();
 
-            // Check ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+            if (empty($id)) {
                 continue;
             }
 
-            $ids[] = $ctn['id'];
+            //$field->updatePost();
+
+            $ids[] = $id;
         }
 
         $this->saveRequest($ids);
@@ -221,7 +238,7 @@ class AdminPageHook implements AdminPageHookInterface
     /**
      * Save files.
      *
-     * @param array $ids
+     * @param  array   $ids
      */
     public function saveFiles($ids)
     {
@@ -250,16 +267,18 @@ class AdminPageHook implements AdminPageHookInterface
             // Register settings
             Option::set($k, $file['url']);
         }
+
+        $this->request = true;
     }
 
     /**
      * Save request.
      *
-     * @param array $ids
+     * @param  array   $ids
      */
     public function saveRequest($ids)
     {
-        // Work on $_POST
+        // Works on $_POST
         $request = $_POST;
 
         if (empty($request) || empty($ids) || !isset($request['updated']) || 'true' !== $request['updated']) {
@@ -269,12 +288,14 @@ class AdminPageHook implements AdminPageHookInterface
         // Iterate
         foreach ($request as $k => $v) {
             // Don't register this default value
-            if (in_array($k, ['updated','submit']) || !in_array($k, $ids)) {
+            if (in_array($k, ['updated', 'submit']) || !in_array($k, $ids)) {
                 continue;
             }
 
             // Register settings
             Option::set($k, $v);
         }
+
+        $this->request = true;
     }
 }

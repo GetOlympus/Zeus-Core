@@ -2,8 +2,7 @@
 
 namespace GetOlympus\Zeus\Term\Model;
 
-use GetOlympus\Zeus\Term\Controller\TermHook;
-use GetOlympus\Zeus\Term\Model\TermModelInterface;
+use GetOlympus\Zeus\Term\Interface\TermModelInterface;
 
 /**
  * Term model.
@@ -27,11 +26,6 @@ class TermModel implements TermModelInterface
      * @var array
      */
     protected $fields;
-
-    /**
-     * @var TermHook
-     */
-    protected $hook;
 
     /**
      * @var array
@@ -62,7 +56,7 @@ class TermModel implements TermModelInterface
     /**
      * Sets the value of args.
      *
-     * @param array $args the args
+     * @param  array   $args
      *
      * @return self
      */
@@ -86,37 +80,13 @@ class TermModel implements TermModelInterface
     /**
      * Sets the value of fields.
      *
-     * @param array $fields the fields
+     * @param  array   $fields
      *
      * @return self
      */
     public function setFields(array $fields = [])
     {
         $this->fields = $fields;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of hook.
-     *
-     * @return TermHook
-     */
-    public function getHook()
-    {
-        return $this->hook;
-    }
-
-    /**
-     * Sets the value of hook.
-     *
-     * @param TermHook $hook the hook
-     *
-     * @return self
-     */
-    public function setHook(TermHook $hook)
-    {
-        $this->hook = $hook;
 
         return $this;
     }
@@ -134,7 +104,7 @@ class TermModel implements TermModelInterface
     /**
      * Sets the value of labels.
      *
-     * @param array $labels the labels
+     * @param  array   $labels
      *
      * @return self
      */
@@ -158,11 +128,11 @@ class TermModel implements TermModelInterface
     /**
      * Sets the value of posttype.
      *
-     * @param string $posttype the posttype
+     * @param  string  $posttype
      *
      * @return self
      */
-    public function setPosttype($posttype)
+    public function setPosttype(string $posttype)
     {
         $this->posttype = $posttype;
 
@@ -182,11 +152,11 @@ class TermModel implements TermModelInterface
     /**
      * Sets the value of slug.
      *
-     * @param string $slug the slug
+     * @param  string  $slug
      *
      * @return self
      */
-    public function setSlug($slug)
+    public function setSlug(string $slug)
     {
         $this->slug = $slug;
 

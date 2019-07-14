@@ -1,5 +1,0 @@
-# Main contents
-metabox:
-  errors:
-    no_type_is_defined: A field is missing because no type is defined.
-    no_fields: The metabox contains no fields.

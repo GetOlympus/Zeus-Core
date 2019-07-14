@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Widget\Model;
 
-use GetOlympus\Zeus\Widget\Model\WidgetModelInterface;
+use GetOlympus\Zeus\Widget\Interface\WidgetModelInterface;
 
 /**
  * Widget model.
@@ -43,8 +43,8 @@ class WidgetModel implements WidgetModelInterface
      * @var array
      */
     protected $options = [
-        'height'    => 200,
-        'width'     => 250,
+        'height' => 200,
+        'width'  => 250,
     ];
 
     /**
@@ -75,7 +75,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of classname.
      *
-     * @param string $classname the classname
+     * @param  string  $classname
      *
      * @return self
      */
@@ -99,7 +99,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of displayTitle.
      *
-     * @param boolean $displayTitle the displayTitle
+     * @param  boolean $displayTitle
      *
      * @return self
      */
@@ -123,7 +123,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of fields.
      *
-     * @param array $fields the fields
+     * @param  array   $fields
      *
      * @return self
      */
@@ -147,7 +147,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of identifier.
      *
-     * @param string $identifier the identifier
+     * @param  string  $identifier
      *
      * @return self
      */
@@ -171,7 +171,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the The "height" key is never used. For more informations:.
      *
-     * @param array $options the options
+     * @param  array   $options
      *
      * @return self
      */
@@ -195,7 +195,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of settings.
      *
-     * @param array $settings the settings
+     * @param  array   $settings
      *
      * @return self
      */
@@ -219,7 +219,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of template.
      *
-     * @param string $template the template
+     * @param  string  $template
      *
      * @return self
      */
@@ -243,7 +243,7 @@ class WidgetModel implements WidgetModelInterface
     /**
      * Sets the value of title.
      *
-     * @param string $title the title
+     * @param  string  $title
      *
      * @return self
      */

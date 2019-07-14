@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Request\Controller;
 
-use GetOlympus\Zeus\Request\Controller\RequestInterface;
+use GetOlympus\Zeus\Request\Interface\RequestInterface;
 use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
 
 /**
@@ -20,7 +20,7 @@ class Request implements RequestInterface
     /**
      * Return a slug list where it is authorized to render assets.
      *
-     * @return  array $authorizedPage
+     * @return array   $authorizedPage
      */
     public static function authorizedAssets()
     {
@@ -32,9 +32,9 @@ class Request implements RequestInterface
     /**
      * Return $_GET value.
      *
-     * @param   string $param
-     * @param   string $default
-     * @return  string $value
+     * @param  string  $param
+     * @param  string  $default
+     * @return string  $value
      */
     public static function get($param, $default = '')
     {
@@ -44,7 +44,7 @@ class Request implements RequestInterface
     /**
      * Get used slug in current admin panel page.
      *
-     * @return string $slug
+     * @return string  $slug
      */
     public static function getCurrentSlug()
     {
@@ -99,9 +99,9 @@ class Request implements RequestInterface
     /**
      * Return $_POST value.
      *
-     * @param   string $param
-     * @param   string $default
-     * @return  string $value
+     * @param  string  $param
+     * @param  string  $default
+     * @return string  $value
      */
     public static function post($param, $default = '')
     {

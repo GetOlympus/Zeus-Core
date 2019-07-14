@@ -2,10 +2,9 @@
 
 namespace GetOlympus\Zeus\Translate\Controller;
 
-use GetOlympus\Zeus\Translate\Controller\TranslateInterface;
+use GetOlympus\Zeus\Translate\Interface\TranslateInterface;
 use Symfony\Component\Translation\MessageSelector;
 use Symfony\Component\Translation\Translator;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 /**
  * Translates typos.
@@ -34,47 +33,8 @@ class Translate implements TranslateInterface
      */
     public function __construct()
     {
-        // Get global local used
-        $local = str_replace('-', '_', OL_ZEUS_LOCAL);
-
-        // Get all available locals
-        $availables = [
-            'en_EN'
-            // Other languages will be available very soon!
-        ];
-
-        // Check local
-        $lang = !in_array($local, $availables) ? $availables[0] : $local;
-
-        // Build all YAML files to add
-        $yamls = [
-            OL_ZEUS_PATH.S.'AdminPage'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'Configuration'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'Field'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'Metabox'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'Posttype'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'Term'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'User'.S.'Resources'.S.'languages' => 'core',
-            OL_ZEUS_PATH.S.'Widget'.S.'Resources'.S.'languages' => 'core',
-        ];
-
-        /**
-         * Add your custom languages with alias.
-         *
-         * @param   array $yamls
-         * @return  array $yamls
-         */
-        $yamls = apply_filters('ol_zeus_translate_resources', $yamls);
-
         // Define Translator
         $this->translator = new Translator($lang, new MessageSelector(), OL_ZEUS_CACHE);
-        $this->translator->addLoader('yaml', new YamlFileLoader());
-
-        // Add languages in `core` dictionary
-        foreach ($yamls as $path => $package) {
-            $file = $path.S.$lang.'.yaml';
-            $this->translator->addResource('yaml', $file, $lang, $package);
-        }
     }
 
     /**
@@ -90,43 +50,76 @@ class Translate implements TranslateInterface
     }
 
     /**
-     * Choice typo.
+     * Load translations.
      *
-     * @param   string  $message
-     * @param   integer $number
-     * @param   array   $args
-     * @param   string  $domain
-     * @param   string  $locale
-     * @return  string
+     * @param  array   $translations
+     * @param  string  $locale
      */
-    public static function c($message, $number, $args = [], $domain = 'core', $locale = 'en_EN')
+    public static function l($translations = [], $locale = 'default')
     {
-        return self::getInstance()->translator->transChoice($message, $number, $args, $domain, $locale);
+        if (empty($translations)) {
+            return;
+        }
+
+        // Define current locale
+        $currentlocale = determine_locale();
+
+        // Create MO file if current locale does not exist
+        add_action('load_textdomain_mofile', function ($mofile, $domain) use ($translations, $currentlocale, $locale) {
+            // Check if domain is concerned by translations
+            if (!array_key_exists($domain, $translations)) {
+                return $mofile;
+            }
+
+            // Change locale if needed
+            if (!file_exists($mofile)) {
+                $mofile = str_replace($currentlocale.'.mo', $locale.'.mo', $mofile);
+            }
+
+            return $mofile;
+        }, 10, 2);
+
+        // Iterate
+        foreach ($translations as $domain => $languages) {
+            load_textdomain($domain, rtrim($languages, S).S.$domain.'-'.$currentlocale.'.mo');
+        }
     }
 
     /**
      * Noop typo from WordPress.
      *
-     * @param   string $singular
-     * @param   string $plural
-     * @return  string
+     * @param  string  $single
+     * @param  string  $plural
+     * @param  integer $number
+     * @param  string  $domain
+     * @return string
      */
-    public static function n($singular, $plural)
+    public static function n($single, $plural, $number = 1, $domain = 'olympus-zeus')
     {
-        return _n_noop($singular, $plural);
+        return _n($single, $plural, $number, $domain);
+    }
+
+    /**
+     * Prepare noop typo from WordPress.
+     *
+     * @param  string  $single
+     * @param  string  $plural
+     * @return string
+     */
+    public static function noop($single, $plural)
+    {
+        return _n_noop($single, $plural);
     }
 
     /**
      * Translate typo.
      *
-     * @param   string  $message
-     * @param   array   $args
-     * @param   string  $domain
-     * @param   string  $locale
-     * @return  Translate
+     * @param  string  $message
+     * @param  string  $domain
+     * @return string
      */
-    public static function t($message, $args = [], $domain = 'core', $locale = 'en_EN')
+    public static function t($message, $domain = 'olympus-zeus')
     {
-        return self::getInstance()->translator->trans($message, $args, $domain, $locale);
+        return __($message, $domain);
     }
 }

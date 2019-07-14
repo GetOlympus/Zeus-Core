@@ -4,8 +4,8 @@ namespace GetOlympus\Zeus\Metabox\Controller;
 
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
-use GetOlympus\Zeus\Metabox\Controller\MetaboxInterface;
 use GetOlympus\Zeus\Metabox\Exception\MetaboxException;
+use GetOlympus\Zeus\Metabox\Interface\MetaboxInterface;
 use GetOlympus\Zeus\Metabox\Model\MetaboxModel;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -33,8 +33,8 @@ class Metabox extends Base implements MetaboxInterface
     /**
      * Build Metabox component.
      *
-     * @param string    $title
-     * @param array     $fields
+     * @param  string  $title
+     * @param  array   $fields
      */
     public static function build($title, $fields = [])
     {
@@ -60,8 +60,8 @@ class Metabox extends Base implements MetaboxInterface
     /**
      * Initialization.
      *
-     * @param string $identifier
-     * @param string $slug
+     * @param  string  $identifier
+     * @param  string  $slug
      */
     public function init($identifier, $slug)
     {
@@ -88,16 +88,13 @@ class Metabox extends Base implements MetaboxInterface
             $this->getModel()->getPriority(),
             $fields
         );
-
-        // Render assets
-        Render::assets(['post.php', 'post-new.php'], $fields);
     }
 
     /**
      * Callback function.
      *
-     * @param array $post
-     * @param array $args
+     * @param  array   $post
+     * @param  array   $args
      * @return int|null
      */
     public function callback($post, $args)
@@ -115,6 +112,12 @@ class Metabox extends Base implements MetaboxInterface
             throw new MetaboxException(Translate::t('metabox.errors.no_type_is_defined'));
         }
 
+        // Prepare admin scripts and styles
+        $assets = [
+            'scripts' => [],
+            'styles'  => [],
+        ];
+
         $vars = [];
 
         // Display fields
@@ -123,14 +126,20 @@ class Metabox extends Base implements MetaboxInterface
                 continue;
             }
 
-            $vars['fields'][] = $field->render([], [
-                'template' => 'metabox',
-                'post' => $post,
-            ], false);
+            // Update scripts and styles
+            $fieldassets = $field->assets();
+
+            if (!empty($fieldassets)) {
+                $assets['scripts'] = array_merge($assets['scripts'], $fieldassets['scripts']);
+                $assets['styles']  = array_merge($assets['styles'], $fieldassets['styles']);
+            }
+
+            $vars['fields'][] = $field->prepare('metabox', $post, 'post');
         }
 
         // Render view
-        Render::view('metabox.html.twig', $vars, 'metabox');
+        $render = new Render('core', 'layouts'.S.'metabox.html.twig', $vars, $assets);
+        $render->view();
 
         // Return post if it is asked
         return isset($post->ID) ? $post->ID : null;

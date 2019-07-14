@@ -1,7 +1,0 @@
-# Main contents
-configuration:
-  accessmanagement:
-    login:
-      error: Incorrect login errors
-  sidebar:
-    name: Olympus sidebar title

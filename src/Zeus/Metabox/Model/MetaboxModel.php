@@ -2,13 +2,13 @@
 
 namespace GetOlympus\Zeus\Metabox\Model;
 
-use GetOlympus\Zeus\Metabox\Model\MetaboxModelInterface;
+use GetOlympus\Zeus\Metabox\Interface\MetaboxModelInterface;
 
 /**
  * Metabox model.
  *
  * @package    OlympusZeusCore
- * @subpackage Metabox\Model
+ * @subpackage Metabox\Interface
  * @author     Achraf Chouk <achrafchouk@gmail.com>
  * @since      0.0.1
  *
@@ -69,7 +69,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of args.
      *
-     * @param array $args the args
+     * @param  array   $args
      *
      * @return self
      */
@@ -93,7 +93,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of callback.
      *
-     * @param function $callback the callback
+     * @param  function $callback
      *
      * @return self
      */
@@ -117,7 +117,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of context.
      *
-     * @param string $context the context
+     * @param  string  $context
      *
      * @return self
      */
@@ -141,7 +141,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of fields.
      *
-     * @param array $fields the fields
+     * @param  array   $fields
      *
      * @return self
      */
@@ -165,7 +165,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of id.
      *
-     * @param string $id the id
+     * @param  string  $id
      *
      * @return self
      */
@@ -189,7 +189,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of priority.
      *
-     * @param string $priority the priority
+     * @param  string  $priority
      *
      * @return self
      */
@@ -213,7 +213,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of slug.
      *
-     * @param string $slug the slug
+     * @param  string  $slug
      *
      * @return self
      */
@@ -237,7 +237,7 @@ class MetaboxModel implements MetaboxModelInterface
     /**
      * Sets the value of title.
      *
-     * @param string $title the title
+     * @param  string  $title
      *
      * @return self
      */

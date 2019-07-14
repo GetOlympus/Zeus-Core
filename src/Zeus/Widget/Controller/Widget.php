@@ -7,7 +7,7 @@ use GetOlympus\Zeus\Field\Controller\Field;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
-use GetOlympus\Zeus\Widget\Controller\WidgetInterface;
+use GetOlympus\Zeus\Widget\Interface\WidgetInterface;
 use GetOlympus\Zeus\Widget\Model\WidgetModel;
 
 /**
@@ -62,7 +62,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
         $settings = $this->getModel()->getSettings();
         $this->getModel()->setSettings(array_merge([
             'classname' => $classname,
-            'description' => Translate::t('widget.settings.description'),
+            'description' => Translate::t('widget.labels.description'),
         ], $settings));
 
         // Create the widget
@@ -85,17 +85,17 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     /**
      * Cache the widget.
      *
-     * @param array $args
-     * @param string $content
-     * @return string $content
+     * @param  array   $args
+     * @param  string  $content
+     * @return string  $content
      */
     public function cache_widget($args, $content)
     {
         /**
          * Retrieve widget classname as cache key.
          *
-         * @param string $classname
-         * @return string $classname
+         * @param  string  $classname
+         * @return string  $classname
          */
         wp_cache_set(
             $this->getModel()->getIdentifier(),
@@ -133,15 +133,15 @@ abstract class Widget extends BaseWidget implements WidgetInterface
         // Add Title field from default mode
         $new_title = [
             'special' => [
-                'id' => 'title',
-                'title' => Translate::t('widget.fields.title'),
+                'id'    => 'title',
+                'title' => Translate::t('widget.labels.field_title'),
             ],
         ];
 
         // Add Title field from `olympus-text-field` component
         if (class_exists('\\GetOlympus\\Field\\Text')) {
             $new_title = \GetOlympus\Field\Text::build('title', [
-                'title' => Translate::t('widget.fields.title'),
+                'title' => Translate::t('widget.labels.field_title'),
             ]);
         }
 
@@ -151,54 +151,45 @@ abstract class Widget extends BaseWidget implements WidgetInterface
 
         $vars = [];
 
+        // Prepare admin scripts and styles
+        $assets = [
+            'scripts' => [],
+            'styles'  => [],
+        ];
+
         // Get fields
         foreach ($fields as $field) {
             if (!$field) {
                 continue;
             }
 
-            // Build contents
-            if (is_array($field) && isset($field['special'])) {
-                $ctn = (array) $field['special'];
-                $hasId = true;
-            } else {
-                $ctn = (array) $field->getModel()->getContents();
-                $hasId = (boolean) $field->getModel()->getHasId();
-            }
+            $id = (string) $field->getModel()->getIdentifier();
 
-            // Check fields
-            if (empty($ctn) || !$hasId) {
+            if (empty($id)) {
                 continue;
             }
 
-            // Does the field have an ID
-            if (!isset($ctn['id']) || empty($ctn['id'])) {
-                continue;
+            // Update scripts and styles
+            $fieldassets = $field->assets();
+
+            if (!empty($fieldassets)) {
+                $assets['scripts'] = array_merge($assets['scripts'], $fieldassets['scripts']);
+                $assets['styles']  = array_merge($assets['styles'], $fieldassets['styles']);
             }
 
-            // Value
-            $id = isset($ctn['id']) ? $ctn['id'] : '';
-            $value = !empty($id) && isset($instance[$id]) ? $instance[$id] : '';
-
-            // Id and name
-            $ctn['id'] = $this->get_field_id($id);
-            $ctn['name'] = $this->get_field_name($id);
-
-            // Get render field
-            $vars['fields'][] = $field->render($ctn, [
-                'template' => 'widget',
-                'widget_value' => $value
-            ], false);
+            // Prepare fields to be displayed
+            $vars['fields'][] = $field->prepare('widget');
         }
 
         // Render view
-        Render::view('widget.html.twig', $vars, 'widget');
+        $render = new Render('core', 'layouts'.S.'widget.html.twig', $vars, $assets);
+        $render->view();
     }
 
     /**
      * Get cached widget.
      *
-     * @param array $args
+     * @param  array   $args
      * @return boolean true|false
      */
     public function get_cached_widget($args)
@@ -221,9 +212,9 @@ abstract class Widget extends BaseWidget implements WidgetInterface
      * Deals with the settings when they are saved by the admin. Here is
      * where any validation should be dealt with.
      *
-     * @param array $new_instance
-     * @param array $old_instance
-     * @return array $instance
+     * @param  array   $new_instance
+     * @param  array   $old_instance
+     * @return array   $instance
      */
     public function update($new_instance, $old_instance)
     {
@@ -252,9 +243,9 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     /**
      * HTML at the start of a widget.
      *
-     * @param array     $args
-     * @param array     $instance
-     * @param string    $title
+     * @param  array   $args
+     * @param  array   $instance
+     * @param  string  $title
      */
     public function widget_start($args, $instance, $title)
     {
@@ -268,8 +259,8 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     /**
      * HTML at the end of a widget.
      *
-     * @param  array $args
-     * @return string $after_widget
+     * @param  array   $args
+     * @return string  $after_widget
      */
     public function widget_end($args)
     {
@@ -279,8 +270,8 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     /**
      * Outputs the HTML for this widget.
      *
-     * @param array $args
-     * @param array $instance
+     * @param  array   $args
+     * @param  array   $instance
      * @return void
      **/
     public function widget($args, $instance)
@@ -327,7 +318,7 @@ abstract class Widget extends BaseWidget implements WidgetInterface
     /**
      * Display widget contents
      *
-     * @param array $instance Contains all field data.
+     * @param  array   $instance
      */
     abstract public function display($instance = []);
 

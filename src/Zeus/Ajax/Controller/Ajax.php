@@ -2,10 +2,9 @@
 
 namespace GetOlympus\Zeus\Ajax\Controller;
 
-use GetOlympus\Zeus\Ajax\Controller\AjaxInterface;
+use GetOlympus\Zeus\Ajax\Interface\AjaxInterface;
 use GetOlympus\Zeus\Ajax\Model\AjaxModel;
 use GetOlympus\Zeus\Base\Controller\Base;
-use GetOlympus\Zeus\Hook\Controller\Hook;
 
 /**
  * Gets its own ajax call.

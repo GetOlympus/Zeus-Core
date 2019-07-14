@@ -2,8 +2,8 @@
 
 namespace GetOlympus\Zeus\Posttype\Model;
 
-use GetOlympus\Zeus\Posttype\Controller\PosttypeHook;
-use GetOlympus\Zeus\Posttype\Model\PosttypeModelInterface;
+use GetOlympus\Zeus\Metabox\Controller\Metabox;
+use GetOlympus\Zeus\Posttype\Interface\PosttypeModelInterface;
 
 /**
  * Post type model.
@@ -24,11 +24,6 @@ class PosttypeModel implements PosttypeModelInterface
     protected $args;
 
     /**
-     * @var PosttypeHook
-     */
-    protected $hook;
-
-    /**
      * @var array
      * @see https://codex.wordpress.org/Function_Reference/register_post_type#labels
      */
@@ -37,7 +32,7 @@ class PosttypeModel implements PosttypeModelInterface
     /**
      * @var array
      */
-    protected $metaboxes;
+    protected $metabox;
 
     /**
      * @var string
@@ -57,37 +52,13 @@ class PosttypeModel implements PosttypeModelInterface
     /**
      * Sets the value of args.
      *
-     * @param array $args the args
+     * @param  array   $args
      *
      * @return self
      */
     public function setArgs($args)
     {
         $this->args = $args;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of hook.
-     *
-     * @return PosttypeHook
-     */
-    public function getHook()
-    {
-        return $this->hook;
-    }
-
-    /**
-     * Sets the value of hook.
-     *
-     * @param PosttypeHook $hook the hook
-     *
-     * @return self
-     */
-    public function setHook(PosttypeHook $hook)
-    {
-        $this->hook = $hook;
 
         return $this;
     }
@@ -105,7 +76,7 @@ class PosttypeModel implements PosttypeModelInterface
     /**
      * Sets the value of labels.
      *
-     * @param array $labels the labels
+     * @param  array   $labels
      *
      * @return self
      */
@@ -117,25 +88,29 @@ class PosttypeModel implements PosttypeModelInterface
     }
 
     /**
-     * Gets the value of metaboxes.
+     * Gets the value of metabox.
+     *
+     * @param  string  $identifier
      *
      * @return array
      */
-    public function getMetaboxes()
+    public function getMetabox($identifier = '')
     {
-        return $this->metaboxes;
+        return isset($this->metabox[$identifier]) ? $this->metabox[$identifier] : $this->metabox;
     }
 
     /**
-     * Sets the value of metaboxes.
+     * Sets the value of metabox.
      *
-     * @param array $metaboxes the metaboxes
+     * @param  string  $identifier
+     * @param  string  $title
+     * @param  array   $fields
      *
      * @return self
      */
-    public function setMetaboxes($metaboxes = [])
+    public function setMetabox($identifier, $title, $fields)
     {
-        $this->metaboxes = $metaboxes;
+        $this->metabox[$identifier] = Metabox::build($title, $fields);
 
         return $this;
     }
@@ -153,7 +128,7 @@ class PosttypeModel implements PosttypeModelInterface
     /**
      * Sets the value of slug.
      *
-     * @param string $slug the slug
+     * @param  string  $slug
      *
      * @return self
      */

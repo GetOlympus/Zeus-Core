@@ -43,7 +43,7 @@ class Sidebars extends Configuration
     {
         // Define defaults
         $default = [
-            'name'          => Translate::t('configuration.sidebar.name'),
+            'name'          => Translate::t('configuration.sidebars.labels.name'),
             'id'            => '',
             'description'   => '',
             'class'         => '',

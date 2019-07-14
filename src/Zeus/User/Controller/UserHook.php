@@ -7,7 +7,7 @@ use GetOlympus\Zeus\Option\Controller\Option;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
 use GetOlympus\Zeus\Translate\Controller\Translate;
-use GetOlympus\Zeus\User\Controller\UserHookInterface;
+use GetOlympus\Zeus\User\Interface\UserHookInterface;
 
 /**
  * Works with User Engine.
@@ -22,36 +22,28 @@ use GetOlympus\Zeus\User\Controller\UserHookInterface;
 class UserHook implements UserHookInterface
 {
     /**
-     * @var array
+     * @var User
      */
-    protected $fields;
-
-    /**
-     * @var string
-     */
-    protected $title;
+    protected $user;
 
     /**
      * Constructor.
      *
-     * @param string    $title
-     * @param array     $fields
+     * @param  User    $user
      */
-    public function __construct($title = '', $fields = [])
+    public function __construct($user)
     {
+        $fields = $user->getModel()->getFields();
+
         // Check fields
         if (empty($fields)) {
             return;
         }
 
-        $this->fields = $fields;
-        $this->title = $title;
+        $this->user = $user;
 
         // Save or show custom fields
         if (OL_ZEUS_ISADMIN) {
-            // Render assets
-            Render::assets(['profile.php'], $this->fields);
-
             // Save
             add_action('personal_options_update', [&$this, 'saveProfileFields']);
             add_action('edit_user_profile_update', [&$this, 'saveProfileFields']);
@@ -65,12 +57,12 @@ class UserHook implements UserHookInterface
     /**
      * Hook to save user custom fields.
      *
-     * @param integer $user_id
+     * @param  integer $user_id
      */
     public function saveProfileFields($user_id)
     {
         // Get contents
-        $fields = $this->fields;
+        $fields = $this->user->getModel()->getFields();
 
         // Check fields
         if (empty($fields)) {
@@ -88,30 +80,27 @@ class UserHook implements UserHookInterface
                 continue;
             }
 
-            // Build contents
-            $ctn = (array) $field->getModel()->getContents();
-            $hasId = (boolean) $field->getModel()->getHasId();
+            $id = (string) $field->getModel()->getIdentifier();
 
-            // Check ID
-            if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+            if (empty($id)) {
                 continue;
             }
 
-            $value = Request::post($ctn['id']);
-            Option::updateAuthorMeta($user_id, $ctn['id'], $value);
+            $value = Request::post($id);
+            Option::updateAuthorMeta($user_id, $id, $value);
         }
     }
 
     /**
      * Hook to display user custom fields.
      *
-     * @param object $user
+     * @param  object  $user
      */
     public function showProfileFields($user)
     {
         // Get contents
-        $fields = $this->fields;
-        $title = $this->title;
+        $fields = $this->user->getModel()->getFields();
+        $title = $this->user->getModel()->getTitle();
 
         // Check fields
         if (empty($fields)) {
@@ -119,7 +108,13 @@ class UserHook implements UserHookInterface
         }
 
         $vars = [
-            't_user_title' => !empty($title) ? $title : Translate::t('user.title'),
+            't_user_title' => !empty($title) ? $title : Translate::t('user.labels.title'),
+        ];
+
+        // Prepare admin scripts and styles
+        $assets = [
+            'scripts' => [],
+            'styles'  => [],
         ];
 
         // Get all values
@@ -128,13 +123,20 @@ class UserHook implements UserHookInterface
                 continue;
             }
 
-            $vars['fields'][] = $field->render([], [
-                'template' => 'user',
-                'user' => $user,
-            ], false);
+            // Update scripts and styles
+            $fieldassets = $field->assets();
+
+            if (!empty($fieldassets)) {
+                $assets['scripts'] = array_merge($assets['scripts'], $fieldassets['scripts']);
+                $assets['styles']  = array_merge($assets['styles'], $fieldassets['styles']);
+            }
+
+            // Prepare fields to be displayed
+            $vars['fields'][] = $field->prepare('user');
         }
 
         // Render view
-        Render::view('user.html.twig', $vars, 'user');
+        $render = new Render('core', 'layouts'.S.'user.html.twig', $vars, $assets);
+        $render->view();
     }
 }

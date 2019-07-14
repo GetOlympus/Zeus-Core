@@ -54,20 +54,40 @@ class AccessManagement extends Configuration
             return;
         }
 
-        // Change login URL
-        add_filter('login_redirect', function () use ($slug) {
-            return site_url().$slug;
+        // Customize Network site and Site URLs
+        add_filter('network_site_url', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
         });
-
-        // Customize Site URL
         add_filter('site_url', function ($url) use ($slug, $wplogin) {
             return str_replace($wplogin, $slug, $url);
-        }, 10, 3);
+        });
+
+        // Manage redirects
+        add_filter('login_redirect', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
+        });
+        add_filter('logout_redirect', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
+        });
+        add_filter('lostpassword_redirect', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
+        });
 
         // Make the redirection works properly
         add_filter('wp_redirect', function ($url) use ($slug, $wplogin) {
             return str_replace($wplogin, $slug, $url);
-        }, 10, 2);
+        });
+        add_filter('login_url', function ($url) use ($slug, $wplogin) {
+            return str_replace($wplogin, $slug, $url);
+        });
+
+        // Update form on wp-login page
+        add_action('login_form', function () use ($slug, $wplogin) {
+            $form_content = ob_get_contents();
+            $form_content = str_replace($wplogin, $slug, $form_content);
+            ob_get_clean();
+            echo $form_content;
+        }, 1);
     }
 
     /**
@@ -78,7 +98,7 @@ class AccessManagement extends Configuration
     public function loginErrorAccessManagement($message)
     {
         // Define default message
-        $message = $message ? $message : Translate::t('configuration.accessmanagement.login.error');
+        $message = $message ? $message : Translate::t('configuration.access.errors.incorrect_login');
 
         // Change login error message
         add_filter('login_errors', function () use ($message) {

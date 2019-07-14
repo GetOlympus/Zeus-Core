@@ -79,10 +79,15 @@ define('OL_ZEUS_NAME', defined('OL_BLOG_NAME') ? OL_BLOG_NAME : get_bloginfo('na
 define('OL_ZEUS_URI', defined('DISTPATH') ? str_replace(WEBPATH, '/../', DISTPATH) : OL_ZEUS_HOME.'/app/assets/');
 // Language blog
 define('OL_ZEUS_LOCAL', defined('OL_BLOG_LANGUAGE') ? OL_BLOG_LANGUAGE : get_bloginfo('language'));
-// Assets folder
-define('OL_ZEUS_DISTPATH', defined('DISTPATH') ? DISTPATH : $path.S.'app'.S.'assets'.S);
+
 // Twig cache folder
 define('OL_ZEUS_CACHE', defined('CACHEPATH') ? CACHEPATH : $path.S.'app'.S.'cache'.S);
+// Zeus Assets folder
+define('OL_ZEUS_ASSETSPATH', $path.S.'app'.S.'assets'.S);
+// Assets folder
+define('OL_ZEUS_DISTPATH', defined('DISTPATH') ? DISTPATH : $path.S.'app'.S.'assets'.S);
+// Languages folder
+define('OL_ZEUS_LANGUAGES', $path.S.'languages');
 
 
 /**
@@ -102,88 +107,18 @@ abstract class Zeus extends Application
     /**
      * @var array
      */
-    protected $externals = [
+    protected $defaultfields = [
         // Zeus field components
-        'BackgroundField'   => 'GetOlympus\Field\Background',
-        'CheckboxField'     => 'GetOlympus\Field\Checkbox',
-        'CodeField'         => 'GetOlympus\Field\Code',
-        'ColorField'        => 'GetOlympus\Field\Color',
-        'DateField'         => 'GetOlympus\Field\Date',
-        'FileField'         => 'GetOlympus\Field\File',
-        'FontField'         => 'GetOlympus\Field\Font',
-        'HiddenField'       => 'GetOlympus\Field\Hidden',
-        'HtmlField'         => 'GetOlympus\Field\Html',
-        'LinkField'         => 'GetOlympus\Field\Link',
-        'MapField'          => 'GetOlympus\Field\Map',
-        'MultiselectField'  => 'GetOlympus\Field\Multiselect',
-        'RadioField'        => 'GetOlympus\Field\Radio',
-        'RteField'          => 'GetOlympus\Field\Rte',
-        'SelectField'       => 'GetOlympus\Field\Select',
-        'SocialField'       => 'GetOlympus\Field\Social',
-        'TextField'         => 'GetOlympus\Field\Text',
-        'TextareaField'     => 'GetOlympus\Field\Textarea',
-        'ToggleField'       => 'GetOlympus\Field\Toggle',
-        'UploadField'       => 'GetOlympus\Field\Upload',
-        'WordpressField'    => 'GetOlympus\Field\Wordpress',
+        'GetOlympus\\Field\\Code',
+        'GetOlympus\\Field\\Color',
+        'GetOlympus\\Field\\Content',
+        'GetOlympus\\Field\\Link',
+        'GetOlympus\\Field\\Radio',
+        'GetOlympus\\Field\\Select',
+        'GetOlympus\\Field\\Text',
+        'GetOlympus\\Field\\Textarea',
+        'GetOlympus\\Field\\Toggle',
+        'GetOlympus\\Field\\Upload',
+        'GetOlympus\\Field\\Wordpress',
     ];
-
-    /**
-     * @var array
-     */
-    protected $internals = [
-        // Zeus common assets
-        'js/dragndrop.js'   => 'Resources/assets/js/dragndrop/dragndrop.js',
-        'js/modal.js'       => 'Resources/assets/js/modal/modal.js',
-        'js/tooltip.js'     => 'Resources/assets/js/tooltip/tooltip.js',
-    ];
-
-    /**
-     * Prepare externals.
-     */
-    protected function setExternals()
-    {
-        // Check externals
-        if (empty($this->externals)) {
-            return;
-        }
-
-        $externals = [];
-        $internals = $this->internals;
-
-        // Iterate
-        foreach ($this->externals as $alias => $component) {
-            $class = new \ReflectionClass($component);
-            $path = dirname(dirname($class->getFileName())).S.'Resources'.S;
-
-            $externals[strtolower($alias)] = $path;
-        }
-
-        // Register all vendor views
-        add_filter('ol_zeus_render_views', function ($paths) use ($externals) {
-            foreach ($externals as $alias => $path) {
-                $alias = str_replace('field', '', $alias);
-                $paths[$alias] = $path.'views';
-            }
-
-            return $paths;
-        });
-
-        // Register all internal assets
-        add_filter('ol_zeus_render_assets', function ($paths) use ($internals) {
-            foreach ($internals as $name => $path) {
-                $paths[$name] = OL_ZEUS_PATH.S.$path;
-            }
-
-            return $paths;
-        });
-
-        // Register all vendor translations
-        add_filter('ol_zeus_translate_resources', function ($yamls) use ($externals) {
-            foreach ($externals as $alias => $path) {
-                $yamls[$path.'languages'] = $alias;
-            }
-
-            return $yamls;
-        });
-    }
 }

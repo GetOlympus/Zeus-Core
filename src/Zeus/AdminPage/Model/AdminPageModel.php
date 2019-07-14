@@ -2,8 +2,7 @@
 
 namespace GetOlympus\Zeus\AdminPage\Model;
 
-use GetOlympus\Zeus\AdminPage\Controller\AdminPageHook;
-use GetOlympus\Zeus\AdminPage\Model\AdminPageModelInterface;
+use GetOlympus\Zeus\AdminPage\Interface\AdminPageModelInterface;
 
 /**
  * AdminPage model.
@@ -18,9 +17,9 @@ use GetOlympus\Zeus\AdminPage\Model\AdminPageModelInterface;
 class AdminPageModel implements AdminPageModelInterface
 {
     /**
-     * @var AdminPageHook
+     * @var boolean
      */
-    protected $hook;
+    protected $adminbar;
 
     /**
      * @var string
@@ -38,25 +37,25 @@ class AdminPageModel implements AdminPageModelInterface
     protected $parent = '';
 
     /**
-     * Gets the value of hook.
+     * Gets the value of adminbar.
      *
-     * @return AdminPageHook
+     * @return string
      */
-    public function getHook()
+    public function getAdminbar()
     {
-        return $this->hook;
+        return $this->adminbar;
     }
 
     /**
-     * Sets the value of hook.
+     * Sets the value of adminbar.
      *
-     * @param AdminPageHook $hook the hook
+     * @param string $adminbar the adminbar
      *
      * @return self
      */
-    public function setHook(AdminPageHook $hook)
+    public function setAdminbar($adminbar)
     {
-        $this->hook = $hook;
+        $this->adminbar = $adminbar;
 
         return $this;
     }
@@ -86,57 +85,15 @@ class AdminPageModel implements AdminPageModelInterface
     }
 
     /**
-     * Adds a new value of pages.
-     *
-     * @param string    $identifier the identifier
-     * @param array     $options    the options
-     *
-     * @return self
-     */
-    public function addPage($identifier, $options)
-    {
-        $this->pages[$identifier] = $options;
-
-        return $this;
-    }
-
-    /**
-     * Check if the value is set.
-     *
-     * @param string $identifier the identifier
-     *
-     * @return array
-     */
-    public function hasPage($identifier)
-    {
-        return isset($this->pages[$identifier]);
-    }
-
-    /**
-     * Sets the value of page.
-     *
-     * @param string $identifier the identifier
-     * @param array  $configs    the options configuration
-     *
-     * @return self
-     */
-    public function updatePage($identifier, $configs)
-    {
-        $this->pages[$identifier] = $configs;
-
-        return $this;
-    }
-
-    /**
      * Gets the value of pages.
      *
-     * @param   string $identifier the identifier
+     * @param   string    $identifier
      * @return  array
      */
     public function getPages($identifier = '')
     {
         if (!empty($identifier)) {
-            return $this->hasPage($identifier) ? $this->pages[$identifier] : null;
+            return isset($this->pages[$identifier]) ? $this->pages[$identifier] : [];
         }
 
         return $this->pages;
@@ -145,13 +102,14 @@ class AdminPageModel implements AdminPageModelInterface
     /**
      * Sets the value of pages.
      *
-     * @param array $pages the pages
+     * @param string    $identifier the identifier
+     * @param array     $options    the options
      *
      * @return self
      */
-    public function setPages($pages)
+    public function setPages($identifier, $options)
     {
-        $this->pages = $pages;
+        $this->pages[$identifier] = $options;
 
         return $this;
     }
@@ -169,35 +127,14 @@ class AdminPageModel implements AdminPageModelInterface
     /**
      * Sets the value of parent.
      *
-     * @param string $parent the parent
+     * @param string $parent
+     * @param array  $available
      *
      * @return self
      */
-    public function setParent($parent)
+    public function setParent($parent = '', $available = [])
     {
-        $this->parent = $parent;
-
-        return $this;
-    }
-
-    /**
-     * Adds a new value of section's page.
-     *
-     * @param string $identifier the identifier
-     * @param string $parent     the parent identifier
-     * @param array  $options    the options
-     *
-     * @return self
-     */
-    public function addSection($identifier, $parent, $options)
-    {
-        $parent = empty($parent) ? $this->identifier : $parent;
-
-        if (!$this->hasPage($parent)) {
-            return;
-        }
-
-        $this->pages[$parent]['sections'][$identifier] = $options;
+        $this->parent = !empty($parent) && array_key_exists($parent, $available) ? $parent : '';
 
         return $this;
     }

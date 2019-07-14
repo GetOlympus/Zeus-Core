@@ -2,12 +2,9 @@
 
 namespace GetOlympus\Zeus\Posttype\Controller;
 
-use GetOlympus\Zeus\Field\Controller\Field;
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
-use GetOlympus\Zeus\Metabox\Controller\Metabox;
 use GetOlympus\Zeus\Option\Controller\Option;
-use GetOlympus\Zeus\Posttype\Controller\Posttype;
-use GetOlympus\Zeus\Posttype\Controller\PosttypeHookInterface;
+use GetOlympus\Zeus\Posttype\Interface\PosttypeHookInterface;
 use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Request\Controller\Request;
 use GetOlympus\Zeus\Translate\Controller\Translate;
@@ -25,44 +22,25 @@ use GetOlympus\Zeus\Translate\Controller\Translate;
 class PosttypeHook implements PosttypeHookInterface
 {
     /**
-     * @var array
+     * @var PostType
      */
-    protected $metaboxes;
-
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @var array
-     */
-    protected $reserved_slugs;
-
-    /**
-     * @var string
-     */
-    protected $slug;
+    protected $posttype;
 
     /**
      * Constructor.
      *
-     * @param string    $slug
-     * @param string    $name
-     * @param array     $metaboxes
-     * @param array     $reserved_slugs
+     * @param  PostType $posttype
      */
-    public function __construct($slug, $name, $metaboxes = [], $reserved_slugs = [])
+    public function __construct($posttype)
     {
+        $slug = $posttype->getModel()->getSlug();
+
         // Check slug
         if (empty($slug)) {
             return;
         }
 
-        $this->slug = $slug;
-        $this->name = $name;
-        $this->metaboxes = $metaboxes;
-        $this->reserved_slugs = $reserved_slugs;
+        $this->posttype = $posttype;
 
         // Permalink structures
         add_filter('post_type_link', [&$this, 'postTypeLink'], 10, 4);
@@ -86,15 +64,15 @@ class PosttypeHook implements PosttypeHookInterface
     /**
      * Hook to change columns on post type list page.
      *
-     * @param array $columns
-     * @return array $columns
+     * @param  array   $columns
+     * @return array   $columns
      */
     public function manageEditColumns($columns)
     {
         // Get current post type
         $current = Request::get('post_type');
 
-        // check post type
+        // Check post type
         if (empty($current)) {
             return $columns;
         }
@@ -105,9 +83,9 @@ class PosttypeHook implements PosttypeHookInterface
          * The dynamic portion of the hook name, `$current`, refers to the
          * post type of the current edit screen ID.
          *
-         * @var string $current
-         * @param array $columns
-         * @return array $columns
+         * @var    string  $current
+         * @param  array   $columns
+         * @return array   $columns
          */
         return apply_filters('ol_zeus_posttypehook_manage_edit-'.$current.'_columns', $columns);
     }
@@ -115,15 +93,15 @@ class PosttypeHook implements PosttypeHookInterface
     /**
      * Hook to add featured image to column.
      *
-     * @param string $column
-     * @param integer $post_id
+     * @param  string  $column
+     * @param  integer $post_id
      */
     public function managePostsCustomColumn($column, $post_id)
     {
         // Get current post type
         $current = Request::get('post_type');
 
-        // check post type
+        // Check post type
         if (empty($current)) {
             return;
         }
@@ -131,8 +109,8 @@ class PosttypeHook implements PosttypeHookInterface
         /**
          * Fires for each custom column of a specific post type in the Posts list table.
          *
-         * @param string $column
-         * @param int $post_id
+         * @param  string  $column
+         * @param  integer $post_id
          */
         do_action('ol_zeus_posttypehook_manage_'.$current.'_custom_column', $column, $post_id);
     }
@@ -141,11 +119,11 @@ class PosttypeHook implements PosttypeHookInterface
      * Hook building custom permalinks for post types.
      * @see http://shibashake.com/wordpress-theme/custom-post-type-permalinks-part-2
      *
-     * @param   string  $post_link
-     * @param   object  $post
-     * @param   boolean $leavename
-     * @param   boolean $sample
-     * @return  string  $permalink
+     * @param  string  $post_link
+     * @param  object  $post
+     * @param  boolean $leavename
+     * @param  boolean $sample
+     * @return string  $permalink
      */
     public function postTypeLink($post_link, $post, $leavename, $sample)
     {
@@ -249,28 +227,29 @@ class PosttypeHook implements PosttypeHookInterface
      */
     public function postTypeMetaboxesDisplay()
     {
-        // Check metaboxes
-        if (empty($this->metaboxes)) {
-            return;
-        }
-
-        // Defintions
         $slug = Request::getCurrentSlug();
 
         // Check slug
-        if (empty($slug) || $slug !== $this->slug) {
+        if (empty($slug) || $slug !== $this->posttype->getModel()->getSlug()) {
+            return;
+        }
+
+        $metaboxes = $this->posttype->getModel()->getMetabox();
+
+        // Check metaboxes
+        if (empty($metaboxes)) {
             return;
         }
 
         // Get metaboxes
-        foreach ($this->metaboxes as $metabox) {
+        foreach ($metaboxes as $metabox) {
             if (!$metabox) {
                 continue;
             }
 
             // Get contents
-            $id = (integer) $metabox->getModel()->getId();
-            $title = (string) $metabox->getModel()->getTitle();
+            $id     = (integer) $metabox->getModel()->getId();
+            $title  = (string) $metabox->getModel()->getTitle();
             $fields = (array) $metabox->getModel()->getFields();
 
             // Check fields
@@ -279,14 +258,11 @@ class PosttypeHook implements PosttypeHookInterface
             }
 
             // Title
-            $title = empty($title) ? Translate::t('posttypehook.metabox') : $title;
-            $id = empty($id) ? Helpers::urlize($title) : $id;
-
-            // Update vars
-            $identifier = $slug.'-meta-box-'.$id;
+            $title = empty($title) ? Translate::t('posttypehook.labels.metabox') : $title;
+            $id    = empty($id) ? Helpers::urlize($title) : $id;
 
             // Add meta box
-            $metabox->init($identifier, $slug);
+            $metabox->init($slug.'-meta-box-'.$id, $slug);
         }
     }
 
@@ -305,11 +281,17 @@ class PosttypeHook implements PosttypeHookInterface
             return $post->ID;
         }
 
-        // Get contents
         $slug = $post->post_type;
 
-        // Check metaboxes and slug
-        if (empty($this->metaboxes) || $slug !== $this->slug) {
+        // Check slug
+        if ($slug !== $this->posttype->getModel()->getSlug()) {
+            return;
+        }
+
+        $metaboxes = $this->posttype->getModel()->getMetabox();
+
+        // Check metaboxes
+        if (empty($metaboxes)) {
             return;
         }
 
@@ -319,21 +301,20 @@ class PosttypeHook implements PosttypeHookInterface
         /**
          * Fires for all post's fields through metaboxes.
          *
-         * @var string $slug
-         * @param int $post_id
-         * @param array $metaboxes
+         * @var    string  $slug
+         * @param  integer $post_id
+         * @param  array   $metaboxes
          */
-        do_action('ol_zeus_posttypehook_save_'.$slug, $post->ID, $this->metaboxes);
+        do_action('ol_zeus_posttypehook_save_'.$slug, $post->ID, $metaboxes);
 
         // Update all metas
-        foreach ($this->metaboxes as $metabox) {
+        foreach ($metaboxes as $metabox) {
             if (!$metabox) {
                 continue;
             }
 
             // Get contents
-            $id = (integer) $metabox->getModel()->getId();
-            $title = (string) $metabox->getModel()->getTitle();
+            $title  = (string) $metabox->getModel()->getTitle();
             $fields = (array) $metabox->getModel()->getFields();
 
             // Check fields
@@ -347,36 +328,36 @@ class PosttypeHook implements PosttypeHookInterface
                     continue;
                 }
 
-                // Build contents
-                $ctn = (array) $field->getModel()->getContents();
-                $hasId = (boolean) $field->getModel()->getHasId();
+                $id = (string) $field->getModel()->getIdentifier();
 
-                // Check ID
-                if ($hasId && (!isset($ctn['id']) || empty($ctn['id']))) {
+                if (empty($id)) {
                     continue;
                 }
 
                 // Gets the value
-                $value = Request::post($ctn['id'], null);
+                $value = Request::post($id, null);
+
+                $post_id = $post->ID;
+                $option_name = $slug.'-'.$id;
 
                 // Check value
                 if (is_null($value)) {
-                    $value = Option::getPostMeta($post->ID, $slug.'-'.$ctn['id']);
+                    $value = Option::getPostMeta($post_id, $option_name);
                 }
 
                 /**
                  * Filter the value content.
                  *
-                 * @var string $current
-                 * @param int $post_id
-                 * @param string $option_name
-                 * @param object $value
-                 * @return object $value
+                 * @var    string  $slug
+                 * @param  object  $value
+                 * @param  integer $post_id
+                 * @param  string  $option_name
+                 * @return object  $value
                  */
-                $value = apply_filters('ol_zeus_posttypehook_save_'.$slug.'_field', $value, $post->ID, $slug.'-'.$ctn['id']);
+                $value = apply_filters('ol_zeus_posttypehook_save_'.$slug.'_field', $value, $post_id, $option_name);
 
                 // Updates meta
-                Option::updatePostMeta($post->ID, $slug.'-'.$ctn['id'], $value);
+                Option::updatePostMeta($post_id, $option_name, $value);
             }
         }
 
@@ -394,8 +375,8 @@ class PosttypeHook implements PosttypeHookInterface
         // Add section
         add_settings_section(
             'olympus-permalinks',
-            Translate::t('posttypehook.custom_permalinks'),
-            [&$this,'postTypeSettingTitle'],
+            Translate::t('posttypehook.labels.custom_permalinks'),
+            [&$this, 'postTypeSettingTitle'],
             'permalink'
         );
 
@@ -404,24 +385,29 @@ class PosttypeHook implements PosttypeHookInterface
             flush_rewrite_rules();
         }
 
+        $slug = $this->posttype->getModel()->getSlug();
+
         // Special case: do not change post/page component
-        if (in_array($this->slug, $this->reserved_slugs)) {
+        if (in_array($slug, $this->posttype->getReservedSlugs())) {
             return false;
         }
 
         // Option
-        $opt = 'permalink_structure_'.$this->slug;
+        $opt = 'permalink_structure_'.$slug;
+        $val = Request::get($opt, '');
 
         // Check POST
-        if (isset($_POST[$opt])) {
-            $value = $_POST[$opt];
-            Option::set($opt, $value);
-        } else {
-            $value = Option::get($opt, '/%'.$this->slug.'%-%post_id%');
+        $value = !empty($val) ? $val : Option::get($opt, '/%'.$slug.'%-%post_id%');
+
+        if (!empty($val)) {
+            Option::set($opt, $val);
         }
 
+        $args = $this->posttype->getModel()->getArgs();
+        $name = isset($args['labels']['name']) ? $args['labels']['name'] : '';
+
         // Define metabox title
-        $title = $this->name.' <code>%'.$this->slug.'%</code>';
+        $title = $name.' <code>%'.$slug.'%</code>';
 
         // Add fields
         add_settings_field(
@@ -431,8 +417,8 @@ class PosttypeHook implements PosttypeHookInterface
             'permalink',
             'olympus-permalinks',
             [
-                'name' => $opt,
-                'value' => $value,
+                'name'   => $opt,
+                'value'  => $value,
             ]
         );
 
@@ -442,7 +428,7 @@ class PosttypeHook implements PosttypeHookInterface
     /**
      * Hook to display input value on Permalink settings page.
      *
-     * @param array $vars
+     * @param  array   $vars
      */
     public function postTypeSettingFunc($vars)
     {
@@ -450,11 +436,12 @@ class PosttypeHook implements PosttypeHookInterface
             return;
         }
 
-        $vars['t_description'] = Translate::t('posttypehook.description');
+        $vars['t_description'] = Translate::t('posttypehook.labels.description');
         $vars['t_home'] = OL_ZEUS_HOME;
 
-        // Render template
-        Render::view('permalinks.html.twig', $vars, 'posttype');
+        // Render view
+        $render = new Render('posttype', 'layouts'.S.'permalinks.html.twig', $vars, []);
+        $render->view();
     }
 
     /**
@@ -464,7 +451,7 @@ class PosttypeHook implements PosttypeHookInterface
     {
         // Display settings
         $this->postTypeSettingFunc([
-            'name' => 'flushpermalink',
+            'name'  => 'flushpermalink',
             'value' => '1',
         ]);
     }

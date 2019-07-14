@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\WalkerSingle\Controller;
 
-use GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingleInterface;
+use GetOlympus\Zeus\WalkerSingle\Interface\WalkerSingleInterface;
 
 /**
  * Gets its own Walker.
@@ -29,16 +29,16 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
      * @var array
      */
     public $db_fields = [
-        'id' => 'term_id',
+        'id'     => 'term_id',
         'parent' => 'parent',
     ];
 
     /**
      * Starts the list before the elements are added.
      *
-     * @param string $output
-     * @param int $depth
-     * @param array $args
+     * @param  string  $output
+     * @param  integer $depth
+     * @param  array   $args
      */
     public function start_lvl(&$output, $depth = 0, $args = [])
     {
@@ -49,9 +49,9 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
     /**
      * Ends the list of after the elements are added.
      *
-     * @param string $output
-     * @param int $depth
-     * @param array $args
+     * @param  string  $output
+     * @param  integer $depth
+     * @param  array   $args
      */
     public function end_lvl(&$output, $depth = 0, $args = [])
     {
@@ -62,11 +62,11 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
     /**
      * Start the element output.
      *
-     * @param string $output
-     * @param object $category
-     * @param int $depth
-     * @param array $args
-     * @param int $id
+     * @param  string  $output
+     * @param  object  $category
+     * @param  integer $depth
+     * @param  array   $args
+     * @param  integer $id
      */
     public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0)
     {
@@ -108,10 +108,10 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
     /**
      * Ends the element output, if needed.
      *
-     * @param string $output
-     * @param object $category
-     * @param int $depth
-     * @param array $args
+     * @param  string  $output
+     * @param  object  $category
+     * @param  integer $depth
+     * @param  array   $args
      */
     public function end_el(&$output, $category, $depth = 0, $args = [])
     {

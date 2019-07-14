@@ -2,10 +2,8 @@
 
 namespace GetOlympus\Zeus\Application\Controller;
 
-use GetOlympus\Zeus\Application\Controller\ApplicationInterface;
-use GetOlympus\Zeus\Application\Exception\Application as ApplicationException;
-use GetOlympus\Zeus\Render\Controller\Render;
-use League\Container\Container;
+use GetOlympus\Zeus\Application\Interface\ApplicationInterface;
+use GetOlympus\Zeus\Translate\Controller\Translate;
 use Symfony\Component\ClassLoader\ClassMapGenerator;
 use Symfony\Component\ClassLoader\MapClassLoader;
 
@@ -22,6 +20,11 @@ use Symfony\Component\ClassLoader\MapClassLoader;
 abstract class Application implements ApplicationInterface
 {
     /**
+     * @var array
+     */
+    protected $adminpages = [];
+
+    /**
      * @var string
      */
     protected $classname;
@@ -32,39 +35,34 @@ abstract class Application implements ApplicationInterface
     protected $configurations = [];
 
     /**
-     * @var Container
+     * @var array
      */
-    protected $container = null;
-
-    /**
-     * @var string
-     */
-    protected $defaultlocale = 'default';
+    protected $crons = [];
 
     /**
      * @var array
      */
-    protected $externals = [];
-
-    /**
-     * @var string
-     */
-    protected $identifier = '';
+    protected $defaultfields = [];
 
     /**
      * @var array
      */
-    protected $internals = [];
+    protected $fields = [];
 
     /**
      * @var string
      */
-    protected $packagetype = 'theme';
+    protected $locale = 'default';
 
     /**
      * @var array
      */
-    protected $paths = [];
+    protected $posttypes = [];
+
+    /**
+     * @var array
+     */
+    protected $terms = [];
 
     /**
      * @var array
@@ -72,24 +70,30 @@ abstract class Application implements ApplicationInterface
     protected $translations = [];
 
     /**
-     * @var string
+     * @var array
      */
-    protected $widgets = '';
+    protected $users = [];
+
+    /**
+     * @var array
+     */
+    protected $walkers = [];
+
+    /**
+     * @var array
+     */
+    protected $widgets = [];
 
     /**
      * Constructor.
      */
     public function __construct()
     {
-        // Initiate Container Dependency Injection
-        $this->container = new Container;
-
         // Initialize classname
         $class = new \ReflectionClass(get_class($this));
         $this->classname = strtolower($class->getShortName());
 
         // Initialize all components
-        $this->setExternals();
         $this->setVars();
         $this->init();
     }
@@ -99,13 +103,8 @@ abstract class Application implements ApplicationInterface
      */
     public function init()
     {
-        // Get services
-        $services = $this->getServices();
-
-        // Register all
-        foreach ($services as $alias => $service) {
-            $this->add($service, $alias);
-        }
+        // Initialize fields
+        $this->initFields();
 
         // Initialize translations
         $this->initTranslations();
@@ -113,131 +112,39 @@ abstract class Application implements ApplicationInterface
         // Initialize configurations
         $this->initConfigs();
 
+        // Initialize components
+        $this->initComponents();
+    }
+
+    /**
+     * Initialize components.
+     */
+    public function initComponents()
+    {
+        // Works on all vars
+        $this->adminpages = !is_array($this->adminpages) ? [$this->adminpages] : $this->adminpages;
+        $this->crons      = !is_array($this->crons) ? [$this->crons] : $this->crons;
+        $this->posttypes  = !is_array($this->posttypes) ? [$this->posttypes] : $this->posttypes;
+        $this->terms      = !is_array($this->terms) ? [$this->terms] : $this->terms;
+        $this->users      = !is_array($this->users) ? [$this->users] : $this->users;
+        $this->widgets    = !is_array($this->widgets) ? [$this->widgets] : $this->widgets;
+
+        // Build main paths
+        $paths = [
+            'adminpages' => $this->adminpages,
+            'crons'      => $this->crons,
+            'posttypes'  => $this->posttypes,
+            'terms'      => $this->terms,
+            'users'      => $this->users,
+            'widgets'    => $this->widgets
+        ];
+
         // Register post types / terms / widgets / admin pages and more
-        $this->registerComponents();
+        $this->registerComponents($paths);
     }
 
     /**
-     * Register a service.
-     *
-     * @param string $service
-     * @param string $alias
-     * @param mixed $args
-     */
-    public function add($service, $alias = '', $args = [])
-    {
-        // Register the service as a prototype
-        if (!empty($args)) {
-            if (empty($alias)) {
-                $this->container->add($service)->withArgument($args);
-            } else {
-                $this->container->add($alias, $service)->withArgument($args);
-            }
-        } else {
-            if (empty($alias)) {
-                $this->container->add($service);
-            } else {
-                $this->container->add($alias, $service);
-            }
-        }
-    }
-
-    /**
-     * Get the asked service.
-     *
-     * @param string $service
-     * @return object $service
-     */
-    public function get($service)
-    {
-        return $this->has($service) ? $this->container->get($service) : null;
-    }
-
-    /**
-     * Get default components.
-     *
-     * @return array $components
-     */
-    public function getComponents()
-    {
-        $components = [
-            'Base'                          => 'GetOlympus\Zeus\Base\Controller\Base',
-            'BaseWidget'                    => 'GetOlympus\Zeus\Base\Controller\BaseWidget',
-            'Helpers'                       => 'GetOlympus\Zeus\Helpers\Controller\Helpers',
-
-            'AdminPage'                     => 'GetOlympus\Zeus\AdminPage\Controller\AdminPage',
-            'Ajax'                          => 'GetOlympus\Zeus\Ajax\Controller\Ajax',
-            'Configuration'                 => 'GetOlympus\Zeus\Configuration\Controller\Configuration',
-            'Cron'                          => 'GetOlympus\Zeus\Cron\Controller\Cron',
-            'Error'                         => 'GetOlympus\Zeus\Error\Controller\Error',
-            'Field'                         => 'GetOlympus\Zeus\Field\Controller\Field',
-            'Hook'                          => 'GetOlympus\Zeus\Hook\Controller\Hook',
-            'Metabox'                       => 'GetOlympus\Zeus\Metabox\Controller\Metabox',
-            'Option'                        => 'GetOlympus\Zeus\Option\Controller\Option',
-            'Posttype'                      => 'GetOlympus\Zeus\Posttype\Controller\Posttype',
-            'PosttypeHook'                  => 'GetOlympus\Zeus\Posttype\Controller\PosttypeHook',
-            'Render'                        => 'GetOlympus\Zeus\Render\Controller\Render',
-            'Request'                       => 'GetOlympus\Zeus\Request\Controller\Request',
-            'Template'                      => 'GetOlympus\Zeus\Template\Controller\Template',
-            'Term'                          => 'GetOlympus\Zeus\Term\Controller\Term',
-            'TermHook'                      => 'GetOlympus\Zeus\Term\Controller\TermHook',
-            'Translate'                     => 'GetOlympus\Zeus\Translate\Controller\Translate',
-            'WalkerSingle'                  => 'GetOlympus\Zeus\WalkerSingle\Controller\WalkerSingle',
-            'Widget'                        => 'GetOlympus\Zeus\Widget\Controller\Widget',
-        ];
-
-        // Iterate on externals
-        foreach ($this->externals as $shortname => $classname) {
-            $components[$shortname] = $classname;
-        }
-
-        return $components;
-    }
-
-    /**
-     * Get default configurations.
-     *
-     * @return array $configurations
-     */
-    public function getConfigurations()
-    {
-        return [
-            'AccessManagementConfiguration' => 'GetOlympus\Zeus\Configuration\Controller\AccessManagement',
-            'AdminThemesConfiguration'      => 'GetOlympus\Zeus\Configuration\Controller\AdminThemes',
-            'AssetsConfiguration'           => 'GetOlympus\Zeus\Configuration\Controller\Assets',
-            'CleanConfiguration'            => 'GetOlympus\Zeus\Configuration\Controller\Clean',
-            'MenusConfiguration'            => 'GetOlympus\Zeus\Configuration\Controller\Menus',
-            'SettingsConfiguration'         => 'GetOlympus\Zeus\Configuration\Controller\Settings',
-            'ShortcodesConfiguration'       => 'GetOlympus\Zeus\Configuration\Controller\Shortcodes',
-            'SidebarsConfiguration'         => 'GetOlympus\Zeus\Configuration\Controller\Sidebars',
-            'SizesConfiguration'            => 'GetOlympus\Zeus\Configuration\Controller\Sizes',
-            'SupportsConfiguration'         => 'GetOlympus\Zeus\Configuration\Controller\Supports',
-        ];
-    }
-
-    /**
-     * Get default components.
-     *
-     * @return array $components
-     */
-    public function getServices()
-    {
-        return array_merge($this->getComponents(), $this->getConfigurations());
-    }
-
-    /**
-     * Check if the asked service is set or not.
-     *
-     * @param string $service
-     * @return boolean $service
-     */
-    public function has($service)
-    {
-        return $this->container->has($service);
-    }
-
-    /**
-     * Initialize configs files containing theme definitions.
+     * Initialize configurations files.
      */
     public function initConfigs()
     {
@@ -246,99 +153,85 @@ abstract class Application implements ApplicationInterface
             return;
         }
 
-        // Get available configurations
-        $available = $this->getConfigurations();
+        // Get all configurations
+        $namespace = 'GetOlympus\\Zeus\\Configuration\\Controller\\';
+        $classmap = ClassMapGenerator::createMap(OL_ZEUS_PATH.S.'Configuration'.S.'Controller');
 
         // Iterate
         foreach ($this->configurations as $component => $file) {
+            $component = $namespace.$component;
+
             // Check if configuration asked exists
-            if (!array_key_exists($component, $available)) {
+            if (!array_key_exists($component, $classmap)) {
                 continue;
             }
 
-            $service = $this->get($component);
-
-            // Check service integrity
-            if (!$service) {
-                continue;
-            }
-
-            // Initialize service
-            $service->setPath($file);
-            $service->init();
+            // Initialize configuration
+            $config = new $component();
+            $config->setPath($file);
+            $config->init();
         }
     }
 
     /**
-     * Initialize translation files.
+     * Initialize fields.
+     */
+    public function initFields()
+    {
+        // Merge fields
+        $this->fields = array_merge($this->defaultfields, $this->fields);
+
+        // Check fields
+        if (empty($this->fields)) {
+            return;
+        }
+
+        // Iterate
+        foreach ($this->fields as $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $t = $class::translate();
+            $this->translations = array_merge($this->translations, $t);
+        }
+    }
+
+    /**
+     * Initialize translations.
      */
     public function initTranslations()
     {
-        // Check translations
-        if (empty($this->translations)) {
+        // Add Zeus core translation
+        $this->translations = array_merge(['olympus-zeus' => OL_ZEUS_LANGUAGES], $this->translations);
+
+        // Get all translations with default MO file
+        Translate::l($this->translations, $this->locale);
+    }
+
+    /**
+     * Register components.
+     *
+     * @param  array   $paths
+     */
+    public function registerComponents($paths)
+    {
+        // Check objects
+        if (empty($paths)) {
             return;
         }
 
-        add_action('load_textdomain_mofile', [$this, 'loadTextdomain'], 10, 2);
+        $cacheprefix = OL_ZEUS_CACHE.$this->classname.'-';
+        $cachesuffix = '-components.php';
 
-        // Iterate
-        foreach ($this->translations as $textdomain => $languagesfolder) {
-            // Check if package type is a plugin and load plugin texts
-            if ('plugin' === $this->packagetype) {
-                load_plugin_textdomain($textdomain, false, $languagesfolder);
+        // Work on file paths
+        foreach ($paths as $action => $actionPaths) {
+            if (empty($actionPaths)) {
                 continue;
             }
 
-            // Load theme texts
-            load_theme_textdomain($textdomain, $languagesfolder);
-        }
-    }
-
-    /**
-     * Load default domain MO file if needed.
-     *
-     * @param string $mofile
-     * @param string $domain
-     * @return string $mofile
-     */
-    public function loadTextdomain($mofile, $domain)
-    {
-        // Check translations
-        if (empty($this->translations)) {
-            return;
-        }
-
-        // Check domains
-        if (!array_key_exists($domain, $this->translations)) {
-            return $mofile;
-        }
-
-        // Change locale if needed
-        if (!file_exists($mofile)) {
-            $currentlocale = determine_locale();
-            $mofile = str_replace($currentlocale.'.mo', $this->defaultlocale.'.mo', $mofile);
-        }
-
-        return $mofile;
-    }
-
-    /**
-     * Register components
-     */
-    public function registerComponents()
-    {
-        // Check objects
-        if (empty($this->paths)) {
-            return;
-        }
-
-        // Work on file paths
-        foreach ($this->paths as $action => $actionPaths) {
-            // Work on paths
-            $actionPaths = !is_array($actionPaths) ? [$actionPaths] : $actionPaths;
-
-            // Work on file name
-            $filepath = OL_ZEUS_CACHE.$this->classname.'-'.$action.'-components.php';
+            // Work on cache file name
+            $filepath = $cacheprefix.$action.$cachesuffix;
 
             // Check cache file
             if (!file_exists($filepath)) {
@@ -346,23 +239,27 @@ abstract class Application implements ApplicationInterface
                 ClassMapGenerator::dump($actionPaths, $filepath);
             }
 
+            // Get classes
             $classmap = include_once $filepath;
 
             // Instanciate new ClassLoader to load and register components
             $loader = new MapClassLoader($classmap);
             $loader->register();
 
+            // Define filter and action
+            $currentfilter = current_filter();
+            $filter = 'widgets' === $action ? 'widgets_init' : ('adminpages' === $action ? 'admin_menu' : 'init');
+
             // Get current hook
-            $current = current_filter();
-            $function = in_array($action, ['widgets_init']) ? 'registerWidgets' : 'registerObjects';
+            $function = 'widgets' === $action ? 'registerWidgets' : 'registerObjects';
 
             // Register post type
-            if ($action === $current) {
+            if ($filter === $currentfilter) {
                 // Already inside an `init` action
                 $this->$function($classmap);
             } else {
                 // Outside an `init` action
-                add_action($action, function () use ($classmap, $function) {
+                add_action($filter, function () use ($classmap, $function) {
                     $this->$function($classmap);
                 });
             }
@@ -372,33 +269,26 @@ abstract class Application implements ApplicationInterface
     /**
      * Register post types / terms / and more.
      *
-     * @param array $classmap
+     * @param  array   $classmap
      */
     public function registerObjects($classmap)
     {
         foreach ($classmap as $service => $file) {
-            $this->add($service);
-            $component = $this->get($service);
+            new $service();
         }
     }
 
     /**
      * Register widgets.
      *
-     * @param array $classmap
+     * @param  array   $classmap
      */
     public function registerWidgets($classmap)
     {
         foreach ($classmap as $service => $file) {
-            $this->add($service);
             register_widget($service);
         }
     }
-
-    /**
-     * Prepare externals.
-     */
-    abstract protected function setExternals();
 
     /**
      * Prepare variables.

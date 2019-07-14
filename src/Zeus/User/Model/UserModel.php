@@ -2,8 +2,7 @@
 
 namespace GetOlympus\Zeus\User\Model;
 
-use GetOlympus\Zeus\User\Controller\UserHook;
-use GetOlympus\Zeus\User\Model\UserModelInterface;
+use GetOlympus\Zeus\User\Interface\UserModelInterface;
 
 /**
  * User model.
@@ -23,11 +22,6 @@ class UserModel implements UserModelInterface
     protected $fields;
 
     /**
-     * @var UserHook
-     */
-    protected $hook;
-
-    /**
      * @var string
      */
     protected $title;
@@ -45,37 +39,13 @@ class UserModel implements UserModelInterface
     /**
      * Sets the value of fields.
      *
-     * @param array $fields the fields
+     * @param  array   $fields
      *
      * @return self
      */
     public function setFields(array $fields = [])
     {
         $this->fields = $fields;
-
-        return $this;
-    }
-
-    /**
-     * Gets the value of hook.
-     *
-     * @return UserHook
-     */
-    public function getHook()
-    {
-        return $this->hook;
-    }
-
-    /**
-     * Sets the value of hook.
-     *
-     * @param UserHook $hook the hook
-     *
-     * @return self
-     */
-    public function setHook(UserHook $hook)
-    {
-        $this->hook = $hook;
 
         return $this;
     }
@@ -93,7 +63,7 @@ class UserModel implements UserModelInterface
     /**
      * Sets the value of title.
      *
-     * @param string $title the title
+     * @param  string  $title
      *
      * @return self
      */

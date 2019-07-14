@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Hook\Model;
 
-use GetOlympus\Zeus\Hook\Model\HookModelInterface;
+use GetOlympus\Zeus\Hook\Interface\HookModelInterface;
 
 /**
  * Hook model.
@@ -39,7 +39,7 @@ class HookModel implements HookModelInterface
     /**
      * Gets the value of callback.
      *
-     * @return function
+     * @return string|array
      */
     public function getCallback()
     {
@@ -82,7 +82,7 @@ class HookModel implements HookModelInterface
     /**
      * Sets the value of identifier.
      *
-     * @param string $identifier the identifier
+     * @param  string  $identifier
      *
      * @return self
      */
@@ -106,7 +106,7 @@ class HookModel implements HookModelInterface
     /**
      * Sets the value of priority.
      *
-     * @param integer $priority the priority
+     * @param  integer $priority
      *
      * @return self
      */
@@ -130,7 +130,7 @@ class HookModel implements HookModelInterface
     /**
      * Sets the value of type.
      *
-     * @param string $type the type
+     * @param  string  $type
      *
      * @return self
      */

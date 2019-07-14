@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Ajax\Model;
 
-use GetOlympus\Zeus\Ajax\Model\AjaxModelInterface;
+use GetOlympus\Zeus\Ajax\Interface\AjaxModelInterface;
 
 /**
  * Ajax model.

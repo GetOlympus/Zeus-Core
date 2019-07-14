@@ -1,3 +1,6 @@
-<div class="error below-h2 olh-error">
-    <p>{{ error|raw }}</p>
+{% set message = request ? request : error %}
+{% set style = request ? 'updated' : 'error' %}
+
+<div id="setting-error-settings_updated" class="{{ style }} settings-error notice is-dismissible">
+    <p><strong>{{ message|raw }}</strong></p>
 </div>

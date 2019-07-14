@@ -1,3 +1,9 @@
+## 2.0.0 (July 14th, 2019)
+**JOYEUX 14 JUILLET**
+Add load WordPress textdomain MO files
+Update all classes for a better and easier integration
+Enhance Interfaces declarations
+
 ## 1.0.1 (May 5th, 2019 - June 10th, 2019)
 Add WordPress load textdomain MO files
 Update AdminPage class and fix AccessManagement functions

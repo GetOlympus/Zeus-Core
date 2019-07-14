@@ -6,9 +6,9 @@
   <exclude-pattern>app/cache/*</exclude-pattern>
   <exclude-pattern>app/logs/*</exclude-pattern>
   <exclude-pattern>src/Zeus/WalkerSingle/Controller/WalkerSingle.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/WalkerSingle/Controller/WalkerSingleInterface.php</exclude-pattern>
+  <exclude-pattern>src/Zeus/WalkerSingle/Interface/WalkerSingleInterface.php</exclude-pattern>
   <exclude-pattern>src/Zeus/Widget/Controller/Widget.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/Widget/Controller/WidgetInterface.php</exclude-pattern>
+  <exclude-pattern>src/Zeus/Widget/Interface/WidgetInterface.php</exclude-pattern>
   <exclude-pattern>vendor/*</exclude-pattern>
 
   <arg name="report-width" value="auto"/>
