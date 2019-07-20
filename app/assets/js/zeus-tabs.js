@@ -3,6 +3,7 @@
  * https://github.com/GetOlympus/Zeus-Core
  *
  * This plugin creates a categories tabs component 100% WordPress compliant.
+ * @see wp-includes/js/wp-lists.js
  *
  * Example of JS:
  *      $('div.wp-component').zeusTabs({
