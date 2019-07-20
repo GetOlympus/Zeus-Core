@@ -1,4 +1,5 @@
 ## 2.0.1 (July 20th, 2019)
+Add new Customizer class to let you use the WordPress Customize Manager
 Add new BaseException class
 
 ## 2.0.0 (July 14th, 2019)
