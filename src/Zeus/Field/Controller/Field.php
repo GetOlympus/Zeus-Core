@@ -37,7 +37,7 @@ abstract class Field extends Base implements FieldImplementation
     /**
      * @var array
      */
-    protected $availabletemplates = ['adminpage', 'metabox', 'term-add', 'term-edit', 'user', 'widget'];
+    protected $available_tpl = ['adminpage', 'metabox', 'metabox-section', 'term-add', 'term-edit', 'user', 'widget'];
 
     /**
      * @var array
@@ -189,7 +189,7 @@ abstract class Field extends Base implements FieldImplementation
         $class = $this->getClass();
 
         // Define available templates to extends
-        $twigtpl = in_array($template, $this->availabletemplates) ? $template : 'metabox';
+        $twigtpl = in_array($template, $this->available_tpl) ? $template : 'metabox';
         $twigtpl = '@core/fields/'.$twigtpl.'.html.twig';
 
         // Template definitions

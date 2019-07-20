@@ -1,4 +1,4 @@
-<tr id="{% block id %}{% endblock %}-content" class="olh-field {% block class %}{% endblock %}">
+<tr id="{% block id %}{% endblock %}-field" class="olz-field {% block class %}{% endblock %}">
     <th>
         {% block header %}{% endblock %}
         {% block label %}{% endblock %}
@@ -6,7 +6,7 @@
     </th>
     <td>
         {% block field %}{% endblock %}
-        <p class="olh-description description">{% block description %}{% endblock %}</p>
+        {% block description %}{% endblock %}
         {% block footer %}{% endblock %}
     </td>
 </tr>
