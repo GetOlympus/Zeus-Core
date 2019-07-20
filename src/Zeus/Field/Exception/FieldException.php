@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Field\Exception;
 
-use Exception;
+use GetOlympus\Zeus\Base\Exception\BaseException;
 
 /**
  * Field exception.
@@ -14,7 +14,7 @@ use Exception;
  *
  */
 
-class FieldException extends Exception
+class FieldException extends BaseException
 {
     //
 }

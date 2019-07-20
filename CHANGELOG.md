@@ -1,3 +1,6 @@
+## 2.0.1 (July 20th, 2019)
+Add new BaseException class
+
 ## 2.0.0 (July 14th, 2019)
 **JOYEUX 14 JUILLET**
 Add load WordPress textdomain MO files

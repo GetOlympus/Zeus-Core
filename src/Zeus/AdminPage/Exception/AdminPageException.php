@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\AdminPage\Exception;
 
-use Exception;
+use GetOlympus\Zeus\Base\Exception\BaseException;
 
 /**
  * AdminPage exception.
@@ -14,7 +14,7 @@ use Exception;
  *
  */
 
-class AdminPageException extends Exception
+class AdminPageException extends BaseException
 {
     //
 }

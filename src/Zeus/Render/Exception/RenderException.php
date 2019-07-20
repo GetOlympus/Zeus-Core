@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Render\Exception;
 
-use Exception;
+use GetOlympus\Zeus\Base\Exception\BaseException;
 
 /**
  * Render exception.
@@ -14,7 +14,7 @@ use Exception;
  *
  */
 
-class RenderException extends Exception
+class RenderException extends BaseException
 {
     //
 }
