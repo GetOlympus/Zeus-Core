@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Term\Exception;
 
-use Exception;
+use GetOlympus\Zeus\Base\Exception\BaseException;
 
 /**
  * Term exception.
@@ -14,7 +14,7 @@ use Exception;
  *
  */
 
-class TermException extends Exception
+class TermException extends BaseException
 {
     //
 }

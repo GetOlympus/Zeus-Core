@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\User\Exception;
 
-use Exception;
+use GetOlympus\Zeus\Base\Exception\BaseException;
 
 /**
  * User exception.
@@ -14,7 +14,7 @@ use Exception;
  *
  */
 
-class UserException extends Exception
+class UserException extends BaseException
 {
     //
 }

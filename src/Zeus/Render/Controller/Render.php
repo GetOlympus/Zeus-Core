@@ -3,7 +3,9 @@
 namespace GetOlympus\Zeus\Render\Controller;
 
 use GetOlympus\Zeus\Helpers\Controller\Helpers;
+use GetOlympus\Zeus\Render\Exception\RenderException;
 use GetOlympus\Zeus\Render\Implementation\RenderImplementation;
+use GetOlympus\Zeus\Translate\Controller\Translate;
 use Twig_Environment;
 use Twig_Loader_Filesystem;
 use Twig_SimpleFunction;

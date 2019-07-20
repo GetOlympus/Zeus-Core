@@ -2,7 +2,7 @@
 
 namespace GetOlympus\Zeus\Posttype\Exception;
 
-use Exception;
+use GetOlympus\Zeus\Base\Exception\BaseException;
 
 /**
  * Post type exception.
@@ -14,7 +14,7 @@ use Exception;
  *
  */
 
-class PosttypeException extends Exception
+class PosttypeException extends BaseException
 {
     //
 }

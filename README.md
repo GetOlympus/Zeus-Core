@@ -36,6 +36,10 @@ _In progress (soon, really soon)_
 
 ## Release History
 
+* 2.0.1 (July 20th, 2019)
+- [x] ADD: new Customizer class to let you use the WordPress Customize Manager
+- [x] ADD: new BaseException class
+
 * 2.0.0 (July 14th, 2019)
 - [x] **JOYEUX 14 JUILLET**
 - [x] ADD: load WordPress textdomain MO files

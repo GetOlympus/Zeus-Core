@@ -398,13 +398,13 @@ class PosttypeHook implements PosttypeHookImplementation
 
         // Option
         $opt = 'permalink_structure_'.$slug;
-        $val = Request::get($opt, '');
+        $val = Request::post($opt, '');
 
         // Check POST
         $value = !empty($val) ? $val : Option::get($opt, '/%'.$slug.'%-%post_id%');
 
-        if (!empty($val)) {
-            Option::set($opt, $val);
+        if (!empty($value)) {
+            Option::set($opt, $value);
         }
 
         $args = $this->posttype->getModel()->getArgs();
@@ -444,7 +444,7 @@ class PosttypeHook implements PosttypeHookImplementation
         $vars['t_home'] = OL_ZEUS_HOME;
 
         // Render view
-        $render = new Render('posttype', 'layouts'.S.'permalinks.html.twig', $vars, []);
+        $render = new Render('core', 'layouts'.S.'permalinks.html.twig', $vars, []);
         $render->view();
     }
 
