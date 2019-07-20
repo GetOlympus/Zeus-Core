@@ -19,7 +19,8 @@ interface ConfigurationImplementation
      *
      * @param  string  $prepend
      * @param  array   $available
-     * @return array   $functions
+     *
+     * @return array
      */
     public function getFunctions($prepend, $available);
 

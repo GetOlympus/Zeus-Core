@@ -22,7 +22,7 @@ interface AjaxImplementation
     /**
      * Hooks and enqueue script.
      *
-     * @param array $options the options
+     * @param  array   $options
      */
     public function enqueueScript($options);
 

@@ -74,7 +74,8 @@ class Render implements RenderImplementation
          * Add your custom views folder with alias.
          *
          * @param  array   $paths
-         * @return array   $paths
+         *
+         * @return array
          */
         $paths = apply_filters('ol_zeus_render_views', $paths);
 

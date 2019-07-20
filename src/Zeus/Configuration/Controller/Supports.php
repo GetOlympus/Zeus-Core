@@ -51,7 +51,7 @@ class Supports extends Configuration
     /**
      * Add or Remove post type supports to WP.
      *
-     * @param array $props
+     * @param  array   $props
      */
     public function addRemovePostTypeSupport($props)
     {
@@ -98,8 +98,8 @@ class Supports extends Configuration
     /**
      * Add theme supports to WP.
      *
-     * @param string        $key
-     * @param array|boolean $props
+     * @param  string  $key
+     * @param  mixed   $props
      */
     public function addRemoveThemeSupport($key, $props = [])
     {

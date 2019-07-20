@@ -35,7 +35,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Add all usefull WP filters and hooks.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function init($args)
     {
@@ -67,7 +67,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean bbPress plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginBbpress($settings)
     {
@@ -104,7 +104,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean Contact Form plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginContactForm($settings)
     {
@@ -146,7 +146,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean Gravity Form plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginGravityForm($settings)
     {
@@ -183,7 +183,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean Jetpack plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginJetpack($settings)
     {
@@ -234,7 +234,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean The Events Calendar plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginTheEventsCalendar($settings)
     {
@@ -271,7 +271,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean W3TC plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginW3tc($settings)
     {
@@ -313,7 +313,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean WooCommerce plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginWoocommerce($settings)
     {
@@ -413,7 +413,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean WP Socializer plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginWpSocializer($settings)
     {
@@ -450,7 +450,7 @@ class HelpersCleanPlugins extends HelpersClean
     /**
      * Clean YOAST plugin functionalities.
      *
-     * @param array $settings
+     * @param  array   $settings
      */
     public function pluginYoast($settings)
     {

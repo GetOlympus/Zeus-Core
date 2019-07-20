@@ -33,14 +33,14 @@ interface MetaboxModelImplementation
     /**
      * Gets the value of callback.
      *
-     * @return function
+     * @return void
      */
     public function getCallback();
 
     /**
      * Sets the value of callback.
      *
-     * @param  function $callback
+     * @param  void    $callback
      *
      * @return self
      */

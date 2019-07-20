@@ -42,6 +42,11 @@ abstract class Application implements ApplicationImplementation
     /**
      * @var array
      */
+    protected $customizers = [];
+
+    /**
+     * @var array
+     */
     protected $defaultfields = [];
 
     /**
@@ -122,21 +127,23 @@ abstract class Application implements ApplicationImplementation
     public function initComponents()
     {
         // Works on all vars
-        $this->adminpages = !is_array($this->adminpages) ? [$this->adminpages] : $this->adminpages;
-        $this->crons      = !is_array($this->crons) ? [$this->crons] : $this->crons;
-        $this->posttypes  = !is_array($this->posttypes) ? [$this->posttypes] : $this->posttypes;
-        $this->terms      = !is_array($this->terms) ? [$this->terms] : $this->terms;
-        $this->users      = !is_array($this->users) ? [$this->users] : $this->users;
-        $this->widgets    = !is_array($this->widgets) ? [$this->widgets] : $this->widgets;
+        $this->adminpages  = !is_array($this->adminpages) ? [$this->adminpages] : $this->adminpages;
+        $this->crons       = !is_array($this->crons) ? [$this->crons] : $this->crons;
+        $this->customizers = !is_array($this->customizers) ? [$this->customizers] : $this->customizers;
+        $this->posttypes   = !is_array($this->posttypes) ? [$this->posttypes] : $this->posttypes;
+        $this->terms       = !is_array($this->terms) ? [$this->terms] : $this->terms;
+        $this->users       = !is_array($this->users) ? [$this->users] : $this->users;
+        $this->widgets     = !is_array($this->widgets) ? [$this->widgets] : $this->widgets;
 
         // Build main paths
         $paths = [
-            'adminpages' => $this->adminpages,
-            'crons'      => $this->crons,
-            'posttypes'  => $this->posttypes,
-            'terms'      => $this->terms,
-            'users'      => $this->users,
-            'widgets'    => $this->widgets
+            'adminpages'  => $this->adminpages,
+            'crons'       => $this->crons,
+            'customizers' => $this->customizers,
+            'posttypes'   => $this->posttypes,
+            'terms'       => $this->terms,
+            'users'       => $this->users,
+            'widgets'     => $this->widgets
         ];
 
         // Register post types / terms / widgets / admin pages and more

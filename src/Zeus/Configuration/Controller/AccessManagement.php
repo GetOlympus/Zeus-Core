@@ -44,7 +44,7 @@ class AccessManagement extends Configuration
     /**
      * Hiding `wp-login.php` in the login and registration URLs
      *
-     * @param string $slug
+     * @param  string  $slug
      */
     public function accessUrlAccessManagement($slug)
     {
@@ -93,7 +93,7 @@ class AccessManagement extends Configuration
     /**
      * Redisign wp-login.php page with custom error message.
      *
-     * @param string $message
+     * @param  string  $message
      */
     public function loginErrorAccessManagement($message)
     {
@@ -111,7 +111,7 @@ class AccessManagement extends Configuration
     /**
      * Redisign wp-login.php page with custom header configurations.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function loginHeaderAccessManagement($args)
     {
@@ -143,7 +143,7 @@ class AccessManagement extends Configuration
     /**
      * Define wether if WP has to shake the login box or not.
      *
-     * @param boolean $shake
+     * @param  boolean $shake
      */
     public function loginShakeAccessManagement($shake)
     {
@@ -159,7 +159,7 @@ class AccessManagement extends Configuration
     /**
      * Redisign wp-login.php page with custom style and scripts.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function loginStyleAccessManagement($args)
     {

@@ -24,7 +24,7 @@ interface AdminPageModelImplementation
     /**
      * Sets the value of adminbar.
      *
-     * @param string $adminbar the adminbar
+     * @param  string  $adminbar
      *
      * @return self
      */
@@ -40,7 +40,7 @@ interface AdminPageModelImplementation
     /**
      * Sets the value of identifier.
      *
-     * @param string $identifier the identifier
+     * @param  string  $identifier
      *
      * @return self
      */
@@ -49,16 +49,17 @@ interface AdminPageModelImplementation
     /**
      * Gets the value of pages.
      *
-     * @param   string    $identifier
-     * @return  array
+     * @param  string  $identifier
+     *
+     * @return array
      */
     public function getPages($identifier = '');
 
     /**
      * Sets the value of pages.
      *
-     * @param string    $identifier the identifier
-     * @param array     $options    the options
+     * @param  string  $identifier
+     * @param  array   $options
      *
      * @return self
      */
@@ -74,8 +75,8 @@ interface AdminPageModelImplementation
     /**
      * Sets the value of parent.
      *
-     * @param string $parent
-     * @param array  $available
+     * @param  string  $parent
+     * @param  array   $available
      *
      * @return self
      */

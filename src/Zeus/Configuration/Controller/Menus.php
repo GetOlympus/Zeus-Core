@@ -43,8 +43,8 @@ class Menus extends Configuration
     /**
      * Register sidebar to WP.
      *
-     * @param string $key
-     * @param string $description
+     * @param  string  $key
+     * @param  string  $description
      */
     public function addMenu($key, $description)
     {

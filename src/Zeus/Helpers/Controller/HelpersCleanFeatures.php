@@ -40,7 +40,7 @@ class HelpersCleanFeatures extends HelpersClean
     /**
      * Add all usefull WP filters and hooks.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function init($args)
     {

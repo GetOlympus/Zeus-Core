@@ -59,7 +59,7 @@ class Assets extends Configuration
     /**
      * Enqueue scripts.
      *
-     * @param array $scripts
+     * @param  array   $scripts
      */
     public function enqueueScripts($scripts)
     {
@@ -107,7 +107,7 @@ class Assets extends Configuration
     /**
      * Enqueue styles.
      *
-     * @param array $styles
+     * @param  array   $styles
      */
     public function enqueueStyles($styles)
     {

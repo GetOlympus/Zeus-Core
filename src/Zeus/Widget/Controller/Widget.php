@@ -87,7 +87,8 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
      *
      * @param  array   $args
      * @param  string  $content
-     * @return string  $content
+     *
+     * @return string
      */
     public function cache_widget($args, $content)
     {
@@ -95,7 +96,8 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
          * Retrieve widget classname as cache key.
          *
          * @param  string  $classname
-         * @return string  $classname
+         *
+         * @return string
          */
         wp_cache_set(
             $this->getModel()->getIdentifier(),
@@ -190,7 +192,8 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
      * Get cached widget.
      *
      * @param  array   $args
-     * @return boolean true|false
+     *
+     * @return boolean
      */
     public function get_cached_widget($args)
     {
@@ -214,7 +217,8 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
      *
      * @param  array   $new_instance
      * @param  array   $old_instance
-     * @return array   $instance
+     *
+     * @return array
      */
     public function update($new_instance, $old_instance)
     {
@@ -260,7 +264,8 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
      * HTML at the end of a widget.
      *
      * @param  array   $args
-     * @return string  $after_widget
+     *
+     * @return string
      */
     public function widget_end($args)
     {
@@ -272,6 +277,7 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
      *
      * @param  array   $args
      * @param  array   $instance
+     *
      * @return void
      **/
     public function widget($args, $instance)

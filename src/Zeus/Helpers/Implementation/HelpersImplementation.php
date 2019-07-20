@@ -31,9 +31,10 @@ interface HelpersImplementation
     /**
      * Helper function to create a file in a target path with its contents.
      *
-     * @param  string  $targetFilepath
+     * @param  string  $filepath
+     * @param  string  $contents
      * @param  string  $message
-     * @param  boolean $useDate
+     * @param  boolean $usedate
      */
     public static function filePutContents($filepath, $contents, $message, $usedate = true);
 
@@ -42,7 +43,8 @@ interface HelpersImplementation
      *
      * @param  string  $text
      * @param  string  $separator
-     * @return string  $camelized
+     *
+     * @return string
      */
     public static function toCamelCaseFormat($text, $separator = '-');
 
@@ -51,7 +53,8 @@ interface HelpersImplementation
      *
      * @param  string  $text
      * @param  string  $separator
-     * @return string  $functionized
+     *
+     * @return string
      */
     public static function toFunctionFormat($text, $separator = '-');
 
@@ -60,7 +63,8 @@ interface HelpersImplementation
      *
      * @param  string  $text
      * @param  string  $separator
-     * @return string  $slugified
+     *
+     * @return string
      */
     public static function urlize($text, $separator = '-');
 }

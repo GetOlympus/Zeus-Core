@@ -51,8 +51,8 @@ class AdminThemes extends Configuration
     /**
      * Add admin theme.
      *
-     * @param string $key
-     * @param array  $args
+     * @param  string  $key
+     * @param  array   $args
      */
     public function addAdminTheme($key, $args)
     {

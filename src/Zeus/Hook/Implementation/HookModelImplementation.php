@@ -17,7 +17,7 @@ interface HookModelImplementation
     /**
      * Gets the value of callback.
      *
-     * @return string|array
+     * @return mixed
      */
     public function getCallback();
 
@@ -29,7 +29,7 @@ interface HookModelImplementation
     /**
      * Sets the value of callback.
      *
-     * @param string|array $callback the callback
+     * @param  mixed   $callback
      *
      * @return self
      */

@@ -110,7 +110,7 @@ abstract class Posttype extends Base implements PosttypeImplementation
     /**
      * Return post types reserved slugs.
      *
-     * @param  array   $reserved_slugs
+     * @return array
      */
     public function getReservedSlugs()
     {
@@ -165,7 +165,7 @@ abstract class Posttype extends Base implements PosttypeImplementation
     /**
      * Build args.
      *
-     * @return array   $args
+     * @return array
      */
     public function defaultArgs()
     {
@@ -201,7 +201,8 @@ abstract class Posttype extends Base implements PosttypeImplementation
      *
      * @param  string  $plural
      * @param  string  $singular
-     * @return array   $labels
+     *
+     * @return array
      */
     public function defaultLabels($plural, $singular)
     {
@@ -231,7 +232,8 @@ abstract class Posttype extends Base implements PosttypeImplementation
      * Build statuses.
      *
      * @param  string  $name
-     * @return array   $statuses
+     *
+     * @return array
      */
     public function defaultStatuses($name)
     {

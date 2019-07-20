@@ -37,7 +37,8 @@ interface OptionImplementation
      * @param  string  $option
      * @param  string  $default
      * @param  string  $item
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function get($option, $default = '', $item = '');
 
@@ -63,7 +64,8 @@ interface OptionImplementation
      * Clean details on value
      *
      * @param  mixed   $value
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function cleanValue($value);
 
@@ -72,7 +74,8 @@ interface OptionImplementation
      *
      * @param  string  $user_id
      * @param  string  $option
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function getAuthorMeta($user_id, $option);
 
@@ -90,7 +93,8 @@ interface OptionImplementation
      *
      * @param  string  $post_id
      * @param  string  $option
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function getPostMeta($post_id, $option);
 
@@ -109,7 +113,8 @@ interface OptionImplementation
      * @param  string  $term_id
      * @param  string  $option
      * @param  mixed   $default
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function getTermMeta($term_id, $option, $default = '');
 

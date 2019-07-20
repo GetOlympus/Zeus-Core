@@ -57,6 +57,10 @@ class AdminPageHook implements AdminPageHookImplementation
      */
     public function __construct($adminpage)
     {
+        if (!OL_ZEUS_ISADMIN) {
+            return;
+        }
+
         $page = Request::get('page');
 
         // Check current page
@@ -113,7 +117,8 @@ class AdminPageHook implements AdminPageHookImplementation
          *
          * @var    string  $filter_slug
          * @param  array   $fields
-         * @return array   $fields
+         *
+         * @return array
          */
         $this->fields = apply_filters('ol_zeus_adminpage_'.$filter_slug.'_contents', $fields);
 

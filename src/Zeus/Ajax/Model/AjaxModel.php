@@ -44,7 +44,7 @@ class AjaxModel implements AjaxModelImplementation
     /**
      * Sets the value of args.
      *
-     * @param array $args the args
+     * @param  array   $args
      *
      * @return self
      */
@@ -68,7 +68,7 @@ class AjaxModel implements AjaxModelImplementation
     /**
      * Sets the value of handle.
      *
-     * @param string $handle the handle
+     * @param  string  $handle
      *
      * @return self
      */
@@ -92,7 +92,7 @@ class AjaxModel implements AjaxModelImplementation
     /**
      * Sets the value of name.
      *
-     * @param string $name the name
+     * @param  string  $name
      *
      * @return self
      */

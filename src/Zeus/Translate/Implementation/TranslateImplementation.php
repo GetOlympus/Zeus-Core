@@ -34,6 +34,7 @@ interface TranslateImplementation
      * @param  string  $plural
      * @param  integer $number
      * @param  string  $domain
+     *
      * @return string
      */
     public static function n($single, $plural, $number = 1, $domain = 'olympus-zeus');
@@ -43,6 +44,7 @@ interface TranslateImplementation
      *
      * @param  string  $single
      * @param  string  $plural
+     *
      * @return string
      */
     public static function noop($single, $plural);
@@ -52,6 +54,7 @@ interface TranslateImplementation
      *
      * @param  string  $message
      * @param  string  $domain
+     *
      * @return string
      */
     public static function t($message, $domain = 'olympus-zeus');

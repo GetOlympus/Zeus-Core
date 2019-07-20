@@ -87,7 +87,7 @@ abstract class Field extends Base implements FieldImplementation
     /**
      * Render assets' component.
      *
-     * @return array   $assets
+     * @return array
      */
     public function assets()
     {
@@ -142,6 +142,7 @@ abstract class Field extends Base implements FieldImplementation
      *
      * @param  string  $identifier
      * @param  array   $options
+     * @param  boolean $useid
      *
      * @return Field
      */
@@ -155,7 +156,7 @@ abstract class Field extends Base implements FieldImplementation
         }
 
         // Check ID
-        if (empty($identifier)) {
+        if (is_string($identifier) && empty($identifier)) {
             throw new FieldException(sprintf(
                 Translate::t('field.errors.field_id_is_not_defined'),
                 $field->getClass()['name']
@@ -319,7 +320,7 @@ abstract class Field extends Base implements FieldImplementation
     /**
      * Prepare defaults.
      *
-     * @return array   $defaults
+     * @return array
      */
     abstract protected function getDefaults();
 
@@ -328,7 +329,8 @@ abstract class Field extends Base implements FieldImplementation
      *
      * @param  object  $value
      * @param  array   $contents
-     * @return array   $vars
+     *
+     * @return array
      */
     abstract protected function getVars($value, $contents);
 

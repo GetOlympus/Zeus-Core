@@ -38,7 +38,7 @@ class Base
     /**
      * Gets the value of instance.
      *
-     * @return Object
+     * @return object
      */
     public static function getInstance()
     {

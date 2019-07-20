@@ -17,7 +17,7 @@ use GetOlympus\Zeus\Hook\Implementation\HookModelImplementation;
 class HookModel implements HookModelImplementation
 {
     /**
-     * @var string|array
+     * @var mixed
      */
     protected $callback;
 
@@ -39,7 +39,7 @@ class HookModel implements HookModelImplementation
     /**
      * Gets the value of callback.
      *
-     * @return string|array
+     * @return mixed
      */
     public function getCallback()
     {
@@ -58,7 +58,7 @@ class HookModel implements HookModelImplementation
     /**
      * Sets the value of callback.
      *
-     * @param string|array $callback the callback
+     * @param  mixed   $callback
      *
      * @return self
      */

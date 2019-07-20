@@ -117,7 +117,7 @@ abstract class Term extends Base implements TermImplementation
     /**
      * Return post types reserved slugs.
      *
-     * @param  array   $reserved_slugs
+     * @return array
      */
     public function getReservedSlugs()
     {
@@ -180,7 +180,7 @@ abstract class Term extends Base implements TermImplementation
     /**
      * Build args.
      *
-     * @return array   $args
+     * @return array
      */
     public function defaultArgs()
     {
@@ -206,7 +206,8 @@ abstract class Term extends Base implements TermImplementation
      * @param  string  $plural
      * @param  string  $singular
      * @param  boolean $hierarchical
-     * @return array   $labels
+     *
+     * @return array
      */
     public function defaultLabels($plural, $singular, $hierarchical = true)
     {

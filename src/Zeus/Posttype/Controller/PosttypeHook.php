@@ -65,7 +65,8 @@ class PosttypeHook implements PosttypeHookImplementation
      * Hook to change columns on post type list page.
      *
      * @param  array   $columns
-     * @return array   $columns
+     *
+     * @return array
      */
     public function manageEditColumns($columns)
     {
@@ -85,7 +86,8 @@ class PosttypeHook implements PosttypeHookImplementation
          *
          * @var    string  $current
          * @param  array   $columns
-         * @return array   $columns
+         *
+         * @return array
          */
         return apply_filters('ol_zeus_posttypehook_manage_edit-'.$current.'_columns', $columns);
     }
@@ -123,7 +125,8 @@ class PosttypeHook implements PosttypeHookImplementation
      * @param  object  $post
      * @param  boolean $leavename
      * @param  boolean $sample
-     * @return string  $permalink
+     *
+     * @return string
      */
     public function postTypeLink($post_link, $post, $leavename, $sample)
     {
@@ -352,7 +355,8 @@ class PosttypeHook implements PosttypeHookImplementation
                  * @param  object  $value
                  * @param  integer $post_id
                  * @param  string  $option_name
-                 * @return object  $value
+                 *
+                 * @return object
                  */
                 $value = apply_filters('ol_zeus_posttypehook_save_'.$slug.'_field', $value, $post_id, $option_name);
 

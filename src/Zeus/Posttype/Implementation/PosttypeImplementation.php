@@ -25,7 +25,7 @@ interface PosttypeImplementation
     /**
      * Return post types reserved slugs.
      *
-     * @param  array   $reserved_slugs
+     * @return array
      */
     public function getReservedSlugs();
 
@@ -37,7 +37,7 @@ interface PosttypeImplementation
     /**
      * Build args.
      *
-     * @return array   $args
+     * @return array
      */
     public function defaultArgs();
 
@@ -46,7 +46,8 @@ interface PosttypeImplementation
      *
      * @param  string  $plural
      * @param  string  $singular
-     * @return array   $labels
+     *
+     * @return array
      */
     public function defaultLabels($plural, $singular);
 
@@ -54,7 +55,8 @@ interface PosttypeImplementation
      * Build statuses.
      *
      * @param  string  $name
-     * @return array   $statuses
+     *
+     * @return array
      */
     public function defaultStatuses($name);
 

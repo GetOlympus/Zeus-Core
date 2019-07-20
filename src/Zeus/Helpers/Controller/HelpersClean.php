@@ -17,7 +17,7 @@ abstract class HelpersClean
     /**
      * Add all usefull WP filters and hooks.
      *
-     * @param array $args
+     * @param  array   $args
      */
     abstract public function init($args);
 }

@@ -47,7 +47,7 @@ class Settings extends Configuration
     /**
      * Remove some items from WP admin bar.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function adminBarSetting($args)
     {
@@ -68,7 +68,7 @@ class Settings extends Configuration
     /**
      * Update WP footer copyright.
      *
-     * @param string $description
+     * @param  string  $description
      */
     public function adminFooterSetting($description)
     {
@@ -83,7 +83,7 @@ class Settings extends Configuration
     /**
      * Reorder WP admin main menu.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function adminMenuOrderSetting($args)
     {
@@ -100,7 +100,7 @@ class Settings extends Configuration
     /**
      * Remove some admin widgets.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function adminMetaBoxesSetting($args)
     {
@@ -147,7 +147,7 @@ class Settings extends Configuration
     /**
      * Comment fields in wanted order.
      *
-     * @param array $fields
+     * @param  array   $fields
      */
     public function commentsFieldsOrderSetting($fields)
     {
@@ -170,7 +170,7 @@ class Settings extends Configuration
     /**
      * Update JPEG quality of generated images.
      *
-     * @param integer $quality
+     * @param  integer $quality
      */
     public function jpegQualitySetting($quality)
     {

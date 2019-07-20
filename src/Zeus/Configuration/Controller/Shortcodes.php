@@ -69,7 +69,7 @@ class Shortcodes extends Configuration
     /**
      * Add buttons to tinyMCE.
      *
-     * @param array $buttons
+     * @param  array   $buttons
      */
     public function addButtons($buttons)
     {
@@ -92,7 +92,7 @@ class Shortcodes extends Configuration
     /**
      * Add plugins to tinyMCE.
      *
-     * @param array $plugins
+     * @param  array   $plugins
      */
     public function addPlugins($plugins)
     {
@@ -138,10 +138,11 @@ class Shortcodes extends Configuration
                 /**
                  * Hook to customize shortcode function.
                  *
-                 * @var     string  $key
-                 * @param   array   $atts
-                 * @param   string  $content
-                 * @return  string  $content
+                 * @var    string  $key
+                 * @param  array   $atts
+                 * @param  string  $content
+                 *
+                 * @return string
                  */
                 return apply_filters('ol_zeus_shortcodes_'.$key, $atts, $content);
             });

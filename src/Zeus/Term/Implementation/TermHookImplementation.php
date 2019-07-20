@@ -49,7 +49,8 @@ interface TermHookImplementation
      * Hook to change columns on term list page.
      *
      * @param  array   $columns
-     * @return array   $columns
+     *
+     * @return array
      */
     public function manageEditColumns($columns);
 
@@ -57,6 +58,7 @@ interface TermHookImplementation
      * Hook building custom fields for Post types.
      *
      * @param  integer $term_id
+     *
      * @return integer|void
      */
     public function saveFields($term_id);

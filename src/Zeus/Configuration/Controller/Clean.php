@@ -49,7 +49,7 @@ class Clean extends Configuration
     /**
      * Define what default WordPress core feature to disable.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function coreClean($args)
     {
@@ -64,7 +64,7 @@ class Clean extends Configuration
     /**
      * Define what default WordPress feature to disable.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function featuresClean($args)
     {
@@ -79,7 +79,7 @@ class Clean extends Configuration
     /**
      * Define what to clean from the theme header frontend, via the "remove_action" hook.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function headersClean($args)
     {
@@ -94,7 +94,7 @@ class Clean extends Configuration
     /**
      * Define what to clean from plugins, via the right hook.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function pluginsClean($args)
     {

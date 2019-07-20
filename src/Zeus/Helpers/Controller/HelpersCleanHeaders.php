@@ -41,7 +41,7 @@ class HelpersCleanHeaders extends HelpersClean
     /**
      * Add all usefull WP filters and hooks.
      *
-     * @param array $args
+     * @param  array   $args
      */
     public function init($args)
     {
@@ -147,7 +147,7 @@ class HelpersCleanHeaders extends HelpersClean
     /**
      * Remove the next and previous post links from the header
      *
-     * @param string $key
+     * @param  string  $key
      */
     public function headerWpHead($key)
     {

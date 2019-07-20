@@ -22,7 +22,7 @@ interface TermImplementation
     /**
      * Build args.
      *
-     * @return array   $args
+     * @return array
      */
     public function defaultArgs();
 
@@ -32,7 +32,8 @@ interface TermImplementation
      * @param  string  $plural
      * @param  string  $singular
      * @param  boolean $hierarchical
-     * @return array   $labels
+     *
+     * @return array
      */
     public function defaultLabels($plural, $singular, $hierarchical = true);
 

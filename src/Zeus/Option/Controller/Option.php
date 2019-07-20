@@ -45,7 +45,8 @@ class Option implements OptionImplementation
      * @param  string  $option
      * @param  string  $default
      * @param  string  $item
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function get($option, $default = '', $item = '')
     {
@@ -60,7 +61,8 @@ class Option implements OptionImplementation
          *
          * @var    string  $option
          * @param  array   $value
-         * @return array   $value
+         *
+         * @return array
          */
         $value = apply_filters('ol_zeus_option_get_'.$option, $value);
 
@@ -83,7 +85,8 @@ class Option implements OptionImplementation
          *
          * @var    string  $option
          * @param  mixed   $value
-         * @return array   $value
+         *
+         * @return array
          */
         $value = apply_filters('ol_zeus_option_set_'.$option, $value);
 
@@ -113,7 +116,8 @@ class Option implements OptionImplementation
      * Clean details on value
      *
      * @param  mixed   $value
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function cleanValue($value)
     {
@@ -135,7 +139,8 @@ class Option implements OptionImplementation
      *
      * @param  string  $user_id
      * @param  string  $option
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function getAuthorMeta($user_id, $option)
     {
@@ -159,7 +164,8 @@ class Option implements OptionImplementation
      *
      * @param  string  $post_id
      * @param  string  $option
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function getPostMeta($post_id, $option)
     {
@@ -184,7 +190,8 @@ class Option implements OptionImplementation
      * @param  string  $term_id
      * @param  string  $option
      * @param  mixed   $default
-     * @return mixed   $value
+     *
+     * @return mixed
      */
     public static function getTermMeta($term_id, $option, $default = '')
     {

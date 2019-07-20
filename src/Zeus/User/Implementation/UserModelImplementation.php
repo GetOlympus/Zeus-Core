@@ -2,8 +2,6 @@
 
 namespace GetOlympus\Zeus\User\Model;
 
-use GetOlympus\Zeus\User\Controller\UserHook;
-
 /**
  * User model implementation.
  *
@@ -31,22 +29,6 @@ interface UserModelImplementation
      * @return self
      */
     public function setFields(array $fields = []);
-
-    /**
-     * Gets the value of hook.
-     *
-     * @return UserHook
-     */
-    public function getHook();
-
-    /**
-     * Sets the value of hook.
-     *
-     * @param  UserHook $hook
-     *
-     * @return self
-     */
-    public function setHook(UserHook $hook);
 
     /**
      * Gets the value of title.

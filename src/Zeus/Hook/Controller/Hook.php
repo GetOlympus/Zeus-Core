@@ -46,6 +46,7 @@ class Hook extends Base implements HookImplementation
      * Define hook.
      *
      * @param  mixed   $args
+     *
      * @return void
      */
     public function listen($args = null)

@@ -22,7 +22,7 @@ class MetaboxModel implements MetaboxModelImplementation
     protected $args;
 
     /**
-     * @var function
+     * @var void
      */
     protected $callback;
 
@@ -83,7 +83,7 @@ class MetaboxModel implements MetaboxModelImplementation
     /**
      * Gets the value of callback.
      *
-     * @return function
+     * @return void
      */
     public function getCallback()
     {
@@ -93,7 +93,7 @@ class MetaboxModel implements MetaboxModelImplementation
     /**
      * Sets the value of callback.
      *
-     * @param  function $callback
+     * @param  void    $callback
      *
      * @return self
      */

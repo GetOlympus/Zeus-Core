@@ -42,7 +42,7 @@ class BaseWidget extends \WP_Widget
     /**
      * Gets the value of instance.
      *
-     * @return Object
+     * @return object
      */
     public static function getInstance()
     {

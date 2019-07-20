@@ -95,7 +95,8 @@ class Metabox extends Base implements MetaboxImplementation
      *
      * @param  array   $post
      * @param  array   $args
-     * @return int|null
+     *
+     * @return integer|null
      */
     public function callback($post, $args)
     {

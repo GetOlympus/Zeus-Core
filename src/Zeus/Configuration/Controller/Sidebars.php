@@ -37,7 +37,7 @@ class Sidebars extends Configuration
     /**
      * Register sidebars to WP.
      *
-     * @param array $configs
+     * @param  array   $configs
      */
     public function addSidebars($configs)
     {

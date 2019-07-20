@@ -18,7 +18,8 @@ interface PosttypeHookImplementation
      * Hook to change columns on post type list page.
      *
      * @param  array   $columns
-     * @return array   $columns
+     *
+     * @return array
      */
     public function manageEditColumns($columns);
 
@@ -38,7 +39,8 @@ interface PosttypeHookImplementation
      * @param  object  $post
      * @param  boolean $leavename
      * @param  boolean $sample
-     * @return string  $permalink
+     *
+     * @return string
      */
     public function postTypeLink($post_link, $post, $leavename, $sample);
 

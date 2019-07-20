@@ -24,7 +24,8 @@ interface WidgetImplementation
      *
      * @param  array   $args
      * @param  string  $content
-     * @return string  $content
+     *
+     * @return string
      */
     public function cache_widget($args, $content);
 
@@ -46,7 +47,8 @@ interface WidgetImplementation
      * Get cached widget.
      *
      * @param  array   $args
-     * @return boolean true|false
+     *
+     * @return boolean
      */
     public function get_cached_widget($args);
 
@@ -56,7 +58,8 @@ interface WidgetImplementation
      *
      * @param  array   $new_instance
      * @param  array   $old_instance
-     * @return array $instance
+     *
+     * @return array
      */
     public function update($new_instance, $old_instance);
 
@@ -73,7 +76,8 @@ interface WidgetImplementation
      * HTML at the end of a widget.
      *
      * @param  array   $args
-     * @return string  $after_widget
+     *
+     * @return string
      */
     public function widget_end($args);
 
@@ -82,6 +86,7 @@ interface WidgetImplementation
      *
      * @param  array   $args
      * @param  array   $instance
+     *
      * @return void
      **/
     public function widget($args, $instance);

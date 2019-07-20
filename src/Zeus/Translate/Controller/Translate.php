@@ -19,7 +19,7 @@ use Symfony\Component\Translation\Translator;
 class Translate implements TranslateImplementation
 {
     /**
-     * @var Singleton
+     * @var singleton
      */
     private static $instance;
 
@@ -92,6 +92,7 @@ class Translate implements TranslateImplementation
      * @param  string  $plural
      * @param  integer $number
      * @param  string  $domain
+     *
      * @return string
      */
     public static function n($single, $plural, $number = 1, $domain = 'olympus-zeus')
@@ -104,6 +105,7 @@ class Translate implements TranslateImplementation
      *
      * @param  string  $single
      * @param  string  $plural
+     *
      * @return string
      */
     public static function noop($single, $plural)
@@ -116,6 +118,7 @@ class Translate implements TranslateImplementation
      *
      * @param  string  $message
      * @param  string  $domain
+     *
      * @return string
      */
     public static function t($message, $domain = 'olympus-zeus')

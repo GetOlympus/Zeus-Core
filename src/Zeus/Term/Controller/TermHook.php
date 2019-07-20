@@ -199,7 +199,8 @@ class TermHook implements TermHookImplementation
      * Hook to change columns on term list page.
      *
      * @param  array   $columns
-     * @return array   $columns
+     *
+     * @return array
      */
     public function manageEditColumns($columns)
     {
@@ -219,7 +220,8 @@ class TermHook implements TermHookImplementation
          *
          * @var    string  $current
          * @param  array   $columns
-         * @return array   $columns
+         *
+         * @return array
          */
         return apply_filters('ol_zeus_termhook_manage_edit-'.$current.'_columns', $columns);
     }
@@ -228,6 +230,7 @@ class TermHook implements TermHookImplementation
      * Hook building custom fields for Post types.
      *
      * @param  integer $term_id
+     *
      * @return integer|void
      */
     public function saveFields($term_id)
@@ -289,7 +292,8 @@ class TermHook implements TermHookImplementation
              * @param  object  $value
              * @param  integer $term_id
              * @param  string  $option_name
-             * @return object  $value
+             *
+             * @return object
              */
             $value = apply_filters('ol_zeus_termhook_save_'.$slug.'_field', $value, $term_id, $option_name);
 

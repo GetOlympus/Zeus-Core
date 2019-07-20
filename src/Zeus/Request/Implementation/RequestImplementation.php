@@ -17,7 +17,7 @@ interface RequestImplementation
     /**
      * Return a slug list where it is authorized to render assets.
      *
-     * @return array   $authorizedPage
+     * @return array
      */
     public static function authorizedAssets();
 
@@ -26,14 +26,15 @@ interface RequestImplementation
      *
      * @param  string  $param
      * @param  string  $default
-     * @return string  $value
+     *
+     * @return string
      */
     public static function get($param, $default = '');
 
     /**
      * Get used slug in current admin panel page.
      *
-     * @return string  $slug
+     * @return string
      */
     public static function getCurrentSlug();
 
@@ -42,7 +43,8 @@ interface RequestImplementation
      *
      * @param  string  $param
      * @param  string  $default
-     * @return string  $value
+     *
+     * @return string
      */
     public static function post($param, $default = '');
 }

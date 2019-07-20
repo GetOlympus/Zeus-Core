@@ -56,7 +56,7 @@ class Sizes extends Configuration
     /**
      * Add images names to droplist.
      *
-     * @param array $configs
+     * @param  array   $configs
      *
      * @see https://codex.wordpress.org/Plugin_API/Filter_Reference/image_size_names_choose
      */
