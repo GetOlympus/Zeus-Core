@@ -258,12 +258,11 @@ class Render implements RenderImplementation
                 Helpers::copyFile(
                     $details[$key]['source'],
                     $details[$key]['target'],
-                    $details[$key]['basename'],
-                    true
+                    $details[$key]['basename']
                 );
 
                 // Default case
-                wp_enqueue_script($script, $details[$key]['fileuri'], [], false, true);
+                wp_enqueue_script($script, esc_url($details[$key]['fileuri']), [], false, true);
             }
         }
 
@@ -299,12 +298,11 @@ class Render implements RenderImplementation
                 Helpers::copyFile(
                     $details[$key]['source'],
                     $details[$key]['target'],
-                    $details[$key]['basename'],
-                    true
+                    $details[$key]['basename']
                 );
 
                 // Default case
-                wp_enqueue_style($style, $details[$key]['fileuri'], [], false, 'all');
+                wp_enqueue_style($style, esc_url($details[$key]['fileuri']), [], false, 'all');
             }
         }
 

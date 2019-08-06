@@ -1,5 +1,6 @@
 ## 2.0.2 (August 05th, 2019)
 Update WordPress Customizer classes to add template redirect and more
+Add symlink creation on Helpers
 
 ## 2.0.1 (July 20th, 2019)
 Add new Customizer class to let you use the WordPress Customize Manager

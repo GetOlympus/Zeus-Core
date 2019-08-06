@@ -25,8 +25,9 @@ interface HelpersImplementation
      * @param  string  $sourcePath
      * @param  string  $targetPath
      * @param  string  $filename
+     * @param  boolean $symlink
      */
-    public static function copyFile($sourcePath, $targetPath, $filename);
+    public static function copyFile($sourcePath, $targetPath, $filename, $symlink = false);
 
     /**
      * Helper function to create a file in a target path with its contents.
