@@ -38,15 +38,27 @@ abstract class Customizer extends Base implements CustomizerImplementation
      * @var array
      */
     protected $available_types = [
-        'text', 'email', 'url', 'number', 'hidden', 'date', 'checkbox',
-        'select', 'radio', 'dropdown-pages', 'textarea', 'color',
-        'media', 'image', 'cropped-image', 'date-time',
+        'text', 'email', 'url', 'number', 'hidden', 'date', 'textarea',
+        'checkbox', 'dropdown-pages', 'radio', 'select',
+        'color', 'media', 'image', 'cropped-image', 'date-time',
     ];
 
     /**
-     * @var string
+     * @var array
      */
-    //protected $identifier = '';
+    protected $default_templates = [
+        'login'        => OL_ZEUS_PATH.S.'Resources'.S.'templates'.S.'customizer'.S.'login.php',
+        'lostpassword' => OL_ZEUS_PATH.S.'Resources'.S.'templates'.S.'customizer'.S.'lostpassword.php',
+        'register'     => OL_ZEUS_PATH.S.'Resources'.S.'templates'.S.'customizer'.S.'register.php',
+    ];
+
+    /**
+     * @var array
+     */
+    protected $scripts = [
+        'customizer' => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-customizer.js',
+        'previewer'  => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-customizer-preview.js',
+    ];
 
     /**
      * Constructor.
@@ -56,12 +68,9 @@ abstract class Customizer extends Base implements CustomizerImplementation
         // Initialize CustomizerModel
         $this->model = new CustomizerModel();
 
-        // Work on admin only
-        if (OL_ZEUS_ISADMIN) {
-            // Add pages and more
-            $this->setVars();
-            $this->register();
-        }
+        // Add pages and more
+        $this->setVars();
+        $this->register();
     }
 
     /**
@@ -77,6 +86,9 @@ abstract class Customizer extends Base implements CustomizerImplementation
         if (empty($identifier)) {
             throw new CustomizerException(Translate::t('customizer.errors.control_identifier_is_empty'));
         }
+
+        $default_types      = ['option', 'theme_mod'];
+        $default_transports = ['refresh', 'postMessage'];
 
         // Works on control identifier
         $identifier = Helpers::urlize($identifier);
@@ -94,8 +106,8 @@ abstract class Customizer extends Base implements CustomizerImplementation
             'default'              => null,
             'capability'           => 'edit_theme_options',
             'theme_supports'       => '',
-            'type'                 => 'theme_mod',
-            'transport'            => 'refresh',
+            'type'                 => 'option',
+            'transport'            => 'postMessage',
             'validate_callback'    => '',
             'sanitize_callback'    => '',
             'sanitize_js_callback' => '',
@@ -103,20 +115,26 @@ abstract class Customizer extends Base implements CustomizerImplementation
         ], $settings);
 
         // Check type
-        if (!in_array($settings['type'], ['option', 'theme_mod'])) {
-            throw new CustomizerException(Translate::t('customizer.errors.control_setting_type_is_unknown'));
+        if (!in_array($settings['type'], $default_types)) {
+            throw new CustomizerException(sprintf(
+                Translate::t('customizer.errors.control_setting_type_is_unknown'),
+                implode('</code>, <code>', $default_types)
+            ));
         }
 
         // Check transport
-        if (!in_array($settings['transport'], ['refresh', 'postMessage'])) {
-            throw new CustomizerException(Translate::t('customizer.errors.control_setting_transport_is_unknown'));
+        if (!in_array($settings['transport'], $default_transports)) {
+            throw new CustomizerException(sprintf(
+                Translate::t('customizer.errors.control_setting_transport_is_unknown'),
+                implode('</code>, <code>', $default_transports)
+            ));
         }
 
         // Merge options with defaults
         $options = array_merge([
             'label'           => Translate::t('customizer.labels.control_title'),
             'description'     => '',
-            'setting'         => $identifier,
+            'settings'        => $identifier.'_settings',
             'capability'      => $settings['capability'],
             'priority'        => 10,
             'type'            => 'text',
@@ -136,7 +154,7 @@ abstract class Customizer extends Base implements CustomizerImplementation
         $section = $this->getModel()->getSections(Helpers::urlize($options['section']));
 
         // Check section
-        if (empty($section)) {
+        if (empty($section) && !in_array($options['section'], $this->available)) {
             throw new CustomizerException(sprintf(
                 Translate::t('customizer.errors.control_section_does_not_exist'),
                 $options['section']
@@ -145,7 +163,10 @@ abstract class Customizer extends Base implements CustomizerImplementation
 
         // Check type
         if (!in_array($options['type'], $this->available_types)) {
-            throw new CustomizerException(Translate::t('customizer.errors.control_type_is_unknown'));
+            throw new CustomizerException(sprintf(
+                Translate::t('customizer.errors.control_type_is_unknown'),
+                implode('</code>, <code>', $this->available_types)
+            ));
         }
 
         // Update options with settings
@@ -160,8 +181,9 @@ abstract class Customizer extends Base implements CustomizerImplementation
      *
      * @param  string  $identifier
      * @param  array   $options
+     * @param  string  $page_redirect
      */
-    public function addPanel($identifier, $options)
+    public function addPanel($identifier, $options, $page_redirect = '')
     {
         // Check identifier
         if (empty($identifier)) {
@@ -189,6 +211,13 @@ abstract class Customizer extends Base implements CustomizerImplementation
             'type'            => '',
             'active_callback' => [],
         ], $options);
+
+        // Check page redirect
+        if (!empty($page_redirect)) {
+            $options['_redirect'] = array_key_exists($page_redirect, $this->default_templates)
+                ? $this->default_templates[$page_redirect]
+                : $page_redirect;
+        }
 
         // Add panel
         $this->getModel()->setPanels($identifier, $options);
@@ -268,7 +297,7 @@ abstract class Customizer extends Base implements CustomizerImplementation
     public function getAvailableTypes($type = '')
     {
         if ('choice' === $type) {
-            return ['checkbox', 'radio', 'select'];
+            return ['checkbox', 'dropdown-pages', 'radio', 'select'];
         }
 
         if ('text' === $type) {
@@ -276,10 +305,30 @@ abstract class Customizer extends Base implements CustomizerImplementation
         }
 
         if ('special' === $type) {
-            return ['media', 'image', 'cropped-image', 'date-time'];
+            return ['color', 'media', 'image', 'cropped-image', 'date-time'];
         }
 
         return $this->available_types;
+    }
+
+    /**
+     * Return default templates.
+     *
+     * @return array
+     */
+    public function getDefaultTemplates()
+    {
+        return $this->default_templates;
+    }
+
+    /**
+     * Return scripts.
+     *
+     * @return array
+     */
+    public function getScripts()
+    {
+        return $this->scripts;
     }
 
     /**
