@@ -43,14 +43,14 @@ interface FieldImplementation
     public function prepare($template = 'metabox', $object = null, $type = 'default');
 
     /**
-     * Retrieve field translations
+     * Retrieve Field translations
      *
      * @return array
      */
     public static function translate();
 
     /**
-     * Retrieve field value
+     * Retrieve Field value
      *
      * @param  string  $identifier
      * @param  object  $object

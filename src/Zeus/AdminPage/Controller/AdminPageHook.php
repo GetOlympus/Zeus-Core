@@ -86,10 +86,10 @@ class AdminPageHook implements AdminPageHookImplementation
         }
 
         $this->adminpage = $adminpage;
-        $this->options = $opts;
-        $this->page    = $page;
-        $this->request = false;
-        $this->section = $section;
+        $this->options   = $opts;
+        $this->page      = $page;
+        $this->request   = false;
+        $this->section   = $section;
 
         $this->init();
     }

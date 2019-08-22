@@ -12,7 +12,11 @@ namespace GetOlympus\Zeus\Base\Controller;
  *
  */
 
-if (!class_exists('WP_Widget') && defined('ABSPATH')) {
+if (!defined('ABSPATH')) {
+    die('You are not authorized to directly access to this page');
+}
+
+if (!class_exists('WP_Widget')) {
     require_once ABSPATH.'wp-includes'.S.'class-wp-widget.php';
 }
 
