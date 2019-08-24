@@ -1,3 +1,7 @@
+## 2.0.3 (August 24th, 2019)
+Add new Control classes
+Update WordPress Customizer classes
+
 ## 2.0.2 (August 05th, 2019)
 Update WordPress Customizer classes to add template redirect and more
 Add symlink creation on Helpers
