@@ -48,11 +48,10 @@ interface CustomizerHookImplementation
      * Get control options.
      *
      * @param  array   $options
-     * @param  string  $type
      *
      * @return mixed
      */
-    public function getControlOptions($options, $type);
+    public function getControlOptions($options);
 
     /**
      * Make script callable from public folder.

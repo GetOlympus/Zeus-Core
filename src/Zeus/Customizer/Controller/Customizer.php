@@ -25,6 +25,14 @@ abstract class Customizer extends Base implements CustomizerImplementation
     /**
      * @var array
      */
+    protected $adminscripts = [
+        'customizer' => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-customizer.js',
+        'previewer'  => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-customizer-preview.js',
+    ];
+
+    /**
+     * @var array
+     */
     protected $available = [
         'themes', 'title_tagline', 'colors', 'header_image', 'background_image', 'static_front_page',
     ];
@@ -38,8 +46,8 @@ abstract class Customizer extends Base implements CustomizerImplementation
      * @var array
      */
     protected $available_types = [
-        'text', 'email', 'url', 'number', 'hidden', 'date', 'textarea',
-        'checkbox', 'dropdown-pages', 'radio', 'select',
+        'text', 'email', 'url', 'number', 'range', 'hidden', 'date',
+        'textarea', 'checkbox', 'dropdown-pages', 'radio', 'select',
         'color', 'media', 'image', 'cropped-image', 'date-time',
     ];
 
@@ -55,10 +63,7 @@ abstract class Customizer extends Base implements CustomizerImplementation
     /**
      * @var array
      */
-    protected $scripts = [
-        'customizer' => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-customizer.js',
-        'previewer'  => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-customizer-preview.js',
-    ];
+    protected $scripts = [];
 
     /**
      * Constructor.
@@ -80,7 +85,7 @@ abstract class Customizer extends Base implements CustomizerImplementation
      * @param  array   $options
      * @param  array   $settings
      */
-    public function addControl($identifier, $options, $settings)
+    public function addControl($identifier, $options, $settings = [])
     {
         // Check identifier
         if (empty($identifier)) {
@@ -158,14 +163,6 @@ abstract class Customizer extends Base implements CustomizerImplementation
             throw new CustomizerException(sprintf(
                 Translate::t('customizer.errors.control_section_does_not_exist'),
                 $options['section']
-            ));
-        }
-
-        // Check type
-        if (!in_array($options['type'], $this->available_types)) {
-            throw new CustomizerException(sprintf(
-                Translate::t('customizer.errors.control_type_is_unknown'),
-                implode('</code>, <code>', $this->available_types)
             ));
         }
 
@@ -278,6 +275,16 @@ abstract class Customizer extends Base implements CustomizerImplementation
     }
 
     /**
+     * Return admin scripts.
+     *
+     * @return array
+     */
+    public function getAdminscripts()
+    {
+        return $this->adminscripts;
+    }
+
+    /**
      * Return available mime types.
      *
      * @return array
@@ -301,7 +308,7 @@ abstract class Customizer extends Base implements CustomizerImplementation
         }
 
         if ('text' === $type) {
-            return ['text', 'email', 'url', 'number', 'hidden', 'date', 'textarea'];
+            return ['text', 'email', 'url', 'number', 'range', 'hidden', 'date', 'textarea'];
         }
 
         if ('special' === $type) {
@@ -328,6 +335,7 @@ abstract class Customizer extends Base implements CustomizerImplementation
      */
     public function getScripts()
     {
+        // Must return an array with 'customizer' and 'previewer' keys
         return $this->scripts;
     }
 

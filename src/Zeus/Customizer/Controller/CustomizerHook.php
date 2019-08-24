@@ -154,28 +154,46 @@ class CustomizerHook implements CustomizerHookImplementation
 
         // Iterate on all controls
         foreach ($controls as $id => $options) {
-            $type = $options['type'];
-
-            if (!in_array($type, $available_types)) {
-                continue;
-            }
-
             $_settings = $options['_settings'];
             unset($options['_settings']);
 
             // Set options
-            $options = $this->getControlOptions($options, $type);
+            $options = $this->getControlOptions($options);
             $identifier = isset($options['settings']) ? $options['settings'] : $id;
 
             // Add _settings and remove them from options array
             $wp_customize->add_setting($identifier, $_settings);
 
             // Check control type & Add control
-            if (!in_array($type, $special_types)) {
+            if (in_array($options['type'], $available_types) && !in_array($options['type'], $special_types)) {
                 $wp_customize->add_control($identifier, $options);
-                continue;
             } else {
-                $class = 'WP_Customize_'.ucwords(str_replace('-', '_', $type), '_').'_Control';
+                $options['type'] = str_replace('-', '_', $options['type']);
+
+                // Uppercase first letter of each word
+                $type = preg_replace_callback('/_([a-z]?)/', function($m) {
+                    return '_'.strtoupper($m[1]);
+                }, $options['type']);
+
+                // Uppercase first letter & add '_Control' for WP Controls
+                $type = ucwords($type);
+                $type .= '_Control' === substr($type, -8) ? '' : '_Control';
+
+                $class_custom = '\\GetOlympus\\Control\\'.str_replace('_', '', $type);
+                $class_wp     = '\\WP_Customize_'.$type;
+                $class_other  = '\\'.$type;
+
+                $class = class_exists($class_custom)
+                    ? $class_custom : (class_exists($class_wp)
+                        ? $class_wp : (class_exists($class_other)
+                            ? $class_other : false
+                        )
+                    );
+
+                if (!$class) {
+                    continue;
+                }
+
                 $wp_customize->add_control(new $class($wp_customize, $identifier, $options));
             }
         }
@@ -225,35 +243,23 @@ class CustomizerHook implements CustomizerHookImplementation
      * Get control options.
      *
      * @param  array   $options
-     * @param  string  $type
      *
      * @return mixed
      */
-    public function getControlOptions($options, $type)
+    public function getControlOptions($options)
     {
-        // Get available control types
+        // Get available control & mime types
         $special_types = $this->customizer->getAvailableTypes('special');
-
-        // Get available mime types
         $mime_types = $this->customizer->getAvailableMimetypes();
-
-        // Default values
-        $opts = [
-            'label'       => $options['label'],
-            'description' => $options['description'],
-            'section'     => $options['section'],
-        ];
 
         // Check control type
         if (!in_array($options['type'], $special_types)) {
             // Check options
-            $opts['choices'] = isset($options['choices']) ? $options['choices'] : [];
-            $opts['input_attrs'] = isset($options['input_attrs']) ? $options['input_attrs'] : [];
+            $options['choices']     = isset($options['choices']) ? $options['choices'] : [];
+            $options['input_attrs'] = isset($options['input_attrs']) ? $options['input_attrs'] : [];
 
-            return $opts;
+            return $options;
         }
-
-        $opts['settings'] = $options['settings'];
 
         // Check special types
         if ('color' === $options['type']) {
@@ -261,10 +267,10 @@ class CustomizerHook implements CustomizerHookImplementation
             // Nothing to do
         } else if ('media' === $options['type']) {
             // WP_Customize_Media_Control
-            $opts['mime_type']     = isset($options['mime_type']) ? $options['mime_type'] : 'image';
-            $opts['mime_type']     = !in_array($opts['mime_type'], $mime_types) ? 'image' : $opts['mime_type'];
+            $options['mime_type'] = isset($options['mime_type']) ? $options['mime_type'] : 'image';
+            $options['mime_type'] = !in_array($options['mime_type'], $mime_types) ? 'image' : $options['mime_type'];
 
-            $opts['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
+            $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
                 'select'       => Translate::t('customizer.labels.control_media_select'),
                 'change'       => Translate::t('customizer.labels.control_media_change'),
                 'default'      => Translate::t('customizer.labels.control_media_default'),
@@ -275,7 +281,7 @@ class CustomizerHook implements CustomizerHookImplementation
             ];
         } else if ('image' === $options['type']) {
             // WP_Customize_Image_Control
-            $opts['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
+            $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
                 'select'       => Translate::t('customizer.labels.control_image_select'),
                 'change'       => Translate::t('customizer.labels.control_image_change'),
                 'default'      => Translate::t('customizer.labels.control_image_default'),
@@ -286,12 +292,12 @@ class CustomizerHook implements CustomizerHookImplementation
             ];
         } else if ('cropped-image' === $options['type']) {
             // WP_Customize_Cropped_Image_Control
-            $opts['flex_height']   = isset($options['flex_height']) ? $options['flex_height'] : false;
-            $opts['flex_width']    = isset($options['flex_width']) ? $options['flex_width'] : false;
-            $opts['height']        = isset($options['height']) ? $options['height'] : 150;
-            $opts['width']         = isset($options['width']) ? $options['width'] : 150;
+            $options['flex_height'] = isset($options['flex_height']) ? $options['flex_height'] : false;
+            $options['flex_width']  = isset($options['flex_width']) ? $options['flex_width'] : false;
+            $options['height']      = isset($options['height']) ? $options['height'] : 150;
+            $options['width']       = isset($options['width']) ? $options['width'] : 150;
 
-            $opts['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
+            $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
                 'select'       => Translate::t('customizer.labels.control_image_select'),
                 'change'       => Translate::t('customizer.labels.control_image_change'),
                 'default'      => Translate::t('customizer.labels.control_image_default'),
@@ -302,16 +308,16 @@ class CustomizerHook implements CustomizerHookImplementation
             ];
         } else if ('date-time' === $options['type']) {
             // WP_Customize_Date_Time_Control
-            $opts['allow_past_date'] = isset($options['allow_past_date']) ? $options['allow_past_date'] : true;
-            $opts['include_time']    = isset($options['include_time']) ? $options['include_time'] : true;
-            $opts['max_year']        = isset($options['max_year']) ? $options['max_year'] : '9999';
-            $opts['min_year']        = isset($options['min_year']) ? $options['min_year'] : '1000';
-            $opts['twelve_hour_format'] = isset($options['twelve_hour_format'])
+            $options['allow_past_date'] = isset($options['allow_past_date']) ? $options['allow_past_date'] : true;
+            $options['include_time']    = isset($options['include_time']) ? $options['include_time'] : true;
+            $options['max_year']        = isset($options['max_year']) ? $options['max_year'] : '9999';
+            $options['min_year']        = isset($options['min_year']) ? $options['min_year'] : '1000';
+            $options['twelve_hour_format'] = isset($options['twelve_hour_format'])
                 ? $options['twelve_hour_format']
                 : false;
         }
 
-        return $opts;
+        return $options;
     }
 
     /**
@@ -341,12 +347,24 @@ class CustomizerHook implements CustomizerHookImplementation
      */
     public function scriptsEnqueue()
     {
+        $fileuri = [];
+
         // Get Zeus Customizer script
-        $script  = $this->customizer->getScripts()['customizer'];
-        $fileuri = $this->getScript($script, 'js');
+        $adscript = $this->customizer->getAdminscripts()['customizer'];
+        $fileuri['zeus'] = $this->getScript($adscript, 'js');
+
+        // Get custom Customizer script
+        $cuscript = $this->customizer->getScripts();
+
+        if (isset($cuscript['customizer'])) {
+            $fileuri['custom'] = $this->getScript($cuscript['customizer'], 'js');
+        }
 
         // Enqueue scripts and set usefull urls
-        wp_enqueue_script('zeus-customizer', esc_url($fileuri), [], false, true);
+        foreach ($fileuri as $key => $script) {
+            wp_enqueue_script($key.'-customizer', esc_url($script), [], false, true);
+        }
+
         wp_localize_script('zeus-customizer', 'ZeusSettings', $this->args);
     }
 
@@ -359,13 +377,25 @@ class CustomizerHook implements CustomizerHookImplementation
             return;
         }
 
+        $fileuri = [];
+
         // Get Zeus Customizer preview script
-        $script = $this->customizer->getScripts()['previewer'];
-        $fileuri = $this->getScript($script, 'js');
+        $adscript = $this->customizer->getAdminscripts()['previewer'];
+        $fileuri['zeus'] = $this->getScript($adscript, 'js');
+
+        // Get custom Customizer preview script
+        $cuscript = $this->customizer->getScripts();
+
+        if (isset($cuscript['previewer'])) {
+            $fileuri['custom'] = $this->getScript($cuscript['previewer'], 'js');
+        }
 
         // Enqueue scripts and set usefull urls
         add_action('wp_footer', function () use ($fileuri) {
-            wp_enqueue_script('zeus-customizer-preview', esc_url($fileuri), [], false, true);
+            foreach ($fileuri as $key => $script) {
+                wp_enqueue_script($key.'-customizer-preview', esc_url($script), [], false, true);
+            }
+
             wp_localize_script('zeus-customizer-preview', 'ZeusSettings', $this->args);
         });
     }

@@ -21,7 +21,7 @@ interface CustomizerImplementation
      * @param  array   $options
      * @param  array   $settings
      */
-    public function addControl($identifier, $options, $settings);
+    public function addControl($identifier, $options, $settings = []);
 
     /**
      * Adds a new value of panel.
@@ -39,6 +39,13 @@ interface CustomizerImplementation
      * @param  array   $options
      */
     public function addSection($identifier, $options);
+
+    /**
+     * Return admin scripts.
+     *
+     * @return array
+     */
+    public function getAdminscripts();
 
     /**
      * Return available mime types.

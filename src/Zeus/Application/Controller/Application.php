@@ -37,12 +37,22 @@ abstract class Application implements ApplicationImplementation
     /**
      * @var array
      */
+    protected $controls = [];
+
+    /**
+     * @var array
+     */
     protected $crons = [];
 
     /**
      * @var array
      */
     protected $customizers = [];
+
+    /**
+     * @var array
+     */
+    protected $defaultcontrols = [];
 
     /**
      * @var array
@@ -108,6 +118,9 @@ abstract class Application implements ApplicationImplementation
      */
     public function init()
     {
+        // Initialize controls
+        $this->initControls();
+
         // Initialize fields
         $this->initFields();
 
@@ -177,6 +190,30 @@ abstract class Application implements ApplicationImplementation
             $config = new $component();
             $config->setPath($file);
             $config->init();
+        }
+    }
+
+    /**
+     * Initialize controls.
+     */
+    public function initControls()
+    {
+        // Merge controls
+        $this->controls = array_merge($this->defaultcontrols, $this->controls);
+
+        // Check fields
+        if (empty($this->controls)) {
+            return;
+        }
+
+        // Iterate
+        foreach ($this->controls as $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $t = $class::translate();
+            $this->translations = array_merge($this->translations, $t);
         }
     }
 
