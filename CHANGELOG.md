@@ -1,3 +1,6 @@
+## 2.0.4 (September 08th, 2019)
+Code enhancement, namespace errors fixed
+
 ## 2.0.3 (August 24th, 2019)
 Add new Control classes
 Update WordPress Customizer classes
