@@ -1,12 +1,12 @@
 <?php
 
-namespace GetOlympus\Zeus\User\Model;
+namespace GetOlympus\Zeus\User\Implementation;
 
 /**
  * User model implementation.
  *
  * @package    OlympusZeusCore
- * @subpackage User\Model
+ * @subpackage User\Implementation
  * @author     Achraf Chouk <achrafchouk@gmail.com>
  * @since      0.0.6
  *
