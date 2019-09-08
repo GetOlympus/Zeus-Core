@@ -107,6 +107,14 @@ abstract class Zeus extends Application
     /**
      * @var array
      */
+    protected $defaultcontrols = [
+        // Zeus field components
+        'GetOlympus\\Control\\ImageSelectControl',
+    ];
+
+    /**
+     * @var array
+     */
     protected $defaultfields = [
         // Zeus field components
         'GetOlympus\\Field\\Code',

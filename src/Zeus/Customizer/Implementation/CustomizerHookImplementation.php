@@ -34,15 +34,42 @@ interface CustomizerHookImplementation
      * Displays panels.
      *
      * @param  object  $wp_customize
-     * @param  array   $panels
      */
-    public function displayPanels($wp_customize, $panels);
+    public function displayPanels($wp_customize);
 
     /**
      * Displays sections.
      *
      * @param  object  $wp_customize
-     * @param  array   $sections
      */
-    public function displaySections($wp_customize, $sections);
+    public function displaySections($wp_customize);
+
+    /**
+     * Get control options.
+     *
+     * @param  array   $options
+     *
+     * @return mixed
+     */
+    public function getControlOptions($options);
+
+    /**
+     * Make script callable from public folder.
+     *
+     * @param  string  $filepath
+     * @param  string  $folder
+     *
+     * @return string  $fileuri
+     */
+    public function getScript($filepath, $folder);
+
+    /**
+     * Enqueue scripts.
+     */
+    public function scriptsEnqueue();
+
+    /**
+     * Preview styles.
+     */
+    public function scriptsPreview();
 }

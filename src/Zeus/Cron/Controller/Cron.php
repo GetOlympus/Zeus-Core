@@ -5,6 +5,7 @@ namespace GetOlympus\Zeus\Cron\Controller;
 use GetOlympus\Zeus\Base\Controller\Base;
 use GetOlympus\Zeus\Cron\Implementation\CronImplementation;
 use GetOlympus\Zeus\Cron\Model\CronModel;
+use GetOlympus\Zeus\Translate\Controller\Translate;
 
 /**
  * Gets its own cron task.

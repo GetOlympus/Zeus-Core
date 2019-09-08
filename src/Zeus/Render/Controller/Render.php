@@ -7,6 +7,7 @@ use GetOlympus\Zeus\Render\Exception\RenderException;
 use GetOlympus\Zeus\Render\Implementation\RenderImplementation;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 use Twig_Environment;
+use Twig_Filter;
 use Twig_Loader_Filesystem;
 use Twig_SimpleFunction;
 
@@ -72,6 +73,11 @@ class Render implements RenderImplementation
             }
         }
 
+        // Check control path
+        if (isset($vars['control_path'])) {
+            $paths[$context] = $vars['control_path'];
+        }
+
         /**
          * Add your custom views folder with alias.
          *
@@ -109,7 +115,6 @@ class Render implements RenderImplementation
         }
 
         // Check cache
-        //$args = OL_ZEUS_USECACHE ? ['cache' => OL_ZEUS_CACHE] : [];
         $args = OL_ZEUS_USECACHE ? ['cache' => false, 'debug' => true] : [];
 
         // Build Twig renderer - no cache needed for twig rendering
@@ -258,12 +263,11 @@ class Render implements RenderImplementation
                 Helpers::copyFile(
                     $details[$key]['source'],
                     $details[$key]['target'],
-                    $details[$key]['basename'],
-                    true
+                    $details[$key]['basename']
                 );
 
                 // Default case
-                wp_enqueue_script($script, $details[$key]['fileuri'], [], false, true);
+                wp_enqueue_script($script, esc_url($details[$key]['fileuri']), [], false, true);
             }
         }
 
@@ -299,12 +303,11 @@ class Render implements RenderImplementation
                 Helpers::copyFile(
                     $details[$key]['source'],
                     $details[$key]['target'],
-                    $details[$key]['basename'],
-                    true
+                    $details[$key]['basename']
                 );
 
                 // Default case
-                wp_enqueue_style($style, $details[$key]['fileuri'], [], false, 'all');
+                wp_enqueue_style($style, esc_url($details[$key]['fileuri']), [], false, 'all');
             }
         }
 

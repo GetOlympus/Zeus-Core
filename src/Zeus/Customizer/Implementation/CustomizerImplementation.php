@@ -21,15 +21,16 @@ interface CustomizerImplementation
      * @param  array   $options
      * @param  array   $settings
      */
-    public function addControl($identifier, $options, $settings);
+    public function addControl($identifier, $options, $settings = []);
 
     /**
      * Adds a new value of panel.
      *
      * @param  string  $identifier
      * @param  array   $options
+     * @param  string  $page_redirect
      */
-    public function addPanel($identifier, $options);
+    public function addPanel($identifier, $options, $page_redirect = '');
 
     /**
      * Adds a new value of section.
@@ -38,6 +39,13 @@ interface CustomizerImplementation
      * @param  array   $options
      */
     public function addSection($identifier, $options);
+
+    /**
+     * Return admin scripts.
+     *
+     * @return array
+     */
+    public function getAdminscripts();
 
     /**
      * Return available mime types.
@@ -54,6 +62,20 @@ interface CustomizerImplementation
      * @return array
      */
     public function getAvailableTypes($type = '');
+
+    /**
+     * Return default templates.
+     *
+     * @return array
+     */
+    public function getDefaultTemplates();
+
+    /**
+     * Return scripts.
+     *
+     * @return array
+     */
+    public function getScripts();
 
     /**
      * Register customizer.

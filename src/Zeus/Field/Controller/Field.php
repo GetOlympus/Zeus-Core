@@ -12,7 +12,7 @@ use GetOlympus\Zeus\Render\Controller\Render;
 use GetOlympus\Zeus\Translate\Controller\Translate;
 
 /**
- * Abstract class to define all field context with authorized fields, how to
+ * Abstract class to define all Field context with authorized fields, how to
  * write some functions and every usefull checks.
  *
  * @package    OlympusZeusCore
@@ -238,7 +238,7 @@ abstract class Field extends Base implements FieldImplementation
     }
 
     /**
-     * Retrieve field translations
+     * Retrieve Field translations
      *
      * @return array
      */
@@ -260,7 +260,7 @@ abstract class Field extends Base implements FieldImplementation
     }
 
     /**
-     * Retrieve field value
+     * Retrieve Field value
      *
      * @param  string  $identifier
      * @param  object  $object

@@ -1,3 +1,14 @@
+## 2.0.4 (September 08th, 2019)
+Code enhancement, namespace errors fixed
+
+## 2.0.3 (August 24th, 2019)
+Add new Control classes
+Update WordPress Customizer classes
+
+## 2.0.2 (August 05th, 2019)
+Update WordPress Customizer classes to add template redirect and more
+Add symlink creation on Helpers
+
 ## 2.0.1 (July 20th, 2019)
 Add new Customizer class to let you use the WordPress Customize Manager
 Add new BaseException class

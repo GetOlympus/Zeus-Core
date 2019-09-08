@@ -3,12 +3,12 @@
 namespace GetOlympus\Zeus\Base\Controller;
 
 /**
- * Base Widget controller
+ * Base Control controller
  *
  * @package    OlympusZeusCore
  * @subpackage Base\Controller
  * @author     Achraf Chouk <achrafchouk@gmail.com>
- * @since      0.0.8
+ * @since      2.0.2
  *
  */
 
@@ -16,11 +16,11 @@ if (!defined('ABSPATH')) {
     die('You are not authorized to directly access to this page');
 }
 
-if (!class_exists('WP_Widget')) {
-    require_once ABSPATH.'wp-includes'.S.'class-wp-widget.php';
+if (!class_exists('WP_Customize_Control')) {
+    require_once ABSPATH.'wp-includes'.S.'class-wp-customize-control.php';
 }
 
-class BaseWidget extends \WP_Widget
+class BaseControl extends \WP_Customize_Control
 {
     /**
      * @var Model
@@ -50,7 +50,7 @@ class BaseWidget extends \WP_Widget
      */
     public static function getInstance()
     {
-        return new static();
+        return new static(false, false, []);
     }
 
     /**

@@ -5,6 +5,9 @@
   <exclude-pattern>.git/*</exclude-pattern>
   <exclude-pattern>app/cache/*</exclude-pattern>
   <exclude-pattern>app/logs/*</exclude-pattern>
+  <exclude-pattern>src/Zeus/Control/Controller/Control.php</exclude-pattern>
+  <exclude-pattern>src/Zeus/Control/Implementation/ControlImplementation.php</exclude-pattern>
+  <exclude-pattern>src/Zeus/Resources/templates/customizer/*</exclude-pattern>
   <exclude-pattern>src/Zeus/WalkerSingle/Controller/WalkerSingle.php</exclude-pattern>
   <exclude-pattern>src/Zeus/WalkerSingle/Implementation/WalkerSingleImplementation.php</exclude-pattern>
   <exclude-pattern>src/Zeus/Widget/Controller/Widget.php</exclude-pattern>
