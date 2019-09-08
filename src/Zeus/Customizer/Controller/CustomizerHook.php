@@ -171,7 +171,7 @@ class CustomizerHook implements CustomizerHookImplementation
                 $options['type'] = str_replace('-', '_', $options['type']);
 
                 // Uppercase first letter of each word
-                $type = preg_replace_callback('/_([a-z]?)/', function($m) {
+                $type = preg_replace_callback('/_([a-z]?)/', function ($m) {
                     return '_'.strtoupper($m[1]);
                 }, $options['type']);
 
