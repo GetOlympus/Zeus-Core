@@ -41,9 +41,8 @@ interface CronModelImplementation
      * Sets the value of schedule.
      *
      * @param  string  $schedule
-     * @param  array   $options
      *
      * @return self
      */
-    public function setSchedule($schedule, $options = []);
+    public function setSchedule($schedule);
 }
