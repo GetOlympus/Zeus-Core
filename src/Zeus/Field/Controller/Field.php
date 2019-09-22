@@ -306,7 +306,7 @@ abstract class Field extends Base implements FieldImplementation
         // ~
 
         // Widget metaboxes
-        if ('user' === $type && $object) {
+        if ('widget' === $type && $object) {
             $value = empty($object) ? $default : $object;
             return Option::cleanValue($value);
         }
