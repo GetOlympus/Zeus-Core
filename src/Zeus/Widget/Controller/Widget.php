@@ -61,7 +61,7 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
         // Update default settings
         $settings = $this->getModel()->getSettings();
         $this->getModel()->setSettings(array_merge([
-            'classname' => $classname,
+            'classname'   => $classname,
             'description' => Translate::t('widget.labels.description'),
         ], $settings));
 
@@ -132,24 +132,16 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
             return;
         }
 
-        // Add Title field from default mode
-        $new_title = [
-            'special' => [
-                'id'    => 'title',
-                'title' => Translate::t('widget.labels.field_title'),
-            ],
-        ];
-
         // Add Title field from `olympus-text-field` component
         if (class_exists('\\GetOlympus\\Field\\Text')) {
             $new_title = \GetOlympus\Field\Text::build('title', [
                 'title' => Translate::t('widget.labels.field_title'),
             ]);
-        }
 
-        // Add title on 1st place
-        array_unshift($fields, $new_title);
-        unset($new_title);
+            // Add title on 1st place
+            array_unshift($fields, $new_title);
+            unset($new_title);
+        }
 
         $vars = [];
 
@@ -180,7 +172,11 @@ abstract class Widget extends BaseWidget implements WidgetImplementation
             }
 
             // Prepare fields to be displayed
-            $vars['fields'][] = $field->prepare('widget');
+            $fieldvars = $field->prepare('widget', (isset($instance[$id]) ? $instance[$id] : ''), 'widget');
+            $fieldvars['vars']['name'] = $this->get_field_name($fieldvars['vars']['name']);
+
+            // Store field vars
+            $vars['fields'][] = $fieldvars;
         }
 
         // Render view
