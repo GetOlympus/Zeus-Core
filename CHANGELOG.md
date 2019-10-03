@@ -1,3 +1,9 @@
+## 2.0.6 (October 03rd, 2019)
+Fix term meta display and save in DB
+
+## 2.0.5 (September 22th, 2019)
+Fix bug on widget fields getter
+
 ## 2.0.4 (September 08th, 2019)
 Code enhancement, namespace errors fixed
 

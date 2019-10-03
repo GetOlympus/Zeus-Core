@@ -1,0 +1,4 @@
+{% for field in fields %}
+    {% set tpl = '@' ~ field.context ~ '/' ~ field.template %}
+    {% include [tpl, '@core/components/notification.html.twig'] with field.vars %}
+{% endfor %}

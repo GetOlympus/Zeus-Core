@@ -99,13 +99,13 @@ class TermHook implements TermHookImplementation
 
         // Get current
         $term = is_object($term) ? $term : get_term($term);
-        //$vars = [];
+        $vars = [];
 
         // Prepare admin scripts and styles
-        /*$assets = [
+        $assets = [
             'scripts' => [],
             'styles'  => [],
-        ];*/
+        ];
 
         // Get fields
         foreach ($fields as $field) {
@@ -113,39 +113,20 @@ class TermHook implements TermHookImplementation
                 continue;
             }
 
-            $id = (string) $field->getModel()->getIdentifier();
-
-            if (empty($id)) {
-                continue;
-            }
-
             // Update scripts and styles
             $fieldassets = $field->assets();
-            $assets = [];
 
             if (!empty($fieldassets)) {
                 $assets['scripts'] = array_merge($assets['scripts'], $fieldassets['scripts']);
                 $assets['styles']  = array_merge($assets['styles'], $fieldassets['styles']);
             }
 
-            // Display field
-            /*$field->render($ctn, [
-                'structure' => '%TERM%-%SLUG%',
-                'template'  => 'term-'.$mode,
-                'term'      => $term,
-            ]);*/
-
-            //$vars['fields'][] = $field->prepare('term-'.$mode, $term, 'term');
-
-            // Render view
-            $render = new Render(
-                'core',
-                'fields'.S.'term-'.$mode.'.html.twig',
-                $field->prepare('term-'.$mode, $term, 'term'),
-                $assets
-            );
-            $render->view();
+            $vars['fields'][] = $field->prepare('term-'.$mode, $term, 'term');
         }
+
+        // Render view
+        $render = new Render('core', 'layouts'.S.'term.html.twig', $vars, $assets);
+        $render->view();
     }
 
     /**
@@ -236,7 +217,7 @@ class TermHook implements TermHookImplementation
     public function saveFields($term_id)
     {
         // No term or no fields
-        if (!isset($term_id) || empty($term_id) || empty($this->fields)) {
+        if (!isset($term_id) || empty($term_id) || empty($this->term->getModel()->getFields())) {
             return;
         }
 
