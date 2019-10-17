@@ -1,3 +1,6 @@
+## 2.0.7 (October 17th, 2019)
+Update Cron trace logs
+
 ## 2.0.6 (October 03rd, 2019)
 Fix term meta display and save in DB
 
