@@ -18,4 +18,12 @@ interface CronImplementation
      * Initialization.
      */
     public function init();
+
+    /**
+     * Trace message on cron log file.
+     *
+     * @param  string  $message
+     * @param  boolean $date
+     */
+    public function trace($message, $date = false);
 }
