@@ -35,6 +35,11 @@ abstract class Cron extends Base implements CronImplementation
     protected $schedule = '';
 
     /**
+     * @var array
+     */
+    protected $traceid = '';
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -46,6 +51,7 @@ abstract class Cron extends Base implements CronImplementation
             return;
         }
 
+        $this->traceid = uniqid();
         $options = [];
 
         if (!in_array($this->schedule, $this->available)) {
@@ -102,6 +108,19 @@ abstract class Cron extends Base implements CronImplementation
 
         // Enable action
         add_action($name, [&$this, 'callback']);
+    }
+
+    /**
+     * Trace message on cron log file.
+     *
+     * @param  string  $message
+     * @param  boolean $date
+     */
+    public function trace($message, $date = false)
+    {
+        // Build vars
+        $date = $date ? ' @'.date('Y-m-d H:i') : '';
+        echo $this->traceid.' > '.$message.$date."\n";
     }
 
     /**
