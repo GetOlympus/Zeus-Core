@@ -47,7 +47,7 @@ class TermHook implements TermHookImplementation
         $this->term = $term;
 
         $args = $this->term->getModel()->getArgs();
-        $is_single = 'single' === $args['choice'] ? true : false;
+        $is_single = isset($args['choice']) && 'single' === $args['choice'] ? true : false;
 
         // Edit custom fields
         add_action($slug.'_edit_form_fields', [$this, 'editFormFields'], 10, 1);
