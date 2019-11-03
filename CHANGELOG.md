@@ -1,3 +1,6 @@
+## 2.0.8 (October 27th, 2019)
+Fix term hook choice bug
+
 ## 2.0.7 (October 17th, 2019)
 Update Cron trace logs
 
