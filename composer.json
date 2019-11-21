@@ -39,7 +39,7 @@
     "symfony/class-loader": "^3.4",
     "symfony/config": "^4.3",
     "symfony/http-foundation": "^4.3",
-    "symfony/translation": "^4.3",
+    "symfony/translation": "^5.0",
     "symfony/yaml": "^4.3",
     "twig/twig": "^2.11"
   },
