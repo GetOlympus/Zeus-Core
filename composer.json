@@ -37,7 +37,7 @@
     "getolympus/olympus-wordpress-field": "~0.0.1",
     "league/container": "^3.3",
     "symfony/class-loader": "^3.4",
-    "symfony/config": "^4.3",
+    "symfony/config": "^5.0",
     "symfony/http-foundation": "^4.3",
     "symfony/translation": "^4.3",
     "symfony/yaml": "^4.3",
