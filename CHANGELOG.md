@@ -1,3 +1,6 @@
+## 2.0.9 (November 17th, 2019)
+Add YARPP cleaner
+
 ## 2.0.8 (October 27th, 2019)
 Fix term hook choice bug
 
