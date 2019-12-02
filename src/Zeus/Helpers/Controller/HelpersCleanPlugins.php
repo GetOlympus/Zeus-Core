@@ -29,6 +29,7 @@ class HelpersCleanPlugins extends HelpersClean
         'w3tc'                => true, // W3 Total Cache        https://wordpress.org/plugins/w3-total-cache/
         'woocommerce'         => true, // WooCommerce           https://wordpress.org/plugins/woocommerce/
         'wp-socializer'       => true, // WP Socializer         https://wordpress.org/plugins/wp-socializer/
+        'yarpp'               => true, // Y.A.R.P.P             https://wordpress.org/plugins/yet-another-related-posts-plugin/
         'yoast'               => true, // Yoast SEO             https://wordpress.org/plugins/wordpress-seo/
     ];
 
@@ -444,6 +445,46 @@ class HelpersCleanPlugins extends HelpersClean
 
                 continue;
             }
+        }
+    }
+
+    /**
+     * Clean YARPP plugin functionalities.
+     *
+     * @param  array   $settings
+     */
+    public function pluginYarpp($settings)
+    {
+        if (!function_exists('yarpp_related')) {
+            return;
+        }
+
+        $available = [
+            'enqueue_styles',
+        ];
+
+        // Special case
+        if (is_bool($settings) && $settings) {
+            $settings = $available;
+        }
+
+        foreach ($settings as $key) {
+            if (!in_array($key, $available)) {
+                continue;
+            }
+
+            if ('enqueue_styles' === $key && !OL_ZEUS_ISADMIN) {
+                add_action('wp_print_styles', function () {
+                    wp_dequeue_style('yarppWidgetCss');
+                    wp_deregister_style('yarppRelatedCss');
+                });
+                add_action('wp_footer', function () {
+                    wp_dequeue_style('yarppRelatedCss');
+                });
+
+                continue;
+            }
+
         }
     }
 
