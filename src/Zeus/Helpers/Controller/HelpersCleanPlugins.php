@@ -21,16 +21,16 @@ class HelpersCleanPlugins extends HelpersClean
      * @var array
      */
     protected $available = [
-        'bbpress'             => true, // bbPress               https://wordpress.org/plugins/bbpress/
-        'contact-form'        => true, // Contact Form 7        https://wordpress.org/plugins/contact-form-7/
-        'gravity-form'        => true, // Gravity form          https://www.gravityforms.com/
-        'jetpack'             => true, // Jetpack               https://wordpress.org/plugins/jetpack/
-        'the-events-calendar' => true, // The Events Calendar   https://wordpress.org/plugins/the-events-calendar/
-        'w3tc'                => true, // W3 Total Cache        https://wordpress.org/plugins/w3-total-cache/
-        'woocommerce'         => true, // WooCommerce           https://wordpress.org/plugins/woocommerce/
-        'wp-socializer'       => true, // WP Socializer         https://wordpress.org/plugins/wp-socializer/
-        'yarpp'               => true, // Y.A.R.P.P             https://wordpress.org/plugins/yet-another-related-posts-plugin/
-        'yoast'               => true, // Yoast SEO             https://wordpress.org/plugins/wordpress-seo/
+        'bbpress'             => true, // bbPress        https://wordpress.org/plugins/bbpress/
+        'contact-form'        => true, // Contact Form 7 https://wordpress.org/plugins/contact-form-7/
+        'gravity-form'        => true, // Gravity form   https://www.gravityforms.com/
+        'jetpack'             => true, // Jetpack        https://wordpress.org/plugins/jetpack/
+        'the-events-calendar' => true, // The Events Cal https://wordpress.org/plugins/the-events-calendar/
+        'w3tc'                => true, // W3 Total Cache https://wordpress.org/plugins/w3-total-cache/
+        'woocommerce'         => true, // WooCommerce    https://wordpress.org/plugins/woocommerce/
+        'wp-socializer'       => true, // WP Socializer  https://wordpress.org/plugins/wp-socializer/
+        'yarpp'               => true, // YARPP          https://wordpress.org/plugins/yet-another-related-posts-plugin/
+        'yoast'               => true, // Yoast SEO      https://wordpress.org/plugins/wordpress-seo/
     ];
 
     /**
@@ -484,7 +484,6 @@ class HelpersCleanPlugins extends HelpersClean
 
                 continue;
             }
-
         }
     }
 
