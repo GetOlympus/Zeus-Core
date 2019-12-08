@@ -1,3 +1,6 @@
+## 2.0.10 (December 08th, 2019)
+Fix field access value from User controller
+
 ## 2.0.9 (November 17th, 2019)
 Add YARPP cleaner
 
