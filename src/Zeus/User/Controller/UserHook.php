@@ -132,7 +132,7 @@ class UserHook implements UserHookImplementation
             }
 
             // Prepare fields to be displayed
-            $vars['fields'][] = $field->prepare('user');
+            $vars['fields'][] = $field->prepare('user', $user, 'user');
         }
 
         // Render view
