@@ -1,3 +1,6 @@
+## 2.0.11 (December 11th, 2019)
+Add new separates Helpers Plugins
+
 ## 2.0.10 (December 08th, 2019)
 Fix field access value from User controller
 

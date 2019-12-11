@@ -62,6 +62,9 @@
     "field.errors.no_template_found": "The template <code>@%s/%s</code> has not been found.",
 
 
+    "helpers.plugin.wprocket.pluginname": "Cache system",
+
+
     "metabox.errors.no_fields": "The Metabox does not contain fields.",
     "metabox.errors.no_type_is_defined": "A field is missing because no type is defined.",
 
