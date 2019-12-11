@@ -77,7 +77,7 @@ class HelpersPluginGoogleTagManager
 
                 if (function_exists('gtm4wp_woocommerce_wp_footer')) {
                     remove_action('wp_footer', 'gtm4wp_woocommerce_wp_footer');
-                    add_action('wp_footer', 'gtm4wp_woocommerce_wp_footer',500);
+                    add_action('wp_footer', 'gtm4wp_woocommerce_wp_footer', 500);
                 }
 
                 continue;

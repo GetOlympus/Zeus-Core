@@ -89,8 +89,8 @@ class HelpersPluginWoocommerce
             }
 
             if ('enqueue_styles' === $key && function_exists('is_woocommerce') && !OL_ZEUS_ISADMIN) {
-                add_filter('woocommerce_enqueue_styles', function ($return_false) {
-                    return !is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page() ? false : $return_false;
+                add_filter('woocommerce_enqueue_styles', function ($r_false) {
+                    return !is_woocommerce() && !is_cart() && !is_checkout() && !is_account_page() ? false : $r_false;
                 });
 
                 continue;
