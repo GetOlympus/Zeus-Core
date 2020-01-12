@@ -58,8 +58,10 @@ defined('VENDORPATH') or define('VENDORPATH', realpath(dirname(__DIR__)).S.'vend
 if (!class_exists('MyThemeName')) {
     class MyThemeName extends \GetOlympus\Zeus\Zeus
     {
+        // Load custom post types
         protected $posttypes  = __DIR__.S.'controllers'.S.'posttypes';
 
+        // Load WordPress optimizations and configurations
         protected $configurations = [
             'Clean' => [
                 'core'     => true,
@@ -74,7 +76,8 @@ if (!class_exists('MyThemeName')) {
         ];
 
         /**
-         * Constructor.
+         * Main function which defines vendors path
+         * and some useful actions needed by your application
          */
         protected function setVars()
         {
@@ -82,6 +85,8 @@ if (!class_exists('MyThemeName')) {
             if (file_exists($autoload = VENDORPATH.'autoload.php')) {
                 include $autoload;
             }
+
+            // Add custom actions.
         }
     }
 }
@@ -90,12 +95,15 @@ if (!class_exists('MyThemeName')) {
 return new MyThemeName();
 ```
 
-Example from `controllers/posttypes/MoviePosttype.php` controller file, assuming you need a new Movie custom post type:
+Example from `controllers/posttypes/MoviePosttype.php` controller file, assuming you need a `Movie` custom post type:
 
 ```php
 // file: controllers/posttypes/MoviePosttype.php
 namespace MyThemeName\Controllers\Posttypes;
 
+/**
+ * Extends main \GetOlympus\Zeus\Posttype\Controller\Posttype class to use all functionalities
+ */
 class MoviePosttype extends \GetOlympus\Zeus\Posttype\Controller\Posttype
 {
     /**
@@ -149,22 +157,17 @@ class MoviePosttype extends \GetOlympus\Zeus\Posttype\Controller\Posttype
 
 ## Release History
 
-* 2.0.11 (December 11th, 2019)
-- [x] ADD: new separates Helpers Plugins
-
-* 2.0.10 (December 08th, 2019)
-- [x] FIX: field access value from User controller
+See [**CHANGELOG.md**][changelog-blob] for all details.
 
 ## Authors and Copyright
 
 Achraf Chouk  
 [![@crewstyle][twitter-image]][twitter-url]
 
-Please, read [LICENSE][license-blob] for more information.  
-[![MIT][license-image]][license-url]
-
 [https://github.com/crewstyle](https://github.com/crewstyle)  
 [http://fr.linkedin.com/in/achrafchouk](http://fr.linkedin.com/in/achrafchouk)
+
+Please, read [![MIT][license-image]][license-blob] for more information.
 
 ## Contributing
 
@@ -181,11 +184,11 @@ Please, read [LICENSE][license-blob] for more information.
 <!-- links & imgs dfn's -->
 [olympus-image]: https://img.shields.io/badge/for-Olympus-44cc11.svg?style=flat-square
 [olympus-url]: https://github.com/GetOlympus
+[changelog-blob]: https://github.com/GetOlympus/Zeus-Core/blob/master/CHANGELOG.md
 [codefactor-image]: https://www.codefactor.io/repository/github/GetOlympus/Zeus-Core/badge?style=flat-square
 [codefactor-url]: https://www.codefactor.io/repository/github/getolympus/zeus-core
 [license-blob]: https://github.com/GetOlympus/Zeus-Core/blob/master/LICENSE
 [license-image]: https://img.shields.io/badge/license-MIT_License-blue.svg?style=flat-square
-[license-url]: http://opensource.org/licenses/MIT
 [packagist-image]: https://img.shields.io/packagist/v/getolympus/olympus-zeus-core.svg?style=flat-square
 [packagist-url]: https://packagist.org/packages/getolympus/olympus-zeus-core
 [php-image]: https://img.shields.io/travis/php-v/GetOlympus/Zeus-Core.svg?style=flat-square
