@@ -32,19 +32,128 @@ _In progress (soon, really soon)_
 
 ## Full example
 
-_In progress (soon, really soon)_
+Example from `functions.php` WordPress theme file:
+
+```php
+// file: functions.php
+namespace MyThemeName;
+
+/**
+ * Everything starts here.
+ *
+ * @package MyThemeName
+ * @author Your Name <yourmail@domain-name.ext>
+ * @since x.y.z
+ *
+ */
+
+// Directory separator and Vendor path.
+defined('S')          or define('S', DIRECTORY_SEPARATOR);
+defined('VENDORPATH') or define('VENDORPATH', realpath(dirname(__DIR__)).S.'vendor'.S);
+
+/**
+ * MyThemeName class definition
+ */
+
+if (!class_exists('MyThemeName')) {
+    class MyThemeName extends \GetOlympus\Zeus\Zeus
+    {
+        protected $posttypes  = __DIR__.S.'controllers'.S.'posttypes';
+
+        protected $configurations = [
+            'Clean' => [
+                'core'     => true,
+                'features' => true,
+                'headers'  => true,
+                'plugins'  => true,
+            ],
+            'Sizes' => [
+                'img-size-one' => [250, 250, true, __('Squared image', 'mythemename')],
+                'img-size-two' => [1000, 90, true, __('Header image', 'mythemename')],
+            ],
+        ];
+
+        /**
+         * Constructor.
+         */
+        protected function setVars()
+        {
+            // Load Zeus framework vendors.
+            if (file_exists($autoload = VENDORPATH.'autoload.php')) {
+                include $autoload;
+            }
+        }
+    }
+}
+
+// Instanciate MyThemeName
+return new MyThemeName();
+```
+
+Example from `controllers/posttypes/MoviePosttype.php` controller file, assuming you need a new Movie custom post type:
+
+```php
+// file: controllers/posttypes/MoviePosttype.php
+namespace MyThemeName\Controllers\Posttypes;
+
+class MoviePosttype extends \GetOlympus\Zeus\Posttype\Controller\Posttype
+{
+    /**
+     * @var array
+     */
+    protected $args = [
+        'menu_icon'     => 'dashicons-video-alt3',
+        'supports'      => ['title', 'excerpt', 'thumbnail'],
+        'taxonomies'    => ['post_tag'],
+        'rewrite'       => [
+            'slug'          => 'movie',
+            'with_front'    => true,
+        ],
+    ];
+
+    /**
+     * @var string
+     */
+    protected $slug = 'movie';
+
+    /**
+     * Prepare variables.
+     */
+    public function setVars()
+    {
+        // Update labels
+        $this->getModel()->setLabels(array_merge(
+            $this->getModel()->getLabels(),
+            [
+                'name' => __('Movies', 'mythemename'),
+                'singular_name' => __('Movie', 'mythemename'),
+            ]
+        ));
+
+        // Add metabox
+        $this->addMetabox(__('Details', 'mythemename'), [
+            \GetOlympus\Field\Text::build('link', [
+                'title'     => __('Movie source URL', 'mythemename'),
+            ]),
+            \GetOlympus\Field\Text::build('length', [
+                'title'     => __('Length in seconds', 'mythemename'),
+            ]),
+            \GetOlympus\Field\Text::build('author', [
+                'title'     => __('Author name', 'mythemename'),
+            ]),
+            // (...)
+        ]);
+    }
+}
+```
 
 ## Release History
 
-* 2.0.1 (July 20th, 2019)
-- [x] ADD: new Customizer class to let you use the WordPress Customize Manager
-- [x] ADD: new BaseException class
+* 2.0.11 (December 11th, 2019)
+- [x] ADD: new separates Helpers Plugins
 
-* 2.0.0 (July 14th, 2019)
-- [x] **JOYEUX 14 JUILLET**
-- [x] ADD: load WordPress textdomain MO files
-- [x] FIX: update all classes for a better and easier integration
-- [x] FIX: enhance Interfaces declarations
+* 2.0.10 (December 08th, 2019)
+- [x] FIX: field access value from User controller
 
 ## Authors and Copyright
 

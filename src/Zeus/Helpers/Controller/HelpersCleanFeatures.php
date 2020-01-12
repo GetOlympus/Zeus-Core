@@ -22,6 +22,7 @@ class HelpersCleanFeatures extends HelpersClean
      */
     protected $available = [
         'admin_bar',          // Remove admin bar on frontend pages
+        'body_class',         // Remove unecessary details in `body_class()` method
         'capital_p_dangit',   // Remove the filter that converts "Wordpress" to "WordPress"
         'comment_autolinks',  // Remove auto-converted URLs in comments to avoid spammers
         'comments_reply',     // Loads the comment-reply JS file only when needed
@@ -76,6 +77,79 @@ class HelpersCleanFeatures extends HelpersClean
     {
         add_filter('show_admin_bar', '__return_false');
         remove_action('init', 'wp_admin_bar_init');
+    }
+
+    /**
+     * Remove unecessary details in `body_class()` method
+     */
+    public function featureBodyClass()
+    {
+        add_filter('body_class', function ($classes, $class) {
+            // Author pages
+            if (isset($classes['author'])) {
+                // Get author
+                if (!$name = get_query_var('author_name')) {
+                    $author = get_userdata(get_query_var('author'));
+                } else {
+                    $author = get_user_by('slug', $name);
+                }
+
+                // Get data to remove
+                $removed[] = 'author-'.$author->ID;
+                $removed[] = 'author-'.$author->user_nicename;
+
+                // Remove classes
+                $classes = array_diff($classes, $removed);
+            }
+
+            // Single pages
+            if (isset($classes['single'])) {
+                // Get post details
+                $post = get_queried_object();
+                $pid = get_queried_object_id();
+
+                // Check post type
+                if (isset($post->post_type)) {
+                    $removed[] = 'single-'.sanitize_html_class($post->post_type, $pid);
+                    $removed[] = 'postid-'.$pid;
+
+                    // Remove classes
+                    $classes = array_diff($classes, $removed);
+                }
+            }
+
+            // Archive pages
+            if (isset($classes['category']) || isset($classes['tag']) || isset($classes['tax'])) {
+                // Get object details
+                $obj = get_queried_object();
+
+                // Check object ID
+                if (isset($obj->term_id)) {
+                    // Get class
+                    $obj_class = sanitize_html_class($obj->slug, $obj->term_id);
+                    $obj_class = is_numeric($obj_class) || !trim($obj_class, '-') ? $obj->term_id : $obj_class;
+
+                    // Remove details
+                    if (isset($classes['category'])) {
+                        $removed[] = 'category-'.$obj_class;
+                        $removed[] = 'category-'.$obj->term_id;
+                    } else if (isset($classes['tag'])) {
+                        $removed[] = 'tag-'.$obj_class;
+                        $removed[] = 'tag-'.$obj->term_id;
+                    } else if (isset($classes['tax'])) {
+                        $removed[] = 'tax-'.sanitize_html_class($obj->taxonomy);
+                        $removed[] = 'term-'.$obj_class;
+                        $removed[] = 'term-'.$obj->term_id;
+                    }
+
+                    // Remove classes
+                    $classes = array_diff($classes, $removed);
+                }
+            }
+
+            // Return all classes
+            return array_merge($classes, (array)$class);
+        }, 10, 2);
     }
 
     /**
