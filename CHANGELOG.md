@@ -1,3 +1,6 @@
+## 2.0.12 (January 12th, 2020)
+Add new body class Feature Helpers
+
 ## 2.0.11 (December 11th, 2019)
 Add new separates Helpers Plugins
 
