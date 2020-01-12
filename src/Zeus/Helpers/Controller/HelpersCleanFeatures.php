@@ -127,20 +127,16 @@ class HelpersCleanFeatures extends HelpersClean
                 if (isset($obj->term_id)) {
                     // Get class
                     $obj_class = sanitize_html_class($obj->slug, $obj->term_id);
-                    $obj_class = is_numeric($obj_class) || !trim($obj_class, '-') ? 
-                        $obj->term_id : 
-                        $obj_class;
+                    $obj_class = is_numeric($obj_class) || !trim($obj_class, '-') ? $obj->term_id : $obj_class;
 
                     // Remove details
                     if (isset($classes['category'])) {
                         $removed[] = 'category-'.$obj_class;
                         $removed[] = 'category-'.$obj->term_id;
-                    }
-                    else if (isset($classes['tag'])) {
+                    } else if (isset($classes['tag'])) {
                         $removed[] = 'tag-'.$obj_class;
                         $removed[] = 'tag-'.$obj->term_id;
-                    }
-                    else if (isset($classes['tax'])) {
+                    } else if (isset($classes['tax'])) {
                         $removed[] = 'tax-'.sanitize_html_class($obj->taxonomy);
                         $removed[] = 'term-'.$obj_class;
                         $removed[] = 'term-'.$obj->term_id;
