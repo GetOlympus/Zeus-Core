@@ -10,10 +10,9 @@
 
 + Better and secure folder structure
 + All **Olympus fields** integrated by default
++ Olympus [**Hera Renderer**](https://github.com/GetOlympus/Hera-Renderer) and [**Hermes Translator**](https://github.com/GetOlympus/Hermes-Translator)
++ Symfony [**HTTP Foundation**](https://github.com/symfony/http-foundation) and [**Class loader**](https://github.com/symfony/class-loader) components
 + Dependency management with [**Composer**](https://getcomposer.org)
-+ PHPLeague [**dependency injection container**](https://github.com/thephpleague/container)
-+ Symfony [**HTTP Foundation**](https://github.com/symfony/http-foundation) and [**Translation**](https://github.com/symfony/translation) components
-+ [**Twig**](https://github.com/twigphp/Twig) renderer
 + And more...
 
 ![With Composer](https://img.shields.io/badge/with-Composer-885630.svg?style=flat-square)
@@ -28,11 +27,7 @@ composer require getolympus/olympus-zeus-core
 
 ## Initialization
 
-_In progress (soon, really soon)_
-
-## Full example
-
-Example from `functions.php` WordPress theme file:
+To initialize `Zeus Core` from your `functions.php` WordPress theme file or main plugin php file:
 
 ```php
 // file: functions.php
@@ -42,37 +37,54 @@ namespace MyThemeName;
  * Everything starts here.
  *
  * @package MyThemeName
- * @author Your Name <yourmail@domain-name.ext>
- * @since x.y.z
+ * @author  Your Name <yourmail@domain-name.ext>
+ * @since   x.y.z
  *
  */
 
 // Directory separator and Vendor path.
-defined('S')          or define('S', DIRECTORY_SEPARATOR);
-defined('VENDORPATH') or define('VENDORPATH', realpath(dirname(__DIR__)).S.'vendor'.S);
+defined('S')          or define('S', DIRECTORY_SEPARATOR); // Provided by Olympus container
+defined('VENDORPATH') or define('VENDORPATH', realpath(dirname(__DIR__)).S.'vendor'.S); // Provided by Olympus container
 
 /**
  * MyThemeName class definition
  */
 
 if (!class_exists('MyThemeName')) {
+    /**
+     * Use of Zeus abstract PHP class to initialize everything.
+     */
     class MyThemeName extends \GetOlympus\Zeus\Zeus
     {
+        /**
+         * Define all useful folders
+         */
+        // Load option admin pages
+        protected $adminpages = __DIR__.S.'controllers'.S.'adminpages';
+        // Load scheduled actions
+        protected $crons      = __DIR__.S.'controllers'.S.'crons';
         // Load custom post types
         protected $posttypes  = __DIR__.S.'controllers'.S.'posttypes';
+        // Load custom terms
+        protected $terms      = __DIR__.S.'controllers'.S.'terms';
+        // Load options for users
+        protected $users      = __DIR__.S.'controllers'.S.'users';
+        // Load custom widgets
+        protected $widgets    = __DIR__.S.'controllers'.S.'widgets';
 
-        // Load WordPress optimizations and configurations
+        /**
+         * Define WordPress optimizations and configurations in a single var.
+         */
         protected $configurations = [
-            'Clean' => [
-                'core'     => true,
-                'features' => true,
-                'headers'  => true,
-                'plugins'  => true,
-            ],
-            'Sizes' => [
-                'img-size-one' => [250, 250, true, __('Squared image', 'mythemename')],
-                'img-size-two' => [1000, 90, true, __('Header image', 'mythemename')],
-            ],
+            'AccessManagement' => [/*...*/],
+            'Assets'           => [/*...*/],
+            'Clean'            => [/*...*/],
+            'Menus'            => [/*...*/],
+            'Settings'         => [/*...*/],
+            'Shortcodes'       => [/*...*/],
+            'Sidebars'         => [/*...*/],
+            'Sizes'            => [/*...*/],
+            'Supports'         => [/*...*/],
         ];
 
         /**
@@ -95,16 +107,18 @@ if (!class_exists('MyThemeName')) {
 return new MyThemeName();
 ```
 
-Example from `controllers/posttypes/MoviePosttype.php` controller file, assuming you need a `Movie` custom post type:
+## A custom post type example
+
+Assuming you need a new `Movie` custom post type, here is the `controllers/posttypes/MoviePosttype.php` content file:
 
 ```php
 // file: controllers/posttypes/MoviePosttype.php
 namespace MyThemeName\Controllers\Posttypes;
 
 /**
- * Extends main \GetOlympus\Zeus\Posttype\Controller\Posttype class to use all functionalities
+ * Extends main \GetOlympus\Zeus\Posttype\Posttype class to use all functionalities
  */
-class MoviePosttype extends \GetOlympus\Zeus\Posttype\Controller\Posttype
+class MoviePosttype extends \GetOlympus\Zeus\Posttype\Posttype
 {
     /**
      * @var array
@@ -130,24 +144,21 @@ class MoviePosttype extends \GetOlympus\Zeus\Posttype\Controller\Posttype
     public function setVars()
     {
         // Update labels
-        $this->getModel()->setLabels(array_merge(
-            $this->getModel()->getLabels(),
-            [
-                'name' => __('Movies', 'mythemename'),
-                'singular_name' => __('Movie', 'mythemename'),
-            ]
-        ));
+        $this->setLabels([
+            'name'          => __('Movies', 'mythemename'),
+            'singular_name' => __('Movie', 'mythemename'),
+        ]);
 
         // Add metabox
         $this->addMetabox(__('Details', 'mythemename'), [
-            \GetOlympus\Field\Text::build('link', [
-                'title'     => __('Movie source URL', 'mythemename'),
+            \GetOlympus\Dionysos\Field\Text::build('link', [
+                'title' => __('Movie source URL', 'mythemename'),
             ]),
-            \GetOlympus\Field\Text::build('length', [
-                'title'     => __('Length in seconds', 'mythemename'),
+            \GetOlympus\Dionysos\Field\Text::build('length', [
+                'title' => __('Length in seconds', 'mythemename'),
             ]),
-            \GetOlympus\Field\Text::build('author', [
-                'title'     => __('Author name', 'mythemename'),
+            \GetOlympus\Dionysos\Field\Text::build('author', [
+                'title' => __('Author name', 'mythemename'),
             ]),
             // (...)
         ]);
@@ -165,7 +176,7 @@ Achraf Chouk
 [![@crewstyle][twitter-image]][twitter-url]
 
 [https://github.com/crewstyle](https://github.com/crewstyle)  
-[http://fr.linkedin.com/in/achrafchouk](http://fr.linkedin.com/in/achrafchouk)
+[https://fr.linkedin.com/in/achrafchouk](https://fr.linkedin.com/in/achrafchouk)
 
 Please, read [![MIT][license-image]][license-blob] for more information.
 

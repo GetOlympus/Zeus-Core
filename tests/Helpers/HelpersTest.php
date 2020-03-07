@@ -1,10 +1,10 @@
 <?php
 
-namespace GetOlympus\Zeus\Helpers\Controller;
+namespace GetOlympus\Zeus\Utils;
 
-use PHPUnit\Framework\TestCase;
-use GetOlympus\Zeus\Helpers\Controller\Helpers;
 use Behat\Transliterator\Transliterator;
+use GetOlympus\Zeus\Utils\Helpers;
+use PHPUnit\Framework\TestCase;
 
 /**
  * HelpersTest controller

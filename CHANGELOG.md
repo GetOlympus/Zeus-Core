@@ -1,3 +1,6 @@
+## 2.1.0 (February 16th, 2020)
+New components structure
+
 ## 2.0.12 (January 12th, 2020)
 Add new body class Feature Helpers
 
