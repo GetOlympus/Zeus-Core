@@ -231,7 +231,7 @@ abstract class Widget extends Base implements WidgetInterface
      *
      * @param  array   $instance
      */
-    abstract protected function display($instance = []) : void;
+    abstract public function display($instance = []) : void;
 
     /**
      * Prepare variables.
