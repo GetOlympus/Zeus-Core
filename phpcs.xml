@@ -6,10 +6,10 @@
   <exclude-pattern>app/cache/*</exclude-pattern>
   <exclude-pattern>app/logs/*</exclude-pattern>
   <exclude-pattern>src/Zeus/Control/Control.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/Control/ControlImplementation.php</exclude-pattern>
+  <exclude-pattern>src/Zeus/Control/ControlInterface.php</exclude-pattern>
   <exclude-pattern>src/Zeus/Resources/templates/customizer/*</exclude-pattern>
   <exclude-pattern>src/Zeus/WalkerSingle/WalkerSingle.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/WalkerSingle/WalkerSingleImplementation.php</exclude-pattern>
+  <exclude-pattern>src/Zeus/WalkerSingle/WalkerSingleInterface.php</exclude-pattern>
   <exclude-pattern>src/Zeus/Widget/WidgetHook.php</exclude-pattern>
   <exclude-pattern>vendor/*</exclude-pattern>
 
