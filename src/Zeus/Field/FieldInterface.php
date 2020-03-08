@@ -48,6 +48,16 @@ interface FieldInterface
     public function prepare($template = 'metabox', $object = null, $type = 'default') : array;
 
     /**
+     * Retrieve translated message
+     *
+     * @param  string  $message
+     * @param  string  $domain
+     *
+     * @return string
+     */
+    public static function t($message, $domain) : string;
+
+    /**
      * Retrieve Field translations
      *
      * @throws FieldException

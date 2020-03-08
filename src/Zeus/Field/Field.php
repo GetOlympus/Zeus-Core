@@ -240,6 +240,19 @@ abstract class Field extends Base implements FieldInterface
     }
 
     /**
+     * Retrieve translated message
+     *
+     * @param  string  $message
+     * @param  string  $domain
+     *
+     * @return string
+     */
+    public static function t($message, $domain) : string
+    {
+        return Translate::t($message, $domain);
+    }
+
+    /**
      * Retrieve Field translations
      *
      * @throws FieldException

@@ -206,4 +206,4 @@ Please, read [![MIT][license-image]][license-blob] for more information.
 [travis-image]: https://img.shields.io/travis/GetOlympus/Zeus-Core/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/GetOlympus/Zeus-Core
 [twitter-image]: https://img.shields.io/badge/crewstyle-blue.svg?style=social&logo=twitter
-[twitter-url]: http://twitter.com/crewstyle
+[twitter-url]: https://twitter.com/crewstyle
