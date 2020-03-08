@@ -13,6 +13,7 @@
 
 
     "configuration.access.errors.incorrect_login": "Incorrect login errors. Please try again.",
+    "configuration.access.labels.title": "Olympus website.",
     "configuration.sidebars.labels.name": "Sidebar name",
 
 
@@ -65,8 +66,8 @@
     "helpers.plugin.wprocket.pluginname": "Cache system",
 
 
-    "metabox.errors.no_fields": "The Metabox does not contain fields.",
-    "metabox.errors.no_type_is_defined": "A field is missing because no type is defined.",
+"metabox.errors.no_fields": "The Metabox does not contain fields.",
+"metabox.errors.no_type_is_defined": "A field is missing because no type is defined.",
 
 
     "posttype.errors.metabox_fields_are_not_defined": "Metabox fields are missing. Please, define at least one field.",
@@ -121,6 +122,11 @@
 
     "user.labels.title": "Extra profile information",
 
+
+    "widget.errors.no_fields": "The widget does not contain fields.",
+    "widget.errors.classname_is_not_defined": "Widget classname is empty. Please, set a classname.",
+    "widget.errors.template_path_is_not_defined": "Widget template filepath is empty. Please, set a template filepath.",
+    "widget.errors.template_does_not_exist": "The specified template file \"%s\" cannot be found.",
 
     "widget.labels.description": "The widget entire description.",
     "widget.labels.field_title": "Title:"

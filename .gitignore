@@ -10,6 +10,7 @@ composer.lock
 
 # Scanner
 .scannerwork
+.phpunit.result.cache
 
 # Useless auto-generated files
 .DS_Store

@@ -1,0 +1,20 @@
+<div class="panel-wrap olz-wrap">
+    <ul class="tabs olz-tabs">
+        {% for section in sections %}
+            <li class="{{ section.class }}">
+                <a href="#{{ section.id }}"><span>{{ section.name }}</span></a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    {% for section in sections %}
+        <div id="{{ section.id }}" class="panel olz-panel">
+            {% for field in fields %}
+                {% set tpl = '@' ~ field.context ~ '/' ~ field.template %}
+                {% include [tpl, '@core/components/notification.html.twig'] with field.vars %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <div class="clear"></div>
+</div>
