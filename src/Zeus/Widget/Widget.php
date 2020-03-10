@@ -157,10 +157,6 @@ abstract class Widget extends Base implements WidgetInterface
      */
     protected function setDisplayTitle($display_title) : void
     {
-        if (empty($display_title)) {
-            return;
-        }
-
         $this->getModel()->setDisplayTitle($display_title);
     }
 
