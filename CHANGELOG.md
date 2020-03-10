@@ -1,3 +1,7 @@
+## 2.1.1 (March 10th, 2020)
+Fix Widget display title
+Set Field component default getVars function
+
 ## 2.1.0 (February 16th, 2020)
 New components structure
 
