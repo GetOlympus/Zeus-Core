@@ -258,7 +258,6 @@ class WidgetHook extends BaseWidget
      */
     public function widget_end($args)
     {
-        include $this->widget->getModel()->getTemplate();
         echo $args['after_widget'];
     }
 

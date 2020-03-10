@@ -1,10 +1,19 @@
 # Olympus Zeus Core ![PHP Version][php-image]
 > **Olympus Zeus Core** is a framework which allows you to make all your **WordPress** plugins and themes developments easier and efficient.
 
+```sh
+composer require getolympus/olympus-zeus-core
+```
+
+---
+
 [![Olympus Component][olympus-image]][olympus-url]
 [![CodeFactor Grade][codefactor-image]][codefactor-url]
 [![Packagist Version][packagist-image]][packagist-url]
 [![Travis Status][travis-image]][travis-url]
+[![MIT][license-image]][license-blob]
+
+---
 
 ## Features
 
@@ -16,14 +25,6 @@
 + And more...
 
 ![With Composer](https://img.shields.io/badge/with-Composer-885630.svg?style=flat-square)
-
-## Installation
-
-Using `composer` in your PHP project:
-
-```sh
-composer require getolympus/olympus-zeus-core
-```
 
 ## Initialization
 
@@ -170,16 +171,6 @@ class MoviePosttype extends \GetOlympus\Zeus\Posttype\Posttype
 
 See [**CHANGELOG.md**][changelog-blob] for all details.
 
-## Authors and Copyright
-
-Achraf Chouk  
-[![@crewstyle][twitter-image]][twitter-url]
-
-[https://github.com/crewstyle](https://github.com/crewstyle)  
-[https://fr.linkedin.com/in/achrafchouk](https://fr.linkedin.com/in/achrafchouk)
-
-Please, read [![MIT][license-image]][license-blob] for more information.
-
 ## Contributing
 
 1. Fork it (<https://github.com/GetOlympus/Zeus-Core/fork>)
@@ -205,5 +196,3 @@ Please, read [![MIT][license-image]][license-blob] for more information.
 [php-image]: https://img.shields.io/travis/php-v/GetOlympus/Zeus-Core.svg?style=flat-square
 [travis-image]: https://img.shields.io/travis/GetOlympus/Zeus-Core/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/GetOlympus/Zeus-Core
-[twitter-image]: https://img.shields.io/badge/crewstyle-blue.svg?style=social&logo=twitter
-[twitter-url]: https://twitter.com/crewstyle

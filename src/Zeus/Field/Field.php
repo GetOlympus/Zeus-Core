@@ -8,7 +8,6 @@ use GetOlympus\Zeus\Field\FieldInterface;
 use GetOlympus\Zeus\Field\FieldModel;
 use GetOlympus\Zeus\Utils\Helpers;
 use GetOlympus\Zeus\Utils\Option;
-use GetOlympus\Zeus\Utils\Render;
 use GetOlympus\Zeus\Utils\Translate;
 
 /**
@@ -177,6 +176,19 @@ abstract class Field extends Base implements FieldInterface
     }
 
     /**
+     * Prepare variables.
+     *
+     * @param  object  $value
+     * @param  array   $contents
+     *
+     * @return array
+     */
+    protected function getVars($value, $contents) : array
+    {
+        return $contents;
+    }
+
+    /**
      * Prepare HTML component for templating.
      *
      * @param  string  $template
@@ -340,16 +352,6 @@ abstract class Field extends Base implements FieldInterface
      * @return array
      */
     abstract protected function getDefaults() : array;
-
-    /**
-     * Prepare variables.
-     *
-     * @param  object  $value
-     * @param  array   $contents
-     *
-     * @return array
-     */
-    abstract protected function getVars($value, $contents) : array;
 
     /**
      * Update post value from request.
