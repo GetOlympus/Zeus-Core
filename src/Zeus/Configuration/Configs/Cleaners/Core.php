@@ -20,17 +20,17 @@ class Core extends Cleaner
      * @var array
      */
     protected $available = [
-        'autosave'            => true, // Remove auto-save posts
-        'file-edit'           => true, // Disallow file edition from admin panel
-        'heartbeat-admin'     => true, // Remove HeartBeat scripts in all admin panel pages
-        'heartbeat-all'       => true, // Remove HeartBeat scripts in all WordPress pages
-        'heartbeat-dashboard' => true, // Remove HeartBeat scripts in admin panel dashboard only
-        'jquery-migrate'      => true, // Remove jQuery Migrate default script
-        'json-api'            => true, // Remove json api and link from header
-        'post-custom-metabox' => true, // Remove post custom metaboxes from post editor to prevent very slow queries
-        'rest-api'            => true, // Disable REST api
-        'shutdown'            => true, // Define wether if WP has to shut the DB connections off or not
-        'xmlrpc'              => true, // Remove XMLRPC
+        'autosave'            => true,  // Remove auto-save posts
+        'file-edit'           => true,  // Disallow file edition from admin panel
+        'heartbeat-admin'     => true,  // Remove HeartBeat scripts in all admin panel pages
+        'heartbeat-all'       => true,  // Remove HeartBeat scripts in all WordPress pages
+        'heartbeat-dashboard' => true,  // Remove HeartBeat scripts in admin panel dashboard only
+        'jquery-migrate'      => true,  // Remove jQuery Migrate default script
+        'json-api'            => true,  // Remove json api and link from header
+        'post-custom-metabox' => true,  // Remove post custom metaboxes from post editor to prevent very slow queries
+        'rest-api'            => false, // Disable REST api
+        'shutdown'            => true,  // Define wether if WP has to shut the DB connections off or not
+        'xmlrpc'              => true,  // Remove XMLRPC
     ];
 
     /**
