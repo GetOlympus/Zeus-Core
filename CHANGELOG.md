@@ -1,3 +1,6 @@
+## 2.1.2 (March 11th, 2020)
+Set rest api enabled by default
+
 ## 2.1.1 (March 10th, 2020)
 Fix Widget display title
 Set Field component default getVars function
