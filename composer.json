@@ -35,7 +35,7 @@
     "getolympus/olympus-dionysos-field-link": "^0.0.17",
     "getolympus/olympus-dionysos-field-content": "^0.0.11",
     "getolympus/olympus-dionysos-field-color": "^0.0.12",
-    "getolympus/olympus-hera-renderer": "^0.0.2",
+    "getolympus/olympus-hera-renderer": "^0.0.4",
     "getolympus/olympus-hermes-translator": "^0.0.2",
     "symfony/class-loader": "^3.4",
     "symfony/http-foundation": "^5.0"
