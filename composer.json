@@ -26,7 +26,7 @@
     "behat/transliterator": "^1.0",
     "getolympus/olympus-dionysos-field-code": "^0.0.12",
     "getolympus/olympus-dionysos-field-wordpress": "^0.0.17",
-    "getolympus/olympus-dionysos-field-upload": "^0.0.14",
+    "getolympus/olympus-dionysos-field-upload": "^0.0.15",
     "getolympus/olympus-dionysos-field-toggle": "^0.0.14",
     "getolympus/olympus-dionysos-field-textarea": "^0.0.13",
     "getolympus/olympus-dionysos-field-text": "^0.0.18",
