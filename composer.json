@@ -32,7 +32,7 @@
     "getolympus/olympus-dionysos-field-text": "^0.0.18",
     "getolympus/olympus-dionysos-field-select": "^0.0.11",
     "getolympus/olympus-dionysos-field-radio": "^0.0.16",
-    "getolympus/olympus-dionysos-field-link": "^0.0.17",
+    "getolympus/olympus-dionysos-field-link": "^0.0.21",
     "getolympus/olympus-dionysos-field-content": "^0.0.11",
     "getolympus/olympus-dionysos-field-color": "^0.0.12",
     "getolympus/olympus-hera-renderer": "^0.0.2",
