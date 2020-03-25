@@ -1,12 +1,12 @@
-<tr id="{% block id %}{% endblock %}-field" class="olz-field {% block class %}{% endblock %}">
-    <th style="width:200px">
+<div id="{% block id %}{% endblock %}-field" class="zeus-mb-item {% block class %}{% endblock %}">
+    <div class="zeus-mb-label">
         {% block header %}{% endblock %}
         {% block label %}{% endblock %}
         {% block overall %}{% endblock %}
-    </th>
-    <td>
+        <p class="description">{% block description %}{% endblock %}</p>
+    </div>
+    <div class="zeus-mb-content">
         {% block field %}{% endblock %}
-        {% block description %}{% endblock %}
         {% block footer %}{% endblock %}
-    </td>
-</tr>
+    </div>
+</div>
