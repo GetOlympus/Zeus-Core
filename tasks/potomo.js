@@ -1,8 +1,8 @@
 /*!
- * @package olympus-zeus
+ * @package    olympus-zeus
  * @subpackage po2mo.js
- * @author Achraf Chouk <achrafchouk@gmail.com>
- * @since 0.0.1
+ * @author     Achraf Chouk <achrafchouk@gmail.com>
+ * @since      0.0.1
  */
 
 'use strict';
