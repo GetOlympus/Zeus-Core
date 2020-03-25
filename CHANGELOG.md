@@ -1,3 +1,6 @@
+## 2.1.3 (March 25th, 2020)
+Update all Olympus integrations, add new Dionysos fields, fix JS script integration, add new Zeus design
+
 ## 2.1.2 (March 11th, 2020)
 Set rest api enabled by default
 
