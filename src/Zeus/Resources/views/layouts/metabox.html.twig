@@ -1,8 +1,6 @@
-<table class="form-table olz-wrap">
-    <tbody>
-        {% for field in fields %}
-            {% set tpl = '@' ~ field.context ~ '/' ~ field.template %}
-            {% include [tpl, '@core/components/notification.html.twig'] with field.vars %}
-        {% endfor %}
-    </tbody>
-</table>
+<div class="zeus-metabox">
+    {% for field in fields %}
+        {% set tpl = '@' ~ field.context ~ '/' ~ field.template %}
+        {% include [tpl, '@core/components/notification.html.twig'] with field.vars %}
+    {% endfor %}
+</div>

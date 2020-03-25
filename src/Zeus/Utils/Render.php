@@ -31,9 +31,8 @@ class Render extends Hera
     /**
      * @var array
      */
-    protected $scripts = [
-        'zeus-tabs'   => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-tabs.js',
-        'zeus-upload' => OL_ZEUS_ASSETSPATH.'js'.S.'zeus-upload.js',
+    protected $styles = [
+        'zeus-css' => OL_ZEUS_ASSETSPATH.'css'.S.'zeus.css',
     ];
 
     /**

@@ -123,7 +123,9 @@ class Metabox extends Base implements MetaboxInterface
         // Prepare admin scripts and styles
         $assets = [
             'scripts' => [],
-            'styles'  => [],
+            'styles'  => [
+                'zeus-metabox' => OL_ZEUS_ASSETSPATH.'css'.S.'zeus-metabox.css'
+            ],
         ];
 
         $vars = [];
