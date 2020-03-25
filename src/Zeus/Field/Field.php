@@ -171,8 +171,23 @@ abstract class Field extends Base implements FieldInterface
         $options = array_merge($field->getModel()->getDefaults(), ['name' => $identifier], $options);
         $field->getModel()->setOptions($options);
 
+        // Prepare ajax callback
+        if (method_exists($field, 'ajaxCallback')) {
+            add_action('wp_ajax_nopriv_'.$identifier, [$field, 'callback']);
+            add_action('wp_ajax_'.$identifier, [$field, 'callback']);
+        }
+
         // Get field
         return $field;
+    }
+
+    /**
+     * Make ajax callback when `ajaxCallback` function exists.
+     */
+    public function callback() : void
+    {
+        $success = $this->ajaxCallback($_REQUEST);
+        wp_send_json_success($success);
     }
 
     /**
