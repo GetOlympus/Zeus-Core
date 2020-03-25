@@ -1,6 +1,7 @@
 {
   "paths": {
     "i18n": "languages",
+    "assets": "app/assets",
     "src": "src/Zeus/Resources"
   },
   "textdomain": "olympus-zeus"

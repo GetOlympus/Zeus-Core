@@ -6,9 +6,21 @@ textdomain:
     # Generate MO files and remove PO files
     - 'potomo:app'
 
+assets:
+  description: 'Build ASSETS files from Resources assets'
+  tasks:
+    # Clean ASSETS files
+    - 'clean:assets'
+    # Generate ASSETS files
+    - 'less:app'
+    - 'cssmin:app'
+    - 'uglify:app'
+
 # Default action to create all css
 default:
-  description: 'Build minified production-ready and MO files from LESS & JSON sources'
+  description: 'Build minified production-ready files from sources'
   tasks:
     # Build MO files
     - 'textdomain'
+    # Build ASSETS files
+    - 'assets'
