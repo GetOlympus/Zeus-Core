@@ -88,7 +88,7 @@ class PosttypeHook
          *
          * @return array
          */
-        return apply_filters('ol_zeus_posttypehook_manage_edit-'.$current.'_columns', $columns);
+        return apply_filters('ol.zeus.posttypehook_manage_edit-'.$current.'_columns', $columns);
     }
 
     /**
@@ -113,7 +113,7 @@ class PosttypeHook
          * @param  string  $column
          * @param  int     $post_id
          */
-        do_action('ol_zeus_posttypehook_manage_'.$current.'_custom_column', $column, $post_id);
+        do_action('ol.zeus.posttypehook_manage_'.$current.'_custom_column', $column, $post_id);
     }
 
     /**
@@ -309,7 +309,7 @@ class PosttypeHook
          * @param  int     $post_id
          * @param  array   $metaboxes
          */
-        do_action('ol_zeus_posttypehook_save_'.$slug, $post->ID, $metaboxes);
+        do_action('ol.zeus.posttypehook_save_'.$slug, $post->ID, $metaboxes);
 
         // Update all metas
         foreach ($metaboxes as $metabox) {
@@ -359,7 +359,7 @@ class PosttypeHook
                  *
                  * @return object
                  */
-                $value = apply_filters('ol_zeus_posttypehook_save_'.$slug.'_field', $value, $post_id, $option_name);
+                $value = apply_filters('ol.zeus.posttypehook_save_'.$slug.'_field', $value, $post_id, $option_name);
 
                 // Updates meta
                 Option::updatePostMeta($post_id, $option_name, $value);

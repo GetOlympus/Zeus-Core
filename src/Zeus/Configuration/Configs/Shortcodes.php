@@ -146,7 +146,7 @@ class Shortcodes extends Configuration
                  *
                  * @return string
                  */
-                return apply_filters('ol_zeus_shortcodes_'.$key, $atts, $content);
+                return apply_filters('ol.zeus.shortcodes_'.$key, $atts, $content);
             });
         }
     }
