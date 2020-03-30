@@ -171,7 +171,7 @@ class TermHook
          * @param  string  $column
          * @param  int     $term_id
          */
-        do_action('ol_zeus_termhook_manage_'.$current.'_custom_column', $content, $column, $term_id);
+        do_action('ol.zeus.termhook_manage_'.$current.'_custom_column', $content, $column, $term_id);
     }
 
     /**
@@ -202,7 +202,7 @@ class TermHook
          *
          * @return array
          */
-        return apply_filters('ol_zeus_termhook_manage_edit-'.$current.'_columns', $columns);
+        return apply_filters('ol.zeus.termhook_manage_edit-'.$current.'_columns', $columns);
     }
 
     /**
@@ -241,7 +241,7 @@ class TermHook
          * @param  int     $term_id
          * @param  array   $fields
          */
-        do_action('ol_zeus_termhook_save_'.$slug, $term_id, $fields);
+        do_action('ol.zeus.termhook_save_'.$slug, $term_id, $fields);
 
         // Update all metas
         foreach ($fields as $field) {
@@ -274,7 +274,7 @@ class TermHook
              *
              * @return object
              */
-            $value = apply_filters('ol_zeus_termhook_save_'.$slug.'_field', $value, $term_id, $option_name);
+            $value = apply_filters('ol.zeus.termhook_save_'.$slug.'_field', $value, $term_id, $option_name);
 
             // Updates meta
             Option::updateTermMeta($term_id, $option_name, $value);

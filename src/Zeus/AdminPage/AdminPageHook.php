@@ -119,7 +119,7 @@ class AdminPageHook
          *
          * @return array
          */
-        $this->fields = apply_filters('ol_zeus_adminpage_'.$filter_slug.'_contents', $fields);
+        $this->fields = apply_filters('ol.zeus.adminpage_'.$filter_slug.'_contents', $fields);
 
         // Display main render
         $this->renderFields();

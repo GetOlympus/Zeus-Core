@@ -32,7 +32,7 @@ class Option
          * @param  string  $deprecated
          * @param  string  $autoload
          */
-        do_action('ol_zeus_option_add_before_'.$option, $value, $deprecated, $autoload);
+        do_action('ol.zeus.option_add_before_'.$option, $value, $deprecated, $autoload);
 
         add_option($option, $value, $deprecated, $autoload);
 
@@ -44,7 +44,7 @@ class Option
          * @param  string  $deprecated
          * @param  string  $autoload
          */
-        do_action('ol_zeus_option_add_after_'.$option, $value, $deprecated, $autoload);
+        do_action('ol.zeus.option_add_after_'.$option, $value, $deprecated, $autoload);
     }
 
     /**
@@ -59,7 +59,7 @@ class Option
          *
          * @var    string  $option
          */
-        do_action('ol_zeus_option_delete_before_'.$option);
+        do_action('ol.zeus.option_delete_before_'.$option);
 
         delete_option($option);
 
@@ -68,7 +68,7 @@ class Option
          *
          * @var    string  $option
          */
-        do_action('ol_zeus_option_delete_after_'.$option);
+        do_action('ol.zeus.option_delete_after_'.$option);
     }
 
     /**
@@ -96,7 +96,7 @@ class Option
          *
          * @return array
          */
-        $value = apply_filters('ol_zeus_option_get_'.$option, $value);
+        $value = apply_filters('ol.zeus.option_get_'.$option, $value);
 
         // Return value
         return is_array($value) && isset($value[$item]) ? $value[$item] : $value;
@@ -120,7 +120,7 @@ class Option
          *
          * @return array
          */
-        $value = apply_filters('ol_zeus_option_set_'.$option, $value);
+        $value = apply_filters('ol.zeus.option_set_'.$option, $value);
 
         // Set value into DB with autoload
         if (!empty($id)) {
@@ -147,7 +147,7 @@ class Option
          * @var    string  $option
          * @param  string  $value
          */
-        do_action('ol_zeus_option_update_before_'.$option, $value);
+        do_action('ol.zeus.option_update_before_'.$option, $value);
 
         update_option($option, $value);
 
@@ -157,7 +157,7 @@ class Option
          * @var    string  $option
          * @param  string  $value
          */
-        do_action('ol_zeus_option_update_after_'.$option, $value);
+        do_action('ol.zeus.option_update_after_'.$option, $value);
     }
 
     /**
@@ -202,7 +202,7 @@ class Option
          *
          * @return mixed
          */
-        return apply_filters('ol_zeus_option_get_author_meta_'.$option, $value);
+        return apply_filters('ol.zeus.option_get_author_meta_'.$option, $value);
     }
 
     /**
@@ -221,7 +221,7 @@ class Option
          * @param  string  $value
          * @param  int     $user_id
          */
-        do_action('ol_zeus_option_update_user_meta_before_'.$option, $value, $user_id);
+        do_action('ol.zeus.option_update_user_meta_before_'.$option, $value, $user_id);
 
         update_user_meta($user_id, $option, $value);
 
@@ -232,7 +232,7 @@ class Option
          * @param  string  $value
          * @param  int     $user_id
          */
-        do_action('ol_zeus_option_update_user_meta_after_'.$option, $value, $user_id);
+        do_action('ol.zeus.option_update_user_meta_after_'.$option, $value, $user_id);
     }
 
     /**
@@ -256,7 +256,7 @@ class Option
          *
          * @return mixed
          */
-        return apply_filters('ol_zeus_option_get_post_meta_'.$option, $value, $post_id);
+        return apply_filters('ol.zeus.option_get_post_meta_'.$option, $value, $post_id);
     }
 
     /**
@@ -275,7 +275,7 @@ class Option
          * @param  string  $value
          * @param  int     $post_id
          */
-        do_action('ol_zeus_option_update_post_meta_before_'.$option, $value, $post_id);
+        do_action('ol.zeus.option_update_post_meta_before_'.$option, $value, $post_id);
 
         update_post_meta($post_id, $option, $value);
 
@@ -286,7 +286,7 @@ class Option
          * @param  string  $value
          * @param  int     $post_id
          */
-        do_action('ol_zeus_option_update_post_meta_after_'.$option, $value, $post_id);
+        do_action('ol.zeus.option_update_post_meta_after_'.$option, $value, $post_id);
     }
 
     /**
@@ -316,7 +316,7 @@ class Option
          *
          * @return mixed
          */
-        return apply_filters('ol_zeus_option_get_term_meta_'.$option, $value);
+        return apply_filters('ol.zeus.option_get_term_meta_'.$option, $value);
     }
 
     /**
@@ -335,7 +335,7 @@ class Option
          * @param  string  $value
          * @param  int     $term_id
          */
-        do_action('ol_zeus_option_update_term_meta_before_'.$option, $value, $term_id);
+        do_action('ol.zeus.option_update_term_meta_before_'.$option, $value, $term_id);
 
         update_term_meta($term_id, $option, $value);
 
@@ -346,6 +346,6 @@ class Option
          * @param  string  $value
          * @param  int     $term_id
          */
-        do_action('ol_zeus_option_update_term_meta_after_'.$option, $value, $term_id);
+        do_action('ol.zeus.option_update_term_meta_after_'.$option, $value, $term_id);
     }
 }
