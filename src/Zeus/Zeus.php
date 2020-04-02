@@ -56,6 +56,7 @@ abstract class Zeus extends Application
         'GetOlympus\\Dionysos\\Field\\Code',
         'GetOlympus\\Dionysos\\Field\\Color',
         'GetOlympus\\Dionysos\\Field\\Content',
+        'GetOlympus\\Dionysos\\Field\\Font',
         'GetOlympus\\Dionysos\\Field\\Oembed',
         'GetOlympus\\Dionysos\\Field\\Link',
         'GetOlympus\\Dionysos\\Field\\Radio',

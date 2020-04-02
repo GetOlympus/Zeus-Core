@@ -1,5 +1,6 @@
 {
     "adminpage.errors.page_is_empty": "The page \"%s\" is empty.",
+    "adminpage.errors.pages_are_empty": "Admin pages needs at least one Admin page to make it work properly.",
     "adminpage.errors.section_cannot_be_added_to_page": "The section \"%s\" cannot be added to the unknown page id \"%s\".",
     "adminpage.errors.successfully_updated": "Your options page have been successfully updated.",
 
