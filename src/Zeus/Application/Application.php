@@ -201,7 +201,7 @@ abstract class Application implements ApplicationInterface
         // Merge controls
         $this->controls = array_merge($this->defaultcontrols, $this->controls);
 
-        // Check fields
+        // Check controls
         if (empty($this->controls)) {
             return;
         }
@@ -295,16 +295,15 @@ abstract class Application implements ApplicationInterface
 
             // Define filter and priority
             $currentfilter = current_filter();
-            $filter   = 'adminpages' === $action ? 'admin_menu' : 'init';
             $priority = 'widgets' === $action ? 0 : 1;
 
             // Register post type
-            if ($filter === $currentfilter) {
+            if ('init' === $currentfilter) {
                 // Already inside an `init` action
                 $this->registerObjects($classmap);
             } else {
                 // Outside an `init` action
-                add_action($filter, function () use ($classmap) {
+                add_action('init', function () use ($classmap) {
                     $this->registerObjects($classmap);
                 }, $priority);
             }

@@ -188,6 +188,17 @@ abstract class Field extends Base implements FieldInterface
     {
         $success = $this->ajaxCallback($_REQUEST);
         wp_send_json_success($success);
+        wp_die();
+    }
+
+    /**
+     * Retrieve identifier
+     *
+     * @return string
+     */
+    public function getIdentifier() : string
+    {
+        return $this->getModel()->getIdentifier();
     }
 
     /**

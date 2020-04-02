@@ -14,7 +14,10 @@ module.exports = function (grunt, configs) {
                 optimization: 2
             },
             files: {
-                [configs.paths.assets + '/css/zeus.css']: [configs.paths.src + '/assets/less/01.global.less'],
+                [configs.paths.assets + '/css/zeus.css']: [
+                    configs.paths.src + '/assets/less/01.global.less',
+                    configs.paths.src + '/assets/less/05.grid.less'
+                ],
                 [configs.paths.assets + '/css/zeus-metabox.css']: [configs.paths.src + '/assets/less/10.metabox.less']
             }
         }
