@@ -59,19 +59,25 @@ abstract class AdminPage extends Base implements AdminPageInterface
      */
     public function __construct()
     {
+        // Work on admin only
+        if (!OL_ZEUS_ISADMIN) {
+            return;
+        }
+
         // Initialize AdminPageModel
         $this->model = new AdminPageModel();
 
-        // Work on admin only
-        if (OL_ZEUS_ISADMIN) {
-            // Update model
-            $this->getModel()->setAdminbar($this->adminbar);
-            $this->getModel()->setIdentifier(Helpers::urlize($this->identifier));
-            $this->getModel()->setParent($this->parent, $this->available);
+        // Update model
+        $this->getModel()->setAdminbar($this->adminbar);
+        $this->getModel()->setIdentifier(Helpers::urlize($this->identifier));
+        $this->getModel()->setParent($this->parent, $this->available);
 
-            // Add pages and more
-            $this->setVars();
-        }
+        // Add pages and more
+        $this->setVars();
+
+        // Initialize ajax calls and menus
+        $this->initAjax();
+        $this->initMenu();
     }
 
     /**
@@ -162,36 +168,14 @@ abstract class AdminPage extends Base implements AdminPageInterface
             'submit'        => true,
         ], $options);
 
+        // Set special items
+        $options['_type'] = 'child';
+        $options['_identifier'] = $this->getModel()->getIdentifier();
+        $options['_parent'] = $parent;
+        $options['_pageid'] = $pageid;
+
         // Update page to pages
         $this->getModel()->setPages($pageid, $options);
-
-        // Get function
-        $func = !empty($parent) ? $this->functionFromParent($parent) : '';
-
-        // Add child page
-        if (!empty($func)) {
-            $func(
-                $options['title'],
-                $options['name'],
-                $options['capabilities'],
-                $pageid,
-                [$this, 'register']
-            );
-        } else {
-            add_submenu_page(
-                $this->getModel()->getIdentifier(),
-                $options['title'],
-                $options['name'],
-                $options['capabilities'],
-                $pageid,
-                [$this, 'register']
-            );
-        }
-
-        // Add admin bar
-        if ($this->adminbar) {
-            $this->addAdminBar($pageid, $options['title'], $parent);
-        }
     }
 
     /**
@@ -214,24 +198,12 @@ abstract class AdminPage extends Base implements AdminPageInterface
             'submit'        => true,
         ], $options);
 
+        // Set special items
+        $options['_type'] = 'root';
+        $options['_pageid'] = $pageid;
+
         // Update page to pages
         $this->getModel()->setPages($pageid, $options);
-
-        // Add root page
-        add_menu_page(
-            $options['title'],
-            $options['name'],
-            $options['capabilities'],
-            $pageid,
-            [$this, 'register'],
-            $options['icon'],
-            $options['position']
-        );
-
-        // Add admin bar
-        if ($this->adminbar) {
-            $this->addAdminBar($pageid, $options['title']);
-        }
     }
 
     /**
@@ -270,6 +242,131 @@ abstract class AdminPage extends Base implements AdminPageInterface
         // Add page section
         $page['sections'][$sectionid] = $options;
         $this->getModel()->setPages($pageid, $page);
+    }
+
+    /**
+     * Initialize ajax calls hooks if needed.
+     */
+    protected function initAjax() : void
+    {
+        // Get pages
+        $pages = $this->getModel()->getPages();
+
+        // Check pages
+        if (empty($pages)) {
+            return;
+        }
+
+        // Iterate on pages
+        foreach ($pages as $pageid => $options) {
+            // Check sections
+            if (!isset($options['sections']) || empty($options['sections'])) {
+                continue;
+            }
+
+            // Iterate on sections
+            foreach ($options['sections'] as $sectionid => $details) {
+                // Check fields
+                if (!isset($details['fields']) || empty($details['fields'])) {
+                    continue;
+                }
+
+                // Iterate on fields
+                foreach ($details['fields'] as $field) {
+                    // Check ajax callback method
+                    if (!method_exists($field, 'ajaxCallback')) {
+                        continue;
+                    }
+
+                    $id = $field->getIdentifier();
+
+                    // Check identifier
+                    if (empty($id)) {
+                        continue;
+                    }
+
+                    // Use ajax hooks
+                    add_action('wp_ajax_nopriv_'.$id, [$field, 'callback']);
+                    add_action('wp_ajax_'.$id, [$field, 'callback']);
+                }
+            }
+        }
+    }
+
+    /**
+     * Initialize menus through the WordPress `admin_menu` hook.
+     */
+    protected function initMenu() : void
+    {
+        // Build menus and capabilities
+        add_action('admin_menu', [$this, 'menuCallback']);
+    }
+
+    /**
+     * Hook admin menu.
+     */
+    public function menuCallback() : void
+    {
+        // Get pages
+        $pages = $this->getModel()->getPages();
+
+        // Check pages
+        if (empty($pages)) {
+            throw new AdminPageException(sprintf(Translate::t('adminpage.errors.pages_are_empty'), $identifier));
+        }
+
+        // Iterate on pages
+        foreach ($pages as $pageid => $options) {
+            // Check type
+            if ('root' === $options['_type']) {
+                // Add root page
+                add_menu_page(
+                    $options['title'],
+                    $options['name'],
+                    $options['capabilities'],
+                    $options['_pageid'],
+                    [$this, 'register'],
+                    $options['icon'],
+                    $options['position']
+                );
+
+                // Add admin bar
+                if ($this->adminbar) {
+                    $this->addAdminBar($options['_pageid'], $options['title']);
+                }
+
+                continue;
+            }
+
+            // Get function
+            $options['_function'] = !empty($options['_parent']) ? $this->functionFromParent($options['_parent']) : '';
+            $options['_function'] = !empty($options['_function']) ? $options['_function'] : 'add_submenu_page';
+
+            // Add child page
+            if ('add_submenu_page' !== $options['_function']) {
+                $options['_function'](
+                    $options['title'],
+                    $options['name'],
+                    $options['capabilities'],
+                    $options['_pageid'],
+                    [$this, 'register']
+                );
+            } else {
+                add_submenu_page(
+                    $options['_identifier'],
+                    $options['title'],
+                    $options['name'],
+                    $options['capabilities'],
+                    $options['_pageid'],
+                    [$this, 'register']
+                );
+            }
+
+            // Add admin bar
+            if ($this->adminbar) {
+                $this->addAdminBar($options['_pageid'], $options['title'], $options['_parent']);
+            }
+        }
     }
 
     /**

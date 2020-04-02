@@ -1,8 +1,16 @@
+## 2.1.5 (April 2nd, 2020)
+Add new Dionysos field
+Fix admin page integration with ajax calls from fields
+Add new Zeus design
+
 ## 2.1.4 (March 30th, 2020)
 Update hooks calls
 
 ## 2.1.3 (March 25th, 2020)
-Update all Olympus integrations, add new Dionysos fields, fix JS script integration, add new Zeus design
+Update all Olympus integrations
+Add new Dionysos fields
+Fix JS script integration
+Add new Zeus design
 
 ## 2.1.2 (March 11th, 2020)
 Set rest api enabled by default
