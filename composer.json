@@ -36,7 +36,7 @@
     "getolympus/olympus-dionysos-field-textarea": "^0.0.14",
     "getolympus/olympus-dionysos-field-toggle": "^0.0.15",
     "getolympus/olympus-dionysos-field-upload": "^0.0.16",
-    "getolympus/olympus-dionysos-field-wordpress": "^0.0.20",
+    "getolympus/olympus-dionysos-field-wordpress": "^0.0.21",
     "getolympus/olympus-hera-renderer": "^0.0.5",
     "getolympus/olympus-hermes-translator": "^0.0.2",
     "symfony/class-loader": "^3.4",
