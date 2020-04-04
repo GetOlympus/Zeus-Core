@@ -1,3 +1,8 @@
+## 2.1.6 (April 5th, 2020)
+Add new Dionysos field
+Fix AdminPage exception error
+Fix inputs display on AdminPages
+
 ## 2.1.5 (April 2nd, 2020)
 Add new Dionysos field
 Fix admin page integration with ajax calls from fields

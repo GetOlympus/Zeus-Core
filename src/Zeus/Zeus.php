@@ -53,6 +53,7 @@ abstract class Zeus extends Application
      */
     protected $defaultfields = [
         // Dionysos field components
+        'GetOlympus\\Dionysos\\Field\\Background',
         'GetOlympus\\Dionysos\\Field\\Code',
         'GetOlympus\\Dionysos\\Field\\Color',
         'GetOlympus\\Dionysos\\Field\\Content',

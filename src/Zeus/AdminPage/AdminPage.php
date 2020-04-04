@@ -312,7 +312,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Check pages
         if (empty($pages)) {
-            throw new AdminPageException(sprintf(Translate::t('adminpage.errors.pages_are_empty'), $identifier));
+            throw new AdminPageException(Translate::t('adminpage.errors.pages_are_empty'));
         }
 
         // Iterate on pages
