@@ -33,6 +33,7 @@ class Plugins extends Cleaner
         'google-tag-manager'  => true,
         'gravity-form'        => true,
         'jetpack'             => true,
+        'onesignal'           => true,
         'the-events-calendar' => true,
         'w3tc'                => true,
         'woocommerce'         => true,
