@@ -79,7 +79,7 @@ class AdminPageHook
         // Define a current section if needed
         if (isset($opts['sections'])) {
             reset($opts['sections']);
-            $section = !empty($section) && isset($opts['sections'][$section]) ? $section : key($opts['sections']);
+            $section = $this->getCurrentSection($section, $opts);
         } else {
             $section = '';
         }
@@ -87,10 +87,57 @@ class AdminPageHook
         $this->adminpage = $adminpage;
         $this->options   = $opts;
         $this->page      = $page;
-        $this->request   = false;
+        $this->request   = $this->adminpage->getModel()->getRequest();
         $this->section   = $section;
 
         $this->init();
+    }
+
+    /**
+     * Define current section.
+     *
+     * @param  string  $section
+     * @param  array   $opts
+     *
+     * @return string
+     */
+    protected function getCurrentSection($section, $opts) : string
+    {
+        // Get current
+        $current = !empty($section) && isset($opts['sections'][$section]) ? $section : key($opts['sections']);
+
+        // Check sections
+        if (!isset($opts['sections'], $opts['sections'][$current])) {
+            return $current;
+        }
+
+        // Check depends
+        if (isset($opts['sections'][$current]['depends']) && !empty($opts['sections'][$current]['depends'])) {
+            $status  = $this->getStatus($opts['sections'][$current]['depends']);
+            $current = !$status ? '' : $current;
+        }
+
+        return $current;
+    }
+
+    /**
+     * Define status dependings on `depends` option.
+     *
+     * @param  array   $depends
+     *
+     * @return bool
+     */
+    protected function getStatus($depends) : bool
+    {
+        $status = true;
+
+        // Iterate
+        foreach ($depends as $opt => $attemptedvalue) {
+            $optvalue = get_option($opt);
+            $status   = $optvalue != $attemptedvalue ? false : $status;
+        }
+
+        return $status;
     }
 
     /**
@@ -109,6 +156,9 @@ class AdminPageHook
             $fields = isset($this->options['sections'][$this->section]['fields'])
                 ? $this->options['sections'][$this->section]['fields']
                 : [];
+        } else {
+            // Update submit button
+            $this->options['submit'] = false;
         }
 
         /**
@@ -130,9 +180,6 @@ class AdminPageHook
      */
     protected function renderFields() : void
     {
-        // Save fields in DB
-        $this->saveFields();
-
         $parent = $this->adminpage->getModel()->getParent();
 
         // Get links
@@ -156,6 +203,11 @@ class AdminPageHook
         // Display sections
         if (!empty($this->options['sections'])) {
             foreach ($this->options['sections'] as $slug => $opts) {
+                // Check depends
+                if (isset($opts['depends']) && !empty($opts['depends']) && !$this->getStatus($opts['depends'])) {
+                    continue;
+                }
+
                 // Update option
                 $opts['slug'] = $slug;
                 $opts['u_link'] = admin_url($u_parent.'?'.$u_link.'&section='.$slug);
@@ -205,37 +257,5 @@ class AdminPageHook
         // Render view
         $render = new Render('core', 'layouts'.S.'adminpage.html.twig', $vars, $assets);
         $render->view();
-    }
-
-    /**
-     * Set section fields.
-     */
-    protected function saveFields() : void
-    {
-        if (empty($this->fields)) {
-            return;
-        }
-
-        $ids = [];
-
-        // Retrieve all fields ids
-        foreach ($this->fields as $field) {
-            if (!$field) {
-                continue;
-            }
-
-            $id = (string) $field->getModel()->getIdentifier();
-
-            if (empty($id)) {
-                continue;
-            }
-
-            //$field->updatePost();
-
-            $ids[] = $id;
-        }
-
-        $this->request = Request::save($ids);
-        $this->request = Request::upload($ids) ? true : $this->request;
     }
 }

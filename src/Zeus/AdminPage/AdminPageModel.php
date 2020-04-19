@@ -35,6 +35,11 @@ class AdminPageModel
     protected $parent = '';
 
     /**
+     * @var bool
+     */
+    protected $request = false;
+
+    /**
      * Gets the value of adminbar.
      *
      * @return bool
@@ -120,5 +125,25 @@ class AdminPageModel
     public function setParent($parent = '', $available = []) : void
     {
         $this->parent = !empty($parent) && array_key_exists($parent, $available) ? $parent : '';
+    }
+
+    /**
+     * Gets the value of request.
+     *
+     * @return bool
+     */
+    public function getRequest() : bool
+    {
+        return $this->request;
+    }
+
+    /**
+     * Sets the value of request.
+     *
+     * @param  string  $request
+     */
+    public function setRequest($request) : void
+    {
+        $this->request = $request;
     }
 }

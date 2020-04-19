@@ -120,7 +120,7 @@ class Request
         // Works on $_POST
         $request = $_POST;
 
-        if (empty($request) || empty($ids) || !isset($request['updated']) || 'true' !== $request['updated']) {
+        if (empty($request) || empty($ids)) {
             return false;
         }
 
@@ -161,12 +161,11 @@ class Request
 
         // Iterate
         foreach ($files as $k => $v) {
-            // Don't do nothing if no file is defined
+            // Do nothing if no file is defined
             if (empty($v['tmp_name']) || !in_array($k, $ids)) {
                 continue;
             }
 
-            // Do the magic
             $file = wp_handle_upload($v, ['test_form' => false]);
 
             // Register settings
