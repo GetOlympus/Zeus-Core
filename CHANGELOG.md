@@ -1,3 +1,7 @@
+## 2.1.7 (April 19th, 2020)
+Save fields sooner to make adminpages depending on get_option values
+Add OneSignal plugin cleaner
+
 ## 2.1.6 (April 5th, 2020)
 Add new Dionysos field
 Fix AdminPage exception error
