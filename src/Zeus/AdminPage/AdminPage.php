@@ -8,6 +8,7 @@ use GetOlympus\Zeus\AdminPage\AdminPageInterface;
 use GetOlympus\Zeus\AdminPage\AdminPageModel;
 use GetOlympus\Zeus\Base\Base;
 use GetOlympus\Zeus\Utils\Helpers;
+use GetOlympus\Zeus\Utils\Request;
 use GetOlympus\Zeus\Utils\Translate;
 
 /**
@@ -74,6 +75,9 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Add pages and more
         $this->setVars();
+
+        // Save fields in DB
+        $this->saveFields();
 
         // Initialize ajax calls and menus
         $this->initAjax();
@@ -245,6 +249,20 @@ abstract class AdminPage extends Base implements AdminPageInterface
     }
 
     /**
+     * Get function to call from parent
+     *
+     * @param  string  $parent
+     * @param  string  $function
+     *
+     * @return string
+     */
+    protected function functionFromParent($parent) : string
+    {
+        global $admin_page_hooks;
+        return isset($admin_page_hooks[$parent]) ? $this->available[$parent] : '';
+    }
+
+    /**
      * Initialize ajax calls hooks if needed.
      */
     protected function initAjax() : void
@@ -257,8 +275,23 @@ abstract class AdminPage extends Base implements AdminPageInterface
             return;
         }
 
+        $ids = [];
+
         // Iterate on pages
         foreach ($pages as $pageid => $options) {
+            // Check direct fields
+            if (isset($options['fields']) && !empty($options['fields'])) {
+                foreach ($options['fields'] as $field) {
+                    $id = $field->getIdentifier();
+
+                    if (empty($id)) {
+                        continue;
+                    }
+
+                    $ids[$id] = $field;
+                }
+            }
+
             // Check sections
             if (!isset($options['sections']) || empty($options['sections'])) {
                 continue;
@@ -273,23 +306,27 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
                 // Iterate on fields
                 foreach ($details['fields'] as $field) {
-                    // Check ajax callback method
-                    if (!method_exists($field, 'ajaxCallback')) {
-                        continue;
-                    }
-
                     $id = $field->getIdentifier();
 
-                    // Check identifier
                     if (empty($id)) {
                         continue;
                     }
 
-                    // Use ajax hooks
-                    add_action('wp_ajax_nopriv_'.$id, [$field, 'callback']);
-                    add_action('wp_ajax_'.$id, [$field, 'callback']);
+                    $ids[$id] = $field;
                 }
             }
+        }
+
+        // Works on IDs
+        foreach ($ids as $id => $field) {
+            // Check ajax callback method
+            if (!method_exists($field, 'ajaxCallback')) {
+                continue;
+            }
+
+            // Use ajax hooks
+            add_action('wp_ajax_nopriv_'.$id, [$field, 'callback']);
+            add_action('wp_ajax_'.$id, [$field, 'callback']);
         }
     }
 
@@ -317,6 +354,22 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Iterate on pages
         foreach ($pages as $pageid => $options) {
+            // Check depends
+            if (isset($options['depends']) && !empty($options['depends'])) {
+                $status = true;
+
+                // Iterate
+                foreach ($options['depends'] as $opt => $attemptedvalue) {
+                    $optvalue = get_option($opt);
+                    $status   = $optvalue != $attemptedvalue ? false : $status;
+                }
+
+                // Stops if needed
+                if (!$status) {
+                    continue;
+                }
+            }
+
             // Check type
             if ('root' === $options['_type']) {
                 // Add root page
@@ -379,17 +432,55 @@ abstract class AdminPage extends Base implements AdminPageInterface
     }
 
     /**
-     * Get function to call from parent
-     *
-     * @param  string  $parent
-     * @param  string  $function
-     *
-     * @return string
+     * Set section fields.
      */
-    protected function functionFromParent($parent) : string
+    protected function saveFields() : void
     {
-        global $admin_page_hooks;
-        return isset($admin_page_hooks[$parent]) ? $this->available[$parent] : '';
+        // Get pages
+        $pages = $this->getModel()->getPages();
+
+        // Check pages
+        if (empty($pages)) {
+            return;
+        }
+
+        $ids = [];
+
+        // Iterate on pages
+        foreach ($pages as $pageid => $options) {
+            // Check direct fields
+            if (isset($options['fields']) && !empty($options['fields'])) {
+                foreach ($options['fields'] as $field) {
+                    if (!empty($field->getIdentifier())) {
+                        $ids[] = $field->getIdentifier();
+                    }
+                }
+            }
+
+            // Check sections
+            if (!isset($options['sections']) || empty($options['sections'])) {
+                continue;
+            }
+
+            // Iterate on sections
+            foreach ($options['sections'] as $sectionid => $details) {
+                // Check fields
+                if (!isset($details['fields']) || empty($details['fields'])) {
+                    continue;
+                }
+
+                // Iterate on fields
+                foreach ($details['fields'] as $field) {
+                    if (!empty($field->getIdentifier())) {
+                        $ids[] = $field->getIdentifier();
+                    }
+                }
+            }
+        }
+
+        $request = Request::save($ids);
+        $request = Request::upload($ids) ? true : $request;
+        $this->getModel()->setRequest($request);
     }
 
     /**
