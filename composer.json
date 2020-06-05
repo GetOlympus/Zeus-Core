@@ -44,7 +44,7 @@
     "symfony/http-foundation": "^5.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.3",
+    "phpunit/phpunit": "^9.2",
     "squizlabs/php_codesniffer": "^3.4"
   },
   "scripts": {
