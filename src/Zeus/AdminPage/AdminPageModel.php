@@ -40,6 +40,11 @@ class AdminPageModel
     protected $request = false;
 
     /**
+     * @var array
+     */
+    protected $values = [];
+
+    /**
      * Gets the value of adminbar.
      *
      * @return bool
@@ -145,5 +150,42 @@ class AdminPageModel
     public function setRequest($request) : void
     {
         $this->request = $request;
+    }
+
+    /**
+     * Gets the value of values.
+     *
+     * @param  string  $item
+     *
+     * @return array
+     */
+    public function getValues($item = '') : array
+    {
+        if (!empty($item)) {
+            return isset($this->values[$item]) ? $this->values[$item] : [];
+        }
+
+        return $this->values;
+    }
+
+    /**
+     * Sets the value of values.
+     *
+     * @param  array   $values
+     */
+    public function setValues($values) : void
+    {
+        $this->values = $values;
+    }
+
+    /**
+     * Update the value of a single item of values.
+     *
+     * @param  string  $item
+     * @param  array   $value
+     */
+    public function updateValues($item, $value) : void
+    {
+        $this->values[$item] = $value;
     }
 }
