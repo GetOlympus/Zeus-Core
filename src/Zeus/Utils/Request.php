@@ -111,11 +111,12 @@ class Request
     /**
      * Save request.
      *
+     * @param  string  $identifier
      * @param  array   $ids
      *
      * @return bool
      */
-    public static function save($ids) : bool
+    public static function save($identifier, $ids) : bool
     {
         // Works on $_POST
         $request = $_POST;
@@ -123,6 +124,8 @@ class Request
         if (empty($request) || empty($ids)) {
             return false;
         }
+
+        $values = Option::getAdminOption($identifier);
 
         // Iterate
         foreach ($request as $k => $v) {
@@ -132,8 +135,11 @@ class Request
             }
 
             // Register settings
-            Option::set($k, $v);
+            $values[$k] = $v;
         }
+
+
+        Option::set($identifier, $values);
 
         return true;
     }
@@ -141,11 +147,12 @@ class Request
     /**
      * Save request.
      *
+     * @param  string  $identifier
      * @param  array   $ids
      *
      * @return bool
      */
-    public static function upload($ids) : bool
+    public static function upload($identifier, $ids) : bool
     {
         // Work on $_FILES
         $files = $_FILES;
@@ -159,6 +166,8 @@ class Request
         require_once ABSPATH.'wp-admin'.S.'includes'.S.'file.php';
         require_once ABSPATH.'wp-admin'.S.'includes'.S.'media.php';
 
+        $values = Option::getAdminOption($identifier);
+
         // Iterate
         foreach ($files as $k => $v) {
             // Do nothing if no file is defined
@@ -169,8 +178,10 @@ class Request
             $file = wp_handle_upload($v, ['test_form' => false]);
 
             // Register settings
-            Option::set($k, $file['url']);
+            $values[$k] = $file['url'];
         }
+
+        Option::set($identifier, $values);
 
         return true;
     }
