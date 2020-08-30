@@ -8,6 +8,7 @@ use GetOlympus\Zeus\AdminPage\AdminPageInterface;
 use GetOlympus\Zeus\AdminPage\AdminPageModel;
 use GetOlympus\Zeus\Base\Base;
 use GetOlympus\Zeus\Utils\Helpers;
+use GetOlympus\Zeus\Utils\Option;
 use GetOlympus\Zeus\Utils\Request;
 use GetOlympus\Zeus\Utils\Translate;
 
@@ -79,6 +80,10 @@ abstract class AdminPage extends Base implements AdminPageInterface
         // Save fields in DB
         $this->saveFields();
 
+        // Get values
+        $values = Option::getAdminOption($this->getModel()->getIdentifier());
+        $this->getModel()->setValues($values);
+
         // Initialize ajax calls and menus
         $this->initAjax();
         $this->initMenu();
@@ -146,7 +151,7 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Root case
         if ($is_root && empty($parent)) {
-            $func = 'addPageRoot';
+            $func   = 'addPageRoot';
             $pageid = $identifier;
         }
 
@@ -165,11 +170,11 @@ abstract class AdminPage extends Base implements AdminPageInterface
     {
         // Merge options with defaults
         $options = array_merge([
-            'title'         => Translate::t('adminpage.labels.child_title'),
-            'name'          => Translate::t('adminpage.labels.child_name'),
-            'capabilities'  => 'edit_posts',
-            'description'   => '',
-            'submit'        => true,
+            'title'        => Translate::t('adminpage.labels.child_title'),
+            'name'         => Translate::t('adminpage.labels.child_name'),
+            'capabilities' => 'edit_posts',
+            'description'  => '',
+            'submit'       => true,
         ], $options);
 
         // Set special items
@@ -193,13 +198,13 @@ abstract class AdminPage extends Base implements AdminPageInterface
     {
         // Merge options with defaults
         $options = array_merge([
-            'title'         => Translate::t('adminpage.labels.root_title'),
-            'name'          => Translate::t('adminpage.labels.root_name'),
-            'capabilities'  => 'edit_posts',
-            'icon'          => 'dashicons-admin-generic',
-            'position'      => 80,
-            'description'   => '',
-            'submit'        => true,
+            'title'        => Translate::t('adminpage.labels.root_title'),
+            'name'         => Translate::t('adminpage.labels.root_name'),
+            'capabilities' => 'edit_posts',
+            'icon'         => 'dashicons-admin-generic',
+            'position'     => 80,
+            'description'  => '',
+            'submit'       => true,
         ], $options);
 
         // Set special items
@@ -237,10 +242,10 @@ abstract class AdminPage extends Base implements AdminPageInterface
 
         // Merge options with defaults
         $options = array_merge([
-            'title'         => Translate::t('adminpage.labels.section_title'),
-            'name'          => Translate::t('adminpage.labels.section_name'),
-            'description'   => '',
-            'submit'        => true,
+            'title'       => Translate::t('adminpage.labels.section_title'),
+            'name'        => Translate::t('adminpage.labels.section_name'),
+            'description' => '',
+            'submit'      => true,
         ], $options);
 
         // Add page section
@@ -352,22 +357,15 @@ abstract class AdminPage extends Base implements AdminPageInterface
             throw new AdminPageException(Translate::t('adminpage.errors.pages_are_empty'));
         }
 
+        $identifier = $this->getModel()->getIdentifier();
+        $values     = $this->getModel()->getValues();
+
         // Iterate on pages
         foreach ($pages as $pageid => $options) {
             // Check depends
-            if (isset($options['depends']) && !empty($options['depends'])) {
-                $status = true;
-
-                // Iterate
-                foreach ($options['depends'] as $opt => $attemptedvalue) {
-                    $optvalue = get_option($opt);
-                    $status   = $optvalue != $attemptedvalue ? false : $status;
-                }
-
-                // Stops if needed
-                if (!$status) {
-                    continue;
-                }
+            if (isset($options['depends']) && !empty($options['depends'])
+                && !Helpers::checkDependencies($options['depends'], $values)) {
+                continue;
             }
 
             // Check type
@@ -478,8 +476,10 @@ abstract class AdminPage extends Base implements AdminPageInterface
             }
         }
 
-        $request = Request::save($ids);
-        $request = Request::upload($ids) ? true : $request;
+        $identifier = $this->getModel()->getIdentifier();
+
+        $request = Request::save($identifier, $ids);
+        $request = Request::upload($identifier, $ids) ? true : $request;
         $this->getModel()->setRequest($request);
     }
 

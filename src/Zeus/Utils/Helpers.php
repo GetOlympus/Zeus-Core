@@ -36,6 +36,37 @@ class Helpers
     }
 
     /**
+     * Check dependency between an admin page or an admin page section and a field value.
+     *
+     * @param  array   $depends
+     * @param  array   $values
+     *
+     * @return bool
+     */
+    public static function checkDependencies($depends, $values) : bool
+    {
+        $status = false;
+
+        // Iterate
+        foreach ($depends as $option_name => $attempted_value) {
+            $option_value  = !empty($values) && isset($values[$option_name]) ? $values[$option_name] : null;
+
+            // Some checks
+            $array_check   = is_array($attempted_value) && in_array($option_value, $attempted_value);
+            $default_check = !is_array($attempted_value) && $option_value == $attempted_value;
+
+            if (!is_null($option_name) && ($array_check || $default_check)) {
+                $status = true;
+                continue;
+            }
+
+            $status = false;
+        }
+
+        return $status;
+    }
+
+    /**
      * Copy a file contents from this internal assets folder to the public dist Olympus assets folder.
      *
      * @param  string  $sourcePath

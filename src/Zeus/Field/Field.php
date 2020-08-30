@@ -256,6 +256,7 @@ abstract class Field extends Base implements FieldInterface
 
         // Retrieve vars - used by field core system
         $vars = $this->getVars($value, array_merge($defaults, [
+            'fielddebug' => OL_ZEUS_DEBUG,
             'identifier' => $identifier,
             'name'       => $identifier,
             'value'      => $value,
@@ -326,12 +327,20 @@ abstract class Field extends Base implements FieldInterface
      */
     public static function value($identifier, $object, $default, $type = 'default')
     {
-        $type = in_array($type, ['post', 'term', 'user', 'widget']) ? $type : 'default';
+        $type = in_array($type, ['adminpage', 'post', 'term', 'user', 'widget']) ? $type : 'default';
         $sep = '-';
 
         // Check id
         if (empty($identifier) || null === $identifier) {
             return null;
+        }
+
+        // ~
+
+        // Admin pages
+        if ('adminpage' === $type && !is_null($object)) {
+            $value = isset($object[$identifier]) ? $object[$identifier] : $default;
+            return Option::cleanValue($value);
         }
 
         // ~

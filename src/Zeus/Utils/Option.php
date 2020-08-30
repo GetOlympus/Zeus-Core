@@ -183,6 +183,65 @@ class Option
     }
 
     /**
+     * Get a value from admin page options
+     *
+     * @param  string  $admin_id
+     * @param  string  $option
+     * @param  string  $default
+     *
+     * @return mixed
+     */
+    public static function getAdminOption($admin_id, $option = '', $default = '')
+    {
+        $values = self::get($admin_id, []);
+        $value  = empty($option) ? $values : (isset($values[$option]) ? $values[$option] : $default);
+
+        /**
+         * Works on admin page's option value.
+         *
+         * @var    string  $option
+         * @param  mixed   $value
+         * @param  string  $admin_id
+         *
+         * @return mixed
+         */
+        return apply_filters('ol.zeus.option_get_admin_page_'.$option, $value);
+    }
+
+    /**
+     * Force update a value into user options
+     *
+     * @param  string  $admin_id
+     * @param  string  $option
+     * @param  mixed   $value
+     */
+    public static function updateAdminOption($admin_id, $option, $value) : void
+    {
+        /**
+         * Fires before updating admin page's option in database.
+         *
+         * @var    string  $option
+         * @param  mixed   $value
+         * @param  string  $admin_id
+         */
+        do_action('ol.zeus.option_update_admin_page_before_'.$option, $value, $admin_id);
+
+        $values = self::getAdminOption($admin_id, []);
+        $values[$option] = $value;
+
+        self::add($admin_id, $values, []);
+
+        /**
+         * Fires after updating admin page's option in database.
+         *
+         * @var    string  $option
+         * @param  mixed   $value
+         * @param  string  $admin_id
+         */
+        do_action('ol.zeus.option_update_admin_page_after_'.$option, $value, $admin_id);
+    }
+
+    /**
      * Get a value from user options
      *
      * @param  string  $user_id
@@ -210,7 +269,7 @@ class Option
      *
      * @param  string  $user_id
      * @param  string  $option
-     * @param  string  $value
+     * @param  mixed   $value
      */
     public static function updateAuthorMeta($user_id, $option, $value) : void
     {
@@ -218,7 +277,7 @@ class Option
          * Fires before updating user's meta option in database.
          *
          * @var    string  $option
-         * @param  string  $value
+         * @param  mixed   $value
          * @param  int     $user_id
          */
         do_action('ol.zeus.option_update_user_meta_before_'.$option, $value, $user_id);
@@ -229,7 +288,7 @@ class Option
          * Fires after updating user's meta option in database.
          *
          * @var    string  $option
-         * @param  string  $value
+         * @param  mixed   $value
          * @param  int     $user_id
          */
         do_action('ol.zeus.option_update_user_meta_after_'.$option, $value, $user_id);
@@ -264,7 +323,7 @@ class Option
      *
      * @param  string  $post_id
      * @param  string  $option
-     * @param  string  $value
+     * @param  mixed   $value
      */
     public static function updatePostMeta($post_id, $option, $value) : void
     {
@@ -272,7 +331,7 @@ class Option
          * Fires before updating post's meta option in database.
          *
          * @var    string  $option
-         * @param  string  $value
+         * @param  mixed   $value
          * @param  int     $post_id
          */
         do_action('ol.zeus.option_update_post_meta_before_'.$option, $value, $post_id);
@@ -283,7 +342,7 @@ class Option
          * Fires after updating post's meta option in database.
          *
          * @var    string  $option
-         * @param  string  $value
+         * @param  mixed   $value
          * @param  int     $post_id
          */
         do_action('ol.zeus.option_update_post_meta_after_'.$option, $value, $post_id);
@@ -324,7 +383,7 @@ class Option
      *
      * @param  string  $term_id
      * @param  string  $option
-     * @param  string  $value
+     * @param  mixed   $value
      */
     public static function updateTermMeta($term_id, $option, $value) : void
     {
@@ -332,7 +391,7 @@ class Option
          * Fires before updating term's meta option in database.
          *
          * @var    string  $option
-         * @param  string  $value
+         * @param  mixed   $value
          * @param  int     $term_id
          */
         do_action('ol.zeus.option_update_term_meta_before_'.$option, $value, $term_id);
@@ -343,7 +402,7 @@ class Option
          * Fires after updating term's meta option in database.
          *
          * @var    string  $option
-         * @param  string  $value
+         * @param  mixed   $value
          * @param  int     $term_id
          */
         do_action('ol.zeus.option_update_term_meta_after_'.$option, $value, $term_id);

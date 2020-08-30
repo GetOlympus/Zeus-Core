@@ -2,6 +2,7 @@
 
 namespace GetOlympus\Zeus\AdminPage;
 
+use GetOlympus\Zeus\Utils\Helpers;
 use GetOlympus\Zeus\Utils\Option;
 use GetOlympus\Zeus\Utils\Render;
 use GetOlympus\Zeus\Utils\Request;
@@ -75,11 +76,12 @@ class AdminPageHook
         }
 
         $section = Request::get('section');
+        $values  = $adminpage->getModel()->getValues();
 
         // Define a current section if needed
         if (isset($opts['sections'])) {
             reset($opts['sections']);
-            $section = $this->getCurrentSection($section, $opts);
+            $section = $this->getCurrentSection($section, $opts, $values);
         } else {
             $section = '';
         }
@@ -88,6 +90,7 @@ class AdminPageHook
         $this->options   = $opts;
         $this->page      = $page;
         $this->request   = $this->adminpage->getModel()->getRequest();
+        $this->values    = $values;
         $this->section   = $section;
 
         $this->init();
@@ -98,10 +101,11 @@ class AdminPageHook
      *
      * @param  string  $section
      * @param  array   $opts
+     * @param  array   $values
      *
      * @return string
      */
-    protected function getCurrentSection($section, $opts) : string
+    protected function getCurrentSection($section, $opts, $values) : string
     {
         // Get current
         $current = !empty($section) && isset($opts['sections'][$section]) ? $section : key($opts['sections']);
@@ -113,7 +117,7 @@ class AdminPageHook
 
         // Check depends
         if (isset($opts['sections'][$current]['depends']) && !empty($opts['sections'][$current]['depends'])) {
-            $status  = $this->getStatus($opts['sections'][$current]['depends']);
+            $status  = Helpers::checkDependencies($opts['sections'][$current]['depends'], $values);
             $current = !$status ? '' : $current;
         }
 
@@ -121,23 +125,27 @@ class AdminPageHook
     }
 
     /**
-     * Define status dependings on `depends` option.
+     * Get footer scripts.
      *
-     * @param  array   $depends
-     *
-     * @return bool
+     * @return string
      */
-    protected function getStatus($depends) : bool
+    protected function getFooterScripts() : string
     {
-        $status = true;
+        $footer = '';
 
-        // Iterate
-        foreach ($depends as $opt => $attemptedvalue) {
-            $optvalue = get_option($opt);
-            $status   = $optvalue != $attemptedvalue ? false : $status;
-        }
+        // ~
 
-        return $status;
+        // wpLink case
+
+        require_once ABSPATH.'wp-includes'.S.'class-wp-editor.php';
+
+        ob_start();
+        \_WP_Editors::wp_link_dialog();
+        $footer .= trim(ob_get_clean());
+
+        // ~
+
+        return $footer;
     }
 
     /**
@@ -191,6 +199,7 @@ class AdminPageHook
         $vars = [
             'title'         => $this->options['title'],
             'description'   => $this->options['description'],
+            'footer'        => $this->getFooterScripts(),
             'submit'        => $this->options['submit'],
             'request'       => $this->request ? Translate::t('adminpage.errors.successfully_updated') : false,
 
@@ -204,7 +213,8 @@ class AdminPageHook
         if (!empty($this->options['sections'])) {
             foreach ($this->options['sections'] as $slug => $opts) {
                 // Check depends
-                if (isset($opts['depends']) && !empty($opts['depends']) && !$this->getStatus($opts['depends'])) {
+                if (isset($opts['depends']) && !empty($opts['depends'])
+                    && !Helpers::checkDependencies($opts['depends'], $this->values)) {
                     continue;
                 }
 
@@ -250,7 +260,7 @@ class AdminPageHook
                 }
 
                 // Prepare fields to be displayed
-                $vars['fields'][] = $field->prepare('adminpage');
+                $vars['fields'][] = $field->prepare('adminpage', $this->values, 'adminpage');
             }
         }
 

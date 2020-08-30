@@ -1,12 +1,24 @@
-<tr id="{% block id %}{% endblock %}-field" class="olz-field {% block class %}{% endblock %}">
-    <th scope="row">
+<tr id="{% block id %}{% endblock %}-field" class="zeus-field {% block class %}{% endblock %}">
+    {% set colspan = identifier == false ? ' colspan="2"' : '' %}
+
+    <th scope="row"{{ colspan|raw }}>
+{% if identifier != false %}
         {% block header %}{% endblock %}
         {% block label %}{% endblock %}
         {% block overall %}{% endblock %}
+
+        {% if fielddebug == true %}
+            <p class="zeus-id">{{ identifier }}</p>
+        {% endif %}
     </th>
     <td>
+{% endif %}
         {% block field %}{% endblock %}
         {% block description %}{% endblock %}
+{% if identifier != false %}
         {% block footer %}{% endblock %}
     </td>
+{% else %}
+    </th>
+{% endif %}
 </tr>
