@@ -4,6 +4,10 @@
         {% block label %}{% endblock %}
         {% block overall %}{% endblock %}
         <p class="description">{% block description %}{% endblock %}</p>
+
+        {% if fielddebug == true %}
+            <p class="zeus-id">{{ identifier }}</p>
+        {% endif %}
     </div>
     <div class="zeus-mb-content">
         {% block field %}{% endblock %}

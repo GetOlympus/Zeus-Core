@@ -1,6 +1,10 @@
 <div class="wrap olz-wrap">
     <h1>{{ title|raw }}</h1>
 
+    {% if description is not empty %}
+        <p class="olz-description">{{ description|raw }}</p>
+    {% endif %}
+
     {% if sections %}
         <!-- Nav tabs block -->
         <h2 class="nav-tab-wrapper wp-clearfix">
@@ -13,10 +17,6 @@
 
     {% if request or error %}
         {% include '@core/components/notification.html.twig' with {'request': request, 'error': error} only %}
-    {% endif %}
-
-    {% if description %}
-        <p class="olz-description">{{ description|raw }}</p>
     {% endif %}
 
     <!-- Main block -->
@@ -41,3 +41,5 @@
         </form>
     {% endif %}
 </div>
+
+{{ footer|raw }}
