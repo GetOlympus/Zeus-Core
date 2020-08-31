@@ -83,7 +83,7 @@ class WidgetHook extends BaseWidget
      *
      * @return string
      */
-    public function cache_widget($args, $content)
+    public function cache_widget($args, $content) // phpcs:ignore
     {
         /**
          * Retrieve widget classname as cache key.
@@ -106,7 +106,7 @@ class WidgetHook extends BaseWidget
      *
      * @return void
      **/
-    public function flush_widget_cache()
+    public function flush_widget_cache() // phpcs:ignore
     {
         wp_cache_delete($this->id_base, 'widget');
     }
@@ -184,7 +184,7 @@ class WidgetHook extends BaseWidget
      *
      * @return bool
      */
-    public function get_cached_widget($args)
+    public function get_cached_widget($args) // phpcs:ignore
     {
         $cache = wp_cache_get($this->id_base, 'widget');
 
@@ -240,7 +240,7 @@ class WidgetHook extends BaseWidget
      * @param  array   $instance
      * @param  string  $title
      */
-    public function widget_start($args, $instance, $title)
+    public function widget_start($args, $instance, $title) // phpcs:ignore
     {
         echo $args['before_widget'];
 
@@ -256,7 +256,7 @@ class WidgetHook extends BaseWidget
      *
      * @return string
      */
-    public function widget_end($args)
+    public function widget_end($args) // phpcs:ignore
     {
         echo $args['after_widget'];
     }

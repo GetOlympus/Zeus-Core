@@ -14,7 +14,7 @@
 $action = 'lostpassword';
 
 // Include helpers
-include_once __DIR__.S.'_helpers.php';
+require_once __DIR__.S.'_helpers.php';
 
 /**
  * Fires before a specified login form action.
@@ -56,7 +56,7 @@ zeus_login_header(__('Lost Password'), '<p class="message">'.__('Please enter yo
 <form name="lostpasswordform" id="lostpasswordform" action="<?php echo $formaction ?>" method="post">
     <p>
         <label for="user_login">
-            <?php _e( 'Username or Email Address' ); ?><br />
+            <?php _e('Username or Email Address') ?><br />
             <input type="text" name="user_login" id="user_login" class="input" value="" size="20" autocapitalize="off" />
         </label>
     </p>
@@ -86,7 +86,9 @@ zeus_login_header(__('Lost Password'), '<p class="message">'.__('Please enter yo
 
         echo esc_html($login_link_separator);
 
-        /** This filter is documented in wp-includes/general-template.php */
+        /**
+         * This filter is documented in wp-includes/general-template.php
+         */
         echo apply_filters('register', $registration_url);
     }
     ?>

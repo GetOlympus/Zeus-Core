@@ -5,13 +5,10 @@
   <exclude-pattern>.git/*</exclude-pattern>
   <exclude-pattern>app/cache/*</exclude-pattern>
   <exclude-pattern>app/logs/*</exclude-pattern>
-  <exclude-pattern>src/Zeus/Control/Control.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/Control/ControlInterface.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/Resources/templates/customizer/*</exclude-pattern>
-  <exclude-pattern>src/Zeus/WalkerSingle/WalkerSingle.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/WalkerSingle/WalkerSingleInterface.php</exclude-pattern>
-  <exclude-pattern>src/Zeus/Widget/WidgetHook.php</exclude-pattern>
+  <exclude-pattern>node_modules/*</exclude-pattern>
   <exclude-pattern>vendor/*</exclude-pattern>
+
+  <autoload>vendor/autoload.php</autoload>
 
   <arg name="report-width" value="auto"/>
   <arg value="-colors"/>

@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!class_exists('WP_Customize_Control')) {
-    require_once ABSPATH.'wp-includes'.S.'class-wp-customize-control.php';
+    include_once ABSPATH.'wp-includes'.S.'class-wp-customize-control.php';
 }
 
 class BaseControl extends \WP_Customize_Control

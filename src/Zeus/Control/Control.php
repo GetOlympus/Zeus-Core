@@ -133,7 +133,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @throws ControlException
      */
-    public function render_content() : void
+    public function render_content() : void // phpcs:ignore
     {
         // Check type
         if (empty($this->type)) {
@@ -187,7 +187,7 @@ abstract class Control extends BaseControl implements ControlInterface
     /**
      * Refresh the parameters passed to the JavaScript via JSON.
      */
-    public function to_json() : void
+    public function to_json() : void // phpcs:ignore
     {
         parent::to_json();
 
@@ -230,7 +230,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return array
      */
-    public static function sanitize_array($input)
+    public static function sanitize_array($input) // phpcs:ignore
     {
         // Check value
         $input = self::sanitize_text($input);
@@ -246,7 +246,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return string
      */
-    public static function sanitize_color($input, $setting)
+    public static function sanitize_color($input, $setting) // phpcs:ignore
     {
         // Check input
         if (empty($input) || is_array($input)) {
@@ -279,7 +279,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return string
      */
-    public static function sanitize_datetime($input, $setting)
+    public static function sanitize_datetime($input, $setting) // phpcs:ignore
     {
         // Set date format
         $format = $setting->manager->get_control($setting->id)->include_time ? 'Y-m-d H:i:s' : 'Y-m-d';
@@ -297,7 +297,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return string
      */
-    public static function sanitize_googlefonts($input)
+    public static function sanitize_googlefonts($input) // phpcs:ignore
     {
         // Decode input
         $input = json_decode($input, true);
@@ -321,7 +321,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return int
      */
-    public static function sanitize_integer($input)
+    public static function sanitize_integer($input) // phpcs:ignore
     {
         // Check value
         return (int) $input;
@@ -335,7 +335,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return mixed
      */
-    public static function sanitize_radio($input, $setting)
+    public static function sanitize_radio($input, $setting) // phpcs:ignore
     {
         // Retrieve list choices
         $choices = $setting->manager->get_control($setting->id)->choices;
@@ -351,7 +351,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return string
      */
-    public static function sanitize_range($input, $setting)
+    public static function sanitize_range($input, $setting) // phpcs:ignore
     {
         // Set attributes
         $input_attrs = $setting->manager->get_control($setting->id)->input_attrs;
@@ -372,7 +372,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return string
      */
-    public static function sanitize_text($input)
+    public static function sanitize_text($input) // phpcs:ignore
     {
         // Check input
         $input = false !== strpos($input, ',') ? explode(',', $input) : $input;
@@ -396,7 +396,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return bool
      */
-    public static function sanitize_toggle($input)
+    public static function sanitize_toggle($input) // phpcs:ignore
     {
         // Check value
         return true === $input ? 1 : 0;
@@ -409,7 +409,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return string
      */
-    public static function sanitize_url($input)
+    public static function sanitize_url($input) // phpcs:ignore
     {
         // Check input
         $input = false !== strpos($input, ',') ? explode(',', $input) : $input;
@@ -435,7 +435,7 @@ abstract class Control extends BaseControl implements ControlInterface
      *
      * @return number
      */
-    public static function set_in_range($number, $min, $max)
+    public static function set_in_range($number, $min, $max) // phpcs:ignore
     {
         // Check right number
         return $input < $min ? $min : ($input > $max ? $max : $input);
