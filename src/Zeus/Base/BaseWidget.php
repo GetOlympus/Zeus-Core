@@ -19,7 +19,7 @@ if (!defined('ABSPATH')) {
 }
 
 if (!class_exists('WP_Widget')) {
-    require_once ABSPATH.'wp-includes'.S.'class-wp-widget.php';
+    include_once ABSPATH.'wp-includes'.S.'class-wp-widget.php';
 }
 
 class BaseWidget extends \WP_Widget

@@ -33,12 +33,12 @@ interface ControlInterface
      *
      * @throws ControlException
      */
-    public function render_content() : void;
+    public function render_content() : void; // phpcs:ignore
 
     /**
      * Refresh the parameters passed to the JavaScript via JSON.
      */
-    public function to_json() : void;
+    public function to_json() : void; // phpcs:ignore
 
     /**
      * Retrieve Control translations
@@ -56,7 +56,7 @@ interface ControlInterface
      *
      * @return array
      */
-    public static function sanitize_array($input);
+    public static function sanitize_array($input); // phpcs:ignore
 
     /**
      * Color sanitization
@@ -66,7 +66,7 @@ interface ControlInterface
      *
      * @return string
      */
-    public static function sanitize_color($input, $setting);
+    public static function sanitize_color($input, $setting); // phpcs:ignore
 
     /**
      * Date time sanitization
@@ -76,7 +76,7 @@ interface ControlInterface
      *
      * @return string
      */
-    public static function sanitize_datetime($input, $setting);
+    public static function sanitize_datetime($input, $setting); // phpcs:ignore
 
     /**
      * Google fonts sanitization
@@ -85,7 +85,7 @@ interface ControlInterface
      *
      * @return string
      */
-    public static function sanitize_googlefonts($input);
+    public static function sanitize_googlefonts($input); // phpcs:ignore
 
     /**
      * Integer sanitization
@@ -94,7 +94,7 @@ interface ControlInterface
      *
      * @return int
      */
-    public static function sanitize_integer($input);
+    public static function sanitize_integer($input); // phpcs:ignore
 
     /**
      * Radio sanitization
@@ -104,7 +104,7 @@ interface ControlInterface
      *
      * @return mixed
      */
-    public static function sanitize_radio($input, $setting);
+    public static function sanitize_radio($input, $setting); // phpcs:ignore
 
     /**
      * Range sanitization
@@ -114,7 +114,7 @@ interface ControlInterface
      *
      * @return string
      */
-    public static function sanitize_range($input, $setting);
+    public static function sanitize_range($input, $setting); // phpcs:ignore
 
     /**
      * Text sanitization
@@ -123,7 +123,7 @@ interface ControlInterface
      *
      * @return string
      */
-    public static function sanitize_text($input);
+    public static function sanitize_text($input); // phpcs:ignore
 
     /**
      * Toggle sanitization
@@ -132,7 +132,7 @@ interface ControlInterface
      *
      * @return bool
      */
-    public static function sanitize_toggle($input);
+    public static function sanitize_toggle($input); // phpcs:ignore
 
     /**
      * URL sanitization
@@ -141,7 +141,7 @@ interface ControlInterface
      *
      * @return string
      */
-    public static function sanitize_url($input);
+    public static function sanitize_url($input); // phpcs:ignore
 
     /**
      * Set number in specified range
@@ -152,5 +152,5 @@ interface ControlInterface
      *
      * @return number
      */
-    public static function set_in_range($number, $min, $max);
+    public static function set_in_range($number, $min, $max); // phpcs:ignore
 }

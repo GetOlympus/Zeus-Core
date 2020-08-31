@@ -15,7 +15,7 @@ use GetOlympus\Zeus\WalkerSingle\WalkerSingleInterface;
  */
 
 if (!class_exists('Walker')) {
-    require_once(ABSPATH.'wp-includes'.S.'class-wp-walker.php');
+    include_once ABSPATH.'wp-includes'.S.'class-wp-walker.php';
 }
 
 class WalkerSingle extends \Walker implements WalkerSingleInterface
@@ -40,7 +40,7 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
      * @param  int     $depth
      * @param  array   $args
      */
-    public function start_lvl(&$output, $depth = 0, $args = [])
+    public function start_lvl(&$output, $depth = 0, $args = []) // phpcs:ignore
     {
         $indent = str_repeat("\t", $depth);
         $output .= $indent.'<ul class="children">'."\n";
@@ -53,7 +53,7 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
      * @param  int     $depth
      * @param  array   $args
      */
-    public function end_lvl(&$output, $depth = 0, $args = [])
+    public function end_lvl(&$output, $depth = 0, $args = []) // phpcs:ignore
     {
         $indent = str_repeat("\t", $depth);
         $output .= $indent.'</ul>'."\n";
@@ -68,7 +68,7 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
      * @param  array   $args
      * @param  int     $id
      */
-    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0)
+    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0) // phpcs:ignore
     {
         $taxonomy = empty($args['taxonomy']) ? 'category' : $args['taxonomy'];
         $name = 'category' === $taxonomy ? 'post_category' : 'tax_input['.$taxonomy.']';
@@ -113,7 +113,7 @@ class WalkerSingle extends \Walker implements WalkerSingleInterface
      * @param  int     $depth
      * @param  array   $args
      */
-    public function end_el(&$output, $category, $depth = 0, $args = [])
+    public function end_el(&$output, $category, $depth = 0, $args = []) // phpcs:ignore
     {
         $output .= '</li>'."\n";
     }

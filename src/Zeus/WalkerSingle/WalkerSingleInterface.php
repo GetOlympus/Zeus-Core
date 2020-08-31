@@ -21,7 +21,7 @@ interface WalkerSingleInterface
      * @param  int     $depth
      * @param  array   $args
      */
-    public function start_lvl(&$output, $depth = 0, $args = []);
+    public function start_lvl(&$output, $depth = 0, $args = []); // phpcs:ignore
 
     /**
      * Ends the list of after the elements are added.
@@ -30,7 +30,7 @@ interface WalkerSingleInterface
      * @param  int     $depth
      * @param  array   $args
      */
-    public function end_lvl(&$output, $depth = 0, $args = []);
+    public function end_lvl(&$output, $depth = 0, $args = []); // phpcs:ignore
 
     /**
      * Start the element output.
@@ -41,7 +41,7 @@ interface WalkerSingleInterface
      * @param  array   $args
      * @param  int     $id
      */
-    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0);
+    public function start_el(&$output, $category, $depth = 0, $args = [], $id = 0); // phpcs:ignore
 
     /**
      * Ends the element output, if needed.
@@ -51,5 +51,5 @@ interface WalkerSingleInterface
      * @param  int     $depth
      * @param  array   $args
      */
-    public function end_el(&$output, $category, $depth = 0, $args = []);
+    public function end_el(&$output, $category, $depth = 0, $args = []); // phpcs:ignore
 }

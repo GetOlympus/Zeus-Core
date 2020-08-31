@@ -14,7 +14,7 @@
 $action = 'register';
 
 // Include helpers
-include_once __DIR__.S.'_helpers.php';
+require_once __DIR__.S.'_helpers.php';
 
 /**
  * Fires before a specified login form action.

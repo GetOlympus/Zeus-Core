@@ -162,9 +162,9 @@ class Request
         }
 
         // Get required files
-        require_once ABSPATH.'wp-admin'.S.'includes'.S.'image.php';
-        require_once ABSPATH.'wp-admin'.S.'includes'.S.'file.php';
-        require_once ABSPATH.'wp-admin'.S.'includes'.S.'media.php';
+        include_once ABSPATH.'wp-admin'.S.'includes'.S.'image.php';
+        include_once ABSPATH.'wp-admin'.S.'includes'.S.'file.php';
+        include_once ABSPATH.'wp-admin'.S.'includes'.S.'media.php';
 
         $values = Option::getAdminOption($identifier);
 

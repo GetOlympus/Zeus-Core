@@ -51,6 +51,7 @@ $errors = new WP_Error();
 
 /**
  * Output login page header.
+ *
  * @see https://developer.wordpress.org/reference/functions/login_header/
  *
  * @since 2.1.0
@@ -295,6 +296,7 @@ function zeus_login_header($title = 'Log In', $message = '', $wp_error = null)
 
 /**
  * Outputs the footer for the login page.
+ *
  * @see https://developer.wordpress.org/reference/functions/login_footer/
  *
  * @since 3.1.0
