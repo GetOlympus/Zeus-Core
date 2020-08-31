@@ -35,7 +35,7 @@
     "getolympus/olympus-dionysos-field-select": "^0.0.11",
     "getolympus/olympus-dionysos-field-text": "^0.0.21",
     "getolympus/olympus-dionysos-field-textarea": "^0.0.14",
-    "getolympus/olympus-dionysos-field-toggle": "^0.0.15",
+    "getolympus/olympus-dionysos-field-toggle": "^0.0.16",
     "getolympus/olympus-dionysos-field-upload": "^0.0.16",
     "getolympus/olympus-dionysos-field-wordpress": "^0.0.21",
     "getolympus/olympus-hera-renderer": "^0.0.5",
