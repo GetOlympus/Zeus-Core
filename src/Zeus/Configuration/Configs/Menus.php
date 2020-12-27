@@ -21,21 +21,13 @@ class Menus extends Configuration
      */
     public function init() : void
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
-            return;
-        }
-
-        // Iterate on configs
-        foreach ($configs as $key => $description) {
+        // Iterate on configurations
+        foreach ($this->configurations as $key => $description) {
             $this->addMenu($key, $description);
         }
     }

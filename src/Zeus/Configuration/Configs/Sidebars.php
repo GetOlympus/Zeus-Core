@@ -22,16 +22,13 @@ class Sidebars extends Configuration
      */
     public function init() : void
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
         // Add sidebars
-        $this->addSidebars($configs);
+        $this->addSidebars($this->configurations);
     }
 
     /**

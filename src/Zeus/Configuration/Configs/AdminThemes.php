@@ -26,21 +26,13 @@ class AdminThemes extends Configuration
             return;
         }
 
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
-            return;
-        }
-
-        // Iterate on configs
-        foreach ($configs as $key => $props) {
+        // Iterate on configurations
+        foreach ($this->configurations as $key => $props) {
             $props = !is_array($props) ? [$props] : $props;
 
             // Add admin theme

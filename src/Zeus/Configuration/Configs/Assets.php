@@ -26,18 +26,17 @@ class Assets extends Configuration
             return;
         }
 
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs) || in_array($GLOBALS['pagenow'], ['wp-login.php'])) {
+        // Check current page
+        if (in_array($GLOBALS['pagenow'], ['wp-login.php'])) {
             return;
         }
+
+        $configs = $this->configurations;
 
         // Enqueue scripts and styles
         add_action('wp_enqueue_scripts', function () use ($configs) {

@@ -26,21 +26,10 @@ class Shortcodes extends Configuration
      */
     public function init() : void
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
-
-        // Get configurations
-        $settings = include $this->filepath;
-
-        // Check
-        if (empty($settings)) {
-            return;
-        }
-
-        // Update
-        $this->configs = $settings;
 
         // Enable backend~frontend actions
         $append = OL_ZEUS_ISADMIN ? 'Backend' : 'Frontend';
@@ -76,8 +65,8 @@ class Shortcodes extends Configuration
         // Add a first separator
         array_push($buttons, '|');
 
-        // Iterate on configs
-        foreach ($this->configs as $key => $file) {
+        // Iterate on configurations
+        foreach ($this->configurations as $key => $file) {
             if (empty($file) && 'media' !== $key) {
                 continue;
             }
@@ -98,8 +87,8 @@ class Shortcodes extends Configuration
      */
     public function addPlugins($plugins) : array
     {
-        // Iterate on configs
-        foreach ($this->configs as $key => $file) {
+        // Iterate on configurations
+        foreach ($this->configurations as $key => $file) {
             if (empty($file)) {
                 continue;
             }
@@ -128,8 +117,8 @@ class Shortcodes extends Configuration
         remove_filter('the_excerpt', 'wptexturize');
         add_filter('the_excerpt', [$this, 'contentFormatter'], 99);
 
-        // Iterate on configs
-        foreach ($this->configs as $key => $file) {
+        // Iterate on configurations
+        foreach ($this->configurations as $key => $file) {
             // Avoid special cases
             if (false !== $file && empty($file)) {
                 continue;

@@ -23,21 +23,13 @@ class Sizes extends Configuration
      */
     public function init() : void
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
-            return;
-        }
-
-        // Iterate on configs
-        foreach ($configs as $key => $props) {
+        // Iteration on configurations
+        foreach ($this->configurations as $key => $props) {
             if (4 !== count($props)) {
                 continue;
             }
@@ -50,7 +42,7 @@ class Sizes extends Configuration
         }
 
         // Add image names to droplist
-        $this->addImagesDroplist($configs);
+        $this->addImagesDroplist($this->configurations);
     }
 
     /**
