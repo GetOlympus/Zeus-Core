@@ -1,0 +1,104 @@
+/*!
+ * 20.toggle
+ */
+
+.zeus-field-toggle {
+    .toggle {
+        display: inline-block;
+        line-height: 1;
+        margin-right: 16px;
+        position: relative;
+    }
+
+    input[type="checkbox"] {
+        border: none;
+        height: 100%;
+        left: 0;
+        margin: 0;
+        opacity: 0;
+        padding: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+        z-index: 1;
+    }
+
+    label { // track
+        background-color: #fff;
+        border: 2px solid #6c7781;
+        border-radius: 9px;
+        box-sizing: border-box;
+        content: "";
+        display: inline-block;
+        height: 18px;
+        vertical-align: top;
+        width: 36px;
+
+        -webkit-transition: 0.2s background ease;
+        -moz-transition: 0.2s background ease;
+        transition: 0.2s background ease;
+
+        &:after { // thumb
+            background-color: #6c7781;
+            border: 5px solid #6c7781;
+            border-radius: 50%;
+            box-sizing: border-box;
+            content: "";
+            display: block;
+            height: 10px;
+            left: 4px;
+            position: absolute;
+            top: 4px;
+            width: 10px;
+            z-index: 2;
+
+            -webkit-transition: 0.1s transform ease;
+            -moz-transition: 0.1s transform ease;
+            transition: 0.1s transform ease;
+        }
+    }
+
+    .off {
+        box-sizing: border-box;
+        color: #6c7781;
+        display: block;
+        fill: currentColor;
+        position: absolute;
+        right: 6px;
+        top: 6px;
+    }
+
+    .on {
+        border: 1px solid #000;
+        box-sizing: border-box;
+        display: none;
+        filter: invert(100%) contrast(500%);
+        left: 8px;
+        outline: 1px solid transparent;
+        outline-offset: -1px;
+        position: absolute;
+        top: 6px;
+    }
+
+    input[type="checkbox"]:checked {
+        & + label { // track
+            background-color: #11a0d2;
+            border: 2px solid #11a0d2;
+            border: 9px solid transparent;
+
+            &:after { // thumb
+                background-color: #fff;
+                border-width: 0;
+                transform: translateX(18px);
+            }
+
+            .off {
+                display: none;
+            }
+
+            .on {
+                display: block;
+            }
+        }
+    }
+}
