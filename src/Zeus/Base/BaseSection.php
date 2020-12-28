@@ -5,7 +5,7 @@ namespace GetOlympus\Zeus\Base;
 use GetOlympus\Zeus\Base\BaseTrait;
 
 /**
- * Base Control controller
+ * Base Section controller
  *
  * @package    OlympusZeusCore
  * @subpackage Base
@@ -18,11 +18,11 @@ if (!defined('ABSPATH')) {
     die('You are not authorized to directly access to this page');
 }
 
-if (!class_exists('WP_Customize_Control')) {
-    include_once ABSPATH.'wp-includes'.S.'class-wp-customize-control.php';
+if (!class_exists('WP_Customize_Section')) {
+    include_once ABSPATH.'wp-includes'.S.'class-wp-customize-section.php';
 }
 
-class BaseControl extends \WP_Customize_Control
+class BaseSection extends \WP_Customize_Section
 {
     use BaseTrait;
 

@@ -1,23 +1,23 @@
 <?php
 
-namespace GetOlympus\Zeus\Control;
+namespace GetOlympus\Zeus\Section;
 
-use GetOlympus\Zeus\Base\BaseControl;
-use GetOlympus\Zeus\Control\ControlException;
+use GetOlympus\Zeus\Base\BaseSection;
+use GetOlympus\Zeus\Section\SectionException;
 use GetOlympus\Zeus\Utils\Helpers;
 
 /**
- * Abstract class to define all Control context with authorized controls, how to
+ * Abstract class to define all Section context with authorized sections, how to
  * write some functions and every usefull checks.
  *
  * @package    OlympusZeusCore
- * @subpackage Control
+ * @subpackage Section
  * @author     Achraf Chouk <achrafchouk@gmail.com>
- * @since      2.0.2
+ * @since      2.1.8
  *
  */
 
-abstract class Control extends BaseControl
+abstract class Section extends BaseSection
 {
     /**
      * @var array
@@ -32,12 +32,12 @@ abstract class Control extends BaseControl
     /**
      * @var string
      */
-    protected $textdomain = 'zeuscontrol';
+    protected $textdomain = 'zeussection';
 
     /**
      * @var string
      */
-    public $type = 'zeus-control';
+    public $type = 'zeus-section';
 
     /**
      * Enqueue scripts and styles.
@@ -46,12 +46,21 @@ abstract class Control extends BaseControl
     {
         // Get instance
         try {
-            $control = self::getInstance();
+            $section = self::getInstance();
         } catch (Exception $e) {
-            throw new ControlException(Translate::t('control.errors.class_is_not_defined'));
+            throw new SectionException(Translate::t('section.errors.class_is_not_defined'));
         }
 
+        $script = <<<EOT
+<script type="text/javascript">(function($,api){
+    api.sectionConstructor['$section->type']=api.Section.extend({
+        attachEvents:function(){},isContextuallyActive:function(){return true;}
+    });
+})(jQuery,wp.customize);</script>
+EOT;
+
         $defaults = [
+            'dependency' => 'customize-controls',
             'src'        => '',
             'deps'       => [],
             'ver'        => false,
@@ -61,11 +70,24 @@ abstract class Control extends BaseControl
 
         foreach (['js' => static::$scripts, 'css' => static::$styles] as $type => $files) {
             if (empty($files)) {
+                if ('js' === $type) {
+                    add_action('admin_print_footer_scripts', function () use ($script) {
+                        echo $script;
+                    });
+                }
+
                 continue;
             }
 
+            $num = 0;
+
             foreach ($files as $key => $opts) {
                 $opts = array_merge($defaults, $opts);
+
+                if ('js' === $type && !$num) {
+                    array_unshift($opts['deps'], $defaults['dependency']);
+                    $num++;
+                }
 
                 $func = 'js' === $type ? 'wp_enqueue_script' : 'wp_enqueue_style';
                 $src  = self::copyFile($opts['src'], $type);
@@ -99,9 +121,9 @@ abstract class Control extends BaseControl
     }
 
     /**
-     * Retrieve Control translations
+     * Retrieve Section translations
      *
-     * @throws ControlException
+     * @throws SectionException
      *
      * @return array
      */
@@ -109,16 +131,16 @@ abstract class Control extends BaseControl
     {
         // Get instance
         try {
-            $control = self::getInstance();
+            $section = self::getInstance();
         } catch (Exception $e) {
-            throw new ControlException(Translate::t('control.errors.class_is_not_defined'));
+            throw new SectionException(Translate::t('section.errors.class_is_not_defined'));
         }
 
         // Set translations
-        $class = $control->getClass();
+        $class = $section->getClass();
 
         return [
-            $control->textdomain => dirname(dirname($class['resources'])).S.'languages'
+            $section->textdomain => dirname(dirname($class['resources'])).S.'languages'
         ];
     }
 }

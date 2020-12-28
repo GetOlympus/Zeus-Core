@@ -15,9 +15,9 @@ namespace GetOlympus\Zeus\Configuration;
 interface ConfigurationInterface
 {
     /**
-     * Add resource path.
+     * Add configurations from path or array.
      *
-     * @param  string  $filepath
+     * @param  mixed   $object
      */
-    public function setPath($filepath) : void;
+    public function setConfigurations($object) : void;
 }

@@ -19,11 +19,22 @@ interface CustomizerInterface
      *
      * @param  string  $identifier
      * @param  array   $options
-     * @param  array   $settings
+     * @param  string  $classname
      *
      * @throws CustomizerException
      */
-    public function addControl($identifier, $options, $settings = []) : void;
+    public function addControl($identifier, $options, $classname = '') : void;
+
+    /**
+     * Register a new custom control/section type.
+     *
+     * @param  string  $name
+     * @param  string  $type
+     * @param  string  $path
+     *
+     * @throws CustomizerException
+     */
+    public function addCustomType($name, $type = 'control', $path = '') : void;
 
     /**
      * Adds a new value of panel.
@@ -41,8 +52,19 @@ interface CustomizerInterface
      *
      * @param  string  $identifier
      * @param  array   $options
+     * @param  string  $classname
      *
      * @throws CustomizerException
      */
-    public function addSection($identifier, $options) : void;
+    public function addSection($identifier, $options, $classname = '') : void;
+
+    /**
+     * Adds a new value of setting.
+     *
+     * @param  string  $identifier
+     * @param  array   $options
+     *
+     * @throws CustomizerException
+     */
+    public function addSetting($identifier, $options) : void;
 }

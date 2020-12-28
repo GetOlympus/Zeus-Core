@@ -1,3 +1,9 @@
+## 2.2.0 (December 28th, 2020)
+Merry Christmas and Happy new year :)
+New Customizer, Control and Section integration
+Zeus more faster
+Fix bugs on Zeus loader
+
 ## 2.1.7 (April 19th, 2020)
 Save fields sooner to make adminpages depending on get_option values
 Add OneSignal plugin cleaner

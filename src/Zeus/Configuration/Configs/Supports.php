@@ -21,21 +21,13 @@ class Supports extends Configuration
      */
     public function init() : void
     {
-        // Check filepath
-        if (empty($this->filepath)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return;
         }
 
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
-            return;
-        }
-
-        // Iterate on configs
-        foreach ($configs as $key => $props) {
+        // Iterate on configurations
+        foreach ($this->configurations as $key => $props) {
             $props = !is_array($props) && !is_bool($props) ? [$props] : $props;
 
             if ('post_type' === $key) {

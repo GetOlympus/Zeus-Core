@@ -104,6 +104,47 @@ class Helpers
     }
 
     /**
+     * Helper function to enqueue files after copying them into DIST target folder
+     *
+     * @param  array   $assets
+     * @param  string  $folder
+     * @param  array   $deps
+     */
+    public static function enqueueFiles($assets, $folder, $deps = []) : void
+    {
+        if (empty($assets)) {
+            return;
+        }
+
+        $target   = rtrim(OL_ZEUS_DISTPATH, S).S;
+        $uri      = OL_ZEUS_URI.$folder.S;
+        $defaults = [
+            'src'       => '',
+            'deps'      => $deps,
+            'ver'       => false,
+            'in_footer' => true,
+            'media'     => 'all',
+        ];
+
+        foreach ($assets as $key => $opts) {
+            $opts = array_merge($defaults, $opts);
+
+            // Move files into DIST
+            $source   = rtrim(dirname($opts['src']), S);
+            $basename = basename($opts['src']);
+
+            // Update file path on dist accessible folder
+            self::copyFile($source, $target.$folder, $basename);
+
+            if ('js' === $folder) {
+                wp_enqueue_script($key, $uri.$basename, $opts['deps'], $opts['ver'], $opts['in_footer']);
+            } else if ('css' === $folder) {
+                wp_enqueue_style($key, $uri.$basename, $opts['deps'], $opts['ver'], $opts['media']);
+            }
+        }
+    }
+
+    /**
      * Helper function to create a file in a target path with its contents.
      *
      * @param  string  $filepath

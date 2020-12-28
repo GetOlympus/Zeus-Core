@@ -18,9 +18,9 @@ use GetOlympus\Zeus\Utils\Helpers;
 abstract class Configuration implements ConfigurationInterface
 {
     /**
-     * @var string
+     * @var array
      */
-    protected $filepath = '';
+    protected $configurations = [];
 
     /**
      * Initialize filepath with configs.
@@ -32,23 +32,15 @@ abstract class Configuration implements ConfigurationInterface
      */
     protected function getFunctions($prepend, $available) : array
     {
-        // Check filepath
-        if (empty($this->filepath)) {
-            return [];
-        }
-
-        // Get configurations
-        $configs = include $this->filepath;
-
-        // Check
-        if (empty($configs)) {
+        // Check configurations
+        if (empty($this->configurations)) {
             return [];
         }
 
         $functions = [];
 
         // Iterate on configs
-        foreach ($configs as $key => $args) {
+        foreach ($this->configurations as $key => $args) {
             if (is_null($args) || !in_array($key, $available)) {
                 continue;
             }
@@ -60,18 +52,27 @@ abstract class Configuration implements ConfigurationInterface
     }
 
     /**
-     * Add resource path.
+     * Add configurations from path or array.
      *
-     * @param  string  $filepath
+     * @param  mixed   $object
      */
-    public function setPath($filepath) : void
+    public function setConfigurations($object) : void
     {
-        // Set file only if it exists
-        if (!file_exists($file = realpath($filepath))) {
+        // Set configurations only if object is an array or a filepath
+        if (!is_array($object) && !is_string($object)) {
             return;
         }
 
-        $this->filepath = $file;
+        // Set confgirations from file only if it exists
+        if (is_string($object)) {
+            $file = realpath($object);
+            $this->configurations = file_exists($file) ? include $file : [];
+
+            return;
+        }
+
+        // Array case
+        $this->configurations = is_array($object) ? $object : [];
     }
 
     /**

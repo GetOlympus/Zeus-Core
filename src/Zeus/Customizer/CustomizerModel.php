@@ -22,12 +22,22 @@ class CustomizerModel
     /**
      * @var array
      */
+    protected $customtypes = [];
+
+    /**
+     * @var array
+     */
     protected $panels = [];
 
     /**
      * @var array
      */
     protected $sections = [];
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
 
     /**
      * Gets the value of controls.
@@ -54,6 +64,33 @@ class CustomizerModel
     public function setControls($identifier, $options) : void
     {
         $this->controls[$identifier] = $options;
+    }
+
+    /**
+     * Gets the value of custom types.
+     *
+     * @param  string  $identifier
+     *
+     * @return array
+     */
+    public function getCustomTypes($name = '') : array
+    {
+        if (!empty($name)) {
+            return isset($this->customtypes[$name]) ? (array) $this->customtypes[$name] : [];
+        }
+
+        return $this->customtypes;
+    }
+
+    /**
+     * Sets the value of custom types.
+     *
+     * @param  string  $name
+     * @param  array   $config
+     */
+    public function setCustomTypes($name, $config) : void
+    {
+        $this->customtypes[$name] = $config;
     }
 
     /**
@@ -108,5 +145,32 @@ class CustomizerModel
     public function setSections($identifier, $options) : void
     {
         $this->sections[$identifier] = $options;
+    }
+
+    /**
+     * Gets the value of settings.
+     *
+     * @param  string  $identifier
+     *
+     * @return array
+     */
+    public function getSettings($identifier = '') : array
+    {
+        if (!empty($identifier)) {
+            return isset($this->settings[$identifier]) ? $this->settings[$identifier] : [];
+        }
+
+        return $this->settings;
+    }
+
+    /**
+     * Sets the value of settings.
+     *
+     * @param  string  $identifier
+     * @param  array   $options
+     */
+    public function setSettings($identifier, $options) : void
+    {
+        $this->settings[$identifier] = $options;
     }
 }
