@@ -17,6 +17,17 @@ use GetOlympus\Hermes\Hermes;
 class Translate extends Hermes
 {
     /**
+     * Load translations.
+     *
+     * @param  array   $translations
+     * @param  string  $locale
+     */
+    public static function l($translations = [], $locale = 'default') : void
+    {
+        parent::l($translations, $locale);
+    }
+
+    /**
      * Noop typo from WordPress.
      *
      * @param  string  $single
