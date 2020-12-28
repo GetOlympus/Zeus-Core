@@ -31,9 +31,7 @@ class Render extends Hera
     /**
      * @var array
      */
-    protected $styles = [
-        'zeus-css' => OL_ZEUS_ASSETSPATH.'css'.S.'zeus.css',
-    ];
+    protected $styles = [];
 
     /**
      * @var string
