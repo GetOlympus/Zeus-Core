@@ -1,4 +1,4 @@
-## 2.2.0 (December 28th, 2020)
+## 2.2.0 (December 29th, 2020)
 Merry Christmas and Happy new year :)
 New Customizer, Control and Section integration
 Zeus more faster
