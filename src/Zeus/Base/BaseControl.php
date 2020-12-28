@@ -10,7 +10,7 @@ use GetOlympus\Zeus\Base\BaseTrait;
  * @package    OlympusZeusCore
  * @subpackage Base
  * @author     Achraf Chouk <achrafchouk@gmail.com>
- * @since      2.0.2
+ * @since      2.1.8
  *
  */
 
