@@ -42,32 +42,14 @@ abstract class Zeus extends Application
     /**
      * @var array
      */
-    protected $defaultcontrols = [
-        // Dionysos field components
-        //'GetOlympus\\Dionysos\\Control\\ImageSelect',
-        //'GetOlympus\\Dionysos\\Control\\SimpleNotice',
-    ];
+    protected $adminscripts = [];
 
     /**
      * @var array
      */
-    protected $defaultfields = [
-        // Dionysos field components
-        'GetOlympus\\Dionysos\\Field\\Background',
-        'GetOlympus\\Dionysos\\Field\\Code',
-        'GetOlympus\\Dionysos\\Field\\Color',
-        'GetOlympus\\Dionysos\\Field\\Content',
-        'GetOlympus\\Dionysos\\Field\\Font',
-        'GetOlympus\\Dionysos\\Field\\Header',
-        'GetOlympus\\Dionysos\\Field\\Oembed',
-        'GetOlympus\\Dionysos\\Field\\Link',
-        'GetOlympus\\Dionysos\\Field\\Radio',
-        'GetOlympus\\Dionysos\\Field\\Select',
-        'GetOlympus\\Dionysos\\Field\\Text',
-        'GetOlympus\\Dionysos\\Field\\Textarea',
-        'GetOlympus\\Dionysos\\Field\\Title',
-        'GetOlympus\\Dionysos\\Field\\Toggle',
-        'GetOlympus\\Dionysos\\Field\\Upload',
-        'GetOlympus\\Dionysos\\Field\\Wordpress',
+    protected $adminstyles = [
+        'zeus-css' => [
+            'src' => OL_ZEUS_ASSETSPATH.'css'.S.'zeus.css',
+        ],
     ];
 }
