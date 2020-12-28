@@ -269,7 +269,6 @@ abstract class Customizer extends Base implements CustomizerInterface
         $options['_redirect'] = '';
 
         if (!empty($page_redirect)) {
-            /*$options['_redirect'] = array_key_exists($page_redirect, $this->default_templates) ? $this->default_templates[$page_redirect] : $page_redirect;*/
             $options['_redirect'] = $page_redirect;
         }
 
@@ -441,115 +440,131 @@ abstract class Customizer extends Base implements CustomizerInterface
             return $options;
         }
 
-        // WP_Customize_Background_Position_Control
-        if (in_array($options['type'], ['background_position', 'background-position'])) {
-            $options['_classname'] = 'WP_Customize_Background_Position_Control';
-        }
-        // WP_Customize_Code_Editor_Control
-        else if (in_array($options['type'], ['code_editor', 'code-editor', 'editor'])) {
-            $options['_classname'] = 'WP_Customize_Code_Editor_Control';
-        }
-        // WP_Customize_Color_Control
-        else if ('color' === $options['type']) {
-            $options['_classname'] = 'WP_Customize_Color_Control';
-        }
-        // WP_Customize_Cropped_Image_Control
-        else if (in_array($options['type'], ['cropped_image', 'cropped-image'])) {
-            $options['_classname'] = 'WP_Customize_Cropped_Image_Control';
+        switch ($options['type']) {
+            case 'background_position':
+            case 'background-position':
+                // WP_Customize_Background_Position_Control
+                $options['_classname'] = 'WP_Customize_Background_Position_Control';
+                break;
+            case 'code_editor':
+            case 'code-editor':
+            case 'editor':
+                // WP_Customize_Code_Editor_Control
+                $options['_classname'] = 'WP_Customize_Code_Editor_Control';
+                break;
+            case 'color':
+                // WP_Customize_Color_Control
+                $options['_classname'] = 'WP_Customize_Color_Control';
+                break;
+            case 'cropped_image':
+            case 'cropped-image':
+                // WP_Customize_Cropped_Image_Control
+                $options['_classname'] = 'WP_Customize_Cropped_Image_Control';
 
-            $options['flex_height'] = isset($options['flex_height']) ? $options['flex_height'] : false;
-            $options['flex_width']  = isset($options['flex_width']) ? $options['flex_width'] : false;
-            $options['height']      = isset($options['height']) ? $options['height'] : 150;
-            $options['width']       = isset($options['width']) ? $options['width'] : 150;
+                $options['flex_height'] = isset($options['flex_height']) ? $options['flex_height'] : false;
+                $options['flex_width']  = isset($options['flex_width']) ? $options['flex_width'] : false;
+                $options['height']      = isset($options['height']) ? $options['height'] : 150;
+                $options['width']       = isset($options['width']) ? $options['width'] : 150;
 
-            $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
-                'select'       => Translate::t('customizer.labels.control_image_select'),
-                'change'       => Translate::t('customizer.labels.control_image_change'),
-                'default'      => Translate::t('customizer.labels.control_image_default'),
-                'remove'       => Translate::t('customizer.labels.control_image_remove'),
-                'placeholder'  => Translate::t('customizer.labels.control_image_placeholder'),
-                'frame_title'  => Translate::t('customizer.labels.control_image_frame_title'),
-                'frame_button' => Translate::t('customizer.labels.control_image_frame_button'),
-            ];
-        }
-        // WP_Customize_Date_Time_Control
-        else if (in_array($options['type'], ['date_time', 'date-time'])) {
-            $options['_classname'] = 'WP_Customize_Date_Time_Control';
+                $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
+                    'select'       => Translate::t('customizer.labels.control_image_select'),
+                    'change'       => Translate::t('customizer.labels.control_image_change'),
+                    'default'      => Translate::t('customizer.labels.control_image_default'),
+                    'remove'       => Translate::t('customizer.labels.control_image_remove'),
+                    'placeholder'  => Translate::t('customizer.labels.control_image_placeholder'),
+                    'frame_title'  => Translate::t('customizer.labels.control_image_frame_title'),
+                    'frame_button' => Translate::t('customizer.labels.control_image_frame_button'),
+                ];
+                break;
+            case 'date_time':
+            case 'date-time':
+                // WP_Customize_Date_Time_Control
+                $options['_classname'] = 'WP_Customize_Date_Time_Control';
 
-            $options['allow_past_date'] = isset($options['allow_past_date']) ? $options['allow_past_date'] : true;
-            $options['include_time']    = isset($options['include_time']) ? $options['include_time'] : true;
-            $options['max_year']        = isset($options['max_year']) ? $options['max_year'] : '9999';
-            $options['min_year']        = isset($options['min_year']) ? $options['min_year'] : '1000';
-            $options['twelve_hour_format'] = isset($options['twelve_hour_format'])
-                ? $options['twelve_hour_format']
-                : false;
-        }
-        // WP_Customize_Image_Control
-        else if ('image' === $options['type']) {
-            $options['_classname'] = 'WP_Customize_Image_Control';
+                $options['allow_past_date'] = isset($options['allow_past_date']) ? $options['allow_past_date'] : true;
+                $options['include_time']    = isset($options['include_time']) ? $options['include_time'] : true;
+                $options['max_year']        = isset($options['max_year']) ? $options['max_year'] : '9999';
+                $options['min_year']        = isset($options['min_year']) ? $options['min_year'] : '1000';
+                $options['twelve_hour_format'] = isset($options['twelve_hour_format'])
+                    ? $options['twelve_hour_format']
+                    : false;
+                break;
+            case 'image':
+                // WP_Customize_Image_Control
+                $options['_classname'] = 'WP_Customize_Image_Control';
 
-            $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
-                'select'       => Translate::t('customizer.labels.control_image_select'),
-                'change'       => Translate::t('customizer.labels.control_image_change'),
-                'default'      => Translate::t('customizer.labels.control_image_default'),
-                'remove'       => Translate::t('customizer.labels.control_image_remove'),
-                'placeholder'  => Translate::t('customizer.labels.control_image_placeholder'),
-                'frame_title'  => Translate::t('customizer.labels.control_image_frame_title'),
-                'frame_button' => Translate::t('customizer.labels.control_image_frame_button'),
-            ];
-        }
-        // WP_Customize_Media_Control
-        else if ('media' === $options['type']) {
-            $options['_classname'] = 'WP_Customize_Media_Control';
+                $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
+                    'select'       => Translate::t('customizer.labels.control_image_select'),
+                    'change'       => Translate::t('customizer.labels.control_image_change'),
+                    'default'      => Translate::t('customizer.labels.control_image_default'),
+                    'remove'       => Translate::t('customizer.labels.control_image_remove'),
+                    'placeholder'  => Translate::t('customizer.labels.control_image_placeholder'),
+                    'frame_title'  => Translate::t('customizer.labels.control_image_frame_title'),
+                    'frame_button' => Translate::t('customizer.labels.control_image_frame_button'),
+                ];
+                break;
+            case 'media':
+                // WP_Customize_Media_Control
+                $options['_classname'] = 'WP_Customize_Media_Control';
 
-            $options['mime_type'] = isset($options['mime_type']) ? $options['mime_type'] : 'image';
-            $options['mime_type'] = !in_array($options['mime_type'], $this->mime_types) ? 'image' : $options['mime_type'];
+                $options['mime_type'] = isset($options['mime_type']) ? $options['mime_type'] : 'image';
+                $options['mime_type'] = !in_array($options['mime_type'], $this->mime_types)
+                    ? 'image'
+                    : $options['mime_type'];
 
-            $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
-                'select'       => Translate::t('customizer.labels.control_media_select'),
-                'change'       => Translate::t('customizer.labels.control_media_change'),
-                'default'      => Translate::t('customizer.labels.control_media_default'),
-                'remove'       => Translate::t('customizer.labels.control_media_remove'),
-                'placeholder'  => Translate::t('customizer.labels.control_media_placeholder'),
-                'frame_title'  => Translate::t('customizer.labels.control_media_frame_title'),
-                'frame_button' => Translate::t('customizer.labels.control_media_frame_button'),
-            ];
-        }
-        // WP_Customize_Nav_Menu_Auto_Add_Control
-        else if (in_array($options['type'], ['nav_menu_auto_add', 'nav-menu-auto-add'])) {
-            $options['_classname'] = 'WP_Customize_Nav_Menu_Auto_Add_Control';
-        }
-        // WP_Customize_Nav_Menu_Control
-        else if (in_array($options['type'], ['nav_menu', 'nav-menu'])) {
-            $options['_classname'] = 'WP_Customize_Nav_Menu_Control';
-        }
-        // WP_Customize_Nav_Menu_Item_Control
-        else if (in_array($options['type'], ['nav_menu_item', 'nav-menu-item'])) {
-            $options['_classname'] = 'WP_Customize_Nav_Menu_Item_Control';
-        }
-        // WP_Customize_Nav_Menu_Location_Control
-        else if (in_array($options['type'], ['nav_menu_location', 'nav-menu-location'])) {
-            $options['_classname'] = 'WP_Customize_Nav_Menu_Location_Control';
-        }
-        // WP_Customize_Nav_Menu_Locations_Control
-        else if (in_array($options['type'], ['nav_menu_locations', 'nav-menu-locations'])) {
-            $options['_classname'] = 'WP_Customize_Nav_Menu_Locations_Control';
-        }
-        // WP_Customize_Nav_Menu_Name_Control
-        else if (in_array($options['type'], ['nav_menu_name', 'nav-menu-name'])) {
-            $options['_classname'] = 'WP_Customize_Nav_Menu_Name_Control';
-        }
-        // WP_Customize_Theme_Control
-        else if ('theme' === $options['type']) {
-            $options['_classname'] = 'WP_Customize_Theme_Control';
-        }
-        // WP_Widget_Area_Customize_Control
-        else if (in_array($options['type'], ['sidebar_widgets', 'sidebar-widgets'])) {
-            $options['_classname'] = 'WP_Widget_Area_Customize_Control';
-        }
-        // WP_Widget_Form_Customize_Control
-        else if (in_array($options['type'], ['widget_form', 'widget-form'])) {
-            $options['_classname'] = 'WP_Widget_Form_Customize_Control';
+                $options['button_labels'] = isset($options['button_labels']) ? $options['button_labels'] : [
+                    'select'       => Translate::t('customizer.labels.control_media_select'),
+                    'change'       => Translate::t('customizer.labels.control_media_change'),
+                    'default'      => Translate::t('customizer.labels.control_media_default'),
+                    'remove'       => Translate::t('customizer.labels.control_media_remove'),
+                    'placeholder'  => Translate::t('customizer.labels.control_media_placeholder'),
+                    'frame_title'  => Translate::t('customizer.labels.control_media_frame_title'),
+                    'frame_button' => Translate::t('customizer.labels.control_media_frame_button'),
+                ];
+            case 'nav_menu_auto_add':
+            case 'nav-menu-auto-add':
+                // WP_Customize_Nav_Menu_Auto_Add_Control
+                $options['_classname'] = 'WP_Customize_Nav_Menu_Auto_Add_Control';
+                break;
+            case 'nav_menu':
+            case 'nav-menu':
+                // WP_Customize_Nav_Menu_Control
+                $options['_classname'] = 'WP_Customize_Nav_Menu_Control';
+                break;
+            case 'nav_menu_item':
+            case 'nav-menu-item':
+                // WP_Customize_Nav_Menu_Item_Control
+                $options['_classname'] = 'WP_Customize_Nav_Menu_Item_Control';
+                break;
+            case 'nav_menu_location':
+            case 'nav-menu-location':
+                // WP_Customize_Nav_Menu_Location_Control
+                $options['_classname'] = 'WP_Customize_Nav_Menu_Location_Control';
+                break;
+            case 'nav_menu_locations':
+            case 'nav-menu-locations':
+                // WP_Customize_Nav_Menu_Locations_Control
+                $options['_classname'] = 'WP_Customize_Nav_Menu_Locations_Control';
+                break;
+            case 'nav_menu_name':
+            case 'nav-menu-name':
+                // WP_Customize_Nav_Menu_Name_Control
+                $options['_classname'] = 'WP_Customize_Nav_Menu_Name_Control';
+                break;
+            case 'theme':
+                // WP_Customize_Theme_Control
+                $options['_classname'] = 'WP_Customize_Theme_Control';
+                break;
+            case 'sidebar_widgets':
+            case 'sidebar-widgets':
+                // WP_Widget_Area_Customize_Control
+                $options['_classname'] = 'WP_Widget_Area_Customize_Control';
+                break;
+            case 'widget_form':
+            case 'widget-form':
+                // WP_Widget_Form_Customize_Control
+                $options['_classname'] = 'WP_Widget_Form_Customize_Control';
+                break;
         }
 
         $this->addCustomType($options['_classname'], 'control', '');
