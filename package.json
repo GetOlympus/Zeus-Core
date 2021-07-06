@@ -27,7 +27,7 @@
     "grunt-contrib-less": "^2.0.0",
     "grunt-contrib-uglify": "^5.0.0",
     "grunt-potomo": "^3.5.0",
-    "load-grunt-config": "^3.0.1"
+    "load-grunt-config": "^4.0.0"
   },
   "dependencies": {
     "time-grunt": "^2.0.0"
