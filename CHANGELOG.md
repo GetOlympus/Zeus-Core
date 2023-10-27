@@ -1,3 +1,8 @@
+## 2.3.0 (January 21th, 2023)
+Almost three years later, this update allows you to use the Poseidon Customizer library through Zeus Core
+Fix bug with Fields translations
+Add a `default_term` argument to custom terms
+
 ## 2.2.0 (December 29th, 2020)
 Merry Christmas and Happy new year :)
 New Customizer, Control and Section integration

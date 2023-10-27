@@ -21,6 +21,7 @@ class Features extends Cleaner
      */
     protected $available = [
         'admin_bar'         => true, // Remove admin bar on frontend pages
+        'block_styles'      => true, // Remove WordPress Gutenberg block styles from frontend
         'body_class'        => true, // Remove unecessary details in `body_class()` method
         'capital_p_dangit'  => true, // Remove the filter that converts "Wordpress" to "WordPress"
         'comment_autolinks' => true, // Remove auto-converted URLs in comments to avoid spammers
@@ -34,6 +35,7 @@ class Features extends Cleaner
         'pdf_thumbnails'    => true, // Remove PDF thumbnails generator
         'self_pingback'     => true, // Remove self pingbacks
         'slow_heartbeat'    => true, // Changes Heartbeat post calls from 15 to 60 seconds for less CPU usage
+        'svg_filters'       => true, // Remove SVG filters
         'version'           => true, // Remove WP Version (?ver=) from scripts and styles
     ];
 
@@ -44,6 +46,23 @@ class Features extends Cleaner
     {
         add_filter('show_admin_bar', '__return_false');
         remove_action('init', 'wp_admin_bar_init');
+    }
+
+    /**
+     * Remove WordPress Gutenberg block styles from frontend
+     */
+    protected function featuresBlockStyles() : void
+    {
+        add_action('wp_enqueue_scripts', function () {
+            wp_dequeue_style('classic-theme-styles');
+            wp_dequeue_style('wp-block-library');
+            wp_dequeue_style('wp-block-library-theme');
+            wp_dequeue_style('global-styles');
+        });
+
+        add_action('wp_footer', function () {
+            wp_dequeue_style('core-block-supports');
+        });
     }
 
     /**
@@ -304,6 +323,14 @@ class Features extends Cleaner
             $settings['interval'] = 60;
             return $settings;
         });
+    }
+
+    /**
+     * Remove SVG filters
+     */
+    protected function featuresSvgFilters() : void
+    {
+        remove_action('wp_body_open', 'wp_global_styles_render_svg_filters');
     }
 
     /**

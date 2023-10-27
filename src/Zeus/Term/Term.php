@@ -190,6 +190,7 @@ abstract class Term extends Base implements TermInterface
     {
         return [
             'choice'                => 'multiple',
+            'default_term'          => [],
             'hierarchical'          => true,
             'query_var'             => true,
             'rewrite'               => [

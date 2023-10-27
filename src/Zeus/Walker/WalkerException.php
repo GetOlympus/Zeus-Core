@@ -1,20 +1,20 @@
 <?php
 
-namespace GetOlympus\Zeus\Control;
+namespace GetOlympus\Zeus\Walker;
 
 use GetOlympus\Zeus\Base\BaseException;
 
 /**
- * Control exception.
+ * Walker exception.
  *
  * @package    OlympusZeusCore
- * @subpackage Control
+ * @subpackage Walker
  * @author     Achraf Chouk <achrafchouk@gmail.com>
- * @since      2.0.2
+ * @since      2.1.0
  *
  */
 
-class ControlException extends BaseException
+class WalkerException extends BaseException
 {
     //
 }

@@ -78,12 +78,12 @@ class Headers extends Cleaner
 
     protected function headersIndexRelLink() : void
     {
-        $this->headersWpHead('index_rel_link');
+        remove_action('wp_head', 'index_rel_link');
     }
 
     protected function headersParentPostRelLink() : void
     {
-        $this->headersWpHead('parent_post_rel_link');
+        remove_action('wp_head', 'parent_post_rel_link', 10, 0);
     }
 
     /**
@@ -91,18 +91,17 @@ class Headers extends Cleaner
      */
     protected function headersRecentComments() : void
     {
-        // Simple add filter hook
         add_filter('show_recent_comments_widget_style', '__return_false');
     }
 
     protected function headersRestOutputLinkWpHead() : void
     {
-        $this->headersWpHead('rest_output_link_wp_head');
+        remove_action('wp_head', 'rest_output_link_wp_head');
     }
 
     protected function headersRsdLink() : void
     {
-        $this->headersWpHead('rsd_link');
+        remove_action('wp_head', 'rsd_link');
     }
 
     /**
@@ -116,12 +115,12 @@ class Headers extends Cleaner
 
     protected function headersStartPostRelLink() : void
     {
-        $this->headersWpHead('start_post_rel_link');
+        remove_action('wp_head', 'start_post_rel_link', 10, 0);
     }
 
     protected function headersWlwmanifestLink() : void
     {
-        $this->headersWpHead('wlwmanifest_link');
+        remove_action('wp_head', 'wlwmanifest_link');
     }
 
     /**
@@ -130,7 +129,6 @@ class Headers extends Cleaner
     protected function headersWpGenerator() : void
     {
         remove_action('wp_head', 'wp_generator');
-
         add_filter('the_generator', function ($src) {
             return '';
         });
@@ -138,27 +136,11 @@ class Headers extends Cleaner
 
     protected function headersWpDlmpL10nStyle() : void
     {
-        $this->headersWpHead('wp_dlmp_l10n_style');
-    }
-
-    /**
-     * Remove the next and previous post links from the header
-     *
-     * @param  string  $key
-     */
-    protected function headersWpHead($key) : void
-    {
-        if (in_array($key, ['parent_post_rel_link', 'start_post_rel_link'])) {
-            remove_action('wp_head', $key, 10, 0);
-        } else if ('wp_resource_hints' === $key) {
-            remove_action('wp_head', $key, 2);
-        } else {
-            remove_action('wp_head', $key);
-        }
+        remove_action('wp_head', 'wp_dlmp_l10n_style');
     }
 
     protected function headersWpResourceHints() : void
     {
-        $this->headersWpHead('wp_resource_hints');
+        remove_action('wp_head', 'wp_resource_hints', 2);
     }
 }

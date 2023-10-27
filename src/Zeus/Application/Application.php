@@ -33,7 +33,9 @@ abstract class Application implements ApplicationInterface
     /**
      * @var array
      */
-    protected $available_components = ['adminpages', 'crons', 'customizers', 'posttypes', 'terms', 'users', 'widgets'];
+    protected $available_components = [
+        'adminpages', 'crons', 'customizers', 'posttypes', 'terms', 'users', 'walkers', 'widgets'
+    ];
 
     /**
      * @var string
@@ -78,7 +80,17 @@ abstract class Application implements ApplicationInterface
     /**
      * @var array
      */
+    protected $panels = [];
+
+    /**
+     * @var array
+     */
     protected $sections = [];
+
+    /**
+     * @var array
+     */
+    protected $settings = [];
 
     /**
      * @var array
@@ -106,8 +118,10 @@ abstract class Application implements ApplicationInterface
 
         // Initialize defaults
         $this->defaults['controls'] = isset($this->defaults['controls']) ? $this->defaults['controls'] : [];
-        $this->defaults['fields']   = isset($this->defaults['fields']) ? $this->defaults['fields'] : [];
+        $this->defaults['fields']   = isset($this->defaults['fields'])   ? $this->defaults['fields']   : [];
+        $this->defaults['panels']   = isset($this->defaults['panels'])   ? $this->defaults['panels']   : [];
         $this->defaults['sections'] = isset($this->defaults['sections']) ? $this->defaults['sections'] : [];
+        $this->defaults['settings'] = isset($this->defaults['settings']) ? $this->defaults['settings'] : [];
 
         // Initialize ClassLoader
         $this->loader = new ClassLoader();
@@ -148,8 +162,14 @@ abstract class Application implements ApplicationInterface
         // Initialize fields
         $this->initFields();
 
+        // Initialize panels
+        $this->initPanels();
+
         // Initialize sections
         $this->initSections();
+
+        // Initialize settings
+        $this->initSettings();
 
         // Initialize translations
         $this->initTranslations();
@@ -222,6 +242,11 @@ abstract class Application implements ApplicationInterface
      */
     protected function initConfigurations() : void
     {
+        // Fix WordPress bug
+        if (!current_theme_supports('widgets') && is_customize_preview()) {
+            add_theme_support('widgets');
+        }
+
         // Check configurations
         if (empty($this->configurations)) {
             return;
@@ -253,7 +278,7 @@ abstract class Application implements ApplicationInterface
     protected function initControls() : void
     {
         // Initialize controls
-        $this->controls = $this->initVars($this->controls);
+        $this->controls = $this->initVars($this->controls, 'controls');
 
         // Check controls
         if (empty($this->controls)) {
@@ -276,16 +301,60 @@ abstract class Application implements ApplicationInterface
      */
     protected function initFields() : void
     {
-        // Initialize fields
-        $this->fields = $this->initVars($this->fields, 'fields');
-
         // Check fields
         if (empty($this->fields)) {
+            $this->fields = $this->initVars([], 'fields');
+            return;
+        }
+
+        $fields       = [];
+        $translations = [];
+
+        // Build fiels to initialize and to translate
+        foreach ($this->fields as $class => $file) {
+            if (is_int($class)) {
+                $translations[] = $file;
+                continue;
+            }
+
+            $fields[$class]  = $file;
+            $translations[] = $class;
+        }
+
+        // Initialize fields
+        $fields = $this->initVars($fields, 'fields');
+
+        // Check translations
+        if (empty($translations)) {
+            return;
+        }
+
+        // Translate fields
+        foreach ($translations as $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $t = $class::translate();
+            $this->translations = array_merge($this->translations, $t);
+        }
+    }
+
+    /**
+     * Initialize panels.
+     */
+    protected function initPanels() : void
+    {
+        // Initialize panels
+        $this->panels = $this->initVars($this->panels, 'panels');
+
+        // Check panels
+        if (empty($this->panels)) {
             return;
         }
 
         // Iterate
-        foreach ($this->fields as $class) {
+        foreach ($this->panels as $class) {
             if (!class_exists($class)) {
                 continue;
             }
@@ -320,15 +389,34 @@ abstract class Application implements ApplicationInterface
     }
 
     /**
+     * Initialize settings.
+     */
+    protected function initSettings() : void
+    {
+        // Initialize settings
+        $this->settings = $this->initVars($this->settings, 'settings');
+
+        // Check settings
+        if (empty($this->settings)) {
+            return;
+        }
+
+        // Iterate
+        foreach ($this->settings as $class) {
+            if (!class_exists($class)) {
+                continue;
+            }
+
+            $t = $class::translate();
+            $this->translations = array_merge($this->translations, $t);
+        }
+    }
+
+    /**
      * Initialize translations.
      */
     protected function initTranslations() : void
     {
-        // Add Zeus core translation
-        $this->translations = array_merge([
-            'olympus-zeus' => OL_ZEUS_PATH.'languages'
-        ], $this->translations);
-
         // Get all translations with default MO file
         Translate::l($this->translations, $this->locale);
     }
@@ -381,7 +469,9 @@ abstract class Application implements ApplicationInterface
 
             new $service([
                 'controls' => $this->controls,
+                'panels'   => $this->panels,
                 'sections' => $this->sections,
+                'settings' => $this->settings,
             ]);
         }
     }
@@ -408,6 +498,16 @@ abstract class Application implements ApplicationInterface
 
         // Work on file paths
         foreach ($paths as $action => $files) {
+            // Remove non-existent files
+            foreach ($files as $k => $file) {
+                if (!is_dir($file)) {
+                    unset($files[$k]);
+                }
+
+                continue;
+            }
+
+            // Check files
             if (empty($files)) {
                 continue;
             }

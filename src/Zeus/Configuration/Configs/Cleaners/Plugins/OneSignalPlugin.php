@@ -3,7 +3,7 @@
 namespace GetOlympus\Zeus\Configuration\Configs\Cleaners\Plugins;
 
 /**
- * Clean OneSignal Plugin helper
+ * Clean Onesignal Plugin helper
  *
  * @package    OlympusZeusCore
  * @subpackage Configuration\Configs\Cleaners\Plugins
@@ -13,7 +13,7 @@ namespace GetOlympus\Zeus\Configuration\Configs\Cleaners\Plugins;
  *
  */
 
-class OneSignalPlugin
+class OnesignalPlugin
 {
     /**
      * @var array

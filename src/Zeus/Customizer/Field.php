@@ -2,10 +2,10 @@
 
 namespace GetOlympus\Zeus\Customizer;
 
-use GetOlympus\Poseidon\Poseidon;
+use GetOlympus\Poseidon\Field\Field as PoseidonField;
 
 /**
- * Gets its own customizer.
+ * Gets its own field.
  *
  * @package    OlympusZeusCore
  * @subpackage Customizer
@@ -14,7 +14,7 @@ use GetOlympus\Poseidon\Poseidon;
  *
  */
 
-abstract class Customizer extends Poseidon
+abstract class Field extends PoseidonField
 {
     //
 }

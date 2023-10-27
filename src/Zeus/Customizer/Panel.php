@@ -2,10 +2,10 @@
 
 namespace GetOlympus\Zeus\Customizer;
 
-use GetOlympus\Poseidon\Poseidon;
+use GetOlympus\Poseidon\Panel\Panel as PoseidonPanel;
 
 /**
- * Gets its own customizer.
+ * Gets its own panel.
  *
  * @package    OlympusZeusCore
  * @subpackage Customizer
@@ -14,7 +14,7 @@ use GetOlympus\Poseidon\Poseidon;
  *
  */
 
-abstract class Customizer extends Poseidon
+abstract class Panel extends PoseidonPanel
 {
     //
 }
