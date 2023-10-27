@@ -1,5 +1,8 @@
-## 2.3.0 (January 21th, 2023)
-Almost three years later, this update allows you to use the Poseidon Customizer library through Zeus Core
+## 2.3.1 (October 27th, 2023)
+Typo
+
+## 2.3.0 (October 27th, 2023)
+This update allows you to use the Poseidon Customizer library through Zeus Core
 Fix bug with Fields translations
 Add a `default_term` argument to custom terms
 
