@@ -2,19 +2,19 @@
 
 namespace GetOlympus\Zeus\Customizer;
 
-use GetOlympus\Zeus\Base\BaseException;
+use GetOlympus\Poseidon\Control\Control as PoseidonControl;
 
 /**
- * Customizer exception.
+ * Gets its own control.
  *
  * @package    OlympusZeusCore
  * @subpackage Customizer
  * @author     Achraf Chouk <achrafchouk@gmail.com>
- * @since      2.0.1
+ * @since      2.2.1
  *
  */
 
-class CustomizerException extends BaseException
+abstract class Control extends PoseidonControl
 {
     //
 }

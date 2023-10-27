@@ -52,4 +52,33 @@ abstract class Zeus extends Application
             'src' => OL_ZEUS_ASSETSPATH.'css'.S.'zeus.css',
         ],
     ];
+
+    /**
+     * @var array
+     */
+    protected $translations = [
+        'olympus-zeus' => OL_ZEUS_PATH.'languages'
+    ];
+
+    /**
+     * @var array
+     */
+    protected $fields = [
+        'GetOlympus\Dionysos\Field\Background',
+        'GetOlympus\Dionysos\Field\Code',
+        'GetOlympus\Dionysos\Field\Color',
+        'GetOlympus\Dionysos\Field\Content',
+        'GetOlympus\Dionysos\Field\Font',
+        'GetOlympus\Dionysos\Field\Header',
+        'GetOlympus\Dionysos\Field\Link',
+        'GetOlympus\Dionysos\Field\Oembed',
+        'GetOlympus\Dionysos\Field\Radio',
+        'GetOlympus\Dionysos\Field\Select',
+        'GetOlympus\Dionysos\Field\Text',
+        'GetOlympus\Dionysos\Field\Textarea',
+        'GetOlympus\Dionysos\Field\Title',
+        'GetOlympus\Dionysos\Field\Toggle',
+        'GetOlympus\Dionysos\Field\Upload',
+        'GetOlympus\Dionysos\Field\Wordpress',
+    ];
 }
