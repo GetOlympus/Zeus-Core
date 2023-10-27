@@ -1,3 +1,6 @@
+## 2.3.2 (October 27th, 2023)
+Customize version dev
+
 ## 2.3.1 (October 27th, 2023)
 Typo
 
