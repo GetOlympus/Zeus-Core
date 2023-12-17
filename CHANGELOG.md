@@ -1,3 +1,6 @@
+## 2.3.3 (December 17th, 2023)
+Fix field identifier
+
 ## 2.3.2 (October 27th, 2023)
 Customize version dev
 
