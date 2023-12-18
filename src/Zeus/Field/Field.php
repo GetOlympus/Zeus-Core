@@ -257,7 +257,9 @@ abstract class Field extends Base implements FieldInterface
         // Retrieve vars - used by field core system
         $vars = $this->getVars($value, array_merge($defaults, [
             'fielddebug' => OL_ZEUS_DEBUG,
-            'identifier' => $identifier.'-'.bin2hex(random_bytes(10)),
+            'identifier' => 'widget' === $template && !empty($identifier)
+                ? $identifier.'-'.bin2hex(random_bytes(10))
+                : $identifier,
             'name'       => $identifier,
             'value'      => $value,
         ], $options));
