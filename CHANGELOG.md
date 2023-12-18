@@ -1,3 +1,6 @@
+## 2.3.4 (December 18th, 2023)
+Fix field identifier for widget integration only
+
 ## 2.3.3 (December 17th, 2023)
 Fix field identifier
 
