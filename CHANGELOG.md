@@ -1,3 +1,7 @@
+## 2.3.5 (December 31th, 2023)
+HAPPY NEW YEAR
+Fix Walker with children
+
 ## 2.3.4 (December 18th, 2023)
 Fix field identifier for widget integration only
 
