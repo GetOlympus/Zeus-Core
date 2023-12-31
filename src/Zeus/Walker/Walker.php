@@ -84,6 +84,8 @@ abstract class Walker extends BaseWalker implements WalkerInterface
      */
     public function start_el(&$output, $item, $depth = 0, $args = [], $id = 0)
     {
+        $rand = bin2hex(random_bytes(10));
+
         $indent = ($depth) ? str_repeat("\t", $depth) : '';
         $output .= $indent;
 
@@ -96,6 +98,7 @@ abstract class Walker extends BaseWalker implements WalkerInterface
         }
 
         $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
+        $class_names = $args->has_children ? $class_names.' opener' : $class_names;
         $class_names = $class_names ? ' class="' . esc_attr($class_names) . '"' : '';
 
         // Build attributes
@@ -105,6 +108,7 @@ abstract class Walker extends BaseWalker implements WalkerInterface
             'title'     => !empty($item->attr_title) ? $item->attr_title : '',
             'target'    => !empty($item->target) ? $item->target : '',
             'rel'       => !empty($item->xfn) ? $item->xfn : '',
+            'data-sub'  => $args->has_children ? $rand : '',
         ];
 
         // Iterate on all
@@ -133,12 +137,12 @@ abstract class Walker extends BaseWalker implements WalkerInterface
         $item_output .= '</a>';
         $item_output .= $args->after;
 
-        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
-
         // Build children
         if ($args->has_children) {
-            $output .= '<nav class="m-submenu">';
+            $output .= '<nav id="'.$rand.'" class="m-submenu">';
         }
+
+        $output = apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
 
         // Customize output
         $output = $this->startElement($output, $item, $depth, $args, $id);
@@ -165,6 +169,8 @@ abstract class Walker extends BaseWalker implements WalkerInterface
 
         $output .= "\n";
 
+        $output = apply_filters('walker_nav_menu_end_el', $output, $item, $depth, $args);
+
         // Customize output
         $output = $this->endElement($output, $item, $depth, $args);
     }
@@ -182,7 +188,7 @@ abstract class Walker extends BaseWalker implements WalkerInterface
     /**
      * Start element.
      */
-    abstract protected function startElement($output, $depth = 0, $args = []);
+    abstract protected function startElement($output, $item, $depth = 0, $args = [], $id = 0);
 
     /**
      * Display element.
@@ -192,5 +198,5 @@ abstract class Walker extends BaseWalker implements WalkerInterface
     /**
      * End element.
      */
-    abstract protected function endElement($output, $depth = 0, $args = []);
+    abstract protected function endElement($output, $item, $depth = 0, $args = []);
 }
