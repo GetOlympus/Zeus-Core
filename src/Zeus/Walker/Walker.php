@@ -24,7 +24,7 @@ abstract class Walker extends BaseWalker implements WalkerInterface
      * @param int $depth
      * @param array $args
      */
-    public function start_lvl(&$output, $depth = 0, $args = [])
+    public function start_lvl(&$output, $depth = 0, $args = null)
     {
         $indent = ($depth) ? str_repeat("\t", $depth) : '';
         $output .= $indent."\n";
@@ -40,9 +40,9 @@ abstract class Walker extends BaseWalker implements WalkerInterface
      * @param int $depth
      * @param array $args
      */
-    public function end_lvl(&$output, $depth = 0, $args = [])
+    public function end_lvl(&$output, $depth = 0, $args = null)
     {
-        $indent = ($depth) ? str_repeat("\t", $depth) : '';
+        $indent  = ($depth) ? str_repeat("\t", $depth) : '';
         $output .= $indent."\n";
 
         // Customize output
@@ -63,9 +63,8 @@ abstract class Walker extends BaseWalker implements WalkerInterface
     {
         $id_field = $this->db_fields['id'];
 
-        if (is_object($args[0])) {
-            $args[0]->has_children = !empty($children_elements[$element->$id_field]);
-        }
+        // Add new object attribute if needed
+        $args[0]->has_children = is_object($args[0]) ? !empty($children_elements[$element->$id_field]) : false;
 
         // Customize element display
         $element = $this->displayElement($element, $children_elements, $max_depth, $depth, $args, $output);
@@ -77,21 +76,23 @@ abstract class Walker extends BaseWalker implements WalkerInterface
      * Start the element output.
      *
      * @param string $output
-     * @param object $item
+     * @param object $data_object
      * @param int $depth
      * @param array $args
-     * @param int $id
+     * @param int $current_object_id
      */
-    public function start_el(&$output, $item, $depth = 0, $args = [], $id = 0)
+    public function start_el(&$output, $data_object, $depth = 0, $args = null, $current_object_id = 0)
     {
         $rand = bin2hex(random_bytes(10));
+        $item = $data_object;
 
-        $indent = ($depth) ? str_repeat("\t", $depth) : '';
+        $indent  = ($depth) ? str_repeat("\t", $depth) : '';
         $output .= $indent;
 
         // Classes
-        $classes = empty($item->classes) ? [] : (array) $item->classes;
-        $classes[] = 'menu-item-' . $item->ID;
+        $classes   = empty($item->classes) ? [] : (array) $item->classes;
+        $classes[] = 'menu-item-'.$item->ID;
+        $classes[] = $item->current ? 'is_active' : '';
 
         if (!$args->has_children) {
             $classes[] = 'item';
@@ -99,7 +100,7 @@ abstract class Walker extends BaseWalker implements WalkerInterface
 
         $class_names = join(' ', apply_filters('nav_menu_css_class', array_filter($classes), $item, $args, $depth));
         $class_names = $args->has_children ? $class_names.' opener' : $class_names;
-        $class_names = $class_names ? ' class="' . esc_attr($class_names) . '"' : '';
+        $class_names = $class_names ? ' class="'.esc_attr($class_names).'"' : '';
 
         // Build attributes
         $attributes = '';
@@ -139,37 +140,37 @@ abstract class Walker extends BaseWalker implements WalkerInterface
 
         // Build children
         if ($args->has_children) {
-            $output .= '<nav id="'.$rand.'" class="m-submenu">';
+            $item_output .= '<nav id="'.$rand.'" class="m-submenu">';
         }
 
-        $output = apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
+        $output .= apply_filters('walker_nav_menu_start_el', $item_output, $item, $depth, $args);
 
         // Customize output
-        $output = $this->startElement($output, $item, $depth, $args, $id);
+        $output = $this->startElement($output, $item, $depth, $args, $current_object_id);
     }
 
     /**
      * Ends the element output, if needed.
      *
      * @param string $output
-     * @param object $category
+     * @param object $data_object
      * @param int $depth
      * @param array $args
      */
-    public function end_el(&$output, $item, $depth = 0, $args = [])
+    public function end_el(&$output, $data_object, $depth = 0, $args = null)
     {
-        $indent = ($depth) ? str_repeat("\t", $depth) : '';
+        $item = $data_object;
+
+        $indent  = ($depth) ? str_repeat("\t", $depth) : '';
         $output .= $indent;
 
         // Build parent
-        if (!empty($item->classes) && is_array($item->classes) &&  in_array('menu-item-has-children', $item->classes)) {
+        if (!empty($item->classes) && is_array($item->classes) && in_array('menu-item-has-children', $item->classes)) {
             $output .= '</nav>';
             $output .= '</div>';
         }
 
         $output .= "\n";
-
-        $output = apply_filters('walker_nav_menu_end_el', $output, $item, $depth, $args);
 
         // Customize output
         $output = $this->endElement($output, $item, $depth, $args);
