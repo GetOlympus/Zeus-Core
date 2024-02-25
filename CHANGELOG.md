@@ -1,3 +1,6 @@
+## 2.3.6 (Fbruary 25th, 2023)
+Fix Walker output
+
 ## 2.3.5 (December 31th, 2023)
 HAPPY NEW YEAR
 Fix Walker with children
