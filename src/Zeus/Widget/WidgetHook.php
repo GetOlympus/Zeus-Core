@@ -242,7 +242,7 @@ class WidgetHook extends BaseWidget
      */
     public function widget_start($args, $instance, $title) // phpcs:ignore
     {
-        echo apply_filters('ol.zeus.widget_start', $args['before_widget']);
+        echo apply_filters('ol.zeus.widget_start', $args['before_widget'], $args, $instance);
 
         if ($title && $this->widget->getModel()->getDisplayTitle()) {
             echo $args['before_title'].$title.$args['after_title'];
@@ -258,7 +258,7 @@ class WidgetHook extends BaseWidget
      */
     public function widget_end($args) // phpcs:ignore
     {
-        echo apply_filters('ol.zeus.widget_end', $args['after_widget']);
+        echo apply_filters('ol.zeus.widget_end', $args['after_widget'], $args);
     }
 
     /**
