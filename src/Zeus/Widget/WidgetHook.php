@@ -244,6 +244,9 @@ class WidgetHook extends BaseWidget
     {
         echo apply_filters('ol.zeus.widget_start', $args['before_widget'], $args, $instance);
 
+        // Update args
+        $args = apply_filters('ol.zeus.widget_args', $args, $instance);
+
         if ($title && $this->widget->getModel()->getDisplayTitle()) {
             echo $args['before_title'].$title.$args['after_title'];
         }

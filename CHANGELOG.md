@@ -1,3 +1,6 @@
+## 2.3.8 (March 21th, 2024)
+Update hooks on widget
+
 ## 2.3.7 (March 21th, 2024)
 Add hooks on widgets
 
